@@ -1,6 +1,6 @@
 # Overclocking & Undervolting
 
-> **TL;DR** — Out of the box the BC-250's GPU runs slow (often pinned to **1500 MHz**, ~weak). The community fix is a **governor** that overrides the clocks/voltage: most builds run **[oberon-governor](https://gitlab.com/mothenjoyer69/oberon-governor)**, which you edit to push the GPU to **2000 MHz (~+30 % FPS)**. The newer **[bc250_smu_oc](https://github.com/bc250-collective/bc250_smu_oc)** toolkit also overclocks the **CPU** (recommended **4 GHz @ 1275 mV**). Separately, the **[40-CU unlock](https://github.com/duggasco/bc250-40cu-unlock)** re-enables the **24 → 40 compute units** AMD disabled in firmware — a bigger GPU win than clocks alone (one Superposition run went **4647 → 6863** points, ([src](https://t.me/c/2424231195/137035))). **All of this is heat. Cool the board first** — see [04-cooling.md](04-cooling.md) — because OC without adequate cooling crashes and resets the board above ~90 °C.
+> **TL;DR** — Out of the box the BC-250's GPU runs slow (often pinned to **1500 MHz**, ~weak). The community fix is a **governor** that overrides the clocks/voltage: the recommended one today is **[cyan-skillfish-governor-smu](https://github.com/filippor/cyan-skillfish-governor)** (needs no kernel patch, packaged on Arch/CachyOS/Bazzite/Fedora); **[oberon-governor](https://gitlab.com/mothenjoyer69/oberon-governor)** is the original and still works. Either one you edit to push the GPU to **2000 MHz (~+30 % FPS)**. The newer **[bc250_smu_oc](https://github.com/bc250-collective/bc250_smu_oc)** toolkit also overclocks the **CPU** (recommended **4 GHz @ 1275 mV**). Separately, the **[40-CU unlock](https://github.com/duggasco/bc250-40cu-unlock)** re-enables the **24 → 40 compute units** AMD disabled in firmware — a bigger GPU win than clocks alone (one Superposition run went **4647 → 6863** points, ([src](https://t.me/c/2424231195/137035))). **All of this is heat. Cool the board first** — see [04-cooling.md](04-cooling.md) — because OC without adequate cooling crashes and resets the board above ~90 °C.
 
 This is the **last** step of the golden path, not the first. Get a stable, cool board running ([06-linux.md](06-linux.md), [04-cooling.md](04-cooling.md)) before you touch any of this. Everything here is "do it at your own risk" — the community says so repeatedly ([src](https://t.me/c/2424231195/106844)).
 
@@ -12,7 +12,7 @@ The BC-250 has **four** independent things you can tune. They stack:
 
 | Lever | Tool | Typical gain | Heat cost |
 |-------|------|--------------|-----------|
-| **GPU clock** 1500 → 2000 MHz | governor (oberon / cyan-skillfish) | **~+30 % FPS** when GPU-bound | high |
+| **GPU clock** 1500 → 2000 MHz | governor (cyan-skillfish-smu / oberon) | **~+30 % FPS** when GPU-bound | high |
 | **GPU undervolt** at a fixed clock | same governor | same FPS, **much cooler** | *negative* (less heat) |
 | **CPU clock** 3.5 → 4.0 GHz | `bc250_smu_oc` | helps CPU-bound games | high |
 | **40-CU unlock** 24 → 40 CUs | `bc250-40cu-unlock` | **up to ~+48 %** GPU work | high |
@@ -26,7 +26,7 @@ Two honest caveats from the chat before you start:
 
 ```mermaid
 flowchart TD
-    Cool["Cool adequately FIRST see 04-cooling"] --> Gov["Install oberon-governor ONLY one governor"]
+    Cool["Cool adequately FIRST see 04-cooling"] --> Gov["Install GPU governor cyan-skillfish-smu recommended ONLY one governor"]
     Gov --> Clock["Raise GPU clock toward 2000 MHz"]
     Clock --> Test["Test with OCCT plus a REAL game Furmark alone is not game-stable"]
     Test --> Q{"Stable and under temp"}
@@ -40,11 +40,36 @@ flowchart TD
 
 ## Step 1 — GPU clock & undervolt: the governor
 
-The BC-250's amdgpu driver does not expose normal sysfs overclocking. The community solution is a **governor** — a small daemon that writes clock/voltage states directly. The default, run by most builds, is **oberon-governor**.
+The BC-250's amdgpu driver does not expose normal sysfs overclocking. The community solution is a **governor** — a small daemon that writes clock/voltage states directly. For a new install today the recommended one is **cyan-skillfish-governor-smu**; **oberon-governor** is the original and still works (kept below as the established alternative).
 
-### oberon-governor (the standard)
+### cyan-skillfish-governor-smu (recommended)
 
-[mothenjoyer69/oberon-governor](https://gitlab.com/mothenjoyer69/oberon-governor) — a C++ daemon. Per its README it depends on **CMake, a C++ toolchain, and libdrm**, and is **tested only on the ASRock BC-250**. Many distros ship it prebuilt (Arch AUR, a Fedora COPR, the Bazzite images), so building from source is only needed if your distro has no package.
+[filippor/cyan-skillfish-governor](https://github.com/filippor/cyan-skillfish-governor), SMU branch — drives clock/voltage through **SMU firmware calls**, so it needs **no kernel frequency patch on any distro**, is actively maintained, and is packaged on every major distro. It also adds **memory-controller power-profile** control, which lowers idle TDP to **~30–35 W** (cooler and quieter at idle) ([src](https://t.me/c/2424231195/125821)).
+
+**Install (packaged on every major distro)** — COPR `filippor/bazzite` (Fedora/Bazzite) or AUR `cyan-skillfish-governor-smu` (Arch/CachyOS); Debian/Ubuntu use the release tarball + `sudo ./scripts/install.sh`:
+
+```bash
+# Fedora / Bazzite (COPR):
+sudo dnf copr enable filippor/bazzite
+sudo dnf install cyan-skillfish-governor-smu        # rpm-ostree install … on Bazzite
+sudo systemctl enable --now cyan-skillfish-governor-smu.service
+
+# Arch / CachyOS (AUR):
+paru -S cyan-skillfish-governor-smu                  # or: yay -S …
+sudo systemctl enable --now cyan-skillfish-governor-smu.service
+```
+
+The SMU branch can also be built from source with `cargo build --release`. **Set your clock & voltage** in `/etc/cyan-skillfish-governor-smu/config.toml` (schema below) — to go from the weak default to the community sweet spot, raise the top safe-point toward **2000 MHz** and dial the voltage down until it's stable (see undervolting below); restart the service after every edit.
+
+> **Check it took.** Watch live clocks/temps with `amdgpu_top`, MangoHud, or LACT while you load the GPU. If clocks stay at ~1500 MHz, the service isn't running or your config didn't parse — `sudo systemctl status cyan-skillfish-governor-smu`.
+
+> Run **one** governor at a time — if you previously ran oberon, disable it before enabling cyan-skillfish, or they fight over the same registers.
+
+> 🔇 **Tuning for a quiet living-room console.** Maxing out (2000 MHz GPU / 4000 MHz CPU) buys little in CPU-bound games but costs a lot of heat, fan noise and watts. An r/BC250Gaming (Reddit) community report found a balanced **~1600 MHz GPU / ~3500 MHz CPU** gives a much better performance-per-noise-per-watt for everyday gaming — near-silent and cool, with FPS that holds up because most titles aren't GPU-bound anyway (see the CPU-bound caveat above). If you care more about a quiet, cool box than chart-topping benchmarks, set those as your governor ceilings instead of the max.
+
+### oberon-governor (the original — still works)
+
+[mothenjoyer69/oberon-governor](https://gitlab.com/mothenjoyer69/oberon-governor) — a C++ daemon, the first BC-250 governor and the most-tested; it still works, but unlike the SMU governor it relies on the extended-frequency kernel patch (or a distro that ships it) to reach the top clocks. Per its README it depends on **CMake, a C++ toolchain, and libdrm**, and is **tested only on the ASRock BC-250**. Many distros ship it prebuilt (Arch AUR, a Fedora COPR, the Bazzite images), so building from source is only needed if your distro has no package.
 
 **Build from source** (matches the chat's reproduced sequence, ([src](https://t.me/c/2424231195/54666)) and the repo's standard CMake flow):
 
@@ -59,44 +84,25 @@ sudo systemctl enable --now oberon-governor.service
 
 > If `cmake` errors, the chat fix was simply to install the missing build deps and re-run: `sudo pacman -S pkgconf cmake` then rebuild ([src](https://t.me/c/2424231195/54666)).
 
-**Set your clock & voltage.** The governor reads a YAML config:
+**Set your clock & voltage.** oberon reads a YAML config:
 
 ```bash
 sudo nano /etc/oberon-config.yaml      # adjust min/max frequency and voltage
 sudo systemctl restart oberon-governor # apply
 ```
 
-The file lets you set the **maximum and minimum voltage and frequency** for the GPU states (per the repo README). To go from the weak default to the community sweet spot, raise the max frequency toward **2000 MHz** and dial the voltage down until it's stable (see undervolting below). Restart the service after every edit.
+The file lets you set the **maximum and minimum voltage and frequency** for the GPU states (per the repo README). Raise the max frequency toward **2000 MHz** and dial the voltage down until it's stable. Restart the service after every edit. To migrate to the SMU governor later: stop+disable+remove `oberon-governor`, `rm /etc/oberon-config.yaml`, then install and enable the SMU service.
 
-> **Check it took.** Watch live clocks/temps with `amdgpu_top`, MangoHud, or LACT while you load the GPU. If clocks stay at ~1500 MHz, the service isn't running or your config didn't parse — `sudo systemctl status oberon-governor`.
+#### TT vs SMU — the two cyan-skillfish variants
 
-> 🔇 **Tuning for a quiet living-room console.** Maxing out (2000 MHz GPU / 4000 MHz CPU) buys little in CPU-bound games but costs a lot of heat, fan noise and watts. An r/BC250Gaming (Reddit) community report found a balanced **~1600 MHz GPU / ~3500 MHz CPU** gives a much better performance-per-noise-per-watt for everyday gaming — near-silent and cool, with FPS that holds up because most titles aren't GPU-bound anyway (see the CPU-bound caveat above). If you care more about a quiet, cool box than chart-topping benchmarks, set those as your governor ceilings instead of the max.
-
-### cyan-skillfish-governor (the SMU fork — idle power)
-
-A newer governor, [bc250-collective/cyan-skillfish-governor](https://github.com/bc250-collective/cyan-skillfish-governor), adds **memory-controller power-profile** control. It gives **no extra performance**, but lowers idle TDP to **~30–35 W** (cooler and quieter at idle) ([src](https://t.me/c/2424231195/125821)). On Arch it's packaged; the chat's swap-over recipe was ([src](https://t.me/c/2424231195/118249)):
-
-```bash
-paru -S cyan-skillfish-governor-smu
-sudo systemctl stop  oberon-governor.service
-sudo systemctl disable  oberon-governor.service
-sudo systemctl enable --now cyan-skillfish-governor-smu.service
-```
-
-> Run **one** governor at a time — disable oberon before enabling cyan-skillfish, or they fight over the same registers.
-
-#### TT vs SMU — two variants, and which is now the default
-
-> ⚠ **verify — the recommended default has shifted.** The chat history (and the TL;DR above) treats **oberon** as *the* standard. The community governor docs now call **cyan-skillfish-governor-smu** the *community-recommended default (Mar 2026+)* and label oberon **"legacy — migrate to SMU"** ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)). oberon still works and is the most-tested; this is an evolving recommendation, not a hard deprecation. cyan-skillfish ships in **two variants** ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)):
+> The recommended SMU build above is one of **two** cyan-skillfish variants. SMU is the default; the TT variant is the alternative for anyone who specifically wants the kernel-patch/sysfs route ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)):
 
 | Variant | Service | How it sets clocks | Kernel patch? | Released / notes |
 |---|---|---|---|---|
 | **SMU** *(recommended)* | `cyan-skillfish-governor-smu` | SMU **firmware calls** | **No — works on any distro unpatched** | 2026-01-18; reaches 2300+ MHz; CPU ~0.9–1.3 % |
 | **TT** (alternative) | `cyan-skillfish-governor-tt` | sysfs | **Yes** (pre-included in Bazzite) | thermal-throttling aware; reaches 2175+ MHz |
 
-> **Service rename (2025-12-13):** filippor renamed `cyan-skillfish-governor` → `cyan-skillfish-governor-tt`, and the config dir moved `/etc/cyan-skillfish-governor/` → `/etc/cyan-skillfish-governor-tt/`. If upgrading, copy your old `config.toml` across ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
-
-**Install (packaged on every major distro)** — COPR `filippor/bazzite` (Fedora/Bazzite) or AUR `cyan-skillfish-governor-smu` (Arch/CachyOS); Debian/Ubuntu use the release tarball + `sudo ./scripts/install.sh`. The SMU branch builds from source with `cargo build --release`. Migrating off oberon: stop+disable+remove `oberon-governor`, `rm /etc/oberon-config.yaml`, then install and enable the SMU service ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
+> **Service rename (2025-12-13):** filippor renamed `cyan-skillfish-governor` → `cyan-skillfish-governor-tt`, and the config dir moved `/etc/cyan-skillfish-governor/` → `/etc/cyan-skillfish-governor-tt/`. If upgrading, copy your old `config.toml` across ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)). The TT variant is packaged in the same COPR/AUR (`cyan-skillfish-governor-tt`) and pre-included in Bazzite.
 
 > 🔴 **700 mV is a hard floor.** Setting the governor's *minimum* GPU voltage below **700 mV locks the GPU back to 1500 MHz** — it defeats the whole point. Keep min voltage ≥ 700 mV in any governor ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/), [elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)).
 
@@ -174,7 +180,7 @@ Why 4 GHz is the ceiling: AMD considers up to ~4 GHz safe for this silicon; the 
 
 > ❓ **Can I unlock the CPU to 8 cores?** Short answer: **no — not currently, and it wouldn't help anyway.** The BC-250 ships with 6 of its 8 Zen 2 cores active; r/BC250Gaming community reports describe the other two as **software-locked via eFuses read by the SMU** (the binning is largely artificial — a mining-era decision), *not* physically severed. But unlocking them would mean **bypassing the PSP signature check and modifying SMU microcode**, and community attempts (on Discord) have **not succeeded**. Even if someone did, the gain for gaming would be **marginal**: the BC-250 is bottlenecked by **weak single-thread performance, a small fragmented 2×4 MB L3 cache, and an AVX2-only / crippled FPU** — adding cores raises neither FPS nor the things this chip is actually starved on. Don't chase it ([r/BC250Gaming community reports](https://www.reddit.com/r/BC250Gaming/)).
 
-> The pinned `bc250_smu_oc` post can also **replace** oberon as your governor (it has its own `bc250-smu-oc` service). Don't run both governors at once.
+> The pinned `bc250_smu_oc` post can also **replace** your GPU governor (it has its own `bc250-smu-oc` service). Don't run two governors at once.
 
 **Verified CPU-OC scaling** (Fedora 43, kernel 6.19.8; auto-tuned voltage; 7-zip MIPS; with a temperature-based fan curve) ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)):
 
@@ -417,9 +423,8 @@ The headline reason to care about GDDR6 here is **bandwidth and capacity for AI/
 
 | Tier | Do this | Expect |
 |------|---------|--------|
-| **Start** | oberon-governor → GPU **2000 MHz**, undervolt to **~955 mV** game-stable | ~+30 % FPS where GPU-bound, ~75 °C |
+| **Start** | cyan-skillfish-governor-smu → GPU **2000 MHz**, undervolt to **~955 mV** game-stable | ~+30 % FPS where GPU-bound, ~75 °C, ~30–35 W idle |
 | **+ CPU** | `bc250_smu_oc` → **4 GHz @ 1275 mV** (Vid never > 1.325 V) | helps CPU-bound titles |
-| **+ Idle** | swap to cyan-skillfish-governor | ~30–35 W idle, cooler/quieter |
 | **Max GPU** | 40-CU unlock + tune clock/volt at 40 CU | up to ~+48 % GPU work |
 
 After **any** change: load the GPU **and** CPU together (they share one die and one heatsink), watch temps, and keep load under ~85 °C. If you can't, the answer is **more cooling, not less clock-chasing** — go back to [04-cooling.md](04-cooling.md). Water cooling is what unlocks the top end (e.g. 4.0 GHz CPU on water vs 3.85 GHz on air) ([src](https://t.me/c/2424231195/135417)).
@@ -432,7 +437,7 @@ This tooling changed fast over 2025–2026. Watch the dates:
 
 - **Before ~Dec 2025:** the only governor was **oberon-governor** (GPU clock/voltage only). Older posts that say "you can't overclock the CPU" predate `bc250_smu_oc` (released **2025-12-30**) ([src](https://t.me/c/2424231195/106844)).
 - **The 40-CU unlock is new (~May 2026)** and still maturing. Early messages call it "insider info / promising but unreliable" ([src](https://t.me/c/2424231195/137022)); by mid-May it was a working pinned procedure ([src](https://t.me/c/2424231195/137241)). Methods, patches, and prebuilt bundles are still shifting — prefer the [repo](https://github.com/duggasco/bc250-40cu-unlock) over any single chat message. ⚠ verify the patch strip level (`-p5`) and kernel version against the repo before building.
-- **cyan-skillfish-governor** (idle-power fork) arrived **~Mar 2026** ([src](https://t.me/c/2424231195/125821)); the SMU "plus" releases are newer still. ⚠ verify: the community governor docs now position **cyan-skillfish-governor-smu as the recommended default (Mar 2026+)** and oberon as *legacy* — but the chat-sourced golden path in this chapter still starts from oberon. Both work; the SMU variant needs **no kernel patch** and is the lower-friction choice on Arch/CachyOS ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)). The **service was renamed** `cyan-skillfish-governor` → `-tt` on **2025-12-13**, and the SMU branch shipped **2026-01-18**.
+- **Governors evolved over Dec 2025 – Jan 2026.** The original **oberon-governor** (GPU clock/voltage only) was joined by **cyan-skillfish-governor** **~Mar 2026** ([src](https://t.me/c/2424231195/125821)); the **service was renamed** `cyan-skillfish-governor` → `-tt` on **2025-12-13**, and the **SMU branch shipped 2026-01-18**. For a new install today **cyan-skillfish-governor-smu** is the recommended governor — it needs **no kernel patch** and is packaged on Arch/CachyOS/Bazzite/Fedora — while **oberon-governor** remains the original and still works ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
 - **CPU frequency scaling is gated on `bc250-acpi-fix`.** Without its SSDT-PST table the BC-250 has *no* cpufreq interface at all — older advice assuming `schedutil` "just works" predates this finding ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
 - A live **memory-timing** writeup also exists for the truly brave (GDDR6 tCL/tRAS etc.), but it's BIOS/mod-tool territory, not the governor — see [08-bios.md](08-bios.md) and the timing post ([src](https://t.me/c/2424231195/126436)).
 
@@ -440,9 +445,9 @@ This tooling changed fast over 2025–2026. Watch the dates:
 
 ## Sources
 
-- oberon-governor (default GPU governor) — https://gitlab.com/mothenjoyer69/oberon-governor · build sequence & cmake fix — https://t.me/c/2424231195/54666
+- cyan-skillfish-governor-smu (recommended GPU governor — no kernel patch, idle power) — https://github.com/filippor/cyan-skillfish-governor · idle TDP — https://t.me/c/2424231195/125821 · swap recipe — https://t.me/c/2424231195/118249
+- oberon-governor (the original GPU governor, still works) — https://gitlab.com/mothenjoyer69/oberon-governor · build sequence & cmake fix — https://t.me/c/2424231195/54666
 - bc250_smu_oc (CPU OC, 4 GHz @ 1275 mV) — https://github.com/bc250-collective/bc250_smu_oc · release/announce — https://t.me/c/2424231195/106844
-- cyan-skillfish-governor (idle power) — https://github.com/bc250-collective/cyan-skillfish-governor · idle TDP — https://t.me/c/2424231195/125821 · swap recipe — https://t.me/c/2424231195/118249
 - 40-CU unlock — https://github.com/duggasco/bc250-40cu-unlock · pinned manual guide — https://t.me/c/2424231195/137241 · Fedora atomic — https://t.me/c/2424231195/137916 · dmesg confirmation — https://t.me/c/2424231195/137889
 - Live CU manager / toolkit — https://github.com/WinnieLV/bc250-cu-live-manager · https://github.com/gennro/bc250-toolkit
 - Clock/voltage/heat data — https://t.me/c/2424231195/66972 · https://t.me/c/2424231195/67029 · undervolt stability — https://t.me/c/2424231195/68126 · https://t.me/c/2424231195/136773 · https://t.me/c/2424231195/23545
