@@ -113,6 +113,14 @@
 
 Маленькая серебристо-чёрная консольная коробка с сетчатым боковым забором и тёмным фронтом с эмблемой в стиле киберпанк и RGB-полосой, показана рядом с ТВ как машина для гостиной ([src](https://t.me/c/2424231195/135995)). Часть длинной линейки ревизий (исходные картинки v15/v19/v20 шарили в самом начале).
 
+### BC250 Vented Edition (MaelremremDotXYZ)
+
+Минималистичная **FlexATX**-консоль с **открытыми рёбрами**, держит **~67 °C @ 2145 МГц / 1.1 В**, сзади — выключатель питания БП. [MakerWorld 2899020](https://makerworld.com/en/models/2899020).
+
+### Stellar 250 (isaacalvex)
+
+Полностью автономная консоль с подробным **гайдом по сборке**: внутренний накопитель, **WiFi 6** и **дисплей температур на ESP32**. [GitHub isaacalvex/AMD-BC-250-Project-Guide](https://github.com/isaacalvex/AMD-BC-250-Project-Guide).
+
 ---
 
 ## Уровень 4 — Большие сборки: ATX-БП, СЖО, экраны
@@ -138,6 +146,14 @@
 
 Переделанная посадочная пластина под **два 120 мм вентилятора** — один заведён на бэкплейт (память), как задумывал разработчик платы, второй обдувает БП. С Lian Li P28 спереди + Thermalright C12015 автор держит **2200 МГц при 80 °C в играх**, тогда как одного переднего не хватало ([src](https://t.me/c/2424231195/120606)). Под это шарят отдельный **`Twin_120mm_Fan_Shroud.stl`** ([src](https://t.me/c/2424231195/121684)).
 
+### The Lanboy — портативная аркада / «ланчбокс»
+
+Портативная сборка-ланчбокс: гонит **16″ ноутбучную eDP-матрицу (1920×1200 @ 165 Гц)** через **плату-переходник eDisplayPort** ([AliExpress](https://www.aliexpress.com/item/1005006351527252.html)), 2× 2″ динамика на USB-усилителе, всё питается от одного **12 В ATX-брейкаута**. [Printables 1746364](https://www.printables.com/model/1746364). Трюк с eDP-переходником переиспользуется в **любой** сборке с ноутбучной матрицей.
+
+### BC250-HUD (Bloodyly) — внутренний экран статуса
+
+Приложение-**экран статуса на Qt5/C++ для Raspberry Pi Zero 2** (для сборок вроде NexGen3D Redux): **60 FPS через USB gadget mode**, читает FPS/фреймтайм из MangoHud, по напряжению вентилятора гасит экран в спящем режиме и **включает патч ядра vc4**, без которого Pi зависает. Экран: **8.8″ 1920×480 IPS** (Hannstar HSD088IPW1-A). [GitHub Bloodyly/BC250-HUD](https://github.com/Bloodyly/BC250-HUD).
+
 ---
 
 ## Переходники и крепления (не полноценные корпуса)
@@ -147,6 +163,8 @@
 - **Шрауды вентиляторов** (прижать вентилятор к рёбрам): `Fan_Shroud_Single_120mm.stl`, `Fan_Shroud_Dual_120mm.stl`, `Fan_Shroud_Single_120mm_Restricted.stl`, `Fan_Shroud_Single_140mm.stl` ([src](https://t.me/c/2424231195/81673)), `Twin_120mm_Fan_Shroud.stl` ([src](https://t.me/c/2424231195/121684)). Также в каталоге [Охлаждение](04-cooling.md).
 - **Крепления вентилятора на бэкплейт / память:** `Backplate.stl` + `backplane-top-fixed.stl` ([src](https://t.me/c/2424231195/133049)); `bottom_fan_mount.stl`, `top_fan_mount.stl`, `Front-Mount.stl`, `Back-Mount.stl` ([src](https://t.me/c/2424231195/131189))
 - **Переходники под AM4-кулер** (прикрутить штатный CPU-кулер к кристаллу): `bc250 am4 adapter polished.stl`, `bc250 cooler mount.stl` ([src](https://t.me/c/2424231195/9949)). См. также [Printables 1042228 — BC250→AMD CPU-cooler mount](https://www.printables.com/model/1042228-bc250-to-amd-cpu-cooler-mount).
+- **Универсальное ITX-крепление** (majzok): печатается в двух частях, защёлкивающихся в рамку — прикручиваешь BC-250 в неё, затем рамку прикручиваешь в **любой корпус со стандартными ITX-отверстиями под материнку** (проверено в DeepCool CH170 PLUS). Решает проблему «универсального ITX-крепления не существует». Каноничной ссылки на Printables нет — ищи на Printables/MakerWorld по запросу **«BC-250 ITX Mount»**.
+- **Переходник Thermalright AXP90-X53 / AXP120-X67** (низкопрофильный кулер на кристалл): печатное крепление, нужна резьба M3, варианты толщины под кулер/прижим CPU — [Printables 1694793](https://www.printables.com/model/1694793). Также в разделе [Охлаждение](04-cooling.md).
 - **Переходник под 120 мм вентилятор:** `BC250_FanAdapter_120mm.step` ([src](https://t.me/c/2424231195/83135)), `cooler adapter v3.0 (1).stl` ([src](https://t.me/c/2424231195/111091))
 - **Точные модели платы** (проектируй свой корпус по ним): [Printables 1341336 — accurate BC-250 board](https://www.printables.com/model/1341336-accurate-3d-model-of-the-amd-bc-250-board) ([src](https://t.me/c/2424231195/55496)), [Printables 1103626 — AMD BC250 board](https://www.printables.com/model/1103626-amd-bc250-board)
 
@@ -178,6 +196,12 @@
 | **BC-250 Scooper** | шрауд/совок | файлы Printables | 120 | [Printables 1282906](https://www.printables.com/model/1282906-bc-250-scooper) |
 | **Pitman case** | консоль | файлы Printables | 120 | [Printables 1570248](https://www.printables.com/model/1570248-amd-bc-250-pitman-case) |
 | **Industrial-style FlexATX** | консоль | `amd_bc_250_industrial_style_case...zip` *(чат)* | 120 (без стокового кулера) | [чат #144265](https://t.me/c/2424231195/144265) |
+| **The Lanboy** | портативная аркада + 16″ eDP-экран | файлы Printables | 12 В ATX-брейкаут | [Printables 1746364](https://www.printables.com/model/1746364) |
+| **BC250 Vented Edition** (MaelremremDotXYZ) | FlexATX-консоль, рёбра открыты | файлы MakerWorld | 120 | [MakerWorld 2899020](https://makerworld.com/en/models/2899020) |
+| **Stellar 250** (isaacalvex) | консоль + гайд (WiFi6, ESP32) | гайд на GitHub | 120 | [GitHub isaacalvex/...Project-Guide](https://github.com/isaacalvex/AMD-BC-250-Project-Guide) |
+| **BC250-HUD** (Bloodyly) | внутренний экран статуса на Pi Zero 2 | исходники GitHub | — | [GitHub Bloodyly/BC250-HUD](https://github.com/Bloodyly/BC250-HUD) |
+| **Универсальное ITX-крепление** (majzok) | переходник (любой ITX-корпус) | искать на Printables/MakerWorld | — | «BC-250 ITX Mount» |
+| **Крепление Thermalright AXP90/AXP120** | переходник под низкопрофильный кулер | файлы Printables | низкопроф. башня | [Printables 1694793](https://www.printables.com/model/1694793) |
 | **Пластина под два 120** | переходник-пластина | `Twin_120mm_Fan_Shroud.stl` *(чат)* | 2× 120 | [чат #121684](https://t.me/c/2424231195/121684) |
 | **Шрауды (120/140)** | шрауд | `Fan_Shroud_Single_120mm.stl`, `_Dual_120mm`, `_Single_140mm`, `_120mm_Restricted` *(чат)* | 120 / 140 | [Printables 1339540](https://www.printables.com/model/1339540-yet-another-bc-250-fan-shroud) · см. [Охлаждение](04-cooling.md) |
 | **Переходник под AM4-кулер** | крепление | `bc250 am4 adapter polished.stl`, `bc250 cooler mount.stl` *(чат)* | башня/AIO | [Printables 1042228](https://www.printables.com/model/1042228-bc250-to-amd-cpu-cooler-mount) |
@@ -248,6 +272,8 @@
 | **Case Remix for TFX** (PlayNation) | БП TFX-400 | [MakerWorld 2387157](https://makerworld.com/en/models/2387157) |
 | **VESA 100/75 Basket** (Oleksii) | крепление за монитор | [MakerWorld 1844470](https://makerworld.com/en/models/1844470) |
 | **3.9L MKII FlexATX + вентилятор PS5** (FitFormSolutions) | купить готовый кит | [Etsy](https://www.etsy.com/listing/4405362103/) · [eBay](https://www.ebay.com/itm/127460591552) |
+| **Shiny Snake S400** (10.8 л mesh ITX) | проверенный готовый корпус-хост (BC-250→AM4-крепление + H60 AIO в отсек БП + кастомная ATX-заглушка I/O) | [AliExpress](https://a.aliexpress.com/_EyQdoBU) |
+| **Минималистичный корпус под SFX-БП** (Methsman) | полный SFX-БП, панели на магнитах, USB-хаб, AXP120 + Noctua 120 — *файлы WIP / ещё не выложены* | — |
 | **Линейка Cults3D ATX/server** (KABANCHYK, lumstudio, kapa3D) | платные STL | [Cults3D — bc-250](https://cults3d.com/en/3d-model/gadget/bc-250-atx-case) |
 
 ---
@@ -256,7 +282,8 @@
 
 - **Заказать печать.** Продавцы есть на [Etsy](https://www.etsy.com/listing/1904632447/), eBay и OLX; в чате тоже предлагали напечатать/продать корпус ([src](https://t.me/c/2424231195/55507)).
 - **Печать под заказ:** загрузить STL в сервис. Строители в чате держат фермы (один показывает стену из Flsun/Creality/Bambu, [src](https://t.me/c/2424231195/73481)).
-- **Совсем без корпуса / переделка.** Многие гоняют плату на открытом стенде, пока тестируют. Другие потрошат готовое железо: старый моноблок с имплантированной платой и турбиной ([src](https://t.me/c/2424231195/30914)), коробку из вентиляционного короба ([src](https://t.me/c/2424231195/64265)) или алюминиевые корпуса от усилителей (нужны напильник и сверло, [src](https://t.me/c/2424231195/108907)). Один участник даже спрятал плату в старый VHS-плеер ради шутки ([src](https://t.me/c/2424231195/84106)).
+- **Совсем без корпуса / переделка.** Многие гоняют плату на открытом стенде, пока тестируют. Другие потрошат готовое железо: старый моноблок с имплантированной платой и турбиной ([src](https://t.me/c/2424231195/30914)), коробку из вентиляционного короба ([src](https://t.me/c/2424231195/64265)) или алюминиевые корпуса от усилителей (нужны напильник и сверло, [src](https://t.me/c/2424231195/108907)). Один участник даже спрятал плату в старый VHS-плеер ради шутки ([src](https://t.me/c/2424231195/84106)). **Корпус от Xbox One** (JoeyDepDollas): выпотрошить дохлый Xbox One и уместить внутри полную сборку BC-250 — CPU и GPU держатся ниже **60 °C** под нагрузкой; битые доноры идут по **~$15 с доставкой** на eBay и дают переиспользуемые детали.
+- **Лазерная резка фанеры** (ContributionRich3242): не 3D-печать — фанера, согнутая пропилами по углам, с большой задней зоной под доп. охлаждение, держит **75 °C на 40 CU** (1800 МГц, CPU 3.9 ГГц) и работает бесшумно. (Лазерные файлы не выкладывались.) Его **техника охлаждения через бэкплейт** переиспользуема на любом корпусе: терможвачка чип→бэкплейт, паста бэкплейт→задние кулеры, а сами задние кулеры зафиксировать тугими R-образными шплинтами в зазоре VRM + каптоновый скотч (~на 20 °C холоднее на 40 CU).
 
 > Голая, но хорошо охлаждённая плата обходит запечатанную красивую коробку с плохим продувом. Сначала сделай [Охлаждение](04-cooling.md), корпус — второй шаг.
 
