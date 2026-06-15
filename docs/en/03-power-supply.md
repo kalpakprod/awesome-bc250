@@ -178,6 +178,18 @@ If you already own a decent **ATX, Flex-ATX, SFX or TFX** power supply, you're d
 
 ---
 
+## Turning the PSU on and off (there's no board power button)
+
+The board has **no native ATX power control** — it boots the instant 12 V appears (see the [no-conveniences list](#what-the-board-actually-needs) above), so your on/off switch has to live on the **PSU side**. The r/linux_gaming community thread documents the practical, confirmed methods:
+
+- **Add a real power switch to PS_ON.** Bridge the PSU's **PS_ON → GND** through a **rocker / latching switch** instead of a fixed paperclip — flipping it powers the whole thing up and down. On a 24-pin connector PS_ON is typically the **green wire / pin 16**, and any black wire is ground. Pair this with the next point so the board actually boots when the rail comes up.
+- **Set the board's `AUTO_PWRON` jumper to auto-on-when-powered.** With that jumper in the auto-on position, the BC-250 boots as soon as the PSU delivers 12 V — so the PSU's PS_ON switch becomes a true single power button for the system.
+- **Find PS_ON before you bridge it on a modular PSU — the pin location varies by model.** On standard 24-pin wiring it's the green wire, but modular units differ: a **TFSkywind 350 W** uses the **two center pins of each row (4 + 11)**, while an **Apevia 400/500 W** uses **two pins on the same row (8 + 13)**. Check yours (multimeter / the PSU's own pinout) rather than assuming green/pin-16.
+- **Trim a cheap PSU down to a clean harness.** You only need **1 green (PS_ON) + 3 yellow (12 V) + 6 black (GND)** for the board; the rest of the bundle can be cut away for a tidy build.
+- **Stop the PSU fan during sleep (community workarounds).** Because the PSU keeps running while the board sleeps, some owners **daisy-chain the PSU fan to the BC-250's fan header** so it spins down with the board, or wire a **small transistor so PS_ON follows board power**. Treat these as experimenter hacks, not a documented spec.
+
+---
+
 ## Popular PSU models the community uses
 
 These are the exact units people in the chat actually built with — **community-shared picks, not endorsements.** Whatever the form factor, remember the board needs **a single 12 V rail wired to one PCIe 8-pin (6+2)** — see the [pinout (J1000)](#the-8-pin-pinout-j1000) and [wire-gauge guidance](#wire-gauge--connector-guidance) above. Anything not enclosed (Mean Well, server bricks, salvaged console PSUs) you wire the 8-pin yourself.
@@ -245,6 +257,7 @@ Whatever you pick: **single 12 V rail, ≥300 W, real-copper wire ≥16 AWG, PCI
 - Beyond 300 W via J2000/J2001 (second connector) — practical PCIe-into-J1000 + Micro-Fit-into-J2000 method https://t.me/c/2424231195/142662 · https://t.me/c/2424231195/138371 · one-PCIe-two-Micro-Fit cable https://t.me/c/2424231195/143938 · Micro-Fit 3.0 parts (43025-0800 housing + 43030 terminals) https://t.me/c/2424231195/142659 · https://t.me/c/2424231195/14797 · 40-CU OC draws >300 W https://t.me/c/2424231195/143787 · request for the second-connector diagram https://t.me/c/2424231195/135741
 - Build photos — 8-pin in case https://t.me/c/2424231195/41666 · connector area https://t.me/c/2424231195/39395 · working unit https://t.me/c/2424231195/27556 · soldered Micro-Fit https://t.me/c/2424231195/135782
 - ESP32 auto power-on for Flex/LOP PSU — [dexikdex/ESP32-BC250-LOP_PSU-PowerON-Xbox](https://github.com/dexikdex/ESP32-BC250-LOP_PSU-PowerON-Xbox) ([src](https://t.me/c/2424231195/142498))
+- PSU power on/off control (PS_ON → GND rocker switch + AUTO_PWRON jumper; modular PS_ON pin locations — TFSkywind 4+11, Apevia 8+13; 1 green + 3 yellow + 6 black harness; PSU-fan-to-board-header workaround) — r/linux_gaming community thread https://www.reddit.com/r/linux_gaming/comments/1nvsgji/
 - Mean Well product pages — [LOP-300-12](https://www.chipdip.ru/product/lop-300-12-blok-pitaniya-12v-25a-300vt-mean-well-9001511866) · [LRS-350-12](https://www.chipdip.ru/product/lrs-350-12-blok-pitaniya-12v-29a-348vt-mean-well-9000334417)
 
 > Cooling the PSU's airflow into the board's heatsink is covered in [04-cooling.md](04-cooling.md). Case builds that integrate the PSU are in [05-case.md](05-case.md).

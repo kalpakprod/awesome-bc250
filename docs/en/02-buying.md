@@ -70,6 +70,20 @@ There is **no "official bundle"** — heatsink presence, PSU model, and SSD size
 
 ---
 
+## Honest downsides & reliability
+
+Before you pay, know what you're signing up for. The following is the verified, multi-user consensus from a large **r/linux_gaming community thread (2026)** — the good and the bad, without the marketing gloss.
+
+**Idle power is the board's biggest real downside.** This is the single most-confirmed complaint, and it's worth understanding before you buy a board for a desktop role. With a GPU governor + undervolt the GPU itself drops to roughly **~30 W**, *but* — and this is the catch — **the CPU power states cannot be controlled from the OS**. The BIOS simply doesn't expose them, so `cpupower`/`cpufreq` report "no driver" and you'll see `amd_pstate: the _CPC object is not present in SBIOS`. The CPU (~30–40 W) plus the GDDR6 (~40–60 W across the memory chips) keep total **wall draw around 100–125 W at idle for many users**, even on Bazzite with a governor applied. Some people reach ~70 W; the often-quoted **"35–45 W" figure is disputed and not reproducible for everyone**, and high-leakage board batches physically can't idle below ~70–80 W. The practical workaround the thread settled on is **auto-suspend after idle** — a server PSU draws only ~10 W suspended, which sidesteps the whole problem. Don't buy this expecting a low-idle always-on box.
+
+**GPU feature gaps (hardware fact).** The GPU is RDNA 2-class, which means **no mesh shaders and no hardware VRS (variable rate shading)**. A handful of cutting-edge titles that *hard-require* those features won't run at all — e.g. **FF7 Rebirth** needs mesh shaders, and **Doom: The Dark Ages** (Update 2) needs Vulkan fragment shading rate. This is a permanent silicon limitation, not a driver issue — see [11-gaming.md](11-gaming.md) for the running compatibility picture. Separately, there's **no working hardware video encode/decode** — the VCN block is firmware-blocked (details in [14-display.md](14-display.md) and [01-what-is-bc250.md](01-what-is-bc250.md)).
+
+**Reliability — the "mining hardware dies randomly" fear is largely unfounded.** This is community reasoning rather than a guarantee, but the logic is sound: these boards ran at a **constant temperature** their entire working life. The thing that kills consumer gaming GPUs is *thermal cycling* — repeated load spikes that crack BGA solder joints over time — which mining cards mostly never experienced. The bulk of community reports are of **stable, long-running boards**. Treat it as a reassuring observation, not a warranty.
+
+**Minor verified gotchas.** The **M.2 slot sits in the path of hot exhaust air**, so the SSD can run hot; some members simply use a **USB-SATA SSD instead** — slower, but cooler. And the overall takeaway from the thread: the BC-250 is **gaming-focused, not an ideal general-purpose desktop** — the uncontrollable idle power and absent CPU power management are the reasons why.
+
+---
+
 ## Prices & what's a good deal
 
 Prices are **set by demand, not by a manufacturer**, and they move fast. Treat these as **dated snapshots, not current truth** — always check several live listings before buying.
@@ -121,5 +135,6 @@ Because eBay pricing is so listing-and-volume sensitive, members coordinate purc
 - Барахолка builds & prices — https://t.me/c/2424231195/90549 · https://t.me/c/2424231195/95708 · https://t.me/c/2424231195/134585 · https://t.me/c/2424231195/131411 · https://t.me/c/2424231195/102794
 - Ukraine OLX (~7k ₴) — https://t.me/c/2424231195/129132
 - Marketplaces — Ozon https://www.ozon.ru/product/videokarta-amd-bc-250-dlya-mayninga-3516734147/ · Avito (forwarder) https://www.avito.ru/tomsk/predlozheniya_uslug/vykup_i_dostavka_tovarov_s_ebay_4506584736 · OLX https://www.olx.ua/d/obyavlenie/igrovaya-platforma-asrock-amd-bc-250-IDYryBv.html · AliExpress https://aliexpress.ru/item/1005009654316985.html
+- Honest downsides & reliability (idle power, feature gaps, mining-hardware longevity) — r/linux_gaming community thread (2026) https://www.reddit.com/r/linux_gaming/comments/1nvsgji/
 
 > Prices change constantly — these are dated community snapshots, **not** a live price feed. Re-check several listings yourself before buying. See [03-power-supply.md](03-power-supply.md) and [04-cooling.md](04-cooling.md) for what a board-only purchase still needs.

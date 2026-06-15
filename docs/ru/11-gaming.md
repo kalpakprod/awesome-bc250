@@ -91,6 +91,17 @@ elektricM отслеживает тайтлы, которых у нас не б�
 
 (Статус античитов меняется со временем — сверяйтесь с [areweanticheatyet.com](https://areweanticheatyet.com) и [protondb.com](https://www.protondb.com).) ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
 
+### Жёстко заблокированы отсутствующими функциями GPU (не лечится)
+
+Это **кремний класса RDNA 2** (GFX1013). Часть новых тайтлов **жёстко требует функций GPU, которых у RDNA 2 нет** — прежде всего **mesh-шейдеров** и **аппаратного variable-rate shading (VRS)** — и просто отказывается запускаться. Это **ограничение железа, а не баг драйвера**: ни обновление Mesa, ни параметр ядра, ни версия Proton это не исправят. Подтверждённые примеры ([тред сообщества r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)):
+
+| Игра | Жёсткое требование, которого нет у BC-250 |
+|------|--------------------------------------------|
+| **Final Fantasy VII Rebirth** | **Mesh-шейдеры** — не запустится (поэтому же спотыкается и о проверку DX12-совместимости GPU в таблице выше) |
+| **Doom: The Dark Ages — Update 2** | **Vulkan fragment shading rate** (аппаратный VRS) — ранняя сборка до Update 2 идёт (60 FPS после разблокировки 40 CU, выше), но Update 2 сделал VRS обязательным, и игра больше не стартует |
+
+> Перед покупкой свежего AAA-тайтла проверь, не указаны ли в требованиях mesh-шейдеры или аппаратный VRS — если да, BC-250 не потянет её ни на каких настройках.
+
 ## Рейтрейсинг — что реально тестировали
 
 У BC-250 **настоящий аппаратный RT RDNA2** (не программная эмуляция, при Mesa 25.2+). Протестированные RT-тайтлы по elektricM:
@@ -163,6 +174,7 @@ RT здесь начального уровня — нормально для *�
 - Обзор эмуляции — https://t.me/c/2424231195/78988
 - Сравнительный прогон с дискреткой RX 6600 — https://t.me/c/2424231195/116494
 - Совместимость игр elektricM (настройки/FPS по играм, проблемные игры, таблица RT, Proton и параметры запуска, приросты FSR) — https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/
+- Жёсткие блоки по mesh-шейдерам / аппаратному VRS (FF7 Rebirth, Doom: The Dark Ages Update 2) — [тред r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)
 - Таблица тестов игр сообщества — https://docs.google.com/spreadsheets/d/1kJleOY5k-YREGak1pQhVWIGckA9YA3OWJyCbybZbk00/edit?usp=sharing
 
 > Частоты и разблокировка 40 CU — в [09-overclock-undervolt.md](09-overclock-undervolt.md); сделайте доработку из [04-cooling.md](04-cooling.md) до запуска на 2000 МГц.

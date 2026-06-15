@@ -91,6 +91,17 @@ elektricM tracks titles ours didn't cover that **fail or fight the platform** �
 
 (Anti-cheat status changes over time — cross-check [areweanticheatyet.com](https://areweanticheatyet.com) and [protondb.com](https://www.protondb.com).) ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
 
+### Hard-blocked by missing GPU features (not fixable)
+
+This is **RDNA 2-class silicon** (GFX1013). A handful of newer titles **hard-require GPU features RDNA 2 doesn't have** — chiefly **mesh shaders** and **hardware variable-rate shading (VRS)** — and simply refuse to run. This is a **hardware limitation, not a driver bug**: no Mesa update, kernel param or Proton version will fix it. Confirmed examples ([r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)):
+
+| Game | Hard requirement the BC-250 lacks |
+|------|------------------------------------|
+| **Final Fantasy VII Rebirth** | **Mesh shaders** — won't run (this is also why it trips the DX12 GPU-compat check in the table above) |
+| **Doom: The Dark Ages — Update 2** | **Vulkan fragment shading rate** (hardware VRS) — the earlier, pre-Update-2 build runs (60 FPS after the 40 CU unlock, above), but Update 2 made VRS mandatory and it no longer launches |
+
+> Before buying a brand-new AAA title, check whether it lists mesh shaders or hardware VRS as a requirement — if it does, the BC-250 can't run it at any settings.
+
 ## Ray tracing — what's actually been tested
 
 The BC-250 has **real RDNA2 hardware RT** (not software emulation, given Mesa 25.2+). Tested RT titles per elektricM:
@@ -163,6 +174,7 @@ The community posts a lot of gameplay/benchmark video. A few in-thread captures 
 - Emulation roundup — https://t.me/c/2424231195/78988
 - RX 6600 dGPU comparison run — https://t.me/c/2424231195/116494
 - elektricM game compatibility (per-game settings/FPS, problem games, RT table, Proton & launch options, FSR gains) — https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/
+- Mesh-shader / hardware-VRS hard blocks (FF7 Rebirth, Doom: The Dark Ages Update 2) — [r/linux_gaming thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)
 - Community game-test spreadsheet — https://docs.google.com/spreadsheets/d/1kJleOY5k-YREGak1pQhVWIGckA9YA3OWJyCbybZbk00/edit?usp=sharing
 
 > Clocks and the 40 CU unlock live in [09-overclock-undervolt.md](09-overclock-undervolt.md); do the [04-cooling.md](04-cooling.md) mod before running 2000 MHz.

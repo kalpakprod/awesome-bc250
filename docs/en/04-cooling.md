@@ -68,6 +68,8 @@ The stock fins are too dense and often uneven. People open up the channels so ai
 - **Scissors / snips** — crude "чекрыжить" method, last resort; results are worst. ([src](https://t.me/c/2424231195/41252))
 - Straighten bent fins with a **flat tweezers + pliers**. ([src](https://t.me/c/2424231195/30670))
 - **Pull fins off by hand** — elektricM notes the soft aluminium fins can be **cleanly torn/pulled apart by hand** (heatsink off the board), avoiding the metal swarf that cutting tools create. Slower but debris-free. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+- **"Scooper by Justin"** — a **3D-printable tool made specifically for pressing/opening the BC-250 heatsink fins** ([Printables 1282906](https://www.printables.com/model/1282906-bc-250-scooper)). Safer than a bare screwdriver: it stops you pushing too hard and gouging the heatsink **base** between the fins. ([r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/))
+- **Hobby pliers — "peel" method** — grip the **top** of the fins with small hobby pliers and peel them off, **using the metal's own memory as a break point** so they snap cleanly at the bend rather than tearing the base. A debris-light alternative to cutting. ([r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/))
 
 Rough temperature payoff (elektricM): **straightening bent fins ~5–10 °C**, **removing center fins ~10–15 °C** (irreversible — a good fan shroud gets similar gains without cutting), **fresh paste ~5–10 °C** if the old paste had dried. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
@@ -225,7 +227,7 @@ There's also a short video walkthrough of the simplest method pinned in the topi
 ## Sources
 
 - Pinned test method — https://t.me/c/2424231195/108407 · video — https://t.me/c/2424231195/100024
-- Fin tooling — https://t.me/c/2424231195/31571 · https://t.me/c/2424231195/30670 · https://t.me/c/2424231195/50330
+- Fin tooling — https://t.me/c/2424231195/31571 · https://t.me/c/2424231195/30670 · https://t.me/c/2424231195/50330 · "Scooper by Justin" fin tool ([Printables 1282906](https://www.printables.com/model/1282906-bc-250-scooper)) + hobby-pliers peel method — [r/linux_gaming thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)
 - Noctua P12 result — https://t.me/c/2424231195/42843
 - AIO example — https://t.me/c/2424231195/19336
 - Thermal interface — repaste −4–5 °C https://t.me/c/2424231195/88565 · MX-6 https://t.me/c/2424231195/30211 · stock baseline https://t.me/c/2424231195/22992 · PTM7950 https://t.me/c/2424231195/101582 · https://t.me/c/2424231195/61511 · PTM7950 build + backplate https://t.me/c/2424231195/125748 · pad thickness https://t.me/c/2424231195/121181 · liquid metal https://t.me/c/2424231195/18098 · https://t.me/c/2424231195/69688

@@ -67,6 +67,8 @@ On Linux, audio sent **directly out of DisplayPort** comes out wrong on the BC-2
 
 The blunt, reliable workaround the chat settled on: **run the signal through a DP→HDMI adapter.** Converted to HDMI, the audio artifacts disappear ([src](https://t.me/c/2424231195/17953), [src](https://t.me/c/2424231195/51763)). A user verified it directly: *"I tested audio out through a DisplayPort→HDMI adapter. All fine, no lag"* ([src](https://t.me/c/2424231195/9148)).
 
+**The cleanest path of all is a straight DP→HDMI *cable* — DP plug on one end, HDMI plug on the other, no adapter dongle or box on either end.** Multiple users on the r/linux_gaming community thread independently report this gives the most reliable audio: a plain cable (e.g. an Amazon Basics DP-to-HDMI cable, ~$10) "just works" where dongle-style adapters are hit-or-miss. Occasional brief audio mutes can still happen, but a one-piece cable removes the extra adapter chipset that makes the dongle route a gamble ([r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)). If you're buying anyway, **prefer the cable over a dongle.**
+
 **If you have no adapter handy,** route audio over **Bluetooth** instead — most speakers/headsets support it and it dodges the DP path entirely ([src](https://t.me/c/2424231195/89769)). See [10-wifi-bt.md](10-wifi-bt.md) for the BT dongle.
 
 ### Adapter notes (community)
@@ -89,6 +91,16 @@ CONFIG_SND_HDA_CODEC_HDMI_ATI=m
 ```
 
 With that third codec (`snd-hda-codec-atihdmi.ko`) present, ALSA exposes the board's audio outputs (e.g. `pcm=3` and `pcm=7` as two HDMI devices) ([src](https://t.me/c/2424231195/68062), [src](https://t.me/c/2424231195/67569)). ⚠ verify — this requires building a custom kernel; treat the DP→HDMI adapter as the no-build path for most users. See [06-linux.md](06-linux.md) for kernel/driver setup.
+
+### Surround sound (5.1) — use a USB sound card, not HDMI
+
+**5.1 surround over HDMI does *not* work on the BC-250.** AMD's HDMI firmware on Linux for this headless/mining die doesn't expose multi-channel LPCM, so the HDMI output falls back to plain stereo no matter what the receiver supports ([r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)). For real multi-channel, route audio out a **USB sound card / USB DAC** instead — set it as the default sink in `pavucontrol`, then confirm all six channels with:
+
+```bash
+speaker-test -D pipewire -c 6 -t wav
+```
+
+The same USB-DAC route is also the reliable fix for stereo audio when adapters misbehave (above).
 
 ---
 
@@ -138,6 +150,7 @@ This is also the practical way to get a "dual display" feel without the unpopula
 - Second output present but not populated / debated — https://t.me/c/2424231195/92978 · https://t.me/c/2424231195/104682 · MST asked https://t.me/c/2424231195/92109
 - Network second screen (Sunshine/Steam over LAN) — https://t.me/c/2424231195/23660 · https://t.me/c/2424231195/25091 · https://t.me/c/2424231195/25050 · https://t.me/c/2424231195/25563
 - Bluetooth audio as alternative — https://t.me/c/2424231195/89769
+- Straight DP→HDMI **cable** (no adapters) is the most reliable audio; 5.1 over HDMI doesn't work (no multi-channel LPCM), use a USB sound card / DAC — r/linux_gaming community thread https://www.reddit.com/r/linux_gaming/comments/1nvsgji/
 - Hardware I/O reference (`1x DisplayPort`) — [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) · [`hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
 - DP 1.4 / 4K@120 / HDR10, resolution+cable limits, MST hubs (max 2), DisplayLink, Wayland-login black screen — elektricM [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
 - HDR + VRR working on CachyOS (Plasma 6 + Wayland) vs broken on Bazzite; Forza Horizon 6 1440p High HDR+VRR over UGREEN DP→HDMI 2.1 — r/BC250Gaming (Reddit) community report (see [06-linux.md](06-linux.md))
