@@ -25,10 +25,10 @@ Practical consequences:
 
 - **Clocks.** Stock GPU ~1500 MHz is the slow default; the community runs **GPU 2000 MHz, mem ~1900–2000 MHz** as the everyday target, with some pushing **2.65 GHz core on a dGPU-class build**. Stock vs. 2000 MHz is roughly **+30 % FPS** in GPU-bound scenes. ([overclock guide](09-overclock-undervolt.md))
 - **40 CU unlock.** The board ships with CUs disabled. Unlocking all **40 CUs** gives a measurable, broad uplift — one user reported Doom: The Dark Ages going from broken to **60 FPS High**, a "007" title at **60 FPS High**, and steadier frame-times in Great Pragmata after the unlock. ([src](https://t.me/c/2424231195/141193)) See [09-overclock-undervolt.md](09-overclock-undervolt.md).
-- **FSR / FSR 4.** Use Quality or Balanced at 1440p/4K to keep the GPU fed and temps down. The community is actively porting **FSR 4** (DLL packages shared in-thread). ([FSR4 INT8 discussion src](https://t.me/c/2424231195/136354))
+- **FSR / FSR 4.** Use Quality or Balanced at 1440p/4K to keep the GPU fed and temps down. The community is actively porting **FSR 4** (DLL packages shared in-thread). ([FSR4 INT8 discussion src](https://t.me/c/2424231195/136354)) elektricM's measured FSR gains: **Quality +20–30 %, Balanced +30–40 %, Performance +40–60 %** FPS; **Frame Generation can roughly double** frame rate (slight latency). **FSR 4 via Optiscaler** — community finds **Balanced beats native FSR 3.1.5 Quality**. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
 - **VRAM split (UMA).** It's a unified 16 GB pool. In one careful sweep (1440p, 1850 MHz), the GDDR6 split (512 MB vs 8 GB reserved) **barely changed average FPS** — but a too-small or wrong UMA setting can drop you into software rendering (`llvmpipe`) or hang a benchmark. Auto / a sane reserve is fine; don't over-think it. ([src](https://t.me/c/2424231195/81203))
 - **VSync off** for benchmarking; **frame generation on** where offered (it helped Wukong hit triple-digit averages, see below).
-- **`mitigations=off`** (kernel boot flag) is a common tweak; in the VRAM sweep it had only minor, noisy effects on FPS. Treat it as small.
+- **`mitigations=off`** (kernel boot flag) is a common tweak; in the VRAM sweep it had only minor, noisy effects on FPS. Treat it as small. ⚠ **verify (magnitude disputed)** — elektricM reports a much larger gain (**+18 FPS in Cyberpunk, "+10–15 %"** in their tips). It's clearly game-dependent: big in some CPU-bound titles, negligible in others. Try it and measure; don't assume either number. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
 
 ---
 
@@ -54,6 +54,15 @@ These are community-reported figures with their settings and source. **Benchmark
 | **Resident Evil Requiem** | (video) | playable | BC-250, CPU stock, **GPU 2000** | ([src](https://t.me/c/2424231195/121772)) |
 | **Gothic Remake** | Medium | **stutters** — "no optimization" | BC-250 | ([src](https://t.me/c/2424231195/142708)) |
 | **Hi-Fi Rush** | (video, OBS capture) | smooth | BC-250, `mitigations=off` | ([src](https://t.me/c/2424231195/91022)) |
+| **Cyberpunk 2077** | 1080p, High, FSR Quality, **no RT** | **70–90** | BC-250 | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
+| **Cyberpunk 2077** (bench) | 1080p (stock 2000 MHz / 1000 mV) | **57.66** → **60.82** OC (2230 MHz); `mitigations=off` **+18** | BC-250 | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
+| **The Last of Us Part I** | 1080p, Medium-High | **60** (stable) | BC-250 — 90–100 °C during shader compile; some audio clicking | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
+| **Devil May Cry 5** | 1080p, High | **100** (lowest latency, ~10 ms) | BC-250 | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
+| **Detroit: Become Human** | 1080p, Medium | **60** (capped) | BC-250 | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
+| **Control** | 1080p, full **RT** | **40** | BC-250 — good for entry-level RT | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
+| **Company of Heroes 3** | 1080p | playable — **needs 4 GB VRAM split** (512 MB artifacts/crashes) | BC-250 | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
+| **Red Dead Redemption 2** (bench) | use `-useMaximumSettings` flag | **45+** min | BC-250 — can detect wrong GPU adapter, set it manually | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
+| **CS2** / **Rocket League** / **Elden Ring** | 1080p | **100+** / **120+** / **60** | BC-250 | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
 | _Reference: discrete GPU build_ | RE-engine bench, 1080p, High, no RT | **avg 67.99** (min 58, max 82) | **RX 6600** + Xeon E5-2667v4, Win10 | ([src](https://t.me/c/2424231195/116494)) |
 
 > The RX 6600 row is **not a BC-250 result** — it's a member running a discrete card on the same chassis/CPU as a comparison point. Included to show what the *CPU* alone can sustain.
@@ -65,6 +74,46 @@ These ran well enough that one member simply listed them as "works" (PS-style po
 > Days Gone · Death Stranding · DIRT 5 · Ghost of Tsushima: Director's Cut · God of War (2018) · God of War: Ragnarök · Horizon Forbidden West · Horizon Zero Dawn · The Last of Us Part I · The Last of Us Part II Remastered · Returnal · Uncharted: Legacy of Thieves
 
 ([src](https://t.me/c/2424231195/99563))
+
+---
+
+## Known problem games (don't work / need a workaround)
+
+elektricM tracks titles ours didn't cover that **fail or fight the platform** — check before you buy:
+
+| Game | Problem | Workaround |
+|------|---------|-----------|
+| **Fortnite** | Easy Anti-Cheat **does not support Linux** | **None — cannot run** on a Linux BC-250 |
+| **Valorant** | Kernel-level anti-cheat | Technical issues on Linux; effectively a no |
+| **Magic: The Gathering Arena** | Crashes/freezes specifically on **Fedora** | Works better on **Manjaro / Bazzite**; try other Proton |
+| **Final Fantasy VII Rebirth** | "DX12 is not supported on your system" (GPU-compat check) | **No fix yet** |
+| **Black Myth: Wukong** (cracked) | "CreateProcess() returned 2" (anti-tamper) | Use **unmodified game files** |
+
+(Anti-cheat status changes over time — cross-check [areweanticheatyet.com](https://areweanticheatyet.com) and [protondb.com](https://www.protondb.com).) ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
+
+## Ray tracing — what's actually been tested
+
+The BC-250 has **real RDNA2 hardware RT** (not software emulation, given Mesa 25.2+). Tested RT titles per elektricM:
+
+| Game | Res | FPS | Notes |
+|------|-----|-----|-------|
+| Cyberpunk 2077 | 1080p | 50–60 | RT lighting only, FSR Quality |
+| Control | 1080p | 40 | Full RT |
+| Portal 2 RTX | 720p | 40 | Software RT path in Mesa 25.2+ |
+| Half-Life 2 RTX | 720p | 20–30 | Very demanding |
+
+RT is entry-level here — fine for *lighting-only* in well-optimized games, not for full path-traced loads. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
+
+## Proton & launch options (Linux)
+
+- **Proton version:** start with **Proton GE** (best compatibility) or **Proton Experimental**; fall back to stable **8.0 / 9.0** per game. Install GE via **ProtonUp-Qt** (`protonup-qt`). Some titles only work on a specific version — test if one fails. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
+- **Steam launch options** worth knowing:
+  - `mangohud %command%` — FPS/temps overlay.
+  - `RADV_DEBUG=nohiz %command%` — forces RADV / fixes some glitches.
+  - `gamemoderun %command%` — CPU governor to performance for the session (helps this CPU-bound board).
+  - Combined: `RADV_DEBUG=nohiz mangohud gamemoderun %command%`.
+- **VRAM per game (UMA split):** esports/indie are fine on **512 MB**; **most games want 4 GB**; AAA/RT also want the extra-VRAM kernel params (`amdgpu.gttsize=...`, see [06-linux.md](06-linux.md) / [08-bios.md](08-bios.md)). A too-small split causes artifacts, crashes, or a drop into software rendering. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
+- **Stutter on first run** is usually **shader compilation** — let Steam finish pre-compiling before judging FPS; a bigger shader cache helps. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
 
 ---
 
@@ -113,6 +162,7 @@ The community posts a lot of gameplay/benchmark video. A few in-thread captures 
 - First-party ports list — https://t.me/c/2424231195/99563
 - Emulation roundup — https://t.me/c/2424231195/78988
 - RX 6600 dGPU comparison run — https://t.me/c/2424231195/116494
+- elektricM game compatibility (per-game settings/FPS, problem games, RT table, Proton & launch options, FSR gains) — https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/
 - Community game-test spreadsheet — https://docs.google.com/spreadsheets/d/1kJleOY5k-YREGak1pQhVWIGckA9YA3OWJyCbybZbk00/edit?usp=sharing
 
 > Clocks and the 40 CU unlock live in [09-overclock-undervolt.md](09-overclock-undervolt.md); do the [04-cooling.md](04-cooling.md) mod before running 2000 MHz.

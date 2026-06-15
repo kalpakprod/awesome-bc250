@@ -15,6 +15,8 @@ Two reasons people reflash:
 1. **To install a modded BIOS** that unlocks hidden menus (overclock, undervolt, memory, iGPU VRAM).
 2. **To recover a brick** — restore a known-good image after a bad setting or a failed flash.
 
+> 💡 **You may not need to flash at all.** If your *only* goal is changing the VRAM/UMA split, you can do that from a running Linux on the **stock** P3.00 / P5.00 BIOS with **[fanoush/bc250_memcfg](https://github.com/fanoush/bc250_memcfg)** — no flashing, no programmer, no brick risk ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/), [elektricM: VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)). Flashing a modded BIOS is only needed for the *unlocked chipset menus* and features beyond VRAM sizing (see [09-overclock-undervolt.md](09-overclock-undervolt.md) for the `bc250_memcfg` command).
+
 ---
 
 ## The modded BIOS ("death" mod) — what it changes and why
@@ -36,7 +38,11 @@ What you can actually tune with it (from the first-release notes, [src](https://
 
 > ❗ **Two author warnings, still current:** (1) **Do not disable Integrated Graphics** — it is the only display output. (2) On the 1.0/3.00 generation, **a wrong setting bricks the board and CMOS reset will not recover it** — that is exactly why you need a programmer. The 5.00 mod is the better starting point today.
 
+> ⚠ **verify — which mod to run is contested.** The chat treats the **5.00 mod** as the current/better base. The community flashing guide takes the **opposite** stance: it calls the **modded P3.00 chipset-menu ROM the "community standard… most stable and tested"** and treats **`P5.00_clv`** as *expert-only* — it "unlocks **Everything**" (every hidden menu, including experimental **ReBAR / Resizable BAR** and debug/chipset settings), which makes it *"very easy to brick the board if you change the wrong thing… Stick to P3.00 unless you are an advanced user."* Crucially, **`P5.00_clv` is not published in any public repo** the guide could find — it circulates only as a Discord attachment, so **there is no canonical hash** to verify against. If you want it, the guide's advice is to get copies from **two** people running it independently and confirm both have the **same SHA-256** before flashing. For VRAM-unlock or chipset settings, the verified-public **P3.00 chipset-menu ROM covers it** ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)). Pick your base accordingly; if in doubt, P3.00.
+
 There is also a separate **chipset-menu mod** (`BC250_3.00_CHIPSETMENU.ROM`) from the most-referenced BIOS repo, **[TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios/)**, which exposes the **chipset menu / NBIO Common Options** on top of stock 3.00. That repo's own README says plainly: *"Nothing in this repository is supported or has any kind of warranty — TAKE BACKUPS."*
+
+> 🚫 **Avoid `Smokeless_UMAF`.** The community overclocking guide flags this UEFI-editing tool as a thing **not to run on the BC-250 — it may cause permanent damage to the board** ([elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)). Stick to the known-good ROMs above.
 
 ---
 
@@ -81,6 +87,18 @@ Get-FileHash BC250_3.00_CHIPSETMENU.ROM -Algorithm SHA256
 
 `PROVENANCE.md` may list only the **first 16 hex characters** as a short fingerprint. If so, check that your computed hash **starts with** those 16 characters — a full match of that prefix is already a strong check (the maintainer can publish full hashes on request).
 
+**Verified full SHA-256 hashes** for the publicly-hosted images (cross-checked across multiple community repos — every known-good BC-250 BIOS file is **exactly 16 MB / 16777216 bytes**; a different size means it's corrupted, a tool/patch, or unrelated) ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)):
+
+| File | Type | SHA-256 |
+|---|---|---|
+| `BC250_3.00_CHIPSETMENU.ROM` (a.k.a. `Robin3.00`, `BC250CHIPSETMENU.ROM`) | **Modded P3.00** — VRAM + chipset unlock, *recommended* | `48fbe5d366e6a56e2fdffdca848426216ba1f083610dab63db89d2f4e6c940b5` |
+| `Robin5.00` | **Stock** P5.00 (not the modded `P5.00_clv`) | `0d6f136cb120cf3b2de26d5c4d7f255604fdbf4b9442af5ba55419b95b89aa82` |
+| `BC250_3.00.ROM` | Stock P3.00 | `07595ca3aecf8a4caa28a397b5298f3946a1b769f87b16f67adc369c3f69045c` |
+| `BC250_2.00.bin` | Stock P2.00 | `ee6150dfed33bd05ea46063a352549416fdf3f45fa0e5edac2a68ef78d71083c` |
+| `P5.00_clv` | Modded P5.00 (unlock-everything) | **no public hash exists** — Discord-only, verify two independent copies match |
+
+> The modded P3.00 shows up under several filenames across repos (`BC250_3.00_CHIPSETMENU.ROM`, `BC250CHIPSETMENU.ROM`, `Robin3.00`) — they all hash to the value above, so the name doesn't matter. `Robin5.00` is the **stock** P5.00, a *different file* from the modded `P5.00_clv`. Public sources for each (TuxThePenguin0 GitLab, forgenam, tipitochen, csabakecskemeti, scrakcho, dannybastos, kenavru, MrrZed0) are listed in the [elektricM flashing guide](https://elektricm.github.io/amd-bc250-docs/bios/flashing/).
+
 > 🔴 **If the checksum does not match, DO NOT flash.** A mismatch means a corrupted or wrong file — flashing it is exactly how you brick the board. Re-download the image and verify again.
 
 ---
@@ -103,6 +121,35 @@ This is the normal way to install/upgrade a BIOS while the board still boots. Us
 5. If the tool can't see the file, try `fs0:`, `fs1:`, … to find which one is the stick ([src](https://t.me/c/2424231195/54979)).
 
 Some community builds ship a ready-made `Flash.nsh` script and a renamed ROM (e.g. rename the modded ROM to match the script) so you only boot to the EFI shell and run the script ([elektricm docs](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)). On Linux there is also an **`afulnx`** build (`afulnx-5.05.04Z.tar.gz`) for flashing from a running system ([src](https://t.me/c/2424231195/54507)).
+
+#### Canonical EFI-shell recipe (the `Flash.nsh` / `Robin5.00` method)
+
+The community flashing guide standardises on a self-contained kit and a fixed filename — this is the most-reproduced USB path ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)):
+
+1. **Get the EFI kit:** `4U12G BIOS Update.zip` (from the [kenavru/BC-250](https://github.com/kenavru/BC-250) repo) — it contains `AfuEfix64.efi`, `Flash.nsh`, and `amdvbflash.efi`. *It also bundles a stock P5.00 BIOS named `Robin5.00` — move that out of the way so you don't flash it by accident.*
+2. **Prep a FAT32 stick (≤ 32 GB recommended).** Copy the contents of the kit's `BIOS EFI` folder to the **root**.
+3. **Rename your modded ROM to `Robin5.00`** (drop the `.ROM` extension) — that is the exact name `Flash.nsh` looks for. *(Or edit `Flash.nsh` to match your filename instead.)* Root should then hold: `AfuEfix64.efi`, `Flash.nsh`, `amdvbflash.efi`, `Robin5.00` (your renamed mod), and the `EFI` folder.
+4. **Use a direct DisplayPort monitor.** Active/passive **HDMI adapters can black-screen the BIOS menu** — a known display gotcha on this board.
+5. **Unplug all SSDs/drives** so the board falls through to the EFI shell automatically, insert the stick, power on. You land at a yellow `Shell>` prompt.
+6. At the prompt type **`blk0:`** then Enter — **note the space after the colon** (this selects the USB volume; `blk0:` is the elektricM-documented selector, distinct from the `fs0:`/`fs1:` probing above). Then type **`Flash.nsh`** and Enter.
+7. **WAIT. Do not touch the keyboard, do not power off.** If it *appears* to hang during the write, **wait at least 15 minutes** — powering off mid-write bricks the board. It reboots (or asks you to) when done.
+8. **Power off immediately and remove the stick** so it doesn't loop back into the flasher.
+
+> 🔴 **Before powering on to flash: check the 8-pin PCIe power wiring** against your PSU's 12 V/GND diagram. **Reversed polarity can permanently damage the board** ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)).
+
+#### Required post-flash BIOS settings (do this right after the CMOS clear)
+
+After flashing **and** clearing CMOS (next section), enter Setup (spam **Del**) and set these — the VRAM split will not behave until they're right ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/), [elektricM: BIOS VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)):
+
+| Setting | Path | Value |
+|---|---|---|
+| Integrated Graphics Controller | Chipset → GFX Configuration | **Forces** |
+| UMA Mode | Chipset → GFX Configuration | **UMA_SPECIFIED** |
+| UMA Frame Buffer Size | Chipset → GFX Configuration | **512MB** (recommended) or a fixed size |
+| IOMMU | Advanced → CPU Configuration | **Disabled** |
+| Boot Mode | Boot → Boot Mode | **UEFI** |
+
+First verify the CMOS clear actually took — the **clock should read wrong**; if it's still correct, repeat the clear. Then F10 to save. The `512MB` choice is *dynamic* allocation, not a 512 MB cap (see [09-overclock-undervolt.md](09-overclock-undervolt.md)).
 
 **flashrom fallback** (if AFU errors out) ([src](https://t.me/c/2424231195/54979), suggested & tested by `@mrartemsid`):
 
@@ -145,6 +192,12 @@ J4004
 
 The corresponding **W25Q128 SOIC-8 / CH341A color map** is in the same pinned screenshot — match `/CS, DO(MISO), CLK, DI(MOSI), VCC, GND` to the CH341A's `CS, MISO, CLK, MOSI, VDD, GND` pads. **Triple-check VCC and GND** before powering on; reversing them kills the chip ([src](https://t.me/c/2424231195/67880)).
 
+> **J4004 pin numbering & the two unknown pins.** The elektricM guide numbers the header VCC=1, GND=2, CS=3, SCLK=4, MISO=5, MOSI=6, with **pins 7 & 8 unused for flashing — they're grounded through 10 kΩ resistors.** Pin 1 (VCC) is marked by an **arrow `>` or a square pad** on the PCB ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)).
+
+> **Exact target chip & the density typo.** The 16 MB part is a Winbond **W25Q128JVSQ** (128 Mbit / 16 MB) or, on some batches, a Macronix **MX25L12835F**. Some community docs typo this as **"25Q168" — that's wrong**; the correct 16 MB density code is **128** ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)). If you flash via a bare **SOIC-8 clip** instead of J4004, the chip's own pin order is the standard SPI layout: `1 CS · 2 DO · 3 WP · 4 GND · 5 DI · 6 CLK · 7 HOLD · 8 VCC` ([elektricM: BIOS recovery](https://elektricm.github.io/amd-bc250-docs/bios/recovery/)) — but remember death's finding that **the clip barely works on this board**, so prefer J4004.
+
+> 🙏 Credit: the J4004 pinout, reverse-engineering, and the modded-firmware image repo are largely **Segfault's** work (the P3.00 chipset-menu ROM is the "Segfault mod") ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)).
+
 ### NeoProgrammer procedure (pinned) ([src](https://t.me/c/2424231195/67880))
 
 1. Connect the programmer to **J4004** with female-to-female wires per the pinout. **Check the wiring ~10×, especially VCC and GND.** (PSU unplugged.)
@@ -169,11 +222,14 @@ sudo flashrom -p ch347_spi
 sudo flashrom -p ch347_spi -r backup_stock.bin
 sudo flashrom -p ch347_spi -r backup_verify.bin
 
-# Write the new image:
+# Write the new image, then verify it read back identical:
 sudo flashrom -p ch347_spi -w BC250_3.00_CHIPSETMENU.ROM
+sudo flashrom -p ch347_spi -v BC250_3.00_CHIPSETMENU.ROM
 ```
 
 (Use `-p ch341a_spi` for a CH341A, or `serprog` for a Raspberry Pi Pico, in place of `ch347_spi`.) ⚠ `ch347_spi` / `serprog` mapping for *this* board's exact wiring is from the community guide — `⚠ verify` against your own programmer model.
+
+> **Detection tells you which chip you're on.** If `flashrom -p …` reports **`Winbond W25Q128…`** or **`Macronix MX25L128…`**, you're on the right 16 MB BIOS chip. If it reports **`Macronix MX25L4005…` (512 KB)**, **STOP — you're attached to the SuperIO chip** (`SIO1_R`); flashing it bricks fan control/sensors. Move to the other chip ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)). Flash with the **PSU unplugged from the wall** and capacitors discharged (tap the power button a few times) — powering the board during a clip flash is *not* recommended ([elektricM: BIOS recovery](https://elektricm.github.io/amd-bc250-docs/bios/recovery/)).
 
 ### The CH341A 3.3 V trap (read this or you'll cook the chip)
 
@@ -232,7 +288,11 @@ BIOS images discussed in the chat are mirrored under `assets/firmware/` for **re
 - CMOS-clear-after-flash needed — https://t.me/c/2424231195/97290
 - CH341A 5V→3.3V data-line trap — https://t.me/c/2424231195/100285 · fix write-up — https://sawyershepherd.org/post/solderless-ch341ab-fix-5v-to-33v-data-lines/
 - Most-referenced BIOS repo — [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios/) (`BC250_3.00_CHIPSETMENU.ROM`, `CHIPSETMENU.md`)
-- Community flashing/recovery guide (SHA-256, J4004 pinout, CH347, CMOS, chip-target warning) — [elektricm amd-bc250-docs](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)
+- Community flashing/recovery guide (verified SHA-256 table, `Flash.nsh`/`Robin5.00` recipe, `blk0:` selector, DisplayPort/HDMI gotcha, 15-min hang rule, J4004 pinout + pins 7/8, W25Q128JVSQ/"25Q168" typo, CH347, post-flash Setup values, Segfault credit) — [elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)
+- Recovery guide (SPI 8-pin pinout, MX25L4005 = SuperIO detection, flash with PSU unplugged, scenario walkthroughs) — [elektricM: BIOS recovery](https://elektricm.github.io/amd-bc250-docs/bios/recovery/)
+- VRAM guide (`bc250_memcfg` no-flash sizing, UMA Frame Buffer values, kernel-param VRAM, Vulkan-vs-OpenGL reporting) — [elektricM: BIOS VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)
+- `Smokeless_UMAF` danger note — [elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)
+- No-flash VRAM tool — [fanoush/bc250_memcfg](https://github.com/fanoush/bc250_memcfg)
 - Memory-timing utility — `Mem_Timing_Utility.zip` https://t.me/c/2424231195/55351
 - Firmware mirror policy — [`assets/firmware/DISCLAIMER.md`](../../assets/firmware/DISCLAIMER.md)
 

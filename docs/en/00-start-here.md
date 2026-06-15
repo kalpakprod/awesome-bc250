@@ -58,7 +58,9 @@ Physical order of operations for a minimal build: mount the fan to the printed s
 > A labeled photo/diagram of this assembly is a welcome contribution — the repo doesn't have one yet.
 
 ### 6. Install Linux + GPU drivers
-This is the make-or-break step. Easiest for newcomers: a **Bazzite-based image** built for the BC-250. Then apply the **amdgpu firmware fix** (the `navi10_gpu_info.bin` symlink) and kernel params, regenerate initramfs/grub, and verify the GPU is accelerated (`vainfo`, `dmesg`). → **[06 — Linux Drivers & Setup](06-linux.md)**
+This is the make-or-break step. Easiest for newcomers: a **Bazzite-based image** built for the BC-250 (or **Fedora 43** — elektricM's other "just works" pick; Fedora 42 is EOL). Then apply the **amdgpu firmware fix** (the `navi10_gpu_info.bin` symlink) and kernel params, regenerate initramfs/grub, and verify the GPU is accelerated (`vainfo`, `dmesg`). → **[06 — Linux Drivers & Setup](06-linux.md)**
+
+> **Two settings that cause hours of pain if you skip them** (elektricM): on the modded BIOS set **VRAM = 512 MB dynamic** and **disable IOMMU** (a broken IOMMU causes display failures and crashes), then **clear CMOS** after the flash. Install with the `nomodeset` boot parameter and **remove it once drivers are in**. Mesa **25.1+** is the floor (25.3.x recommended). And **avoid kernel 6.15.0–6.15.6 and 6.17.8–6.17.10** — they break the GPU driver; use a 6.18 LTS / 6.17.11+ / 6.12–6.14 LTS instead. ([elektricM quick-start](https://elektricm.github.io/amd-bc250-docs/getting-started/quick-start/), [quick-reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/))
 
 > Thinking Windows? As of early 2026 there is **no working Windows GPU driver** — it's experimental. Use Linux. → **[07 — Windows](07-windows.md)**
 
@@ -101,3 +103,39 @@ Black screen, no acceleration, random resets, dongle drops, a brick after a BIOS
 | Game | Runs at expected FPS for your clocks |
 
 When every row is checked, you're done. Welcome to the BC-250 club.
+
+---
+
+## Quick reference (cheat-sheet)
+
+Commands and settings you'll reach for most, condensed from elektricM's [quick-reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/). Full detail lives in **[06 — Linux](06-linux.md)** and **[09 — Overclocking](09-overclock-undervolt.md)**.
+
+**BIOS:** VRAM `512MB` dynamic · IOMMU **Disabled** · UEFI boot · clear CMOS after every USB flash.
+
+**Verify the GPU is accelerated (not llvmpipe/CPU):**
+```bash
+glxinfo | grep "OpenGL version"          # Mesa 25.1+ expected
+vulkaninfo | grep deviceName             # → AMD Radeon Graphics (RADV GFX1013)
+cat /sys/class/drm/card0/device/pp_dpm_sclk   # multiple freqs, current marked *
+```
+
+**Governor** (clocks stick at 1500 MHz without it). Ours defaults to `oberon-governor`; elektricM ships the newer SMU fork via COPR — either works:
+```bash
+sudo dnf copr enable filippor/bazzite
+sudo dnf install cyan-skillfish-governor-smu          # rpm-ostree install … on Bazzite
+sudo systemctl enable --now cyan-skillfish-governor-smu.service
+systemctl status cyan-skillfish-governor-smu          # → active (running)
+```
+> Voltage floor **700 mV** — below it the GPU locks to 1500 MHz. The governor can target the wrong card (card0 vs card1) — verify if scaling doesn't kick in.
+
+**Remove `nomodeset` after drivers are in:**
+```bash
+# GRUB distros: drop "nomodeset" from /etc/default/grub, then
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg && sudo reboot
+# Bazzite / Fedora Atomic:
+rpm-ostree kargs --delete-if-present="nomodeset" && systemctl reboot
+```
+
+**Steam launch option** that fixes graphical glitches in some games: `RADV_DEBUG=nohiz %command%`.
+
+**Crash on RDR2 / Company of Heroes 3?** Switch VRAM from `512MB` dynamic to **10GB/6GB fixed** (ZRAM conflict). ([elektricM quick-reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/))

@@ -34,11 +34,30 @@ flowchart TD
 
 | Output | Works? | Notes |
 |--------|--------|-------|
-| **DisplayPort** | **Yes — this is the output** | Primary/only display connector; carries audio. Repo I/O spec lists `1x DisplayPort` ([repo](https://github.com/mothenjoyer69/bc250-documentation)). |
+| **DisplayPort** | **Yes — this is the output** | Primary/only display connector; carries audio. Repo I/O spec lists `1x DisplayPort` ([repo](https://github.com/mothenjoyer69/bc250-documentation)). It's **DisplayPort 1.4**, ceiling **4K@120 Hz**, with HDR10 ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). |
 | **HDMI port** (if fitted) | **Often blank** | Newcomers think the board is dead; it usually isn't — switch to DP. ([src](https://t.me/c/2424231195/104784)) |
 | **DP → HDMI via active adapter** | **Yes — video + audio** | Community-tested, no lag ([src](https://t.me/c/2424231195/9148)). Also the standard fix for DP audio distortion (below). |
 | **Second video output** | **Not out of the box** | Electrically present but **not populated**; forcing a 2nd monitor needs hacks, and others say the chip has no real 2nd head — treat single-output as the safe assumption. ([src](https://t.me/c/2424231195/92978), [src](https://t.me/c/2424231195/104682)) |
 | **Second screen over the network** | **Yes** | Stream the BC-250's output to another machine over LAN (Steam/Sunshine). ([src](https://t.me/c/2424231195/23660)) |
+
+---
+
+## Resolutions, refresh & cable
+
+elektricM's reference pins down what the single DP link actually does — useful when picking a monitor or adapter ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)):
+
+| Resolution | Refresh | Path |
+|------------|---------|------|
+| 1920×1080 (1080p) | 144 Hz+ | Native DP, or any adapter |
+| 2560×1440 (1440p) | 144 Hz+ | Native DP (passive adapters often cap at 1440p@60 / DP 1.2) |
+| 3840×2160 (4K) | 60 Hz | Native DP, or **active** DP→HDMI 2.0 adapter |
+| 3840×2160 (4K) | 120 Hz | **Native DP only** — an active DP 1.4→HDMI 2.1 adapter is needed for 4K@120 over HDMI, and is flaky |
+
+- **Cable:** use a **VESA-certified DisplayPort 1.4** cable, **1–2 m**; longer cables cause sync/dropout issues ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)).
+- **Stuck at low resolution** (e.g. 1024×768/1080p, 60 Hz only) usually means the GPU driver isn't loaded — check `glxinfo | grep "OpenGL renderer"`; `llvmpipe` = software rendering, install Mesa 25.1+ and remove `nomodeset` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)). See [06-linux.md](06-linux.md).
+- **HDR (HDR10)** works but is experimental on Linux — **KDE Plasma 6+** has the best support and generally needs a Wayland session ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)).
+
+> **Black screen *after login* (GRUB and the login screen were fine)** is a desktop-session problem, usually **Wayland** — pick "GNOME on Xorg"/"Plasma (X11)" at the login gear, or set `WaylandEnable=false` in `/etc/gdm/custom.conf` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). A black screen *before* login is the driver/`nomodeset` issue above, not this.
 
 ---
 
@@ -55,6 +74,7 @@ The blunt, reliable workaround the chat settled on: **run the signal through a D
 - **Not all adapters carry audio.** One owner's Belsis adapter passed 4K@60 *with* sound, while several pricier Ugreen units showed "HDMI digital audio" in the device list but output no sound — and one shifted voices down an octave ([src](https://t.me/c/2424231195/106617)). If you get video but no audio, the adapter is the variable — try another.
 - Cheap **4K@60 DP→HDMI** adapters that pass both video and audio do exist and are reported working ([src](https://t.me/c/2424231195/133977)).
 - Some adapters misbehave specifically on **4K monitors** ([src](https://t.me/c/2424231195/1988)).
+- ⚠ verify — **active vs passive disagreement.** elektricM's guide reaches the *opposite* conclusion on audio: it reports **passive** DP→HDMI adapters pass audio reliably while **active** adapters consistently break audio on the BC-250 (video fine, no sound — e.g. Cable Matters/StarTech active units), and recommends a USB DAC when audio is needed ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)). Our community reports above are adapter-by-adapter (some active units carry audio, some don't), so treat "active = audio" as **not guaranteed** — the safe takeaways both sources share: **audio over any adapter is the variable, test before you commit, and a passive adapter caps at ~1440p@60**.
 
 ### The kernel-6.17 fix (DP-direct audio, no adapter)
 
@@ -79,7 +99,20 @@ There is a **second video output on the board that is not active out of the box.
 - It's **electrically present but not populated/soldered**, and *"with hacks you can make a 2nd monitor work"* ([src](https://t.me/c/2424231195/92978)).
 - Others report the chip simply **has no usable second head** — *"the problem is in the chip, the second output physically isn't there"* ([src](https://t.me/c/2424231195/104682)).
 
-Practically: **assume one DisplayPort output.** A DP **MST splitter for two independent screens has been asked about but not confirmed working** on the BC-250 ([src](https://t.me/c/2424231195/92109)). ⚠ verify — no community success story for native dual-monitor as of this writing.
+Practically: **assume one DisplayPort output.** A DP **MST splitter for two independent screens has been asked about but not confirmed working** in our chat ([src](https://t.me/c/2424231195/92109)).
+
+**Update from elektricM — MST can drive two screens with the right hub.** elektricM's testing reports up to **2 displays via a DP MST hub** (bandwidth shared, resolution per display limited), with hub-by-hub results ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)):
+
+| MST hub | Out | DP ver | Independent displays? | Audio | Notes |
+|---------|-----|--------|-----------------------|-------|-------|
+| StarTech MST14DP122DP | 2× DP | 1.4 | **Yes** | Yes | Worked consistently across monitors/cables |
+| Monoprice 21972 | 2× DP | 1.2 | **Mirror only** | Yes | Could only mirror |
+| ENBUER | 2× DP | 1.2 | **Mirror only** | Yes | Could only mirror |
+| Generic HDMI MST | 2× HDMI | — | **No** | No | No video or audio |
+
+So native dual-monitor **is** possible via MST with a DP 1.4 hub (StarTech confirmed); cheaper DP 1.2 hubs may only mirror, and HDMI MST hubs failed. ⚠ verify — single confirmed hub model; results vary by hub.
+
+**Other multi-display route — USB DisplayLink adapter.** Add a USB→HDMI/DP DisplayLink adapter for an extra **desktop** screen (plug in *after* boot for best results). **Not for gaming** — it compresses on the CPU, which is the BC-250's bottleneck, so latency is high; it also doesn't work in Steam Deck **game mode** ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)).
 
 ---
 
@@ -106,5 +139,7 @@ This is also the practical way to get a "dual display" feel without the unpopula
 - Network second screen (Sunshine/Steam over LAN) — https://t.me/c/2424231195/23660 · https://t.me/c/2424231195/25091 · https://t.me/c/2424231195/25050 · https://t.me/c/2424231195/25563
 - Bluetooth audio as alternative — https://t.me/c/2424231195/89769
 - Hardware I/O reference (`1x DisplayPort`) — [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) · [`hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
+- DP 1.4 / 4K@120 / HDR10, resolution+cable limits, MST hubs (max 2), DisplayLink, Wayland-login black screen — elektricM [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
+- Active-vs-passive adapter audio (opposite finding), low-res llvmpipe check — elektricM [`troubleshooting/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)
 
 > Driver/kernel setup is in [06-linux.md](06-linux.md); audio/output gotchas are also indexed in [troubleshooting.md](troubleshooting.md) and [faq.md](faq.md).

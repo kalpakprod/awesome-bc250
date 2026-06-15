@@ -58,7 +58,9 @@ BC-250 — серверный/майнинг блейд: один APU (CPU Zen 2
 > Подписанное фото/схема этой сборки — желанный вклад: в репозитории его пока нет.
 
 ### 6. Поставь Linux + дрова GPU
-Решающий шаг. Проще всего новичку — **образ на базе Bazzite** под BC-250. Затем примени **фикс amdgpu** (симлинк `navi10_gpu_info.bin`) и kernel-параметры, пересобери initramfs/grub, проверь ускорение GPU (`vainfo`, `dmesg`). → **[06 — Дрова Linux](06-linux.md)**
+Решающий шаг. Проще всего новичку — **образ на базе Bazzite** под BC-250 (или **Fedora 43** — второй «просто работает» выбор elektricM; Fedora 42 уже EOL). Затем примени **фикс amdgpu** (симлинк `navi10_gpu_info.bin`) и kernel-параметры, пересобери initramfs/grub, проверь ускорение GPU (`vainfo`, `dmesg`). → **[06 — Дрова Linux](06-linux.md)**
+
+> **Две настройки, на которых теряют часы, если пропустить** (elektricM): на мод-BIOS выстави **VRAM = 512 МБ dynamic** и **отключи IOMMU** (сломанный IOMMU даёт сбои вывода и краши), затем **сбрось CMOS** после прошивки. Ставь с параметром загрузки `nomodeset` и **убери его, как только дрова встанут**. Mesa **25.1+** — минимум (рекомендуется 25.3.x). И **избегай ядер 6.15.0–6.15.6 и 6.17.8–6.17.10** — они ломают драйвер GPU; бери 6.18 LTS / 6.17.11+ / 6.12–6.14 LTS. ([elektricM quick-start](https://elektricm.github.io/amd-bc250-docs/getting-started/quick-start/), [quick-reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/))
 
 > Думаешь про Windows? На начало 2026 **рабочего Windows-драйвера GPU нет** — экспериментально. Используй Linux. → **[07 — Windows](07-windows.md)**
 
@@ -101,3 +103,39 @@ Switch, PS3, PS4, ретро, аркады — что реально идёт и
 | Игра | Идёт с ожидаемым FPS для твоих частот |
 
 Все строки отмечены — готово. Добро пожаловать в клуб BC-250.
+
+---
+
+## Шпаргалка (quick reference)
+
+Команды и настройки, к которым тянешься чаще всего, сжато из [quick-reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/) elektricM. Полные подробности — в **[06 — Linux](06-linux.md)** и **[09 — Разгон](09-overclock-undervolt.md)**.
+
+**BIOS:** VRAM `512MB` dynamic · IOMMU **Disabled** · загрузка UEFI · сбрасывай CMOS после каждой прошивки с USB.
+
+**Проверь, что GPU ускорен (а не llvmpipe/CPU):**
+```bash
+glxinfo | grep "OpenGL version"          # ожидается Mesa 25.1+
+vulkaninfo | grep deviceName             # → AMD Radeon Graphics (RADV GFX1013)
+cat /sys/class/drm/card0/device/pp_dpm_sclk   # несколько частот, текущая с *
+```
+
+**Говернор** (без него частоты висят на 1500 МГц). У нас по умолчанию `oberon-governor`; elektricM ставит более новый SMU-форк через COPR — годится любой:
+```bash
+sudo dnf copr enable filippor/bazzite
+sudo dnf install cyan-skillfish-governor-smu          # на Bazzite — rpm-ostree install …
+sudo systemctl enable --now cyan-skillfish-governor-smu.service
+systemctl status cyan-skillfish-governor-smu          # → active (running)
+```
+> Нижний порог напряжения **700 мВ** — ниже GPU блокируется на 1500 МГц. Говернор может цепляться не к той карте (card0 vs card1) — проверь, если масштабирование не включается.
+
+**Убери `nomodeset`, когда дрова встали:**
+```bash
+# GRUB-дистрибутивы: убери "nomodeset" из /etc/default/grub, затем
+sudo grub2-mkconfig -o /boot/grub2/grub.cfg && sudo reboot
+# Bazzite / Fedora Atomic:
+rpm-ostree kargs --delete-if-present="nomodeset" && systemctl reboot
+```
+
+**Опция запуска в Steam**, чинящая графические глюки в части игр: `RADV_DEBUG=nohiz %command%`.
+
+**Краши в RDR2 / Company of Heroes 3?** Переключи VRAM с `512MB` dynamic на **10GB/6GB fixed** (конфликт ZRAM). ([elektricM quick-reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/))

@@ -6,6 +6,8 @@
 
 > **Новичок и сомневаешься? Печатай [рукав/shell от onemorecap](#уровень-1--минимальный-рукав-охлаждения-начни-отсюда) — минимум, ничего пилить, под один 120 мм вентилятор — и на этом остановись.** Каталог ниже большой; чтобы стартовать, читать его не нужно.
 
+> **Нужен полный список?** elektricM ведёт **поисковый каталог с фильтрами на ~143 дизайна** (фильтр по семейству БП, доступности, платформе) — намного больше кураторского набора ниже, включая множество сборок только-в-Discord и WIP. Смотри здесь: **[elektricM — Cases & Enclosures](https://elektricm.github.io/amd-bc250-docs/community/cases/)**. Подборка ниже — именованные, публично-скачиваемые варианты, с которых стоит начать.
+
 ---
 
 ## Сборки комьюнити
@@ -183,6 +185,71 @@
 
 ⭐ = самый зареагированный / самый перепощенный в комьюнити.
 
+### Ещё публичные дизайны (из каталога elektricM)
+
+Именованные, скачиваемые дизайны из [каталога elektricM на 143 модели](https://elektricm.github.io/amd-bc250-docs/community/cases/), которых нет выше — сгруппированы по БП, под который они сделаны. За сборками только-в-Discord/WIP и превью — в полный каталог.
+
+**MeanWell LOP (внутренний БП):**
+
+| Корпус / деталь | Особенность | Скачать |
+|---|---|---|
+| **Steamboat Case** (yannichaboyer) | консоль под LOP-300 | [MakerWorld 2431616](https://makerworld.com/en/models/2431616) |
+| **Ultra-Thin Custom Case** (MrRoze) | тонкий LOP-300 | [Printables 1626501](https://www.printables.com/model/1626501) |
+| **Internal PSU 2×140 мм** (Kacikor) | LOP-400, два 140 | [Printables 1599644](https://www.printables.com/model/1599644) · [MakerWorld 2400574](https://makerworld.com/en/models/2400574) |
+| **Push-Pull Internal 12V PSU** (penzoiders) | push-pull | [MakerWorld 2505974](https://makerworld.com/en/models/2505974) |
+| **Shell Case + вентилятор SSD 40 мм** (Munkee915) | ремикс Shell, обдув SSD | [Printables 1568074](https://www.printables.com/model/1568074) |
+| **Noctua Push-Pull Mod** (Janjd) | ремикс Shell | [MakerWorld 2354123](https://makerworld.com/en/models/2354123) |
+
+**MeanWell LRS/UHP (другой частый серверный кирпич):**
+
+| Корпус / деталь | Особенность | Скачать |
+|---|---|---|
+| **LRS-350-12 PSU Case** (TARGZ) | коробка под LRS-350 | [Printables 1543979](https://www.printables.com/model/1543979) |
+| **BC250 slim case** (C4kew4lk) | UHP-350-12, тонкий | [Printables 1504664](https://www.printables.com/model/1504664) |
+
+**FlexATX — семейство Arthrimus «Console Style»** (целая линейка ремиксов; slim-консоль — народный стандарт):
+
+| Корпус / деталь | Особенность | Скачать |
+|---|---|---|
+| **Console Style Case v1** (Arthrimus) | оригинал | [Thingiverse 7165679](https://www.thingiverse.com/thing:7165679) · [MakerWorld 2097988](https://makerworld.com/ko/models/2097988-bc250) |
+| **Slim Console Style Case** (Arthrimus) | тонкий вариант | [Thingiverse 7172528](https://www.thingiverse.com/thing:7172528) |
+| **Slim Console — double-fan mod** (TKXXTH) | два вентилятора | [Thingiverse 7214884](https://www.thingiverse.com/thing:7214884) |
+| **Slim Console — On/Off + Apevia** | кнопка питания | [Thingiverse 7274042](https://www.thingiverse.com/thing:7274042) |
+
+**FlexATX — прочие:**
+
+| Корпус / деталь | Особенность | Скачать |
+|---|---|---|
+| **Minimal Case (Toolless)** (chriszf) | без винтов | [Printables 1423572](https://www.printables.com/model/1423572) |
+| **Minimalist BC-250 Case** (SebastienGau/Gadget) | минимализм | [Printables 1581724](https://www.printables.com/model/1581724) |
+| **ADT UT3G eGPU-Inspired** (R0mn) | вид eGPU | [Printables 1539301](https://www.printables.com/model/1539301) |
+| **«Steam Machine» от MrLarva** | консоль | [Printables 1618501](https://www.printables.com/model/1618501) · [MakerWorld 2453965](https://makerworld.com/en/models/2453965) · [Thingiverse 7278235](https://www.thingiverse.com/thing:7278235) |
+| **Steam Machine** (Pocket Adventures) | консоль | [MakerWorld 2350219](https://makerworld.com/en/models/2350219) |
+| **Steam Machine Slim Console** (MTSquar3D) | slim + OC vRAM fan kit | [MakerWorld 2232434](https://makerworld.com/en/models/2232434) · [Thingiverse 7271946](https://www.thingiverse.com/thing:7271946) |
+| **ASRock Console Case** (songdawgdesigns) | консоль | [Printables 1617023](https://www.printables.com/model/1617023) · [Cults3D](https://cults3d.com/en/3d-model/gadget/asrock-amd-bc-250-console-case-steamos-bazzite-diy-steam-machine-style-build) |
+| **AMD BC250 Case** (vitamins) | консоль | [MakerWorld 2219947](https://makerworld.com/en/models/2219947) |
+| **E-waste Steam Machine** (Pesen333) | из хлама | [Thingiverse 7245584](https://www.thingiverse.com/thing:7245584) |
+
+**Full ATX:**
+
+| Корпус / деталь | Особенность | Скачать |
+|---|---|---|
+| **Case for Standard ATX** (CatSiewDai) | коробка ATX | [Printables 1553599](https://www.printables.com/model/1553599) |
+| **ATX + Fan Duct** (ZMASLO) | с воздуховодом | [Printables 1616167](https://www.printables.com/model/1616167) |
+| **Dual Fan ATX Case** (Mateo Fdez) | два вентилятора | [Printables 1579658](https://www.printables.com/model/1579658) |
+| **Simple Wooden Case** (suvalle55) | дерево + ATX | [Printables 1595794](https://www.printables.com/model/1595794) |
+| **Open Frame + IKEA-хак** (GreatApo) | открытая рама | [Thingiverse 7314188](https://www.thingiverse.com/thing:7314188) |
+| **Case for ATX PSU** (matmiak) | коробка ATX | [Thingiverse 7303096](https://www.thingiverse.com/thing:7303096) |
+
+**TFX / VESA / готовое:**
+
+| Корпус / деталь | Особенность | Скачать |
+|---|---|---|
+| **Case Remix for TFX** (PlayNation) | БП TFX-400 | [MakerWorld 2387157](https://makerworld.com/en/models/2387157) |
+| **VESA 100/75 Basket** (Oleksii) | крепление за монитор | [MakerWorld 1844470](https://makerworld.com/en/models/1844470) |
+| **3.9L MKII FlexATX + вентилятор PS5** (FitFormSolutions) | купить готовый кит | [Etsy](https://www.etsy.com/listing/4405362103/) · [eBay](https://www.ebay.com/itm/127460591552) |
+| **Линейка Cults3D ATX/server** (KABANCHYK, lumstudio, kapa3D) | платные STL | [Cults3D — bc-250](https://cults3d.com/en/3d-model/gadget/bc-250-atx-case) |
+
 ---
 
 ## Нет принтера? Что делают люди
@@ -207,5 +274,6 @@
 - Семейство NexGen3D Steam Machine — [Printables 1499974](https://www.printables.com/model/1499974-nexgen3d-diy-steam-machine-powered-by-bazzite) · [Redux + Pi-экран (Reddit)](https://www.reddit.com/r/Bazzite/comments/1skpxe9/bc250_redux_completed_with_internal_1080x480_pi/)
 - Референс-модель платы — [src](https://t.me/c/2424231195/55496) · [Printables 1341336](https://www.printables.com/model/1341336-accurate-3d-model-of-the-amd-bc-250-board)
 - GitHub-репозитории корпусов — [onemorecap/bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case) · [ivanov-innokentii/BC250-case](https://github.com/ivanov-innokentii/BC250-case) · [rLapchynski/bc250-enclosure](https://github.com/rLapchynski/bc250-enclosure)
+- **Полный каталог корпусов elektricM (~143 дизайна, поиск/фильтры)** — [elektricm.github.io/amd-bc250-docs/community/cases](https://elektricm.github.io/amd-bc250-docs/community/cases/)
 
 > STL шраудов общие с разделом [Охлаждение](04-cooling.md). Все размещённые в чате файлы STL/STEP/3MF зеркалируются в `assets/stl/`.

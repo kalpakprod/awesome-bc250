@@ -12,6 +12,20 @@ The BC-250 is a mining/server board. Its heatsink is **passive** and designed to
 
 Community-observed limits: throttling starts around **85 °C**, hard crash/reset around **90 °C**. Keep load temps below ~80 °C with headroom.
 
+> **Three heatsink variants exist** (8-row and 9-row fins). Quick ID: a **QR code next to the PCIe 8-pin connector** marks the 9-row variant. The variant with **fewer, thicker-gauge fins** may cool slightly better stock. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
+**Per-component temperature targets** (elektricM's tested numbers, finer-grained than the throttle/crash limits above):
+
+| Component | Idle | Light load | Gaming | Max |
+|-----------|------|-----------|--------|-----|
+| GPU/APU edge | 40–50 °C | 50–60 °C | 65–80 °C | 90 °C |
+| CPU (Tctl) | 45–55 °C | 55–65 °C | 70–85 °C | 95 °C |
+| Memory (underside) | 40–55 °C | 50–65 °C | 55–70 °C | 80 °C |
+
+Aim for **70–80 °C GPU in games**. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
+> **Pixel artifacts during gaming = VRAM overheating.** Because the back-side GDDR6 has no sensor, that visual glitch is your warning sign — add backplate airflow/pads (below). ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
 ```mermaid
 flowchart LR
     Fan["Intake fan 120mm high static pressure"] -->|"push air THROUGH"| Fins["Thinned heatsink fins"]
@@ -21,6 +35,24 @@ flowchart LR
     Fan2 --> Exhaust
     Back["Backplate GDDR6 and VRM have NO sensor"] --> Pads["Add thermal pads plus a heatsink cool it blind"]
 ```
+
+---
+
+## Sustained compute is a different regime (not just gaming bursts)
+
+The targets above assume **gaming**, where load comes in bursts. **Sustained** compute — a looped `llama-bench`, long Stable-Diffusion runs, anything pegging the GPU for tens of minutes, **especially with the [40 CU unlock](09-overclock-undervolt.md)** — is a much harsher load and can exceed what a gaming-grade cooler holds.
+
+elektricM measured a stock heatsink + **dual Arctic P12 Max in push–pull**, 10-min sustained `llama-bench` at **40 CU / 2 GHz**:
+
+| Metric | Average | Peak |
+|--------|---------|------|
+| GPU edge | 89.6 °C | 107 °C |
+| Package power | 136 W | 223 W |
+| CPU | 96.7 °C | 100 °C (TJmax) |
+| VRM MOSFETs | 57 °C | 58.5 °C |
+| Fan speed | ~2950 RPM | 2977 RPM (ceiling) |
+
+Throughput sagged **~10 %** over the run as the package throttled. Takeaway: **stock heatsink + dual P12 Max is not enough headroom for sustained 40 CU @ 2 GHz** — and note the **VRMs are nowhere near their limit** (57 °C), so the bottleneck is the *heatsink shedding heat*, not the fans or power stage. Two fixes: **cap the GPU governor at 1500 MHz** (40 CU still scales ~1.5× compute, temps hold ~83 °C — sustainable indefinitely on dual P12 Max), or **upgrade the heatsink** (more fin area). For **24 CU stock gaming**, dual P12 Max is comfortable; the wall only appears under sustained full-CU compute. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
 ---
 
@@ -35,6 +67,9 @@ The stock fins are too dense and often uneven. People open up the channels so ai
 - **Sandpaper by hand** — 60 grit then 240 grit, ~3–4 h + 2 h over two days. Works but slow. ([src](https://t.me/c/2424231195/50330))
 - **Scissors / snips** — crude "чекрыжить" method, last resort; results are worst. ([src](https://t.me/c/2424231195/41252))
 - Straighten bent fins with a **flat tweezers + pliers**. ([src](https://t.me/c/2424231195/30670))
+- **Pull fins off by hand** — elektricM notes the soft aluminium fins can be **cleanly torn/pulled apart by hand** (heatsink off the board), avoiding the metal swarf that cutting tools create. Slower but debris-free. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
+Rough temperature payoff (elektricM): **straightening bent fins ~5–10 °C**, **removing center fins ~10–15 °C** (irreversible — a good fan shroud gets similar gains without cutting), **fresh paste ~5–10 °C** if the old paste had dried. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
 > ⚠ **Take the heatsink off the board first** (or fully mask/protect the board and die) before sanding/filing, and **clean every bit of metal dust off before reassembly**. Conductive metal swarf that settles on the board can short it and **kill the board** — this has already happened in the chat.
 
@@ -46,11 +81,28 @@ The stock fins are too dense and often uneven. People open up the channels so ai
 ### 2. Bolt on a real fan
 Mount a **120 mm high-static-pressure fan** pushing air through the fins. Reference result: **Noctua NF-P12 redux → max 73 °C in Furmark, 63–65 °C in games.** ([src](https://t.me/c/2424231195/42843))
 
+**Concrete fan picks with specs** (elektricM — pick on *static pressure*, not airflow):
+
+| Fan | Size | Max RPM | Static pressure | Airflow | Noise | Gaming temps |
+|-----|------|---------|----------------|---------|-------|--------------|
+| **Arctic P12 Max** | 120 mm | 3300 | **6.9 mm H₂O** | 73.3 CFM | 52.5 dB(A) | 65–75 °C |
+| **Arctic P12 Pro** | 120 mm | 2100 | **6.9 mm H₂O** | 68.9 CFM | 37.8 dB(A) | 65–75 °C |
+| Arctic P14 PWM | 140 mm | 1700 | 2.40 mm H₂O | 72.8 CFM | 38 dB(A) | 70–80 °C |
+| Noctua NF-A12x25 | 120 mm | 2000 | 2.34 mm H₂O | 60.1 CFM | 22.6 dB(A) | 70–85 °C |
+
+elektricM's **most-recommended pick is the Arctic P12 Max / P12 Pro** — its ~6.9 mm H₂O static pressure dwarfs the Noctua's 2.34 mm and is far cheaper; the P12 Pro is the quieter, more widely-stocked version. The premium Noctua is quieter still but only matches the Arctic on temps at higher RPM. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
+> ⚠ **verify (which fan is "the reference")** — our box-out above leads with **Noctua NF-P12** as the reference fan (chat result: 73 °C Furmark). elektricM instead leads with the **Arctic P12 Max/Pro** as the community favourite on price-per-static-pressure. Both are valid high-static-pressure picks; treat *either* as a correct starter and choose on price/noise/availability.
+
 Use a **printed fan shroud/adapter** so the fan seals against the heatsink instead of leaking air around it. Community STLs:
 - `Fan_Shroud_Single_120mm.stl`, `Fan_Shroud_Dual_120mm.stl`, `Fan_Shroud_Single_140mm.stl`, `Twin_120mm_Fan_Shroud.stl`
 - `BC250_FanAdapter_120mm.step`, `bc250 cooler mount.stl`, `cooler adapter v3.0.stl`
 
 > **Why static pressure, not airflow rating?** Dense fins are a high-resistance load. A high-airflow "case fan" stalls against them; a high-static-pressure fan (≥3 mm H₂O; Noctua P12, Arctic P12) actually pushes air *through*. For very dense fins, two fans in **push–pull (series)** doubles static pressure — that's the right move here, not two fans side-by-side.
+
+**Mounting:** a printed shroud is best, but **zip-tying** the fan to the heatsink works, and a **cardboard/foam-board duct** taped between fan and fins is a valid free fallback (ugly, not durable, but seals the air path). ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
+> ⚠ **Don't drill/screw fans directly into the fins.** The aluminium is soft and the fins are thin — screwing into them damages the fin stack and hurts cooling. Use zip ties or a printed shroud. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
 ## Path B — AIO liquid cooler
 
@@ -64,6 +116,10 @@ A 120 mm AIO mounted to the die via an adapter bracket. Quiet and cold, but more
 ## Path C — Blower ("улитка") — not recommended
 
 Salvaged GPU blower fans were an early experiment. Loud for the result; people moved to Path A. ([src](https://t.me/c/2424231195/100086))
+
+## Path D — Tower cooler conversion (advanced)
+
+Some users bolt an **AM4 tower cooler** (e.g. **Thermalright Peerless Assassin**, or other AM4/AM5 towers) onto the die for excellent, quiet cooling using off-the-shelf hardware. The catch: you must **fabricate a custom mounting bracket**, and a tall tower may **block the M.2 slot or other components**. Not a beginner mod. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
 ---
 
@@ -83,6 +139,14 @@ echo 'options nct6687 force=true' | sudo tee /etc/modprobe.d/nct6687.conf
 
 > Don't load both — pick `nct6683` for read-only sensors or `nct6687` for read+write. Sensor wiring (`CPU_FAN1` / `J4003`) and the BIOS↔Linux fan numbering are in [06-linux.md](06-linux.md)'s verification step.
 
+**Which header is the main fan?** elektricM reports the cooling fan is usually on the **Pump Fan** header = **`fan2` / `pwm2`** in sysfs; `CPU Fan` (`fan1`) and the `System Fan` headers (`fan3`+) are typically unused. Enable manual mode before writing PWM (`echo 1 > .../pwm2_enable`, then a 0–255 value to `.../pwm2`). hwmon numbering can shift between reboots — confirm with `cat /sys/class/hwmon/hwmon*/name`. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
+**Fan curves with a GUI — CoolerControl.** Once `nct6687` is loaded, **CoolerControl** gives graphical fan curves: select the **nct6686** device, build a curve on **pwm2** using **k10temp Tctl** as the source. Install: `ujust install-coolercontrol` (Bazzite), the `codifryed/CoolerControl` copr (Fedora), or `coolercontrol` from the AUR (Arch); web UI at `https://localhost:11987`. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
+**BIOS fan modes** (if you don't run OS-side control): **Default** holds fans at a **40 % minimum** (too low — not recommended), **Full Speed** pins them at 100 % (loud but safe), **Customize** sets per-threshold speeds. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
+> ⚠ **Don't run BIOS Customize mode and CoolerControl at the same time** — they fight for PWM control. Pick one. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
 ---
 
 ## Thermal interface (paste, pads, phase-change, liquid metal)
@@ -94,6 +158,7 @@ Whatever fan/heatsink you run, the **thermal interface material (TIM)** between 
 ### Pastes that work
 - **Arctic MX-6** — a regular high-end paste. In one cased build it held **87–88 °C in Furmark**; the same owner noted PTM7950 would shave another ~4 °C off that. ([src](https://t.me/c/2424231195/30211))
 - **Stock paste + stock pads** are the documented baseline: ~**76 °C** after 10 min load, ~**55 °C** idle (before fin/fan modding). ([src](https://t.me/c/2424231195/22992))
+- Other pastes elektricM lists as fine here: **Arctic MX-4** (value), **Thermal Grizzly Kryonaut** (premium), **Noctua NT-H1** (reliable), **Thermalright TFX** (budget). Used-board paste is **often dried out** — just re-pasting is worth **~5–10 °C**. Apply a pea-sized dot to the die, mount evenly, tighten screws in an **X pattern**. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
 ### PTM7950 — the community favorite (recommended)
 **PTM7950** is a **phase-change pad** (Honeywell graphite/phase-change film). At room temperature it's a thin solid sheet; at load (~45–55 °C) it softens and flows into a micron-thin layer, then stays put. It **doesn't pump out** or dry like grease, which is exactly what you want under a hot, thermally-cycling die — so you apply it once and forget it. The chat's blunt summary: *"PTM7950 and don't overthink it"* ([src](https://t.me/c/2424231195/101582)); phase-change is the general recommendation ([src](https://t.me/c/2424231195/61511)).
@@ -114,6 +179,12 @@ Reported pad thicknesses (community-shared, "saved this" reaction):
 - **GDDR6: 2 mm** ([src](https://t.me/c/2424231195/121181))
 
 > ⚠ **verify** — these thicknesses depend on the gap to *your* specific backplate/radiator. Confirm with a gap measurement (or a putty/clay test) before buying a pile of pads.
+
+elektricM gives a **slightly different pad scheme** for cooling the memory itself: **1.5 mm pads on the *front* of the board, 2.0 mm on the *back***, then an aluminium plate/heatsink on the underside. Use **only non-conductive** pads near the board (never conductive paste/pads that could short components). Pad brands it lists: **Thermalright Odyssey** (high performance), **Arctic Thermal Pad** (value), **Gelid GP-Ultimate** (premium). ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+
+> ⚠ **verify (pad thicknesses differ between sources)** — our chat-sourced numbers are **VRM 1 mm / GDDR6 2 mm (back)**; elektricM specifies **1.5 mm front / 2.0 mm back** for the memory chips. Different builds, different gaps — **measure your own clearance** rather than trusting either figure blind.
+
+> **Crashes/instability after 30–60 min of gaming** (often with pixel artifacts) is the classic **memory-overheating** signature. Fixes: add pads + an underside plate, add a backplate fan, improve case airflow, or temporarily **reduce the VRAM split** (e.g. 4 GB → 512 MB) to cut memory heat. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
 ### Liquid metal — generally NOT recommended here
 Liquid metal (LM) comes up because the PS5 (same-family APU) uses it ([src](https://t.me/c/2424231195/18105)), and on raw performance it edges out paste/PTM ([src](https://t.me/c/2424231195/124112)). People have asked about and tried it on the BC-250 ([src](https://t.me/c/2424231195/18098), [src](https://t.me/c/2424231195/77180)).
@@ -158,6 +229,7 @@ There's also a short video walkthrough of the simplest method pinned in the topi
 - Noctua P12 result — https://t.me/c/2424231195/42843
 - AIO example — https://t.me/c/2424231195/19336
 - Thermal interface — repaste −4–5 °C https://t.me/c/2424231195/88565 · MX-6 https://t.me/c/2424231195/30211 · stock baseline https://t.me/c/2424231195/22992 · PTM7950 https://t.me/c/2424231195/101582 · https://t.me/c/2424231195/61511 · PTM7950 build + backplate https://t.me/c/2424231195/125748 · pad thickness https://t.me/c/2424231195/121181 · liquid metal https://t.me/c/2424231195/18098 · https://t.me/c/2424231195/69688
+- elektricM cooling guide (heatsink variants, per-component temp table, sustained-load data, fan specs, CoolerControl/BIOS fan modes, tower cooler, pad scheme) — https://elektricm.github.io/amd-bc250-docs/hardware/cooling/
 - Hardware reference — [mothenjoyer69/bc250-documentation `hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
 - Cases/adapters with cooling — [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter)
 
