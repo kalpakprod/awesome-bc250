@@ -1,0 +1,136 @@
+# What Is the BC-250
+
+> **TL;DR** — The BC-250 is a **PlayStation 5-class APU on a server/mining board**. One chip (AMD codename **Cyan Skillfish**, a cut-down version of the PS5's **Oberon/Ariel** silicon) carries a **6-core / 12-thread Zen 2 CPU** and a **24-compute-unit RDNA 2 GPU**, fed by **16 GB of soldered GDDR6**. It is **not a graphics card and not a normal PC** — it has **no x86 BIOS you know, no PCIe slot, no 24-pin ATX plug**: it takes **12 V straight into an 8-pin PCIe power connector** and boots its own firmware. People buy it because it's a **dirt-cheap Linux gaming / local-AI box**. People rage at it because the **drivers, cooling, and lack of hardware video encoding** make it a project, not a plug-and-play machine. If you want zero hassle, this board is the wrong purchase — return it now. If you like tinkering, read on.
+
+This page is the "what did I actually buy" reference. Power, cooling, OS install and drivers each get their own section ([03](03-power-supply.md) / [04](04-cooling.md) / [06](06-linux.md)).
+
+---
+
+## What it actually is
+
+AMD built the BC-250 as a **cryptocurrency mining accelerator** (the "BC" stands for blockchain). To make it cheap, AMD reused **leftover PlayStation 5 processor silicon** — the same family of chip Sony puts in the console. A board is one APU plus its memory and power circuitry; that's the whole product.
+
+Jargon, defined once:
+
+- **APU** (Accelerated Processing Unit) — AMD's name for a single chip that contains **both the CPU and the GPU**. There is no separate graphics card; the GPU is inside the same package, sharing the same memory.
+- **Cyan Skillfish** — AMD's engineering **codename** for this APU. You'll see it everywhere in Linux: the GPU firmware file is literally `cyan_skillfish_gpu_info.bin` ([src](https://t.me/c/2424231195/57962) — see the symlink fix at [src](https://t.me/c/2424231195/41252)). Tools may also report it under the PS5 die names **Oberon** / **Ariel**.
+- **GDDR6** — the fast graphics memory normally found on a video card. On the BC-250 it's the **system RAM and the video RAM at the same time** (the CPU and GPU share one pool). There are no DIMM slots; the 16 GB is soldered down and not upgradeable.
+- **RDNA 2** — the GPU architecture generation (same family as the PS5, Xbox Series, and Radeon RX 6000 cards).
+
+The chip is a **cut-down** PS5 part, not the full one. The community pinned this comparison ([src](https://t.me/c/2424231195/11282), citing [TechPowerUp's Oberon entry](https://www.techpowerup.com/gpu-specs/amd-oberon.g936)):
+
+| | BC-250 | Full PS5 (Oberon) |
+|---|---|---|
+| CPU cores / threads | **6 / 12** | 8 / 16 |
+| GPU compute units (CU) | **24** | 36 |
+
+A "compute unit" is one GPU core block; 24 of them is roughly mid-range-laptop-GPU territory, which is exactly the performance bracket the chat reports in games.
+
+People have run **desktop Linux on the BC-250 the same way the PS5 itself was jailbroken** — full 4K HDMI video + audio, all USB ports working, the APU clocking up to ~3.2 GHz on the CPU and ~2.0 GHz on the GPU ([src](https://t.me/c/2424231195/122260)).
+
+---
+
+## What it's good at
+
+- **The cheapest way into Linux gaming at this performance tier.** Through Steam/Proton (a compatibility layer that runs Windows games on Linux) people play Star Citizen ([src](https://t.me/c/2424231195/38702)), and even modern titles like *Doom: The Dark Ages* via a community Vulkan wrapper at ~60 FPS on low/FSR ([src](https://t.me/c/2424231195/127696)). Per-game results live in [11-gaming.md](11-gaming.md).
+- **A capable local-AI box.** With 16 GB of GDDR6 it can hold mid-size language models. Members run LLMs locally through `llama.cpp`/`jan` on the **Vulkan** backend; you set the BIOS to allocate 12 GB to the GPU first ([src](https://t.me/c/2424231195/92421)). See [12-ai-llm.md](12-ai-llm.md).
+- **Tiny and self-contained.** It's a single long board with the GPU-style heatsink built in — it drops into small DIY/3D-printed cases and runs off one small power supply ([build src](https://t.me/c/2424231195/137825)).
+
+The community consensus on *why* it works at all: because the chip is so close to the Steam Deck / PS5 hardware, Valve and the open-source Mesa graphics stack keep improving the exact same drivers, so the BC-250 rides along for free ([src](https://t.me/c/2424231195/93006)).
+
+---
+
+## What's painful (set expectations)
+
+This is the half newcomers underestimate. None of it is a dealbreaker, but all of it is real work.
+
+- **Drivers are a do-it-yourself job.** AMD ships **no official driver and no public documentation** for this board ([src](https://t.me/c/2424231195/37764)). Everything — the Linux graphics stack, the clock/voltage "governor", the BIOS — is community-built. Expect to follow setup scripts and occasionally fix things by hand. Start at [06-linux.md](06-linux.md).
+- **Cooling is the #1 thing people get wrong.** The stock heatsink was designed for a mining rack's forced-air tunnel, so on a desk it overheats and throttles out of the box. You will need to mod the cooling. This has its own section — read [04-cooling.md](04-cooling.md) **before** chasing performance.
+- **No hardware video encoder.** The GPU's video-encode block (what AMD calls **VCN** — the dedicated circuit that compresses video for streaming/recording) is **not available**. Screen recording and game streaming fall back to a **software encoder**, which costs CPU. It works (people stream over Sunshine/Moonlight) but it's slower and lower-quality than a normal GPU ([src](https://t.me/c/2424231195/88026)). Likewise, the early Mesa driver was famously **software rendering** until the community got hardware acceleration working ([src](https://t.me/c/2424231195/11243)).
+- **Weird power and no display by default.** It does not take a standard 24-pin ATX connector — see the next section. Many boards also arrive needing a **BIOS reset** before they'll even POST ([src](https://t.me/c/2424231195/57930)), and you usually output picture over **DisplayPort** (HDMI needs a DP→HDMI adapter, which also carries audio fine — [src](https://t.me/c/2424231195/9148)).
+- **It's a tinkerer's board, period.** As one long-time member put it: despite being cheap, the BC-250 "requires certain skills, effort and brains" ([src](https://t.me/c/2424231195/73002)). Budget time, not just money.
+
+> ⚠ **Handling warning, learned the hard way.** Do **not** let anything metallic touch the powered board, and only ever swap the thermal paste with care — a member permanently killed their BC-250 by shorting it ([src](https://t.me/c/2424231195/95998)). Boards also ship slightly **bent** from the heatsink mounting; one member fixed a no-boot by shimming the board flat against the heatsink with paper ([src](https://t.me/c/2424231195/117347)).
+
+---
+
+## Hardware Reference Card
+
+Specs marked **⚠ verify** could not be confirmed against a primary datasheet at time of writing (AMD publishes none; TechPowerUp spec pages were unreachable). The pinout and power figures below come from the canonical community hardware doc.
+
+### Core specs
+
+| Spec | Value | Source |
+|------|-------|--------|
+| Class | PlayStation 5-derived APU on a mining/server board | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md) |
+| APU codename | **Cyan Skillfish** (PS5 die: Oberon / Ariel) | chat ([src](https://t.me/c/2424231195/57962)) |
+| CPU | **6 cores / 12 threads, Zen 2** (6 cores confirmed) | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) · chat ([src](https://t.me/c/2424231195/11282)) |
+| CPU clock | up to **~3.49 GHz** ("ish") | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) · chat ([src](https://t.me/c/2424231195/122260)) |
+| GPU | **24 compute units, RDNA 2** (PS5 SoC has 36) | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) · chat ([src](https://t.me/c/2424231195/11282)) |
+| GPU clock | ~1500 MHz stock, ~2000 MHz overclocked (≈2.23 GHz max) | ([src](https://t.me/c/2424231195/122260)) · [09](09-overclock-undervolt.md) |
+| Memory | **16 GB GDDR6**, shared between CPU and GPU, soldered (not upgradeable) | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) · [README](../../README.md) |
+| GPU VRAM allocation | set in BIOS; **12 GB** selectable on BIOS 3.00+ | ([src](https://t.me/c/2424231195/92421)) |
+| Memory bus / bandwidth | ⚠ verify — not stated in canonical docs (128-bit GDDR6 reported for this die family elsewhere) | — |
+| TDP | **220 W** (board thermal-design power) | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) |
+| Power draw | ~67–85 W typical under mining-class load | [hashrate.no](https://www.hashrate.no/gpus/bc250) |
+| Hardware video encode (VCN) | **None** — software encode only | ([src](https://t.me/c/2424231195/88026)) |
+| Video output | DisplayPort (use DP→HDMI adapter for HDMI; carries audio) | ([src](https://t.me/c/2424231195/9148)) |
+| 2nd DisplayPort | present but **unpopulated**; can be activated in software | ([src](https://t.me/c/2424231195/88026)) |
+| Physical size | long, narrow single-slot board, ~GPU-length | ⚠ verify exact mm — see note below |
+
+> **On board dimensions:** the canonical hardware doc does **not** list board dimensions, so exact millimetres remain **⚠ verify**. The chat's single most-reacted hardware post is literally titled *"Размеры amd bc-250"* ("dimensions of the AMD BC-250", ❤20 — [src](https://t.me/c/2424231195/379)), confirming people care about this for case building, but the actual figures in that thread are in an attached image not included in the evidence export. For case fitment, work from a measured 3D model instead — the community-cataloged board STLs (e.g. `BC250 Board.stl`, [Printables 1103626](https://www.printables.com/model/1103626-amd-bc250-board) and the accurate model at [Printables 1341336](https://www.printables.com/model/1341336-accurate-3d-model-of-the-amd-bc-250-board)) are dimensionally correct. See [05-case.md](05-case.md).
+
+### Power connector pinout (read this before plugging anything in)
+
+The BC-250 has **no 24-pin ATX header**. It is powered by **12 V only**, delivered through an **8-pin PCIe power connector (J1000)** — the same physical plug as a graphics card's, but the board expects all three power contacts fed from 12 V. Full wiring and PSU choice are in [03-power-supply.md](03-power-supply.md); the canonical pinout from [hardware.md](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md):
+
+**J1000 — main 8-pin PCIe power (this is the one you connect):**
+
+```
+[ GND  GND  GND  GND ]
+[ GND  12V  12V  12V ]
+```
+
+- Three 12 V contacts; the doc rates the Mini-Fit Jr contacts at **up to 9 A each**, so this connector "can source up to **324 W** safely," and recommends **16 AWG** wire for standalone use ([hardware.md](https://github.com/mothenjoyer69/bc250-documentation)).
+- **GND = ground (0 V), 12V = +12 volts.** Get polarity right — this board has no reverse-voltage forgiveness.
+
+**J2000 / J2001 — rack power connectors (usually NOT used on a desk):**
+
+```
+        J2000                  J2001
+ [ LED1  12V  12V  12V ]   [ 12V  12V  12V  PGD ]
+ [ LED2  GND  GND  GND ]   [ GND  GND  GND  GND ]
+```
+
+- These are **ALLTOP** connectors (interchangeable with **Molex Micro-Fit**), *not* PCIe/EPS plugs — they fed the board inside its original mining chassis.
+- **PGD** is a power-good/sense pin: it sees **5 V when the board is seated in the rack's PSU2**. On a standalone build you typically power via J1000 instead and can ignore J2000/J2001 — but confirm against [03-power-supply.md](03-power-supply.md) for your specific PSU adapter.
+
+---
+
+## Where to go next
+
+1. **[02-buying.md](02-buying.md)** — if you haven't bought yet, or want to know what a fair price and the real risks are.
+2. **[03-power-supply.md](03-power-supply.md)** — how to actually power it (12 V into the 8-pin).
+3. **[04-cooling.md](04-cooling.md)** — do this **before** anything else once the board is in hand.
+4. **[06-linux.md](06-linux.md)** — get an OS and the community drivers on it.
+
+---
+
+## Sources
+
+- Canonical hardware doc & pinout — [mothenjoyer69/bc250-documentation `hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
+- Cut-down vs full PS5 silicon (6/12 + 24 CU vs 8/16 + 36 CU) — https://t.me/c/2424231195/11282 · [TechPowerUp Oberon](https://www.techpowerup.com/gpu-specs/amd-oberon.g936)
+- Linux-on-PS5-hardware, 4K HDMI, clocks — https://t.me/c/2424231195/122260
+- No official driver / no docs — https://t.me/c/2424231195/37764
+- Software rendering / no hardware encode — https://t.me/c/2424231195/11243 · https://t.me/c/2424231195/88026
+- DisplayPort + DP→HDMI audio — https://t.me/c/2424231195/9148
+- Cyan Skillfish firmware name — https://t.me/c/2424231195/57962 · https://t.me/c/2424231195/41252
+- Local LLM + 12 GB VRAM via BIOS 3.00 — https://t.me/c/2424231195/92421
+- "Requires skills, effort and brains" — https://t.me/c/2424231195/73002
+- Handling/short-circuit warning — https://t.me/c/2424231195/95998 · bent-board fix — https://t.me/c/2424231195/117347
+- "Dimensions of the BC-250" (most-reacted hardware post) — https://t.me/c/2424231195/379
+- 220 W TDP, 6-core/3.49 GHz CPU, 24-CU GPU, 16 GB GDDR6 (repo confirmation) — [mothenjoyer69/bc250-documentation README](https://github.com/mothenjoyer69/bc250-documentation)
+- Mining-class power draw figures — https://www.hashrate.no/gpus/bc250
+- Why it keeps working (shared Steam Deck/PS5 driver effort) — https://t.me/c/2424231195/93006
+
+> Specs tagged **⚠ verify** await a primary-datasheet confirmation; AMD publishes none for this board. Corrections welcome via PR (see [CONTRIBUTING.md](../../CONTRIBUTING.md)).
