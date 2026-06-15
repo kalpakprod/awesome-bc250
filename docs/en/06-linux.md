@@ -236,6 +236,14 @@ Cross-checked against the [elektricm BC-250 docs](https://elektricm.github.io/am
 
 ---
 
+## ⚠ Disable IOMMU in BIOS (do this once)
+
+**IOMMU is broken on the BC-250 and must be disabled.** Left enabled, it causes **display failures, black screens, and random crashes**, and GPU passthrough to a VM isn't possible either way. This is a BIOS setting, not a distro choice — do it on the first boot regardless of which path above you took. Find the **IOMMU** option in BIOS setup (usually under *Advanced → AMD CBS / NBIO* or *North Bridge*) and set it to **Disabled**, then save and reboot ([elektricM hardware docs](https://elektricm.github.io/amd-bc250-docs/), reverse-engineering by mothenjoyer69 / Segfault / neggles / yeyus).
+
+> ⚠ verify — the elektricM source documents the **BIOS** disable only. Some kernels also accept `iommu=off` / `amd_iommu=off` as a kernel parameter, but that has **not** been confirmed on the BC-250; treat it as unverified and prefer the BIOS setting.
+
+---
+
 ## Verifying GPU acceleration
 
 After the first reboot, confirm the GPU is actually being used (not software rendering).

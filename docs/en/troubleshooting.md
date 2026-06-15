@@ -25,6 +25,7 @@ flowchart TD
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
 | Black screen / no POST | Power wiring or pinout wrong | Recheck the 8-pin wiring and pinout; use genuine-copper wire of adequate gauge → [03 — Power](03-power-supply.md) |
+| Black screen / crashes after it was working | **IOMMU still enabled** (broken on this board) | Disable IOMMU in BIOS (elektricM); `iommu=off`/`amd_iommu=off` kernel param is ⚠ verify → [06 — Linux](06-linux.md) |
 | Boots but no GPU acceleration (everything on CPU) | Missing amdgpu firmware symlink, or a bad kernel | Apply the `navi10_gpu_info.bin` symlink + kernel params; avoid known-bad kernels (below) → [06 — Linux](06-linux.md) |
 | Worked, then broke after a kernel update | Regression in that kernel | Roll back to an LTS kernel; **6.14.7** and **6.17.8** are reported to break amdgpu firmware load (CPU fallback) → [06 — Linux](06-linux.md) |
 | No HDMI audio | Kernel 6.17+ regression | Use an LTS kernel, or route audio over USB/DisplayPort → [06 — Linux](06-linux.md) |

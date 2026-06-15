@@ -67,6 +67,24 @@ Salvaged GPU blower fans were an early experiment. Loud for the result; people m
 
 ---
 
+## Controlling the fan speed (software)
+
+Once a fan is bolted on, you control its PWM through the board's **Nuvoton NCT6686D** Super I/O chip — but **which driver you load matters** ([elektricM hardware spec](https://elektricm.github.io/amd-bc250-docs/)):
+
+- **Read-only sensors** (fan RPM, temps): the in-kernel **`nct6683`** module, loaded with `force=true`. It reports readings but **cannot write PWM**, so the fan stays at whatever the BIOS/firmware sets.
+- **Read + write PWM** (actually set fan speed): use the out-of-tree **`nct6687`** module from **[Fred78290/nct6687d](https://github.com/Fred78290/nct6687d)**, also with `force=true`. This is the one to build if you want fan curves / manual speed control rather than just monitoring.
+
+```bash
+# monitoring only (in-kernel):
+echo 'options nct6683 force=true' | sudo tee /etc/modprobe.d/nct6683.conf
+# PWM control (DKMS from Fred78290/nct6687d):
+echo 'options nct6687 force=true' | sudo tee /etc/modprobe.d/nct6687.conf
+```
+
+> Don't load both — pick `nct6683` for read-only sensors or `nct6687` for read+write. Sensor wiring (`CPU_FAN1` / `J4003`) and the BIOS↔Linux fan numbering are in [06-linux.md](06-linux.md)'s verification step.
+
+---
+
 ## Thermal interface (paste, pads, phase-change, liquid metal)
 
 Whatever fan/heatsink you run, the **thermal interface material (TIM)** between the die and the heatsink — and between the back of the board and any backplate radiator — is worth getting right. The BC-250 die has a **high heat density**, so a good TIM is a free few degrees.

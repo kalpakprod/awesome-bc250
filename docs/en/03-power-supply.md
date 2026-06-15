@@ -99,17 +99,50 @@ flowchart LR
 
 This matches a standard PCIe 8-pin exactly, which is *why* a normal ATX PSU's PCIe cable just works. **If you build your own cable, verify every pin with a multimeter before first power-on** — polarity mistakes are unforgiving here.
 
-### Redundant connectors J2000 / J2001 (advanced)
+The board also has two smaller alternative power connectors, **J2000** and **J2001** — useful only for a heavy overclock and covered in full below.
 
-Next to the main plug are two smaller connectors, **J2000** and **J2001**. These are **ALLTOP headers, directly interchangeable with Molex Micro-Fit (444280801) BMI headers** ([hardware.md](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md#j2000-and-j2001)). Their pinout:
+---
+
+## Beyond 300 W — the J2000 / J2001 second power connector
+
+> ⚠️ **Read this first.** Everything in this section is **extra 12 V wiring done by hand**. The board has **no polarity or sense check** on these pins (same as J1000) — swap +12 V and ground and you burn the board the instant it powers on. A second feed only adds headroom if **both feeds share the same PSU / same 12 V rail at the same potential**; tying two different supplies together can push current backwards through one of them. If you are not comfortable crimping and metering your own connectors, stop here and stay on a single [J1000 8-pin](#the-8-pin-pinout-j1000).
+
+A single PCIe 8-pin into [J1000](#the-8-pin-pinout-j1000) is comfortable at stock and light OC — its three 12 V contacts are good for **~324 W** (9 A × 3 × 12 V, or up to ~468 W with industrial-grade contacts) ([hardware.md](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)). The reason this section exists: a **40-CU board on an aggressive overclock can pull more than 300 W** ([src](https://t.me/c/2424231195/143787)), which is right at the edge of one 8-pin's comfort zone. The board was designed for a rack where a **second PSU** feeds two extra connectors — **J2000** and **J2001** — so the clean way to get desktop overclock headroom is to **supplement J1000 with J2000/J2001** (or solder straight to the board) rather than overload one plug ([hardware.md](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)). This is also the most-requested diagram in the chat ([src](https://t.me/c/2424231195/135741)).
+
+### Pinout (from the board documentation)
+
+J2000 and J2001 are **not identical**. They are compatible with **Molex Micro-Fit BMI** ([part 444280801](https://www.molex.com/en-us/products/part-detail/444280801)). Pin 1 is the white silkscreen triangle (`v` below):
 
 ```
-J2000 / J2001 (identical):
-  [ 12V  12V  12V  PGD ]   ← three 12 V + a PGOOD signal pin
-  [ GND  GND  GND  GND ]
+        J2000                    J2001
+   v                        v
+[ LED1  12V  12V  12V ]   [ 12V  12V  12V  PGD ]
+[ LED2  GND  GND  GND ]   [ GND  GND  GND  GND ]
 ```
 
-In a rack these provide redundant feed from a second PSU; the **PGD (PGOOD)** pin carries 5 V when the second supply is present. For a desktop build you normally ignore them — but for a **heavy overclock**, the documentation suggests feeding 12 V through **J2000/J2001 in addition to J1000** to spread the current ([hardware.md](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)). Some builders go further and **solder a Micro-Fit/Mini-Fit connector straight onto the board's 12 V pads** with heavy copper, bypassing the stock plug entirely (see the soldered-connector example below). That's an experts-only mod — easy to overheat the pads, and it permanently alters the board.
+| Pin | Meaning |
+|-----|---------|
+| `12V` | +12 V power in (three per connector) |
+| `GND` | Ground |
+| `PGD` | **PGOOD** — reads 5 V when a second PSU is present in a rack backplane; a signal pin, **not** a power output |
+| `LED1` / `LED2` | Active-low LED outputs that mirror the green / red backplane LEDs |
+
+**For redundancy, the documentation says to use both J2000 and J2001** ([hardware.md](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md#j2000-and-j2001)). Note the **column layout differs** between the two — on J2000 the LED pins sit in the first column and all three 12 V pins are on the top row; on J2001 the PGD pin sits in the top-right and the bottom row is all ground. **Meter every pin before connecting** — do not assume a Micro-Fit housing seats the same way on both. ⚠ verify the exact pin-1 orientation against your own board with a multimeter; the LED/PGD pins must **never** receive 12 V.
+
+### The practical method the community uses
+
+You do not need the rack backplane. The repeated chat recipe is simply: **run one PCIe 8-pin into J1000, then crimp a Molex Micro-Fit 3.0 plug and feed the same 12 V into the adjacent J2000** ([src](https://t.me/c/2424231195/142662), [src](https://t.me/c/2424231195/138371)). One builder describes the exact cable as *"one PCIe connector and two Micro-Fit 3p connectors"* off a single supply ([src](https://t.me/c/2424231195/143938)) — i.e. split the 12 V/GND from one PCIe cable out to both the 8-pin and the Micro-Fit feed.
+
+**Connector to buy** (self-assembled, Molex Micro-Fit 3.0):
+
+| Part | Molex number | Note |
+|------|--------------|------|
+| Housing | **43025-0800** (8-circuit) | the plug body ([src](https://t.me/c/2424231195/142659), [src](https://t.me/c/2424231195/14797)) |
+| Crimp terminals | **43030** series | one per wire ([src](https://t.me/c/2424231195/142659)) |
+
+Only populate the **12 V and GND** positions (match the pinout table above); leave `PGD` / `LED1` / `LED2` empty. Use the same **real-copper, ≥16 AWG** wire and crimp discipline as the [main 8-pin — see wire-gauge guidance](#wire-gauge--connector-guidance); a hand-crimped 12 V feed that overheats is exactly the fire risk described earlier in this chapter.
+
+> **Attribution:** the J2000/J2001 pinout above is from the **elektricM hardware documentation**, whose reverse-engineering is built on **[mothenjoyer69's bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation)** (credit also to Segfault, neggles, yeyus). The hands-on crimp method and part numbers come from the community chat, cited inline.
 
 ---
 
@@ -209,6 +242,7 @@ Whatever you pick: **single 12 V rail, ≥300 W, real-copper wire ≥16 AWG, PCI
 - PS3 FAT PSU as a 12 V source — https://t.me/c/2424231195/62332 · tap/start method https://t.me/c/2424231195/102734 · long-term use https://t.me/c/2424231195/78829 · https://t.me/c/2424231195/78821 · first-rev ~400 W PSU https://t.me/c/2424231195/9254
 - Popular community PSU models — Mean Well LOP-300 builds https://t.me/c/2424231195/80841 · https://t.me/c/2424231195/78870 · https://t.me/c/2424231195/134585 · https://t.me/c/2424231195/74703 · LRS-350-12 https://t.me/c/2424231195/41013 · LOP-500-12 https://t.me/c/2424231195/111161 · Seasonic/flex-ATX https://t.me/c/2424231195/30914 · https://t.me/c/2424231195/84001 · TFX Vinga 400W https://t.me/c/2424231195/118771 · SFX in NR200P https://t.me/c/2424231195/81149 · Huntkey 360W ASIC https://t.me/c/2424231195/37009 · Pico-PSU https://t.me/c/2424231195/66387 · https://t.me/c/2424231195/66064 · https://t.me/c/2424231195/123545
 - Cutting/soldering your own 8-pin — https://t.me/c/2424231195/41646 · direct-solder connector teardown — https://t.me/c/2424231195/92185
+- Beyond 300 W via J2000/J2001 (second connector) — practical PCIe-into-J1000 + Micro-Fit-into-J2000 method https://t.me/c/2424231195/142662 · https://t.me/c/2424231195/138371 · one-PCIe-two-Micro-Fit cable https://t.me/c/2424231195/143938 · Micro-Fit 3.0 parts (43025-0800 housing + 43030 terminals) https://t.me/c/2424231195/142659 · https://t.me/c/2424231195/14797 · 40-CU OC draws >300 W https://t.me/c/2424231195/143787 · request for the second-connector diagram https://t.me/c/2424231195/135741
 - Build photos — 8-pin in case https://t.me/c/2424231195/41666 · connector area https://t.me/c/2424231195/39395 · working unit https://t.me/c/2424231195/27556 · soldered Micro-Fit https://t.me/c/2424231195/135782
 - ESP32 auto power-on for Flex/LOP PSU — [dexikdex/ESP32-BC250-LOP_PSU-PowerON-Xbox](https://github.com/dexikdex/ESP32-BC250-LOP_PSU-PowerON-Xbox) ([src](https://t.me/c/2424231195/142498))
 - Mean Well product pages — [LOP-300-12](https://www.chipdip.ru/product/lop-300-12-blok-pitaniya-12v-25a-300vt-mean-well-9001511866) · [LRS-350-12](https://www.chipdip.ru/product/lrs-350-12-blok-pitaniya-12v-29a-348vt-mean-well-9000334417)
