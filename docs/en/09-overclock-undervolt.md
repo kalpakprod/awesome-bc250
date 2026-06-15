@@ -83,6 +83,67 @@ sudo systemctl enable --now cyan-skillfish-governor-smu.service
 
 > Run **one** governor at a time — disable oberon before enabling cyan-skillfish, or they fight over the same registers.
 
+#### TT vs SMU — two variants, and which is now the default
+
+> ⚠ **verify — the recommended default has shifted.** The chat history (and the TL;DR above) treats **oberon** as *the* standard. The community governor docs now call **cyan-skillfish-governor-smu** the *community-recommended default (Mar 2026+)* and label oberon **"legacy — migrate to SMU"** ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)). oberon still works and is the most-tested; this is an evolving recommendation, not a hard deprecation. cyan-skillfish ships in **two variants** ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)):
+
+| Variant | Service | How it sets clocks | Kernel patch? | Released / notes |
+|---|---|---|---|---|
+| **SMU** *(recommended)* | `cyan-skillfish-governor-smu` | SMU **firmware calls** | **No — works on any distro unpatched** | 2026-01-18; reaches 2300+ MHz; CPU ~0.9–1.3 % |
+| **TT** (alternative) | `cyan-skillfish-governor-tt` | sysfs | **Yes** (pre-included in Bazzite) | thermal-throttling aware; reaches 2175+ MHz |
+
+> **Service rename (2025-12-13):** filippor renamed `cyan-skillfish-governor` → `cyan-skillfish-governor-tt`, and the config dir moved `/etc/cyan-skillfish-governor/` → `/etc/cyan-skillfish-governor-tt/`. If upgrading, copy your old `config.toml` across ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
+
+**Install (packaged on every major distro)** — COPR `filippor/bazzite` (Fedora/Bazzite) or AUR `cyan-skillfish-governor-smu` (Arch/CachyOS); Debian/Ubuntu use the release tarball + `sudo ./scripts/install.sh`. The SMU branch builds from source with `cargo build --release`. Migrating off oberon: stop+disable+remove `oberon-governor`, `rm /etc/oberon-config.yaml`, then install and enable the SMU service ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
+
+> 🔴 **700 mV is a hard floor.** Setting the governor's *minimum* GPU voltage below **700 mV locks the GPU back to 1500 MHz** — it defeats the whole point. Keep min voltage ≥ 700 mV in any governor ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/), [elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)).
+
+> **Verify the right GPU is targeted.** The governor may control `card0` or `card1` depending on your system — `ls /sys/class/drm/ | grep card`. If settings don't apply, you may need to point the config at the correct card. On Arch/CachyOS the governor sometimes won't activate until the GPU is first used — run a game/benchmark once after boot ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
+
+#### The cyan-skillfish-smu config schema (section-based TOML)
+
+The `smu` branch uses a **section-based** schema, **not** the older `safe-points = [...]` array — each curve point is its own `[[safe-points]]` table. Key fields ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)):
+
+```toml
+# /etc/cyan-skillfish-governor-smu/config.toml
+[timing.intervals]
+sample = 500          # µs; raise (e.g. 1000) to cut CPU overhead, keep adjust = sample*400
+adjust = 200_000
+[gpu-usage]
+fix-metrics = true    # fixes the MangoHud "655 %" GPU-usage bug on BC-250
+method  = "busy-flag"
+[gpu]
+set-method = "smu"    # "smu" or "kernel"
+[load-target]
+upper = 0.80          # fractions, not percents
+lower = 0.65
+[temperature]
+throttling = 85       # °C
+throttling_recovery = 75
+
+[[safe-points]]
+frequency = 1000
+voltage   = 800
+[[safe-points]]
+frequency = 2000
+voltage   = 1000      # gaming
+[[safe-points]]
+frequency = 2200
+voltage   = 1000      # many boards hold a flat 1000 mV here; bump per-board only if it crashes
+```
+
+> **Tuning order when unstable: cooling → frequency → *then* voltage.** On stock cooling the real cause is almost always heat (95 °C+). Drop the top `[[safe-points]]` blocks to cap frequency before adding voltage; only if temps are fine and it still crashes at 2150–2200 MHz, bump the **top point only** by +15–25 mV. Past ~1075 mV at 2200 MHz you're just adding heat — drop the frequency instead ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
+
+> **GPU-reset black-screen, governor-specific.** If the GPU crashes *while the governor is actively writing sysfs*, the reset can't complete and you get a permanent black screen (system still alive over SSH) needing a hard reboot. Workaround: `systemctl stop` the governor before known crash-prone games; real fix is a stable curve ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
+
+#### GPU frequency-range kernel patch (only for TT / manual sysfs)
+
+The amdgpu driver's stock GPU range is **1000–2000 MHz**; a one-line driver patch (by **ViRazY**, `linux-6.12-bc250-freq.mypatch`) widens it to **350–2230 MHz** (350 MHz deep-idle saves power; the top end enables 2230+ overclocks). **Bazzite, PikaOS, and the Arch AUR kernels ship it pre-patched**, and the **SMU governor bypasses the need for it entirely** via firmware calls — so you only patch manually if you want the TT governor or raw sysfs OC with the extended range on an unpatched distro. Verify with `cat …/pp_od_clk_voltage` (should show 350–2230). **Do not** use the extended-voltage (600–1300 mV) patch — unnecessary and risky ([elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)).
+
+#### PS5GPU-BC250 — a GUI controller (no config files)
+
+Prefer a GUI? **[ZEROAESQUERDA/PS5GPU-BC250](https://github.com/ZEROAESQUERDA/PS5GPU-BC250)** is a Qt app (KDE/GNOME) that adjusts min/max GPU frequency & voltage, sets a temperature limit, and offers automatic 4-stage boost or manual control — MSI-Afterburner-style, no kernel patches or TOML editing. **Disable any running governor first** (cyan-skillfish-smu/tt or oberon) or they conflict ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
+
 ---
 
 ## Step 2 — CPU overclock & proper undervolt: `bc250_smu_oc`
@@ -111,6 +172,27 @@ Why 4 GHz is the ceiling: AMD considers up to ~4 GHz safe for this silicon; the 
 
 > The pinned `bc250_smu_oc` post can also **replace** oberon as your governor (it has its own `bc250-smu-oc` service). Don't run both governors at once.
 
+**Verified CPU-OC scaling** (Fedora 43, kernel 6.19.8; auto-tuned voltage; 7-zip MIPS; with a temperature-based fan curve) ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)):
+
+| Freq | Auto Vid | 7-zip MIPS | Temp (full load) | vs stock |
+|---|---|---|---|---|
+| 3500 (stock) | auto | 26,062 | 60 °C | baseline |
+| 3600 MHz | 1150 mV | 26,518 | 65 °C | +1.7 % |
+| 3700 MHz | 1199 mV | 27,212 | 68 °C | +4.4 % |
+| 3800 MHz | 1250 mV | 27,919 | 72 °C | +7.1 % |
+| 3900 MHz | 1275 mV | 28,410 | 75 °C | +9.0 % |
+| 4000 MHz | — | throttles at PWM 80 | 77 °C | ❌ (needs more cooling/fan) |
+
+The tool's flags: `bc250-detect -f <MHz> -v <mV>` to test, add **`-k`** to keep the OC after the tool exits, **`-c <path>`** to write a config. Make it permanent with `bc250-apply -a -i /etc/bc250-overclock.conf` then `systemctl enable bc250-smu-oc`. Authors: **mrfrakes & dantistnfs** (SMU reverse-engineering) ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/), [elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)). Note **4000 MHz throttled at the stock-ish PWM 80 fan** — the ceiling is cooling-bound, consistent with the air-vs-water note above.
+
+#### CPU frequency scaling needs the ACPI fix (else there's no cpufreq at all)
+
+> ❗ **Out of the box the BC-250 exposes no CPU frequency scaling** — there is *no* cpufreq interface, so `cpupower`/`schedutil` do nothing and the CPU sits at a fixed clock. The **[bc250-collective/bc250-acpi-fix](https://github.com/bc250-collective/bc250-acpi-fix)** ships two SSDT tables (loaded via an initrd override) that fix this ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)):
+> - **SSDT-PST** → enables standard Linux cpufreq with **8 P-states, 800 MHz → 3200 MHz** (governors: `schedutil`, `powersave`, `performance`, …).
+> - **SSDT-CST** → enables **C1/C2/C3 idle states** so cores actually sleep at idle (lower idle power).
+>
+> Both confirmed working on kernel 6.19.8. Install builds a cpio from `SSDT-CST.aml`+`SSDT-PST.aml` into `/boot`, prepended to the initrd line (Fedora BLS) or via `GRUB_EARLY_INITRD_LINUX_CUSTOM` (GRUB). Then `echo schedutil | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor`. **Caveat:** a kernel update won't carry the override into the new boot entry — re-add it or use a kernel-install hook. Combined with `bc250_smu_oc`, the CPU then scales **800 MHz idle → 3900 MHz load** instead of running pinned ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/), [elektricM: power](https://elektricm.github.io/amd-bc250-docs/system/power/)).
+
 ---
 
 ## Step 3 — Undervolting (do this for heat, every chip differs)
@@ -132,6 +214,8 @@ Undervolting is the highest-value move on this board: **same clock, far less hea
 
 A too-aggressive undervolt is **not dangerous** — at worst the board drops out or disables the M.2 slot, which clears in five seconds because the OC isn't stored in BIOS ([src](https://t.me/c/2424231195/105998)).
 
+> 💡 **Artifacts that aren't undervolt-related?** Black textures / flickering can also be a driver HiZ issue — try setting **`RADV_DEBUG=nohiz`** in the game's environment before chasing voltage. And note the stock-kernel **`OD_RANGE` voltage window is 700–1129 mV**; the conservative air-cooled max is ~1085 mV, absolute max ~1100 mV — beyond that is degradation risk for no real stability gain ([elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)).
+
 ---
 
 ## Step 4 — The 40-CU unlock (24 → 40 compute units)
@@ -142,7 +226,20 @@ The biggest single GPU win, and the newest. The BC-250's Cyan Skillfish die phys
 
 People are running **40 CU @ 1850 MHz** (RE4 Remake native 1440p high, 60 fps) and even reporting very low voltages at 40 CU (e.g. 1400 MHz @ 750 mV on a lucky chip) ([src](https://t.me/c/2424231195/137260), [src](https://t.me/c/2424231195/137157)).
 
-> ⚠️ **This requires patching and rebuilding the amdgpu kernel module** — it is the most involved task in this guide and is **BC-250-only** (the patch is guarded by the board's PCI ID). The patch is non-persistent: without the modprobe config, a reboot reverts to 24 CUs.
+> ⚠️ **This requires patching and rebuilding the amdgpu kernel module** — it is the most involved task in this guide and is **BC-250-only** (the patch is guarded by the board's PCI device ID **`0x13FE`**). The patch is non-persistent: without the modprobe config, a reboot reverts to 24 CUs.
+
+**How it actually works (two registers, both required).** The unlock writes **two** hardware registers during driver init — neither alone scales compute ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)):
+
+| Register | Role | Stock → unlocked |
+|---|---|---|
+| `CC_GC_SHADER_ARRAY_CONFIG` | tells the driver how many CUs exist | `0xfff80000` → `0xffe00000` |
+| `SPI_PG_ENABLE_STATIC_WGP_MASK` | tells SPI where to dispatch waves | `0x07` (WGP 0–2) → `0x1F` (WGP 0–4) |
+
+(The runtime tool below writes a **third**, `RLC`, register too.) This is a **compute** unlock, not a gaming one: duggasco's controlled A/B shows Vulkan `llama-bench pp512` jump **1.61×** (230 → 372 tok/s at 1500 MHz), while `glmark2` gains only **+4.4 %** because 3D is fill-rate-bound, not CU-bound ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)). For AI/LLM specifics see also [akandr/bc250](https://github.com/akandr/bc250).
+
+> 🎯 **The recommended operating point is 1500 MHz, not 2 GHz.** duggasco's A/B puts **1500 MHz / ~900 mV** as the sweet spot — it captures most of the ~1.67× theoretical scaling without thermal trouble (1500 MHz/874 mV: 372 tok/s, 125 W, 83 °C). At 2 GHz the same test bursts to 466 tok/s but power/temps climb hard and the package thermal-throttles after a few minutes ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)).
+
+> ⚠️ **Not every board unlocks cleanly — check your harvest pattern first.** The 16 fused-off CUs aren't guaranteed silicon-healthy. Boards with a **contiguous** harvest pattern (e.g. CU 0–5 active, 6–9 fused, same on all 4 shader arrays) tend to pass; boards with a **scattered** pattern may have genuinely defective CUs that enumerate but fail under load. Run **`./scripts/cu_map.sh`** from the repo *before* committing a modprobe config. If scattered, expect to run the per-WGP health test and land somewhere **between 24 and 40 stable CUs** ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)). Also: **Secure Boot must be off** (or sign the rebuilt module yourself).
 
 ### Easiest path — the project build script
 
@@ -196,6 +293,33 @@ If the count ends in **40**, all CUs are live ([src](https://t.me/c/2424231195/1
 
 > **Don't want to recompile a kernel?** The community is building helper scripts and prebuilt module bundles. See [WinnieLV/bc250-cu-live-manager](https://github.com/WinnieLV/bc250-cu-live-manager) (toggle CUs live) and [gennro/bc250-toolkit](https://github.com/gennro/bc250-toolkit) (`bc250-toolkit.sh` / `bc250-unlock.sh`). These move fast — check the repos for current status.
 
+> **Runtime UMR vs the kernel patch — same end state, different trade-off.** `bc250-cu-live-manager` writes the same registers (**CC + SPI + RLC**) from userspace via `umr` *after* the driver boots, with a TUI and a systemd unit for persistence — it installs `umr` itself (pacman/dnf/rpm-ostree). **Pick runtime UMR** if you don't want to rebuild amdgpu every kernel update, or want to A/B WGP layouts live (great for scattered-harvest boards — it refuses to disable driver-active WGPs, so per-board experiments are safer than hand-running `umr -w`). **Pick the kernel patch** if you want `active_cu_number 40` in the driver topology from boot 0, or you're baking it into a distro image ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)).
+
+#### Selective CU masking (for scattered-harvest boards)
+
+If `cu_map.sh` shows a scattered pattern, duggasco ships a per-WGP health test that reboots into each WGP config in isolation and runs correctness checks, then masks the bad ones ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)):
+
+```bash
+sudo ./scripts/bc250-cu-health-test.sh start
+./scripts/bc250-cu-mask.sh --results /var/lib/bc250-cu-health-test/results.tsv --install
+```
+
+Masking uses the stock **`amdgpu.disable_cu`** parameter at **WGP granularity** (disabling CU 6 also disables CU 7 — same WGP).
+
+#### Thermal reality check — 40 CU at 2 GHz will throttle on stock cooling
+
+Verified 10-minute sustained `llama-bench` (Llama-3.2-1B Q4_K_M, 40 CU @ 2 GHz, stock heatsink + two Arctic P12 Max push-pull) ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)):
+
+| Metric | Average | Peak |
+|---|---|---|
+| GPU edge | 89.6 °C | **107 °C** |
+| Package power (PPT) | 136 W | **223 W** |
+| CPU temp | 96.7 °C | **100 °C (TJmax)** |
+| VRM MOSFET | 57 °C | 58.5 °C |
+| Fan | ~2950 RPM | 2977 RPM (ceiling) |
+
+Sustained throughput **drops ~10 %** over 10 min as the package throttles; the bottleneck is **heatsink + CPU thermals, not VRM**. The unlock *itself* is solid — 25 min of looped Vulkan correctness testing gave zero fp/int errors, no hangs, no resets. **Bottom line: cap the governor at 1500 MHz for sustained 40-CU work** unless you have serious cooling — the constraint is the thermal envelope, not the silicon ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)).
+
 ---
 
 ## GDDR6 memory: VRAM allocation, overclock & timings
@@ -226,6 +350,30 @@ How much of the 16 GB is handed to the GPU vs left for the CPU is an ordinary BI
 
 > **It's workload-dependent.** Some games behave differently and a few **hang outright if misconfigured** ([src](https://t.me/c/2424231195/131105), [src](https://t.me/c/2424231195/94993), [src](https://t.me/c/2424231195/139016)). The clearest example: Cyberpunk 2077, if you give it a fixed **4 GB**, stops treating memory above 8 GB as available RAM and **swaps aggressively** even with headroom to spare; at **512 MB** it still grabs ~4–5 GB for the GPU but correctly leaves 12 GB+ for the OS and only swaps once that's exhausted — so one member's standing advice is *"512 and let it sort itself out"* ([src](https://t.me/c/2424231195/94993), [src](https://t.me/c/2424231195/131105)). For most people: **512 MB fixed, avoid auto.** Raise it to **4 GB** only for a specific title that's documented to prefer it (a handful do), or for memory-hungry GPU workloads (see AI/LLM below). One caveat: a fixed VRAM allocation larger than 512 MB can make **Vulkan large-buffer allocations** misbehave (e.g. `llama.cpp`), which a community kernel patch addresses so dynamic allocation still works above 512 MB ([src](https://t.me/c/2424231195/20001), [src](https://t.me/c/2424231195/20002)).
 
+> 📋 **Concrete title behaviour from the community VRAM guide** ([elektricM: BIOS VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)): with 512 MB dynamic, **RDR2** and **Company of Heroes 3** can crash/artifact when ZRAM is in play (see below), and **Expedition 33** and **Mafia** may crash unless **4–8 GB is statically allocated**. Stock fixed presets map to UMA Frame Buffer Size: **6144 MB = 10 GB/6 GB** (good for AAA), **8192 MB = 8 GB/8 GB** (balanced, good for AI/compute), **4096 MB = 12 GB/4 GB** (light gaming, max system RAM, lowest idle power).
+
+> 🔧 **Change VRAM without flashing — `bc250_memcfg`.** On the *stock* P3.00/P5.00 BIOS you can set the split from a running Linux ([elektricM: BIOS VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)):
+> ```bash
+> git clone https://github.com/fanoush/bc250_memcfg && cd bc250_memcfg && make
+> sudo ./bc250memcfg UMA_SIZE 512   # values: 512, 4096, 6144, 8192 — then reboot
+> ```
+> Verify after reboot: `cat /sys/class/drm/card0/device/mem_info_vram_total` and `free -h`.
+
+> ⚠ **Vulkan vs OpenGL VRAM reporting.** Vulkan sees the full dynamic pool (~10–12 GB), but **OpenGL only sees the BIOS-allocated amount** (512 MB) — so an OpenGL game may refuse to launch on "512 MB" while Vulkan/Proton titles are fine. If a specific OpenGL game complains, switch to a fixed allocation that matches its requirement ([elektricM: BIOS VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)).
+
+> ⚙️ **ZRAM conflicts with 512 MB dynamic — use zswap instead.** ZRAM compressed swap can confuse the dynamic allocator and trigger OOM crashes in memory-hungry games (RDR2, CoH3) even with RAM free. The community fix is to **disable ZRAM, enable zswap (lz4), add a 16–32 GB swap file, and set `vm.swappiness=180`** ([elektricM: power](https://elektricm.github.io/amd-bc250-docs/system/power/), [elektricM: BIOS VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)):
+> ```bash
+> # Fedora example
+> sudo systemctl disable --now zram-swap
+> sudo dd if=/dev/zero of=/swapfile bs=1G count=16 && sudo chmod 600 /swapfile
+> sudo mkswap /swapfile && sudo swapon /swapfile
+> echo '/swapfile none swap defaults 0 0' | sudo tee -a /etc/fstab
+> echo 'zswap.enabled=1 zswap.max_pool_percent=25 zswap.compressor=lz4' >> /etc/default/grub
+> sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+> echo 'vm.swappiness=180' | sudo tee /etc/sysctl.d/99-swap.conf && sudo sysctl -p /etc/sysctl.d/99-swap.conf
+> ```
+> (Bazzite/rpm-ostree uses `btrfs filesystem mkswapfile` + `rpm-ostree kargs`; recipe in the elektricM power page.) With zswap, swappiness 180 keeps app data resident and swaps cold pages instead of dropping file cache — the right bias for a low-RAM box.
+
 ### GDDR6 clock & timings — modded BIOS, expert-only
 
 The default GDDR6 timings are conservative; there is real bandwidth to gain, but **this is BIOS/mod-tool territory, not the governor** — it ties directly to the modded BIOS in [08-bios.md](08-bios.md). The community reference is the pinned **"#BC-250 GDDR6 Memory Explained"** writeup ([src](https://t.me/c/2424231195/126436)); a parallel English note puts it bluntly: *"if you screw this up, you will crash the chip. That said, the defaults suck, there is a lot of performance to be had"* ([src](https://t.me/c/2424231195/55353)).
@@ -245,6 +393,13 @@ What the writeup says is tunable (values are **one tester's** results, not unive
 ### Why memory matters for AI / LLM — and that it must be cooled
 
 The headline reason to care about GDDR6 here is **bandwidth and capacity for AI/LLM** work: members run local LLMs on the BC-250, sizing the **UMA allocation as the model buffer** ([src](https://t.me/c/2424231195/57659)) — one reports a 14B model at **~24 tok/s** and working multimodal models, after patching the kernel so `llama.cpp` can see more of the shared memory ([src](https://t.me/c/2424231195/57767)). For these workloads a **larger VRAM split** (above) is the lever that matters far more than risky timing edits.
+
+> 🧠 **Reach ~14.75 GB for inference via kernel params (instead of a big fixed split).** Rather than statically reserving VRAM, advanced AI users keep **512 MB dynamic** and raise the GTT/TTM limits so the GPU can borrow almost the whole pool ([elektricM: BIOS VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)):
+> ```bash
+> # GRUB_CMDLINE_LINUX_DEFAULT:
+> amdgpu.gttsize=14750 ttm.pages_limit=3959290 ttm.page_pool_size=3959290
+> ```
+> Then cap the model allocation just under the limit (e.g. `llama.cpp --mem 14500`) to avoid OOM. This is for compute/inference, not gaming. The akandr/bc250 guide ([referenced by elektricM](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)) goes deeper on model selection, quantization, KV-cache sizing, and ROCm-vs-Vulkan.
 
 > 🌡️ **Cool the memory, not just the die.** The GDDR6 chips sit on the **back** of the board and need their own thermal path — the community backplate/heatsink-pad mods exist specifically to cool the memory. Pushing GDDR6 clock (or just running heavy AI workloads) without cooling the chips is asking for instability — see [04-cooling.md](04-cooling.md) for the backplate pads.
 
@@ -269,7 +424,8 @@ This tooling changed fast over 2025–2026. Watch the dates:
 
 - **Before ~Dec 2025:** the only governor was **oberon-governor** (GPU clock/voltage only). Older posts that say "you can't overclock the CPU" predate `bc250_smu_oc` (released **2025-12-30**) ([src](https://t.me/c/2424231195/106844)).
 - **The 40-CU unlock is new (~May 2026)** and still maturing. Early messages call it "insider info / promising but unreliable" ([src](https://t.me/c/2424231195/137022)); by mid-May it was a working pinned procedure ([src](https://t.me/c/2424231195/137241)). Methods, patches, and prebuilt bundles are still shifting — prefer the [repo](https://github.com/duggasco/bc250-40cu-unlock) over any single chat message. ⚠ verify the patch strip level (`-p5`) and kernel version against the repo before building.
-- **cyan-skillfish-governor** (idle-power fork) arrived **~Mar 2026** ([src](https://t.me/c/2424231195/125821)); the SMU "plus" releases are newer still.
+- **cyan-skillfish-governor** (idle-power fork) arrived **~Mar 2026** ([src](https://t.me/c/2424231195/125821)); the SMU "plus" releases are newer still. ⚠ verify: the community governor docs now position **cyan-skillfish-governor-smu as the recommended default (Mar 2026+)** and oberon as *legacy* — but the chat-sourced golden path in this chapter still starts from oberon. Both work; the SMU variant needs **no kernel patch** and is the lower-friction choice on Arch/CachyOS ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)). The **service was renamed** `cyan-skillfish-governor` → `-tt` on **2025-12-13**, and the SMU branch shipped **2026-01-18**.
+- **CPU frequency scaling is gated on `bc250-acpi-fix`.** Without its SSDT-PST table the BC-250 has *no* cpufreq interface at all — older advice assuming `schedutil` "just works" predates this finding ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
 - A live **memory-timing** writeup also exists for the truly brave (GDDR6 tCL/tRAS etc.), but it's BIOS/mod-tool territory, not the governor — see [08-bios.md](08-bios.md) and the timing post ([src](https://t.me/c/2424231195/126436)).
 
 ---
@@ -288,5 +444,11 @@ This tooling changed fast over 2025–2026. Watch the dates:
 - GDDR6 brick risk — 1950 MHz brick — https://t.me/c/2424231195/55317 · freq booted on one board, bricked another / CMOS reset doesn't help — https://t.me/c/2424231195/54971 · timings brick — https://t.me/c/2424231195/54851 · programmer-only recovery — https://t.me/c/2424231195/94419 · "перепутал тайминг" — https://t.me/c/2424231195/66381
 - Memory for AI/LLM — UMA as model buffer — https://t.me/c/2424231195/57659 · 14B @ ~24 tok/s + kernel patch — https://t.me/c/2424231195/57767 · large-VRAM Vulkan / dynamic-alloc-above-512 patch — https://t.me/c/2424231195/20001 · https://t.me/c/2424231195/20002
 - Monitoring tools — [LACT](https://github.com/ilya-zlobintsev/LACT) · [MangoHud](https://github.com/flightlessmango/MangoHud) · [amdgpu_top](https://github.com/Umio-Yasuno/amdgpu_top)
+- elektricM governor guide (TT vs SMU variants, service rename, TOML schema, 700 mV floor, GPU-reset black-screen, CPU-OC table, ACPI fix, PS5GPU-BC250) — [elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)
+- elektricM BIOS overclocking (GPU freq kernel patch / ViRazY, OD_RANGE 700–1129 mV, RADV_DEBUG=nohiz, Smokeless_UMAF warning, air/liquid limits) — [elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)
+- elektricM 40-CU unlock (dual/triple register map, PCI ID 0x13FE, harvest contiguous-vs-scattered, cu_map.sh, selective CU masking, runtime UMR, thermal reality 107 °C) — [elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)
+- elektricM VRAM (`bc250_memcfg` no-flash, UMA Frame Buffer presets, kernel-param ~14.75 GB, Vulkan-vs-OpenGL reporting, ZRAM→zswap) — [elektricM: BIOS VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)
+- elektricM power (idle-power tiers, zswap/swappiness 180 recipe, PSU/12 V rail, no-dynamic-memory-clock note) — [elektricM: power](https://elektricm.github.io/amd-bc250-docs/system/power/)
+- bc250-acpi-fix (CPU C-states + P-states 800–3200 MHz) — https://github.com/bc250-collective/bc250-acpi-fix · no-flash VRAM tool — [fanoush/bc250_memcfg](https://github.com/fanoush/bc250_memcfg) · GUI controller — [PS5GPU-BC250](https://github.com/ZEROAESQUERDA/PS5GPU-BC250)
 
 > **Cool first.** None of these clocks are safe without the fin/fan work in [04-cooling.md](04-cooling.md). Over ~90 °C the board resets.

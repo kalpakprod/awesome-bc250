@@ -66,6 +66,8 @@ Listings vary wildly in what's included. Match the price to the bundle:
 
 There is **no "official bundle"** — heatsink presence, PSU model, and SSD size all differ listing to listing, so read the description carefully.
 
+> **What to check / avoid in a listing** (elektricM): **any BIOS version is fine** — P2.00, P3.00, P4.00, P5.00 all flash to the community-modded BIOS, so don't pay a premium for a specific one. **Avoid boards sold without a heatsink, or with visible physical damage.** Most boards are functionally identical; minor heatsink fin-tab variations don't meaningfully affect cooling. Practical ordering tip: **buy the board first** (it has the longest shipping/forwarding wait) and order the [PSU](03-power-supply.md), [cooling](04-cooling.md) and storage while you wait. ([elektricM prerequisites](https://elektricm.github.io/amd-bc250-docs/getting-started/prerequisites/), [introduction](https://elektricm.github.io/amd-bc250-docs/getting-started/introduction/))
+
 ---
 
 ## Prices & what's a good deal
