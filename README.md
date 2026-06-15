@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/img/banner.jpg" alt="awesome-bc250 — the newcomer's bible for the AMD BC-250" width="100%">
+</p>
+
 # Awesome BC-250 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
 > The newcomer's bible for the **AMD BC-250** — a PlayStation 5-derived APU board (Cyan Skillfish / Oberon, 16 GB GDDR6) repurposed as a cheap Linux gaming & AI box.

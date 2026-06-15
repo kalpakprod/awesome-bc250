@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/img/banner.jpg" alt="awesome-bc250 — библия новичка для AMD BC-250" width="100%">
+</p>
+
 # Awesome BC-250 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
 > Библия новичка для **AMD BC-250** — платы на базе APU от PlayStation 5 (Cyan Skillfish / Oberon, 16 ГБ GDDR6), превращённой в дешёвый Linux-бокс для игр и AI.
