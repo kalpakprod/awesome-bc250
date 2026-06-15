@@ -49,7 +49,8 @@ New board, know nothing? Follow the golden path in order:
 Canonical community projects, ranked by how often the community pointed to them.
 
 ### Documentation
-- [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) — the main reference
+- [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) — the main hardware reference (reverse-engineering)
+- [elektricM/amd-bc250-docs](https://github.com/elektricM/amd-bc250-docs) · [site](https://elektricm.github.io/amd-bc250-docs/) — comprehensive community docs (pinouts, per-distro, troubleshooting)
 - [AMD-BC-250/documentation](https://github.com/AMD-BC-250/documentation) — org docs
 - [kenavru/BC-250](https://github.com/kenavru/BC-250) — builds & scripts
 

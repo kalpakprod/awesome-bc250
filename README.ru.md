@@ -49,7 +49,8 @@
 Канонические проекты комьюнити, ранжированы по частоте упоминаний.
 
 ### Документация
-- [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) — главный референс
+- [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) — главный референс по железу (реверс-инжиниринг)
+- [elektricM/amd-bc250-docs](https://github.com/elektricM/amd-bc250-docs) · [сайт](https://elektricm.github.io/amd-bc250-docs/) — подробные доки комьюнити (пинауты, по дистрибутивам, troubleshooting)
 - [AMD-BC-250/documentation](https://github.com/AMD-BC-250/documentation) — доки организации
 - [kenavru/BC-250](https://github.com/kenavru/BC-250) — сборки и скрипты
 

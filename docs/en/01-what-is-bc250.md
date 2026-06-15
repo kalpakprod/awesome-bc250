@@ -56,7 +56,7 @@ This is the half newcomers underestimate. None of it is a dealbreaker, but all o
 
 ## Hardware Reference Card
 
-Specs marked **⚠ verify** could not be confirmed against a primary datasheet at time of writing (AMD publishes none; TechPowerUp spec pages were unreachable). The pinout and power figures below come from the canonical community hardware doc.
+Specs are cross-checked against the community hardware reverse-engineering (AMD publishes no datasheet). Memory-bus and physical-dimension figures, previously unconfirmed, are now sourced from the [elektricM hardware spec](https://github.com/elektricm/elektricm) (which credits mothenjoyer69 / Segfault / neggles / yeyus for the reverse-engineering). The pinout and power figures below come from the canonical community hardware doc.
 
 The board at a glance — power in on the left, the APU and its shared memory in the middle, I/O on the right:
 
@@ -84,19 +84,20 @@ flowchart LR
 | APU codename | **Cyan Skillfish** (PS5 die: Oberon / Ariel) | chat ([src](https://t.me/c/2424231195/57962)) |
 | CPU | **6 cores / 12 threads, Zen 2** (6 cores confirmed) | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) · chat ([src](https://t.me/c/2424231195/11282)) |
 | CPU clock | up to **~3.49 GHz** ("ish") | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) · chat ([src](https://t.me/c/2424231195/122260)) |
-| GPU | **24 compute units, RDNA 2** (PS5 SoC has 36) | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) · chat ([src](https://t.me/c/2424231195/11282)) |
+| GPU | **24 compute units, RDNA 2** (`gfx1013`; PS5 SoC has 36); rasterization ≈ **between RX 6600 and RX 6600 XT** / GTX 1660 Ti-class; **Vulkan 1.4** | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) · chat ([src](https://t.me/c/2424231195/11282)) · [elektricM](https://github.com/elektricm/elektricm) |
 | GPU clock | ~1500 MHz stock, ~2000 MHz overclocked (≈2.23 GHz max) | ([src](https://t.me/c/2424231195/122260)) · [09](09-overclock-undervolt.md) |
 | Memory | **16 GB GDDR6**, shared between CPU and GPU, soldered (not upgradeable) | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) · [README](../../README.md) |
 | GPU VRAM allocation | set in BIOS; **12 GB** selectable on BIOS 3.00+ | ([src](https://t.me/c/2424231195/92421)) |
-| Memory bus / bandwidth | ⚠ verify — not stated in canonical docs (128-bit GDDR6 reported for this die family elsewhere) | — |
+| Memory bus / bandwidth | **256-bit** GDDR6 @ **14 Gbps**, **~448 GB/s** | [elektricM hardware spec](https://github.com/elektricm/elektricm) |
 | TDP | **220 W** (board thermal-design power) | [hardware.md](https://github.com/mothenjoyer69/bc250-documentation) |
 | Power draw | ~67–85 W typical under mining-class load | [hashrate.no](https://www.hashrate.no/gpus/bc250) |
 | Hardware video encode (VCN) | **None** — software encode only | ([src](https://t.me/c/2424231195/88026)) |
-| Video output | DisplayPort (use DP→HDMI adapter for HDMI; carries audio) | ([src](https://t.me/c/2424231195/9148)) |
+| Video output | **DisplayPort 1.4** (up to **4K@120 / 8K@60**); use DP→HDMI adapter for HDMI; carries audio | ([src](https://t.me/c/2424231195/9148)) · [elektricM](https://github.com/elektricm/elektricm) |
+| Storage (M.2) | 1x M.2 2280 — **PCIe 2.0 x2 or SATA III** | [elektricM](https://github.com/elektricm/elektricm) |
 | 2nd DisplayPort | present but **unpopulated**; can be activated in software | ([src](https://t.me/c/2424231195/88026)) |
-| Physical size | long, narrow single-slot board, ~GPU-length | ⚠ verify exact mm — see note below |
+| Physical size | **340 mm / 310 mm** long (by measurement method), **~115 mm** wide, **~400 g** with heatsink; custom non-standard mining form factor | [elektricM hardware spec](https://github.com/elektricm/elektricm) |
 
-> **On board dimensions:** the canonical hardware doc does **not** list board dimensions, so exact millimetres remain **⚠ verify**. The chat's single most-reacted hardware post is literally titled *"Размеры amd bc-250"* ("dimensions of the AMD BC-250", ❤20 — [src](https://t.me/c/2424231195/379)), confirming people care about this for case building, but the actual figures in that thread are in an attached image not included in the evidence export. For case fitment, work from a measured 3D model instead — the community-cataloged board STLs (e.g. `BC250 Board.stl`, [Printables 1103626](https://www.printables.com/model/1103626-amd-bc250-board) and the accurate model at [Printables 1341336](https://www.printables.com/model/1341336-accurate-3d-model-of-the-amd-bc-250-board)) are dimensionally correct. See [05-case.md](05-case.md).
+> **On board dimensions:** the [elektricM hardware spec](https://github.com/elektricm/elektricm) gives **340 mm / 310 mm** length (the two figures reflect different measurement methods), **~115 mm** width and **~400 g** with the heatsink, on a custom non-standard mining form factor. The canonical `hardware.md` itself does not list dimensions; the chat's single most-reacted hardware post is literally titled *"Размеры amd bc-250"* ("dimensions of the AMD BC-250", ❤20 — [src](https://t.me/c/2424231195/379)), confirming people care about this for case building. For exact case fitment, work from a measured 3D model — the community-cataloged board STLs (e.g. `BC250 Board.stl`, [Printables 1103626](https://www.printables.com/model/1103626-amd-bc250-board) and the accurate model at [Printables 1341336](https://www.printables.com/model/1341336-accurate-3d-model-of-the-amd-bc-250-board)) are dimensionally correct. See [05-case.md](05-case.md).
 
 <p align="center">
   <img src="../../assets/img/board-dimensions.jpg" alt="BC-250 board laid against a tape measure to gauge its length" width="80%"><br>
@@ -125,8 +126,8 @@ The BC-250 has **no 24-pin ATX header**. It is powered by **12 V only**, deliver
  [ LED2  GND  GND  GND ]   [ GND  GND  GND  GND ]
 ```
 
-- These are **ALLTOP** connectors (interchangeable with **Molex Micro-Fit**), *not* PCIe/EPS plugs — they fed the board inside its original mining chassis.
-- **PGD** is a power-good/sense pin: it sees **5 V when the board is seated in the rack's PSU2**. On a standalone build you typically power via J1000 instead and can ignore J2000/J2001 — but confirm against [03-power-supply.md](03-power-supply.md) for your specific PSU adapter.
+- These are **Molex Micro-Fit BMI** connectors ([part 444280801](https://www.molex.com/en-us/products/part-detail/444280801)), *not* PCIe/EPS plugs — they fed the board inside its original mining chassis. **J2000 and J2001 are not identical:** as the pinout above shows, J2000 carries the **LED1/LED2** pins while J2001 carries the **PGD** pin, so the two connectors differ ([elektricM / mothenjoyer69 hardware docs](https://github.com/mothenjoyer69/bc250-documentation)).
+- **PGD** (on J2001) is a power-good/sense pin: it sees **5 V when the board is seated in the rack's PSU2**. On a standalone build you typically power via J1000 instead and can ignore J2000/J2001 — but confirm against [03-power-supply.md](03-power-supply.md) for your specific PSU adapter.
 
 ---
 
@@ -142,6 +143,7 @@ The BC-250 has **no 24-pin ATX header**. It is powered by **12 V only**, deliver
 ## Sources
 
 - Canonical hardware doc & pinout — [mothenjoyer69/bc250-documentation `hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
+- Memory bus/bandwidth, physical dimensions, GPU positioning, DP 1.4, M.2 — [elektricM hardware spec](https://github.com/elektricm/elektricm) (credits mothenjoyer69 / Segfault / neggles / yeyus for the reverse-engineering)
 - Cut-down vs full PS5 silicon (6/12 + 24 CU vs 8/16 + 36 CU) — https://t.me/c/2424231195/11282 · [TechPowerUp Oberon](https://www.techpowerup.com/gpu-specs/amd-oberon.g936)
 - Linux-on-PS5-hardware, 4K HDMI, clocks — https://t.me/c/2424231195/122260
 - No official driver / no docs — https://t.me/c/2424231195/37764
@@ -156,4 +158,4 @@ The BC-250 has **no 24-pin ATX header**. It is powered by **12 V only**, deliver
 - Mining-class power draw figures — https://www.hashrate.no/gpus/bc250
 - Why it keeps working (shared Steam Deck/PS5 driver effort) — https://t.me/c/2424231195/93006
 
-> Specs tagged **⚠ verify** await a primary-datasheet confirmation; AMD publishes none for this board. Corrections welcome via PR (see [CONTRIBUTING.md](../../CONTRIBUTING.md)).
+> AMD publishes no primary datasheet for this board; the figures above are the best community reverse-engineering (canonical `hardware.md` plus the elektricM hardware spec). Corrections welcome via PR (see [CONTRIBUTING.md](../../CONTRIBUTING.md)).
