@@ -59,6 +59,11 @@ Set realistic expectations (the Zen 2 CPU is often the limit, not the GPU), turn
 ### Bonus — run local LLMs
 16 GB VRAM is a lot for the price. Run llama.cpp on the **Vulkan** backend (ROCm is a dead end on this GPU). → **[12 — AI / LLM](12-ai-llm.md)**
 
+### Bonus — emulation
+Switch, PS3, PS4, retro, arcade — what actually runs, and how → **[15 — Emulation](15-emulation.md)**
+
+> No picture on first boot? The board outputs over **DisplayPort** (HDMI is often blank) → **[14 — Display & Output](14-display.md)**. Out of USB ports, or adding a drive? → **[16 — USB, Hubs & Storage](16-usb-peripherals.md)**
+
 ---
 
 ## If something breaks

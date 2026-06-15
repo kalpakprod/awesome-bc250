@@ -47,6 +47,48 @@ Salvaged GPU blower fans were an early experiment. Loud for the result; people m
 
 ---
 
+## Thermal interface (paste, pads, phase-change, liquid metal)
+
+Whatever fan/heatsink you run, the **thermal interface material (TIM)** between the die and the heatsink — and between the back of the board and any backplate radiator — is worth getting right. The BC-250 die has a **high heat density**, so a good TIM is a free few degrees.
+
+> **Just changing the stock paste helps.** One owner swapped the factory paste after a year and load temps dropped **~4–5 °C**, with everything else unchanged. ([src](https://t.me/c/2424231195/88565))
+
+### Pastes that work
+- **Arctic MX-6** — a regular high-end paste. In one cased build it held **87–88 °C in Furmark**; the same owner noted PTM7950 would shave another ~4 °C off that. ([src](https://t.me/c/2424231195/30211))
+- **Stock paste + stock pads** are the documented baseline: ~**76 °C** after 10 min load, ~**55 °C** idle (before fin/fan modding). ([src](https://t.me/c/2424231195/22992))
+
+### PTM7950 — the community favorite (recommended)
+**PTM7950** is a **phase-change pad** (Honeywell graphite/phase-change film). At room temperature it's a thin solid sheet; at load (~45–55 °C) it softens and flows into a micron-thin layer, then stays put. It **doesn't pump out** or dry like grease, which is exactly what you want under a hot, thermally-cycling die — so you apply it once and forget it. The chat's blunt summary: *"PTM7950 and don't overthink it"* ([src](https://t.me/c/2424231195/101582)); phase-change is the general recommendation ([src](https://t.me/c/2424231195/61511)).
+
+**How to apply:**
+1. Clean the die and heatsink base (isopropyl alcohol), let dry.
+2. Cut a square of PTM7950 to the die size — a **~26×30 mm** piece covers the BC-250 die ([src](https://t.me/c/2424231195/125748)).
+3. Peel one protective film, lay the pad on the die, peel the second film.
+4. Mount the heatsink and torque down evenly. **No spreading** — the first heat cycle does the work. Expect best temps after a few load/idle cycles ("burn-in").
+
+A reference cased build on PTM7950 (Honeywell, 26×30) plus a backplate radiator peaks at **~84 °C over an hour, 66–71 °C in games** at CPU 3850 MHz / GPU 2100 MHz. ([src](https://t.me/c/2424231195/125748))
+
+### Backplate & GDDR6 pads (cool the back, blind)
+The **GDDR6 and VRM on the back of the board have no temperature sensor** — you cool them blind. Add a **heatsink/radiator on the backplate** coupled with **thermal pads** so that back-side heat has somewhere to go. ([src](https://t.me/c/2424231195/125748))
+
+Reported pad thicknesses (community-shared, "saved this" reaction):
+- **VRM: 1 mm**
+- **GDDR6: 2 mm** ([src](https://t.me/c/2424231195/121181))
+
+> ⚠ **verify** — these thicknesses depend on the gap to *your* specific backplate/radiator. Confirm with a gap measurement (or a putty/clay test) before buying a pile of pads.
+
+### Liquid metal — generally NOT recommended here
+Liquid metal (LM) comes up because the PS5 (same-family APU) uses it ([src](https://t.me/c/2424231195/18105)), and on raw performance it edges out paste/PTM ([src](https://t.me/c/2424231195/124112)). People have asked about and tried it on the BC-250 ([src](https://t.me/c/2424231195/18098), [src](https://t.me/c/2424231195/77180)).
+
+**But it's the wrong call on this board:**
+- LM is **electrically conductive**. The BC-250 die sits right next to **dense GDDR6 and VRM**; a drop that escapes the die shorts the board (the same "conductive thing near the memory kills it" risk as the metal-swarf warning above).
+- It **pumps out / needs re-doing roughly yearly**, and it attacks bare aluminum — even the PTM7950 advocate ditched LM on his own hardware for exactly this hassle, switching to PTM7950 / KryoSheet. ([src](https://t.me/c/2424231195/69688))
+- "Not everyone will even take the job of working with liquid metal." ([src](https://t.me/c/2424231195/106787))
+
+**Bottom line:** **PTM7950 is the safer high-performance choice** — ~99 % of the benefit, none of the short-circuit/maintenance risk. Reserve LM for people who already know exactly what they're doing.
+
+---
+
 ## How to test your cooling (community method, pinned)
 
 From the pinned procedure ([src](https://t.me/c/2424231195/108407)):
@@ -77,6 +119,7 @@ There's also a short video walkthrough of the simplest method pinned in the topi
 - Fin tooling — https://t.me/c/2424231195/31571 · https://t.me/c/2424231195/30670 · https://t.me/c/2424231195/50330
 - Noctua P12 result — https://t.me/c/2424231195/42843
 - AIO example — https://t.me/c/2424231195/19336
+- Thermal interface — repaste −4–5 °C https://t.me/c/2424231195/88565 · MX-6 https://t.me/c/2424231195/30211 · stock baseline https://t.me/c/2424231195/22992 · PTM7950 https://t.me/c/2424231195/101582 · https://t.me/c/2424231195/61511 · PTM7950 build + backplate https://t.me/c/2424231195/125748 · pad thickness https://t.me/c/2424231195/121181 · liquid metal https://t.me/c/2424231195/18098 · https://t.me/c/2424231195/69688
 - Hardware reference — [mothenjoyer69/bc250-documentation `hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
 - Cases/adapters with cooling — [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter)
 

@@ -37,6 +37,9 @@
 | 11 | [Результаты в играх и настройки](docs/ru/11-gaming.md) | бенчмарки, тюнинг под игры |
 | 12 | [AI / LLM на BC-250](docs/ru/12-ai-llm.md) | llama.cpp, ROCm |
 | 13 | [macOS / Hackintosh](docs/ru/13-macos.md) | статус |
+| 14 | [Дисплей и вывод](docs/ru/14-display.md) | DisplayPort, переходники DP→HDMI, 2 экрана |
+| 15 | [Эмуляция](docs/ru/15-emulation.md) | все консоли/платформы, реальный статус |
+| 16 | [USB, хабы и накопители](docs/ru/16-usb-peripherals.md) | хабы, 5V-мод, M.2 / SATA адаптеры |
 | ❓ | [FAQ](docs/ru/faq.md) · [Решение проблем](docs/ru/troubleshooting.md) | частые проблемы |
 
 ---

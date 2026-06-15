@@ -134,6 +134,24 @@ If you already own a decent **ATX, Flex-ATX, SFX or TFX** power supply, you're d
 
 ---
 
+## Popular PSU models the community uses
+
+These are the exact units people in the chat actually built with — **community-shared picks, not endorsements.** Whatever the form factor, remember the board needs **a single 12 V rail wired to one PCIe 8-pin (6+2)** — see the [pinout (J1000)](#the-8-pin-pinout-j1000) and [wire-gauge guidance](#wire-gauge--connector-guidance) above. Anything not enclosed (Mean Well, server bricks, salvaged console PSUs) you wire the 8-pin yourself.
+
+| Model | Form factor | Rough wattage | Note |
+|-------|-------------|---------------|------|
+| **Mean Well LOP-300(-12)** | Industrial open/enclosed brick | 300 W / 25 A on 12 V | The most popular compact pick; fits the smallest cases. Used in several tidy builds ([src](https://t.me/c/2424231195/80841), [src](https://t.me/c/2424231195/78870), [src](https://t.me/c/2424231195/134585)) and sold on as new ([src](https://t.me/c/2424231195/74703)). |
+| **Mean Well LRS-350-12** | Industrial open-frame | 350 W / 29 A on 12 V | Open-frame 350 W 12 V option from the same family ([src](https://t.me/c/2424231195/41013)). |
+| **Mean Well LOP-500 / LOP-600** | Industrial brick | 500–600 W | Bigger siblings for maximum overclock headroom; one user ordered the LOP-500-12 ([src](https://t.me/c/2424231195/111161)). ⚠ verify exact specs on the datasheet. |
+| **Flex ATX** (e.g. Seasonic flex, SSP-250SUB) | Flex-ATX server brick | ~250–400 W | Common compact server form. A Seasonic flex powered a moded all-in-one ([src](https://t.me/c/2424231195/30914)); another build used a generic flex-ATX ([src](https://t.me/c/2424231195/84001)). |
+| **TFX** (e.g. Vinga 400W / TFX-400) | TFX | ~400 W | Used in several builds — e.g. a Vinga 400 W (TFX-400) running a 3750/2000 OC ([src](https://t.me/c/2424231195/118771)). |
+| **SFX** | SFX | varies (~250–600 W) | Compact PC form, drops straight in — e.g. an SFX unit in a MasterBox NR200P build ([src](https://t.me/c/2424231195/81149)). |
+| **PS3 FAT ("phat") PSU** | Salvaged console brick | ~32 A on 12 V (~380 W class) | Cheap salvage option, *"more than enough and very stable"* ([src](https://t.me/c/2424231195/62332)); confirmed in long-term use ([src](https://t.me/c/2424231195/78829), [src](https://t.me/c/2424231195/78821)). Wiring tap: solder to the 12 V / 12 V-RTN pads, bridge STBY+5V to start ([src](https://t.me/c/2424231195/102734)). **First-revision units output the most wattage** (early FATs shipped a ~400 W PSU ([src](https://t.me/c/2424231195/9254))) — ⚠ verify which revision you have, later ones derate. |
+| **Huntkey 360W** (ASIC PSU) | ASIC-miner brick | 360 W, each cable 180 W | A salvaged ASIC supply, *"each cable 180 W"* ([src](https://t.me/c/2424231195/37009)). |
+| **Pico-PSU** style | Pico (12 V DC-DC) | low — feeds rails, not the APU | Mentioned for ultra-compact / lower idle draw ([src](https://t.me/c/2424231195/66387), [src](https://t.me/c/2424231195/123545)). ⚠ verify — in the chat a Pico-PSU is a 12 V→5/3.3 V converter for a motherboard, paired with an external 12 V brick that does the real work ([src](https://t.me/c/2424231195/66064)); it is **not** a standalone 12 V source for the 8-pin. |
+
+---
+
 ## ⚠️ The one PSU spec that catches everyone: single vs. multi-rail 12 V
 
 An old branded PSU can have a high total wattage and **still fail**, because it **splits 12 V into several weak rails** that each cap out below what the board needs:
@@ -172,7 +190,8 @@ Whatever you pick: **single 12 V rail, ≥300 W, real-copper wire ≥16 AWG, PCI
 - Single-rail vs multi-rail 12 V — https://t.me/c/2424231195/7561
 - Fake copper-clad-steel wire fire hazard — https://t.me/c/2424231195/108733 · https://t.me/c/2424231195/133546
 - HP Flex 500 W full guide (start procedure, fan, 40 A wiring) — https://t.me/c/2424231195/31076 · fan noise follow-up — https://t.me/c/2424231195/33455
-- PS3 FAT PSU as a 12 V source — https://t.me/c/2424231195/62332 · https://t.me/c/2424231195/102734
+- PS3 FAT PSU as a 12 V source — https://t.me/c/2424231195/62332 · tap/start method https://t.me/c/2424231195/102734 · long-term use https://t.me/c/2424231195/78829 · https://t.me/c/2424231195/78821 · first-rev ~400 W PSU https://t.me/c/2424231195/9254
+- Popular community PSU models — Mean Well LOP-300 builds https://t.me/c/2424231195/80841 · https://t.me/c/2424231195/78870 · https://t.me/c/2424231195/134585 · https://t.me/c/2424231195/74703 · LRS-350-12 https://t.me/c/2424231195/41013 · LOP-500-12 https://t.me/c/2424231195/111161 · Seasonic/flex-ATX https://t.me/c/2424231195/30914 · https://t.me/c/2424231195/84001 · TFX Vinga 400W https://t.me/c/2424231195/118771 · SFX in NR200P https://t.me/c/2424231195/81149 · Huntkey 360W ASIC https://t.me/c/2424231195/37009 · Pico-PSU https://t.me/c/2424231195/66387 · https://t.me/c/2424231195/66064 · https://t.me/c/2424231195/123545
 - Cutting/soldering your own 8-pin — https://t.me/c/2424231195/41646 · direct-solder connector teardown — https://t.me/c/2424231195/92185
 - Build photos — 8-pin in case https://t.me/c/2424231195/41666 · connector area https://t.me/c/2424231195/39395 · working unit https://t.me/c/2424231195/27556 · soldered Micro-Fit https://t.me/c/2424231195/135782
 - ESP32 auto power-on for Flex/LOP PSU — [dexikdex/ESP32-BC250-LOP_PSU-PowerON-Xbox](https://github.com/dexikdex/ESP32-BC250-LOP_PSU-PowerON-Xbox) ([src](https://t.me/c/2424231195/142498))
