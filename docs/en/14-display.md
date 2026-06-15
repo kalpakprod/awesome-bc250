@@ -55,7 +55,7 @@ elektricM's reference pins down what the single DP link actually does — useful
 
 - **Cable:** use a **VESA-certified DisplayPort 1.4** cable, **1–2 m**; longer cables cause sync/dropout issues ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)).
 - **Stuck at low resolution** (e.g. 1024×768/1080p, 60 Hz only) usually means the GPU driver isn't loaded — check `glxinfo | grep "OpenGL renderer"`; `llvmpipe` = software rendering, install Mesa 25.1+ and remove `nomodeset` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)). See [06-linux.md](06-linux.md).
-- **HDR (HDR10)** works but is experimental on Linux — **KDE Plasma 6+** has the best support and generally needs a Wayland session ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)).
+- **HDR (HDR10) & VRR** work but are experimental on Linux — **KDE Plasma 6+** has the best support and generally needs a Wayland session ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). **Distro matters here:** an r/BC250Gaming (Reddit) community report got **HDR + VRR working properly only on CachyOS** (Plasma 6 + Wayland), while on **Bazzite HDR caused graphical glitches and VRR never worked at all**. Their example: *Forza Horizon 6* at **1440p High, HDR + VRR on, 60–80 FPS** through a **UGREEN DP→HDMI 2.1** adapter. If HDR/VRR is a priority, see the CachyOS note in [06-linux.md](06-linux.md).
 
 > **Black screen *after login* (GRUB and the login screen were fine)** is a desktop-session problem, usually **Wayland** — pick "GNOME on Xorg"/"Plasma (X11)" at the login gear, or set `WaylandEnable=false` in `/etc/gdm/custom.conf` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). A black screen *before* login is the driver/`nomodeset` issue above, not this.
 
@@ -140,6 +140,7 @@ This is also the practical way to get a "dual display" feel without the unpopula
 - Bluetooth audio as alternative — https://t.me/c/2424231195/89769
 - Hardware I/O reference (`1x DisplayPort`) — [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) · [`hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
 - DP 1.4 / 4K@120 / HDR10, resolution+cable limits, MST hubs (max 2), DisplayLink, Wayland-login black screen — elektricM [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
+- HDR + VRR working on CachyOS (Plasma 6 + Wayland) vs broken on Bazzite; Forza Horizon 6 1440p High HDR+VRR over UGREEN DP→HDMI 2.1 — r/BC250Gaming (Reddit) community report (see [06-linux.md](06-linux.md))
 - Active-vs-passive adapter audio (opposite finding), low-res llvmpipe check — elektricM [`troubleshooting/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)
 
 > Driver/kernel setup is in [06-linux.md](06-linux.md); audio/output gotchas are also indexed in [troubleshooting.md](troubleshooting.md) and [faq.md](faq.md).

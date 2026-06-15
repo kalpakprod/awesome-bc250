@@ -55,7 +55,7 @@ flowchart TD
 
 - **Кабель:** бери **сертифицированный VESA DisplayPort 1.4**, **1–2 м**; длиннее — проблемы с синхронизацией/выпадениями ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)).
 - **Застрял на низком разрешении** (напр. 1024×768/1080p, только 60 Гц) — обычно не загружен драйвер GPU; проверь `glxinfo | grep "OpenGL renderer"`; `llvmpipe` = софтверный рендер, ставь Mesa 25.1+ и убирай `nomodeset` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)). См. [06-linux.md](06-linux.md).
-- **HDR (HDR10)** работает, но в Linux экспериментально — лучшая поддержка у **KDE Plasma 6+**, обычно нужна сессия Wayland ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)).
+- **HDR (HDR10) и VRR** работают, но в Linux экспериментально — лучшая поддержка у **KDE Plasma 6+**, обычно нужна сессия Wayland ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). **Тут важен дистрибутив:** в отзыве сообщества r/BC250Gaming (Reddit) **HDR + VRR заработали как надо только на CachyOS** (Plasma 6 + Wayland), тогда как на **Bazzite HDR давал графические глитчи, а VRR не работал вообще**. Их пример: *Forza Horizon 6* в **1440p High, HDR + VRR включены, 60–80 FPS** через переходник **UGREEN DP→HDMI 2.1**. Если HDR/VRR в приоритете — см. заметку про CachyOS в [06-linux.md](06-linux.md).
 
 > **Чёрный экран *после входа* (GRUB и экран входа были нормальные)** — проблема сессии рабочего стола, обычно **Wayland**: выбери «GNOME on Xorg»/«Plasma (X11)» по шестерёнке на входе или поставь `WaylandEnable=false` в `/etc/gdm/custom.conf` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). Чёрный экран *до* входа — это драйвер/`nomodeset` выше, не этот случай.
 
@@ -140,6 +140,7 @@ CONFIG_SND_HDA_CODEC_HDMI_ATI=m
 - Bluetooth-звук как альтернатива — https://t.me/c/2424231195/89769
 - Референс по I/O железа (`1x DisplayPort`) — [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) · [`hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
 - DP 1.4 / 4K@120 / HDR10, лимиты разрешения+кабеля, MST-хабы (макс 2), DisplayLink, чёрный экран при входе на Wayland — elektricM [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
+- HDR + VRR работают на CachyOS (Plasma 6 + Wayland) против поломки на Bazzite; Forza Horizon 6 1440p High HDR+VRR через UGREEN DP→HDMI 2.1 — отзыв сообщества r/BC250Gaming (Reddit) (см. [06-linux.md](06-linux.md))
 - Звук активный-vs-пассивный переходник (обратный вывод), проверка llvmpipe на низком разрешении — elektricM [`troubleshooting/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)
 
 > Настройка драйверов/ядра — в [06-linux.md](06-linux.md); косяки звука/вывода также проиндексированы в [troubleshooting.md](troubleshooting.md) и [faq.md](faq.md).
