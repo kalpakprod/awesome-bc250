@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/img/banner.jpg" alt="awesome-bc250 — библия новичка для AMD BC-250" width="100%">
+  <img src="assets/img/hero.jpg" alt="awesome-bc250 — библия новичка для AMD BC-250" width="100%">
 </p>
 
 # Awesome BC-250 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
