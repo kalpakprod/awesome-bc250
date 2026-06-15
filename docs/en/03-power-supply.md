@@ -53,6 +53,8 @@ This is the single most-repeated safety warning in the chat. Cheap pre-made adap
 
 **Test before you trust:** a magnet sticks to steel, not to copper. If a connector or wire is magnetic, throw the cable out.
 
+This isn't only no-name cable. **Apevia Flex/ITX PSUs have been seen with steel wires** — magnet-test them, because steel gets very hot under load and is a fire hazard. The **Apevia ITX-PFC400W** Mini-ITX uses a **14-pin connector** (it works with the [LITE adapter](#automatic-ps_on--community-adapter) below, but is advised against). (r/BC250Gaming)
+
 ---
 
 ## Wire gauge & connector guidance
@@ -142,6 +144,16 @@ You do not need the rack backplane. The repeated chat recipe is simply: **run on
 
 Only populate the **12 V and GND** positions (match the pinout table above); leave `PGD` / `LED1` / `LED2` empty. Use the same **real-copper, ≥16 AWG** wire and crimp discipline as the [main 8-pin — see wire-gauge guidance](#wire-gauge--connector-guidance); a hand-crimped 12 V feed that overheats is exactly the fire risk described earlier in this chapter.
 
+### Feeding a 40-CU board — the triple-output cable mod
+
+After a **40-CU unlock** the board can pull **~280 W at the wall** in FurMark (measured in CPU-X), and a **single 8-pin PCIe peaks ~220 W** in FurMark — so a heavily-unlocked board wants more than one feed. The **[Metalfish 500W](#popular-psu-models-the-community-uses)** has **3 shared PCIe/CPU outputs**; for a 40-CU build, wire **all three** to the board (a *"triple-output cable mod"*):
+
+- Use **18 AWG** — the cables stay cool under FurMark; before splitting the load across 3 feeds they got dangerously hot.
+- **Board side** = Micro-Fit 3.0 sockets; **PSU side** = 4.2 mm Mini-Fit PCIe sockets. **Map every wire with a multimeter first.**
+- Rough gauge math from the thread: 18 AWG ≈ **5 A @ 12 V ≈ 60 W per wire** × 3 in one connector ≈ 180 W, × 2 connectors ≈ 360 W — **but parallel conductors do not share current equally, so don't run them to the limit.**
+
+(Credit: **Korayosulu**, r/BC250Gaming, inspired by an Oldlamer YouTube video.)
+
 > **Attribution:** the J2000/J2001 pinout above is from the **elektricM hardware documentation**, whose reverse-engineering is built on **[mothenjoyer69's bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation)** (credit also to Segfault, neggles, yeyus). The hands-on crimp method and part numbers come from the community chat, cited inline.
 
 ---
@@ -186,13 +198,64 @@ The board has **no native ATX power control** — it boots the instant 12 V appe
 - **Set the board's `AUTO_PWRON` jumper to auto-on-when-powered.** With that jumper in the auto-on position, the BC-250 boots as soon as the PSU delivers 12 V — so the PSU's PS_ON switch becomes a true single power button for the system.
 - **Find PS_ON before you bridge it on a modular PSU — the pin location varies by model.** On standard 24-pin wiring it's the green wire, but modular units differ: a **TFSkywind 350 W** uses the **two center pins of each row (4 + 11)**, while an **Apevia 400/500 W** uses **two pins on the same row (8 + 13)**. Check yours (multimeter / the PSU's own pinout) rather than assuming green/pin-16.
 - **Trim a cheap PSU down to a clean harness.** You only need **1 green (PS_ON) + 3 yellow (12 V) + 6 black (GND)** for the board; the rest of the bundle can be cut away for a tidy build.
-- **Stop the PSU fan during sleep (community workarounds).** Because the PSU keeps running while the board sleeps, some owners **daisy-chain the PSU fan to the BC-250's fan header** so it spins down with the board, or wire a **small transistor so PS_ON follows board power**. Treat these as experimenter hacks, not a documented spec.
+- **Stop the PSU fan during sleep (community workarounds).** Because the PSU keeps running while the board sleeps, some owners **daisy-chain the PSU fan to the BC-250's fan header** so it spins down with the board. The cleaner, properly engineered fixes for this are the **[community adapter](#automatic-ps_on--community-adapter)** and the **[true-ATX hardware mod](#true-atx-hardware-mod-iamdarkyoshi)** below — both make the PSU shut off completely when the board is off, instead of leaving it idling.
+
+### Automatic PS_ON — community adapter
+
+The methods above leave PS_ON either permanently bridged (PSU never fully off) or on a switch you flip by hand. **u/pilim_** (r/BC250Gaming) sells a **"BC250 ATX PSU Control Adapter"** that holds PS_ON **automatically**, so you can use a normal PC PSU **without** shorting the green PS_ON wire or wiring a latching button. Store: https://mosfet.party/products/adapter-1
+
+How it auto-triggers:
+
+1. You press a button → the adapter asserts **PS_ON**.
+2. The BC-250 (set to **auto-power-on in BIOS**) boots and raises a **`system_on`** signal.
+3. The adapter **holds PS_ON** for as long as that signal is present.
+4. On OS shutdown the signal drops → the adapter keeps PS_ON for **~3 more seconds** so peripherals power down cleanly → then the **PSU goes fully off**.
+
+The `system_on` signal is read from the **board's fan header**, so **no soldering is required** to install it (and it leaves a port free for a second fan). Because **5VSB draws ~no current at idle**, the PSU shuts off completely — this fixes the common *"PSU fan keeps spinning while the board is off"* problem listed above as an unsolved hack.
+
+**Three versions:**
+
+| Version | What it is | Rough price |
+|---------|-----------|-------------|
+| **FSP500 plug-and-play** | Solderless; uses the FSP500-30AS 10-pin cable | ~$35–45 |
+| **Universal "LITE"** | Bare PCB with solder pads | ~$25 |
+| **24-pin plug-and-play** | For standard 24-pin PSUs | — |
+
+**Compatibility:**
+
+- The **FSP500 plug-and-play** works with the **FSP500-30AS** (and some other 10-pin PSUs) but **not** a standard 24-pin (e.g. Corsair CV750) — for those use the **LITE** or **24-pin** version.
+- The **LITE / 24-pin** versions work with the **Metalfish 500W**.
+- It will **not** drive a **Mean Well LOP** — the LOP has no enable pin, so it would need an external relay.
+
+**Button / LED I/O:** accepts any **normally-open** button (even two bare wires touched together); has an onboard button plus footprints for a **6×6 mm** button and a **mechanical-keyboard switch**. An optional **`BTN_OUT`** can solder to the BC-250's internal power button (1 wire) to shut down from the button.
+
+**Open-source:** the maker has published the wiring diagrams and 3D models on their **GitHub / GitLab**, linked from [mosfet.party](https://mosfet.party/products/adapter-1). A ready case slot exists too — the **NexGen3D "Redux" case (v4.1)** has a mount for the LITE PCB: https://www.printables.com/model/1614131
+
+### True-ATX hardware mod (iamdarkyoshi)
+
+> ⚠️ **Advanced, at-your-own-risk hardware mod.** This rewires the board's power circuitry — a slip burns the board. The [adapter above](#automatic-ps_on--community-adapter) gets you the same convenience with no soldering.
+
+**iamdarkyoshi** (r/BC250Gaming) reverse-engineered the BC-250 power circuitry and modified it for **true ATX behaviour**: power on the BC-250 → the PSU wakes; shut it down → the PSU turns off; standby features (e.g. USB-port power) still work.
+
+ATX-standard wiring used:
+
+| Wire colour | Signal |
+|-------------|--------|
+| **Green** | PS_ON (Power On) |
+| **Purple** | +5VSB |
+| **Grey** | PG (Power Good) |
+
+Confirmed working on a **Corsair SFX450** / SFX450-class units. The mod **removes an inductor**; note that **`PLD5`** is the inductor just above the one removed for the mod, and **its left side carries 5 V** — handy for tapping standby 5 V.
+
+Write-up: YouTube https://youtube.com/watch?v=jIhgyB8x3fQ · BC-250 Discord https://discord.gg/8eZfFWhczz
 
 ---
 
 ## Popular PSU models the community uses
 
 These are the exact units people in the chat actually built with — **community-shared picks, not endorsements.** Whatever the form factor, remember the board needs **a single 12 V rail wired to one PCIe 8-pin (6+2)** — see the [pinout (J1000)](#the-8-pin-pinout-j1000) and [wire-gauge guidance](#wire-gauge--connector-guidance) above. Anything not enclosed (Mean Well, server bricks, salvaged console PSUs) you wire the 8-pin yourself.
+
+> **Geo pick (r/BC250Gaming):** **outside the US**, the **Metalfish 500W Flex ATX** is the community choice; **inside the US**, the **FSP500-30AS**. The **Metalfish 600W** variant is reported **not** reliable — stick to the 500W, which NexGen3D tested even under extreme OC and which is a recommended model in the [bc250 documentation](https://github.com/mothenjoyer69/bc250-documentation). Its only downside is fan noise — swap in a Noctua.
 
 | Model | Form factor | Rough wattage | Note |
 |-------|-------------|---------------|------|
@@ -205,6 +268,10 @@ These are the exact units people in the chat actually built with — **community
 | **PS3 FAT ("phat") PSU** | Salvaged console brick | ~32 A on 12 V (~380 W class) | Cheap salvage option, *"more than enough and very stable"* ([src](https://t.me/c/2424231195/62332)); confirmed in long-term use ([src](https://t.me/c/2424231195/78829), [src](https://t.me/c/2424231195/78821)). Wiring tap: solder to the 12 V / 12 V-RTN pads, bridge STBY+5V to start ([src](https://t.me/c/2424231195/102734)). **First-revision units output the most wattage** (early FATs shipped a ~400 W PSU ([src](https://t.me/c/2424231195/9254))) — ⚠ verify which revision you have, later ones derate. |
 | **Huntkey 360W** (ASIC PSU) | ASIC-miner brick | 360 W, each cable 180 W | A salvaged ASIC supply, *"each cable 180 W"* ([src](https://t.me/c/2424231195/37009)). |
 | **Pico-PSU** style | Pico (12 V DC-DC) | low — feeds rails, not the APU | Mentioned for ultra-compact / lower idle draw ([src](https://t.me/c/2424231195/66387), [src](https://t.me/c/2424231195/123545)). ⚠ verify — in the chat a Pico-PSU is a 12 V→5/3.3 V converter for a motherboard, paired with an external 12 V brick that does the real work ([src](https://t.me/c/2424231195/66064)); it is **not** a standalone 12 V source for the 8-pin. |
+| **Metalfish 500W** Flex ATX | Flex ATX | 500 W | **The non-US community pick** (see geo note above). NexGen3D tested it even under extreme OC; only downside is fan noise (swap in a Noctua). Has **3 shared PCIe/CPU outputs** — see the [40-CU triple-output feed](#feeding-a-40-cu-board--the-triple-output-cable-mod) below. (r/BC250Gaming) |
+| **FSP500-30AS** | Flex ATX (10-pin) | 500 W | **The US community pick** (see geo note above). Originally built for NUC systems, so **short the main lead to force it on**, like a 24-pin ATX. ~$10–30 on eBay. Works with the [FSP500 plug-and-play adapter](#automatic-ps_on--community-adapter). Re-pin tip below. |
+
+> **FSP500-30AS no-crimp re-pin trick (r/BC250Gaming).** The RTX 30-series Founders Edition shipped a **dual female-PCIe → 12-pin Micro-Fit pigtail**; buy one aftermarket (~$12–18 on Amazon), plus blank Micro-Fit housings and a **~$6 Micro-Fit pin-ejector tool**, then **extract the factory-crimped pins and re-slot them** into new housings matching the BC-250 pinout — **no cutting, crimping or soldering**.
 
 ---
 
@@ -249,7 +316,10 @@ Whatever you pick: **single 12 V rail, ≥300 W, real-copper wire ≥16 AWG, PCI
 - Hardware reference (connector, pinout, AWG, J2000/J2001) — [mothenjoyer69/bc250-documentation `hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md) · [J2000/J2001 section](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md#j2000-and-j2001)
 - PCIe-vs-CPU polarity & pinout warning — https://t.me/c/2424231195/14450
 - Single-rail vs multi-rail 12 V — https://t.me/c/2424231195/7561
-- Fake copper-clad-steel wire fire hazard — https://t.me/c/2424231195/108733 · https://t.me/c/2424231195/133546
+- Fake copper-clad-steel wire fire hazard — https://t.me/c/2424231195/108733 · https://t.me/c/2424231195/133546 · Apevia steel-wire / ITX-PFC400W 14-pin warning — r/BC250Gaming
+- Automatic PS_ON adapter (u/pilim_, "BC250 ATX PSU Control Adapter") — store https://mosfet.party/products/adapter-1 · NexGen3D "Redux" v4.1 LITE mount https://www.printables.com/model/1614131 · r/BC250Gaming
+- True-ATX hardware mod (iamdarkyoshi) — YouTube https://youtube.com/watch?v=jIhgyB8x3fQ · BC-250 Discord https://discord.gg/8eZfFWhczz · r/BC250Gaming
+- Metalfish 500W (non-US pick) / FSP500-30AS (US pick), 600W not reliable, 40-CU triple-output cable mod (Korayosulu, after an Oldlamer YouTube video), FSP500-30AS no-crimp re-pin trick — r/BC250Gaming
 - HP Flex 500 W full guide (start procedure, fan, 40 A wiring) — https://t.me/c/2424231195/31076 · fan noise follow-up — https://t.me/c/2424231195/33455
 - PS3 FAT PSU as a 12 V source — https://t.me/c/2424231195/62332 · tap/start method https://t.me/c/2424231195/102734 · long-term use https://t.me/c/2424231195/78829 · https://t.me/c/2424231195/78821 · first-rev ~400 W PSU https://t.me/c/2424231195/9254
 - Popular community PSU models — Mean Well LOP-300 builds https://t.me/c/2424231195/80841 · https://t.me/c/2424231195/78870 · https://t.me/c/2424231195/134585 · https://t.me/c/2424231195/74703 · LRS-350-12 https://t.me/c/2424231195/41013 · LOP-500-12 https://t.me/c/2424231195/111161 · Seasonic/flex-ATX https://t.me/c/2424231195/30914 · https://t.me/c/2424231195/84001 · TFX Vinga 400W https://t.me/c/2424231195/118771 · SFX in NR200P https://t.me/c/2424231195/81149 · Huntkey 360W ASIC https://t.me/c/2424231195/37009 · Pico-PSU https://t.me/c/2424231195/66387 · https://t.me/c/2424231195/66064 · https://t.me/c/2424231195/123545

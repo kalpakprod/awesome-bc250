@@ -113,6 +113,14 @@ A white rectangular case styled like a hi-fi/microwave front: a large **stadium-
 
 A small silver-and-black console box with a mesh side intake and a dark front carrying a cyberpunk-style emblem and an RGB strip, shown sitting next to a TV as a living-room machine ([src](https://t.me/c/2424231195/135995)). Part of a long line of revisions (v15/v19/v20 source images were shared early on).
 
+### BC250 Vented Edition (MaelremremDotXYZ)
+
+A minimalist **FlexATX** console run **fins-open**, holding **~67 °C @ 2145 MHz / 1.1 V**, with a rear PSU kill-switch. [MakerWorld 2899020](https://makerworld.com/en/models/2899020).
+
+### Stellar 250 (isaacalvex)
+
+A full self-contained console with a complete **build guide**: internal storage, **WiFi 6**, and an **ESP32 temperature display**. [GitHub isaacalvex/AMD-BC-250-Project-Guide](https://github.com/isaacalvex/AMD-BC-250-Project-Guide).
+
 ---
 
 ## Tier 4 — Big builds: ATX PSU, AIO liquid, screens
@@ -138,6 +146,14 @@ For a full **ATX** power supply: a case built around a complete ATX PSU ([src](h
 
 A redesigned mounting plate carrying **two 120 mm fans** — one ducted to the backplate (memory) as the board's designer intended, the second feeding the PSU. With Lian Li P28 fans front + a Thermalright C12015, the author holds **2200 MHz at 80 °C in games**, where a single front fan wasn't enough ([src](https://t.me/c/2424231195/120606)). A standalone **`Twin_120mm_Fan_Shroud.stl`** is shared for this ([src](https://t.me/c/2424231195/121684)).
 
+### The Lanboy — portable arcade / lunchbox
+
+A portable lunchbox-arcade build: it drives a **16″ laptop eDP panel (1920×1200 @ 165 Hz)** through an **eDisplayPort adapter board** ([AliExpress](https://www.aliexpress.com/item/1005006351527252.html)), 2× 2″ speakers on a USB amp, all powered off a single **12 V ATX breakout**. [Printables 1746364](https://www.printables.com/model/1746364). The eDP-adapter trick is reusable for **any** laptop-panel build.
+
+### BC250-HUD (Bloodyly) — internal status screen
+
+A Qt5/C++ **status-screen app for a Raspberry Pi Zero 2** (used in builds like the NexGen3D Redux): **60 FPS over USB gadget mode**, reads FPS/frametime from MangoHud, senses fan voltage to dim the screen on sleep, and **includes the vc4 kernel patch** that otherwise freezes the Pi. Screen: **8.8″ 1920×480 IPS** (Hannstar HSD088IPW1-A). [GitHub Bloodyly/BC250-HUD](https://github.com/Bloodyly/BC250-HUD).
+
 ---
 
 ## Adapters & mounts (not full cases)
@@ -147,6 +163,8 @@ Small printed parts that solve one problem — usually mounting a cooler or fan 
 - **Fan shrouds** (seal a fan to the fins): `Fan_Shroud_Single_120mm.stl`, `Fan_Shroud_Dual_120mm.stl`, `Fan_Shroud_Single_120mm_Restricted.stl`, `Fan_Shroud_Single_140mm.stl` ([src](https://t.me/c/2424231195/81673)), `Twin_120mm_Fan_Shroud.stl` ([src](https://t.me/c/2424231195/121684)). Also catalogued in [Cooling](04-cooling.md).
 - **Backplate / memory fan mounts:** `Backplate.stl` + `backplane-top-fixed.stl` ([src](https://t.me/c/2424231195/133049)); `bottom_fan_mount.stl`, `top_fan_mount.stl`, `Front-Mount.stl`, `Back-Mount.stl` ([src](https://t.me/c/2424231195/131189))
 - **AM4 cooler adapters** (bolt a standard CPU cooler to the die): `bc250 am4 adapter polished.stl`, `bc250 cooler mount.stl` ([src](https://t.me/c/2424231195/9949)). See also [Printables 1042228 — BC250→AMD CPU-cooler mount](https://www.printables.com/model/1042228-bc250-to-amd-cpu-cooler-mount).
+- **Generic ITX mount** (majzok): prints in two parts that snap into a frame — screw the BC-250 into it, then screw the frame into **any case with standard ITX motherboard holes** (tested in a DeepCool CH170 PLUS). Solves the "no generic ITX mount exists" problem. No canonical Printables link captured — search Printables/MakerWorld for **"BC-250 ITX Mount"**.
+- **Thermalright AXP90-X53 / AXP120-X67 adapter** (low-profile cooler on the die): a printed mount needing M3 threads, with thickness variants by cooler/CPU pressure — [Printables 1694793](https://www.printables.com/model/1694793). Also in [Cooling](04-cooling.md).
 - **120 mm fan adapter:** `BC250_FanAdapter_120mm.step` ([src](https://t.me/c/2424231195/83135)), `cooler adapter v3.0 (1).stl` ([src](https://t.me/c/2424231195/111091))
 - **Accurate board models** (design your own case against these): [Printables 1341336 — accurate BC-250 board](https://www.printables.com/model/1341336-accurate-3d-model-of-the-amd-bc-250-board) ([src](https://t.me/c/2424231195/55496)), [Printables 1103626 — AMD BC250 board](https://www.printables.com/model/1103626-amd-bc250-board)
 
@@ -178,6 +196,12 @@ Files marked *(chat)* are mirrored under `assets/stl/`; everything else download
 | **BC-250 Scooper** | shroud/scoop | Printables files | 120 | [Printables 1282906](https://www.printables.com/model/1282906-bc-250-scooper) |
 | **Pitman case** | console | Printables files | 120 | [Printables 1570248](https://www.printables.com/model/1570248-amd-bc-250-pitman-case) |
 | **Industrial-style FlexATX** | console | `amd_bc_250_industrial_style_case...zip` *(chat)* | 120 (no stock cooler) | [chat #144265](https://t.me/c/2424231195/144265) |
+| **The Lanboy** | portable arcade + 16″ eDP screen | Printables files | 12 V ATX breakout | [Printables 1746364](https://www.printables.com/model/1746364) |
+| **BC250 Vented Edition** (MaelremremDotXYZ) | FlexATX console, fins-open | MakerWorld files | 120 | [MakerWorld 2899020](https://makerworld.com/en/models/2899020) |
+| **Stellar 250** (isaacalvex) | console + build guide (WiFi6, ESP32) | GitHub guide | 120 | [GitHub isaacalvex/...Project-Guide](https://github.com/isaacalvex/AMD-BC-250-Project-Guide) |
+| **BC250-HUD** (Bloodyly) | internal Pi Zero 2 status screen | GitHub sources | — | [GitHub Bloodyly/BC250-HUD](https://github.com/Bloodyly/BC250-HUD) |
+| **Generic ITX mount** (majzok) | adapter (any ITX case) | search Printables/MakerWorld | — | "BC-250 ITX Mount" |
+| **Thermalright AXP90/AXP120 mount** | low-profile cooler adapter | Printables files | low-profile tower | [Printables 1694793](https://www.printables.com/model/1694793) |
 | **Twin-120 mount plate** | adapter plate | `Twin_120mm_Fan_Shroud.stl` *(chat)* | 2× 120 | [chat #121684](https://t.me/c/2424231195/121684) |
 | **Fan shrouds (120/140)** | shroud | `Fan_Shroud_Single_120mm.stl`, `_Dual_120mm`, `_Single_140mm`, `_120mm_Restricted` *(chat)* | 120 / 140 | [Printables 1339540](https://www.printables.com/model/1339540-yet-another-bc-250-fan-shroud) · see [Cooling](04-cooling.md) |
 | **AM4 cooler adapter** | mount | `bc250 am4 adapter polished.stl`, `bc250 cooler mount.stl` *(chat)* | tower/AIO | [Printables 1042228](https://www.printables.com/model/1042228-bc250-to-amd-cpu-cooler-mount) |
@@ -248,6 +272,8 @@ Named, downloadable designs from [elektricM's 143-design catalog](https://elektr
 | **Case Remix for TFX** (PlayNation) | TFX-400 PSU | [MakerWorld 2387157](https://makerworld.com/en/models/2387157) |
 | **VESA 100/75 Basket** (Oleksii) | mount behind a monitor | [MakerWorld 1844470](https://makerworld.com/en/models/1844470) |
 | **3.9L MKII FlexATX + PS5 fan** (FitFormSolutions) | buy a finished kit | [Etsy](https://www.etsy.com/listing/4405362103/) · [eBay](https://www.ebay.com/itm/127460591552) |
+| **Shiny Snake S400** (10.8 L mesh ITX) | known-good off-the-shelf host (BC-250→AM4 mount + H60 AIO in PSU bay + custom ATX I/O shield) | [AliExpress](https://a.aliexpress.com/_EyQdoBU) |
+| **SFX-PSU minimalist case** (Methsman) | full SFX PSU, magnet panels, USB hub, AXP120 + Noctua 120 — *files WIP / not yet released* | — |
 | **Cults3D ATX/server line** (KABANCHYK, lumstudio, kapa3D) | paid STLs | [Cults3D — bc-250](https://cults3d.com/en/3d-model/gadget/bc-250-atx-case) |
 
 ---
@@ -256,7 +282,8 @@ Named, downloadable designs from [elektricM's 143-design catalog](https://elektr
 
 - **Buy a print.** Sellers exist on [Etsy](https://www.etsy.com/listing/1904632447/), eBay and OLX; people also offered to print/sell cases in-chat ([src](https://t.me/c/2424231195/55507)).
 - **Print-on-demand:** upload an STL to a service. Builders in the chat run print farms (one shows a wall of Flsun/Creality/Bambu printers, [src](https://t.me/c/2424231195/73481)).
-- **No case at all / repurpose.** Many run the board on an open bench while testing. Others gut existing hardware: an old all-in-one PC with the board implanted and a blower ([src](https://t.me/c/2424231195/30914)), a ventilation-duct box ([src](https://t.me/c/2424231195/64265)), or aluminium amplifier enclosures (needs filing/drilling, [src](https://t.me/c/2424231195/108907)). One member even hid the board inside an old VHS player as a joke ([src](https://t.me/c/2424231195/84106)).
+- **No case at all / repurpose.** Many run the board on an open bench while testing. Others gut existing hardware: an old all-in-one PC with the board implanted and a blower ([src](https://t.me/c/2424231195/30914)), a ventilation-duct box ([src](https://t.me/c/2424231195/64265)), or aluminium amplifier enclosures (needs filing/drilling, [src](https://t.me/c/2424231195/108907)). One member even hid the board inside an old VHS player as a joke ([src](https://t.me/c/2424231195/84106)). **Xbox One shell** (JoeyDepDollas): gut a broken Xbox One and fit a full BC-250 build inside — keeps CPU & GPU under **60 °C** under load; broken donor consoles run **~$15 shipped** on eBay and yield reusable parts.
+- **Laser-cut plywood** (ContributionRich3242): not 3D-printed — kerf-bent plywood around the corners with a large rear area for extra cooling, hitting **75 °C at 40 CU** (1800 MHz, CPU 3.9 GHz) and whisper-quiet. (Laser files weren't released.) Its **backplate-cooling technique** is reusable on any case: thermal putty chip→backplate, paste backplate→rear coolers, and secure the rear coolers with tight R-type cotter pins in the VRM gap + Kapton tape (~20 °C cooler at 40 CU).
 
 > A naked, well-cooled board outperforms a sealed pretty box with poor airflow. Get [Cooling](04-cooling.md) right first; the case is the second step.
 

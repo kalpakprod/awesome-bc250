@@ -26,6 +26,8 @@ Aim for **70–80 °C GPU in games**. ([elektricM Cooling](https://elektricm.git
 
 > **Pixel artifacts during gaming = VRAM overheating.** Because the back-side GDDR6 has no sensor, that visual glitch is your warning sign — add backplate airflow/pads (below). ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
+> **Silicon lottery — budget thermal headroom per chip.** Two physically identical boards, identical chassis and OC config, can run **5–10 °C apart**, and the hotter one stayed hotter even after re-pasting/re-padding. Don't assume someone else's temps will match yours. ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
+
 ```mermaid
 flowchart LR
     Fan["Intake fan 120mm high static pressure"] -->|"push air THROUGH"| Fins["Thinned heatsink fins"]
@@ -66,9 +68,10 @@ The stock fins are too dense and often uneven. People open up the channels so ai
 - **Orbital (eccentric) sander** — fastest, done in minutes, best result. ([src](https://t.me/c/2424231195/31571))
 - **Sandpaper by hand** — 60 grit then 240 grit, ~3–4 h + 2 h over two days. Works but slow. ([src](https://t.me/c/2424231195/50330))
 - **Scissors / snips** — crude "чекрыжить" method, last resort; results are worst. ([src](https://t.me/c/2424231195/41252))
+- **Scissors + ruler guide (clean variant)** — slide craft/hairdresser scissors into the fin gap with a **ruler angled against the blade as a guide**; a pocket-knife "can-opener" works equally well. Caveat: some board variants have **no gap to start the blade** — pry one open with a screwdriver/tweezers, or cut an entry slot with a **small Dremel cutting wheel**. Blades wider than the fin slots can damage the heatsink. ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
 - Straighten bent fins with a **flat tweezers + pliers**. ([src](https://t.me/c/2424231195/30670))
 - **Pull fins off by hand** — elektricM notes the soft aluminium fins can be **cleanly torn/pulled apart by hand** (heatsink off the board), avoiding the metal swarf that cutting tools create. Slower but debris-free. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
-- **"Scooper by Justin"** — a **3D-printable tool made specifically for pressing/opening the BC-250 heatsink fins** ([Printables 1282906](https://www.printables.com/model/1282906-bc-250-scooper)). Safer than a bare screwdriver: it stops you pushing too hard and gouging the heatsink **base** between the fins. ([r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/))
+- **"Scooper by Justin"** — a **3D-printable tool made specifically for pressing/opening the BC-250 heatsink fins** ([Printables 1282906](https://www.printables.com/model/1282906-bc-250-scooper)). Safer than a bare screwdriver: it stops you pushing too hard and gouging the heatsink **base** between the fins. ([r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)) Set expectations: one owner reported the printed **"comb/scooper" tool broke on the 2nd use** and cramped the hands. ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
 - **Hobby pliers — "peel" method** — grip the **top** of the fins with small hobby pliers and peel them off, **using the metal's own memory as a break point** so they snap cleanly at the bend rather than tearing the base. A debris-light alternative to cutting. ([r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/))
 
 Rough temperature payoff (elektricM): **straightening bent fins ~5–10 °C**, **removing center fins ~10–15 °C** (irreversible — a good fan shroud gets similar gains without cutting), **fresh paste ~5–10 °C** if the old paste had dried. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
@@ -106,6 +109,9 @@ Use a **printed fan shroud/adapter** so the fan seals against the heatsink inste
 
 > ⚠ **Don't drill/screw fans directly into the fins.** The aluminium is soft and the fins are thin — screwing into them damages the fin stack and hurts cooling. Use zip ties or a printed shroud. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
+### Alternative: keep the stock fins (no-cut push-pull case)
+Cutting the fins isn't mandatory. **penzoiders** designed a case ([MakerWorld, FreeCAD source](https://makerworld.com/models/2505974)) that does **not** cut the heatsink: it uses **push-pull high-static-pressure fans** to force air through the **stock, un-modified fins**, plus a **two-chamber pressure differential** that also cools the backplate (5 mm heatsinks + thermal pads; reused NVMe heatsinks work). A tuning that stays cool: **CPU 3800 MHz / 1050 mV, GPU 2100 MHz / 950 mV** → parallel Furmark + `stress-ng` stays **below 85 °C**; gaming **~75 °C at roughly 50 % fan duty** (CoolerControl curve), "barely audible". ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
+
 ## Path B — AIO liquid cooler
 
 A 120 mm AIO mounted to the die via an adapter bracket. Quiet and cold, but more parts and cost. Popular builds use cheap AIOs (e.g. aigo). ([example src](https://t.me/c/2424231195/19336))
@@ -115,13 +121,28 @@ A 120 mm AIO mounted to the die via an adapter bracket. Quiet and cold, but more
   <sub>Photo: AMD BC-250 community · <a href="https://t.me/c/2424231195/19336">source</a></sub>
 </p>
 
+**Named, downloadable AIO bracket — NexGen3D** ([Printables 1554003](https://www.printables.com/model/1554003), print in ABS-GF or PETG). Verified with a **Thermalright 240 mm AIO**: GPU **~50 °C @ 2000 MHz**, CPU **max 60 °C**. ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
+
+### Liquid-cooled overclock profiles
+With an AIO you can push much harder. **NexGen3D** wall-measured (Furmark Vulkan + `stress-ng --matrix 0 -t 60m` as the burn combo):
+
+| Profile | CPU | GPU | Max burn temp | Wall power | Note |
+|---------|-----|-----|---------------|------------|------|
+| 1 | 4000 MHz | 2400 MHz | ~65 °C | >350 W | "dead silent" |
+| 2 | 4100 MHz | 2450 MHz | ~75 °C | <400 W | hotter, louder |
+
+Normal 1080p gaming runs **10–15 °C below** these burn temps and **under 250 W** on Profile 1. **Airflow scheme worth copying:** the 120 mm fans **exhaust out through the radiator**, which pulls fresh external air in across the **VRMs / PSU / VRAM backplate**; a separate **80 mm fan (Arctic P8 Max)** cools the GPU VRMs — this answers the "un-sensored VRM/VRAM still need airflow" warning above. ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
+
 ## Path C — Blower ("улитка") — not recommended
 
 Salvaged GPU blower fans were an early experiment. Loud for the result; people moved to Path A. ([src](https://t.me/c/2424231195/100086))
 
 ## Path D — Tower cooler conversion (advanced)
 
-Some users bolt an **AM4 tower cooler** (e.g. **Thermalright Peerless Assassin**, or other AM4/AM5 towers) onto the die for excellent, quiet cooling using off-the-shelf hardware. The catch: you must **fabricate a custom mounting bracket**, and a tall tower may **block the M.2 slot or other components**. Not a beginner mod. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+Some users bolt an **AM4 tower cooler** (e.g. **Thermalright Peerless Assassin**, or other AM4/AM5 towers) onto the die for excellent, quiet cooling using off-the-shelf hardware. The catch: you must **mount it via a bracket**, and a tall tower may **block the M.2 slot or other components**. Not a beginner mod. You no longer have to fabricate one from scratch — two published 3D-printed brackets exist:
+
+- **AM4/AM5 desktop-cooler adapter** ([MakerWorld 2596083](https://makerworld.com/en/models/2596083), FreeCAD source included). Mounts a standard desktop AM4/AM5 cooler to the BC-250. Fastening: **M5 bolts + nuts, no standoffs** (OP notes M4 would be ideal but M5 was a snug fit). Print in **ABS, PETG, or ASA**. Verified at **CPU 3.95 GHz / 1.150 V, GPU 2200 MHz / 1000 mV, temps not exceeding 80 °C**. Coolers used: a low-profile **AXP90-class** (a commenter used an **AXP120**), and even an **AMD Wraith Spire** beat the stock heatsink. ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
+- **Thermalright AXP90-X53 mount** ([Printables 1694793](https://www.printables.com/model/1694793)). Threaded inserts are **soldered into the underside** of the printed bracket so you **reuse the original spring-loaded stock-heatsink screws**; button-head bolts come up from the bottom and are counter-sunk, and the bracket has a **0.5 mm gap under the brace** to clear board components. Designed in Fusion 360, **print in PETG** (PLA softens at these temps). Result: **65–67 °C under full load @ 2150 MHz, 1080p**, very quiet (copper cooler, paired with a 120 mm Arctic P12 Pro). Measured stack height **54 mm from PCB to top of the 15 mm fan** — useful for case fit. A **3-thickness variant set** and an **AXP120-X67** version also exist. ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
 
 ---
 
@@ -232,6 +253,7 @@ There's also a short video walkthrough of the simplest method pinned in the topi
 - AIO example — https://t.me/c/2424231195/19336
 - Thermal interface — repaste −4–5 °C https://t.me/c/2424231195/88565 · MX-6 https://t.me/c/2424231195/30211 · stock baseline https://t.me/c/2424231195/22992 · PTM7950 https://t.me/c/2424231195/101582 · https://t.me/c/2424231195/61511 · PTM7950 build + backplate https://t.me/c/2424231195/125748 · pad thickness https://t.me/c/2424231195/121181 · liquid metal https://t.me/c/2424231195/18098 · https://t.me/c/2424231195/69688
 - elektricM cooling guide (heatsink variants, per-component temp table, sustained-load data, fan specs, CoolerControl/BIOS fan modes, tower cooler, pad scheme) — https://elektricm.github.io/amd-bc250-docs/hardware/cooling/
+- r/BC250Gaming (community reports: silicon-lottery variance, scissors+ruler fin method, comb-tool breakage, no-cut push-pull case, AIO bracket + 240 mm result, liquid OC profiles, AM4/AM5 + AXP90-X53 brackets) — https://www.reddit.com/r/BC250Gaming/ · AM4/AM5 cooler adapter [MakerWorld 2596083](https://makerworld.com/en/models/2596083) · AXP90-X53 mount [Printables 1694793](https://www.printables.com/model/1694793) · NexGen3D AIO bracket [Printables 1554003](https://www.printables.com/model/1554003) · no-cut push-pull case [MakerWorld 2505974](https://makerworld.com/models/2505974)
 - Hardware reference — [mothenjoyer69/bc250-documentation `hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
 - Cases/adapters with cooling — [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter)
 
