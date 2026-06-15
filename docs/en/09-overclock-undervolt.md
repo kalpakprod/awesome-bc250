@@ -259,6 +259,11 @@ People are running **40 CU @ 1850 MHz** (RE4 Remake native 1440p high, 60 fps) a
 
 > 🎰 **40 CUs is a lottery, not a guarantee — many boards top out at 38.** r/BC250Gaming community reports converge on this: while the die has 40, a lot of chips are only stable at **38 CUs**, and the last one or two commonly cause **graphics artifacts (a tell-tale "line" across the frame) or hard crashes**. Reported stable counts vary by chip — **36, 38, or 40**. Worse, "stable at 40" can be *deceptive*: a board may crash on the first game launch yet run fine on a later attempt, so a single clean benchmark proves nothing. **Recommended method — unlock CUs one at a time and test after each.** Use **[WinnieLV/bc250-cu-live-manager](https://github.com/WinnieLV/bc250-cu-live-manager)** to enable a single CU at a time and validate before adding the next (e.g. FurMark 20+ min plus a couple of game benchmarks per step). A bad CU **instantly locks the system**, so each test tells you exactly which CU to leave masked — far safer than flipping all 16 on at once and hoping. Treat "24 → 40" as the best case; plan for **38** ([r/BC250Gaming community reports](https://www.reddit.com/r/BC250Gaming/)).
 
+The chart below sums up why this lever is worth it but tricky: **compute scales strongly with CUs** (the Superposition / llama-bench jumps above), while **gaming FPS barely moves because most titles are CPU-bound**, and power draw and instability climb the higher you go — 38 CUs is the typical stable count, 40 is a lottery.
+
+<p align="center"><img src="../../assets/diagrams/cu40-tradeoff.svg" alt="40-CU unlock: big compute gain, tiny gaming gain, rising power and lottery" width="85%"></p>
+<sub>📈 Editable source: <a href="../../assets/diagrams/cu40-tradeoff.drawio">cu40-tradeoff.drawio</a> (open in <a href="https://draw.io">draw.io</a>). Green = compute, amber = gaming FPS, red = power/instability.</sub>
+
 ### Easiest path — the project build script
 
 [duggasco/bc250-40cu-unlock](https://github.com/duggasco/bc250-40cu-unlock) ships a script that does the build/enable for you (needs `gcc`, `make`, `zstd`, and kernel headers):
