@@ -37,6 +37,9 @@ New board, know nothing? Follow the golden path in order:
 | 11 | [Gaming Results & Settings](docs/en/11-gaming.md) | benchmarks, per-game tuning |
 | 12 | [AI / LLM on BC-250](docs/en/12-ai-llm.md) | llama.cpp, ROCm |
 | 13 | [macOS / Hackintosh](docs/en/13-macos.md) | status |
+| 14 | [Display & Output](docs/en/14-display.md) | DisplayPort, DP→HDMI adapters, dual screen |
+| 15 | [Emulation](docs/en/15-emulation.md) | every console/platform, realistic status |
+| 16 | [USB, Hubs & Storage](docs/en/16-usb-peripherals.md) | hubs, 5V mod, M.2 / SATA adapters |
 | ❓ | [FAQ](docs/en/faq.md) · [Troubleshooting](docs/en/troubleshooting.md) | common problems |
 
 ---

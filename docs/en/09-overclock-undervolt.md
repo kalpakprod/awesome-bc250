@@ -186,6 +186,58 @@ If the count ends in **40**, all CUs are live ([src](https://t.me/c/2424231195/1
 
 ---
 
+## GDDR6 memory: VRAM allocation, overclock & timings
+
+> 🔴 **Read this before anything else in this section. Memory tuning is the one place on the BC-250 that can permanently brick the board.** Unlike the clock/undervolt above — which lives in a governor and clears on reboot — GDDR6 **clock and timings are written into the BIOS/CMOS**, and a bad value can leave the board unable to POST. The community has bricked boards exactly this way: a member set the VRAM clock to **1950 MHz** and killed the board ([src](https://t.me/c/2424231195/55317)); the modded-BIOS author's own release note records a GDDR6 frequency that **booted on one board (1800 MHz) but bricked another** ([src](https://t.me/c/2424231195/54971)), and "too-low timings brick the board, a CMOS reset doesn't help" ([src](https://t.me/c/2424231195/54971), [src](https://t.me/c/2424231195/54851)). Recovery is the BIOS chapter — sometimes a programmer is the only way back. **Do not touch clock/timings unless you have read [08-bios.md](08-bios.md) and accept the brick risk.**
+
+The 16 GB of GDDR6 on the BC-250 is **unified memory (UMA)** — one pool shared between the GPU and the CPU. There are two very different things you can do with it, at two very different risk levels:
+
+| What | Where | Risk | Who should |
+|------|-------|------|------------|
+| **VRAM / UMA allocation** (GPU↔CPU split) | a normal BIOS menu | **safe** — just a buffer size | everyone, this is routine |
+| **GDDR6 clock & timings** | **modded** BIOS only | **brick-level** — see warning above | experts only |
+
+### VRAM / UMA allocation — safe, do this in BIOS
+
+How much of the 16 GB is handed to the GPU vs left for the CPU is an ordinary BIOS setting (no mod needed; even the stripped-down modded BIOS exposes "nothing but the buffer-size setting" ([src](https://t.me/c/2424231195/94419))). The relevant options behave like this ([src](https://t.me/c/2424231195/81203)):
+
+| BIOS option | Observed result |
+|-------------|-----------------|
+| **Auto** | allocates **8 GB** to the GPU |
+| **UMA_SPECIFIED** → Auto | same as Auto (8 GB) |
+| **UMA_AUTO** (automatic) | allocates only **256 MB** — **unreliable, avoid** |
+| **UMA_SPECIFIED** | you pick a fixed size (512 MB / 1 / 4 / 6 / 8 GB) |
+
+> 🔴 **Don't use automatic (`UMA_AUTO`).** It hands the GPU only ~256 MB, which is not enough — at that size only ~2 GB ends up usable and the GPU can fall back to **llvmpipe (software rendering — no GPU acceleration, everything runs on the CPU)** ([src](https://t.me/c/2424231195/81203)). Set a **fixed** buffer instead.
+
+**What to pick — set a small FIXED 512 MB buffer.** The community consensus is blunt: APUs perform best with the videobuffer at the **minimum (512 MB)**, because the driver then **dynamically shares the full 16 GB GDDR6** pool and pulls exactly what the GPU needs on demand ([src](https://t.me/c/2424231195/38599), [src](https://t.me/c/2424231195/17948)). A bigger fixed split is *not* automatically faster — in one member's game benchmarks the VRAM size barely moved average FPS; it mostly affected **minimum / 1%-low** frames and whether a title would even launch (a couple hung at 256 MB / 512 MB / 1 GB and only ran from 4 GB up) ([src](https://t.me/c/2424231195/81203)). The real win of 512 MB is the *split it produces*: at 512 MB a healthy run lands ~**5.8 GB to video / 11.5 GB to RAM / ~1.6 GB swap**, versus a stuck-at-8 GB split that starves the OS ([src](https://t.me/c/2424231195/138294)).
+
+> **It's workload-dependent.** Some games behave differently and a few **hang outright if misconfigured** ([src](https://t.me/c/2424231195/131105), [src](https://t.me/c/2424231195/94993), [src](https://t.me/c/2424231195/139016)). The clearest example: Cyberpunk 2077, if you give it a fixed **4 GB**, stops treating memory above 8 GB as available RAM and **swaps aggressively** even with headroom to spare; at **512 MB** it still grabs ~4–5 GB for the GPU but correctly leaves 12 GB+ for the OS and only swaps once that's exhausted — so one member's standing advice is *"512 and let it sort itself out"* ([src](https://t.me/c/2424231195/94993), [src](https://t.me/c/2424231195/131105)). For most people: **512 MB fixed, avoid auto.** Raise it to **4 GB** only for a specific title that's documented to prefer it (a handful do), or for memory-hungry GPU workloads (see AI/LLM below). One caveat: a fixed VRAM allocation larger than 512 MB can make **Vulkan large-buffer allocations** misbehave (e.g. `llama.cpp`), which a community kernel patch addresses so dynamic allocation still works above 512 MB ([src](https://t.me/c/2424231195/20001), [src](https://t.me/c/2424231195/20002)).
+
+### GDDR6 clock & timings — modded BIOS, expert-only
+
+The default GDDR6 timings are conservative; there is real bandwidth to gain, but **this is BIOS/mod-tool territory, not the governor** — it ties directly to the modded BIOS in [08-bios.md](08-bios.md). The community reference is the pinned **"#BC-250 GDDR6 Memory Explained"** writeup ([src](https://t.me/c/2424231195/126436)); a parallel English note puts it bluntly: *"if you screw this up, you will crash the chip. That said, the defaults suck, there is a lot of performance to be had"* ([src](https://t.me/c/2424231195/55353)).
+
+What the writeup says is tunable (values are **one tester's** results, not universal — ⚠ verify against your own board) ([src](https://t.me/c/2424231195/126436)):
+
+- **`ClockSpeed`** — stock **1750**. **~1875 MHz appears to be the max that will still POST**; above that the board won't boot. Any change here interacts with `tCL`.
+- **`tCL`** (CAS latency) — **24** at 1750 MHz and below; **26** is required at 1755 MHz and above.
+- **`tRAS`** — must equal `tCL + tRCD + 1`; the writeup uses the write-RCD value to bring it down for a slight gain.
+- **`tRCDRD` / `tRCDWR`** — best left at the stock 27 / 19; the tester found lowering them *hurt* performance.
+- **`tRCAb`** — won't POST below ~70; best at 71–72.
+- **`tRFC` / `tREF`** (refresh) — higher reduces power and heat; **12000 is stock, ~13000 won't POST**.
+- Several fields (`tRPAb`, `tRRDS`, `tRRDL`, `tRTP`, `tFAW`) are believed manufacturer-specific and were **left untouched** — the tester had no data on them.
+
+> 🔴 **Why this bricks and the others don't.** These values are written to **CMOS**, and a set that stops the board *before* it reaches the BIOS's settings-reset routine produces a hard brick that **a CMOS clear / battery pull cannot fix** ([src](https://t.me/c/2424231195/54971), [src](https://t.me/c/2424231195/94419)). One member captured the whole-section vibe in a (literal) song — *"перепутал тайминг, не могу загрузиться"* / "mixed up a timing, can't boot" — and feared bricking ([src](https://t.me/c/2424231195/66381)). Some owners avoid BIOS-persistent memory changes altogether because **GDDR6/CMOS write cycles are finite** and prefer a runtime-only approach ([src](https://t.me/c/2424231195/126437)). ⚠ verify: a robust runtime memory-OC tool is not yet established — treat clock/timing edits as BIOS-flash operations and **have a recovery plan first** ([08-bios.md](08-bios.md)).
+
+### Why memory matters for AI / LLM — and that it must be cooled
+
+The headline reason to care about GDDR6 here is **bandwidth and capacity for AI/LLM** work: members run local LLMs on the BC-250, sizing the **UMA allocation as the model buffer** ([src](https://t.me/c/2424231195/57659)) — one reports a 14B model at **~24 tok/s** and working multimodal models, after patching the kernel so `llama.cpp` can see more of the shared memory ([src](https://t.me/c/2424231195/57767)). For these workloads a **larger VRAM split** (above) is the lever that matters far more than risky timing edits.
+
+> 🌡️ **Cool the memory, not just the die.** The GDDR6 chips sit on the **back** of the board and need their own thermal path — the community backplate/heatsink-pad mods exist specifically to cool the memory. Pushing GDDR6 clock (or just running heavy AI workloads) without cooling the chips is asking for instability — see [04-cooling.md](04-cooling.md) for the backplate pads.
+
+---
+
 ## Recommended progression
 
 | Tier | Do this | Expect |
@@ -220,6 +272,9 @@ This tooling changed fast over 2025–2026. Watch the dates:
 - Clock/voltage/heat data — https://t.me/c/2424231195/66972 · https://t.me/c/2424231195/67029 · undervolt stability — https://t.me/c/2424231195/68126 · https://t.me/c/2424231195/136773 · https://t.me/c/2424231195/23545
 - Silicon lottery & safe limits — https://t.me/c/2424231195/50568 · https://t.me/c/2424231195/115726
 - Superposition 24-vs-40-CU result — https://t.me/c/2424231195/137035
+- GDDR6 memory — VRAM/UMA allocation: behaviour & llvmpipe fallback — https://t.me/c/2424231195/81203 · set 512 MB fixed (driver shares full 16 GB) — https://t.me/c/2424231195/38599 · https://t.me/c/2424231195/17948 · correct 5.8/11.5/1.6 split at 512 MB — https://t.me/c/2424231195/138294 · workload-dependent / Cyberpunk swap & hangs — https://t.me/c/2424231195/131105 · https://t.me/c/2424231195/94993 · https://t.me/c/2424231195/139016 · "GDDR6 Memory Explained" timings — https://t.me/c/2424231195/126436 · English timing note — https://t.me/c/2424231195/55353 · CMOS write-cycle caveat — https://t.me/c/2424231195/126437
+- GDDR6 brick risk — 1950 MHz brick — https://t.me/c/2424231195/55317 · freq booted on one board, bricked another / CMOS reset doesn't help — https://t.me/c/2424231195/54971 · timings brick — https://t.me/c/2424231195/54851 · programmer-only recovery — https://t.me/c/2424231195/94419 · "перепутал тайминг" — https://t.me/c/2424231195/66381
+- Memory for AI/LLM — UMA as model buffer — https://t.me/c/2424231195/57659 · 14B @ ~24 tok/s + kernel patch — https://t.me/c/2424231195/57767 · large-VRAM Vulkan / dynamic-alloc-above-512 patch — https://t.me/c/2424231195/20001 · https://t.me/c/2424231195/20002
 - Monitoring tools — [LACT](https://github.com/ilya-zlobintsev/LACT) · [MangoHud](https://github.com/flightlessmango/MangoHud) · [amdgpu_top](https://github.com/Umio-Yasuno/amdgpu_top)
 
 > **Cool first.** None of these clocks are safe without the fin/fan work in [04-cooling.md](04-cooling.md). Over ~90 °C the board resets.
