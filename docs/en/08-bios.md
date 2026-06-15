@@ -49,6 +49,22 @@ There is also a separate **chipset-menu mod** (`BC250_3.00_CHIPSETMENU.ROM`) fro
 4. **Have recovery hardware ready** *before* the first flash, not after you brick.
 5. After flashing, **clear CMOS** so new settings (especially VRAM allocation) take effect (see "After every flash").
 
+```mermaid
+flowchart TD
+    A["Back up current BIOS"] --> B["Verify SHA-256"]
+    B --> C["Flash the 16 MB BIOS_A1 chip"]
+    C --> D["Never flash the SuperIO chip"]
+    D --> E["Clear CMOS"]
+    E --> F{"Boots?"}
+    F -->|Yes| G["Done"]
+    F -->|No| H["BRICK"]
+    H --> I["Wire CH341A at 3.3V to J4004 header"]
+    I --> J["SOIC clip does NOT work"]
+    J --> K["Reflash a known-good image"]
+    K --> L["Recovered"]
+    L --> F
+```
+
 ### Verify the checksum before flashing
 
 Step 2 above says to verify the SHA-256 — here is how. Compute the hash of the file you are about to flash and compare it, character for character, against the value listed for that file in [`assets/PROVENANCE.md`](../../assets/PROVENANCE.md).

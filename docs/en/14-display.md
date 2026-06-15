@@ -15,6 +15,19 @@
 
 If you cross all four off and still have nothing, head to [troubleshooting.md](troubleshooting.md).
 
+```mermaid
+flowchart TD
+    A["First boot"] --> B{"Picture on HDMI?"}
+    B -->|"No - common"| C["Plug into DisplayPort - the working output"]
+    B -->|"Yes"| Z["Done"]
+    C --> D["Need HDMI? Use an ACTIVE DP to HDMI adapter - passes video plus audio"]
+    D --> E{"DP audio distorted on Linux?"}
+    C --> E
+    E -->|"Yes"| F["Use the DP to HDMI adapter, or build kernel 6.17 ATI HDMI codec"]
+    E -->|"No"| Z
+    F --> Z
+```
+
 ---
 
 ## Outputs at a glance

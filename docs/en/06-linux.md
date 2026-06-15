@@ -25,6 +25,24 @@ So every working setup does the same three things, in some form:
 
 Everything below is just *how* each distro does those three things.
 
+```mermaid
+flowchart TD
+    A["Choose distro"] --> B["Bazzite is easiest"]
+    A --> C["Fedora or Arch"]
+    B --> D["Install"]
+    C --> D
+    D --> E["Apply navi10 firmware symlink"]
+    E --> F["Add kernel params"]
+    F --> G["Regenerate initramfs and grub"]
+    G --> H["Reboot"]
+    H --> I["Verify with vainfo and dmesg"]
+    I --> J{"GPU accelerated?"}
+    J -->|Yes| K["Done"]
+    J -->|No| L["Check for a bad kernel"]
+    L --> M["Roll back to LTS kernel"]
+    M --> H
+```
+
 ---
 
 ## Which distro? (community poll favorites)

@@ -86,6 +86,17 @@ The chat states the same polarity in plain words — count the pins **1 to 3 = +
 
 > *"Pins one through three should be +, the rest from four to eight are minus… The board has no sense check. Take a tester and see where + and − are."* ([src](https://t.me/c/2424231195/14450))
 
+How the single 12 V rail splits across the eight contacts — three carry +12 V, five are ground:
+
+```mermaid
+flowchart LR
+    PSU["PSU single 12V rail"] --> CONN["J1000 PCIe 8-pin"]
+    CONN --> P12["3 x +12V pins, 9A each"]
+    CONN --> PG["5 x GND pins"]
+    P12 --> BOARD["BC-250 board"]
+    PG --> BOARD
+```
+
 This matches a standard PCIe 8-pin exactly, which is *why* a normal ATX PSU's PCIe cable just works. **If you build your own cable, verify every pin with a multimeter before first power-on** — polarity mistakes are unforgiving here.
 
 ### Redundant connectors J2000 / J2001 (advanced)

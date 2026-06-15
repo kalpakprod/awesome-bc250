@@ -61,6 +61,19 @@ How it works:
 
 Data lines stay untouched — you're only changing the power source. The board sees a hub that no longer loads its 5 V rail, and the devices get clean, plentiful power from the PSU.
 
+```mermaid
+flowchart LR
+    USB["Board USB port"] -->|"keep DATA lines"| HUB["USB hub"]
+    USB -. "CUT board plus 5V" .-> HUB
+    PSU["External ATX PSU 5V rail"] -->|"feed plus 5V"| HUB
+    PSU -->|"common GND"| HUB
+    HUB --> KB["Keyboard"]
+    HUB --> MOUSE["Mouse"]
+    HUB --> DONGLE["WiFi or BT dongle"]
+    M2["M.2 slot"] --> ASM["ASM1166 M.2-to-SATA adapter"]
+    ASM --> SATA["2.5in SATA drive"]
+```
+
 > ⚠ Cutting the wrong trace bricks the hub (cheap) — but make sure you cut **VBUS, not a data line**. Double-check with a multimeter before soldering.
 
 ---

@@ -12,6 +12,16 @@ The BC-250 is a mining/server board. Its heatsink is **passive** and designed to
 
 Community-observed limits: throttling starts around **85 °C**, hard crash/reset around **90 °C**. Keep load temps below ~80 °C with headroom.
 
+```mermaid
+flowchart LR
+    Fan["Intake fan 120mm high static pressure"] -->|"push air THROUGH"| Fins["Thinned heatsink fins"]
+    Fins --> Exhaust["Hot air exhaust"]
+    Flat["Blowing AT the flat side"] -.->|"does almost nothing"| Fins
+    Fins -.->|"push-pull option in series"| Fan2["Second fan pulls"]
+    Fan2 --> Exhaust
+    Back["Backplate GDDR6 and VRM have NO sensor"] --> Pads["Add thermal pads plus a heatsink cool it blind"]
+```
+
 ---
 
 ## Path A — Air mod (most popular, cheapest)

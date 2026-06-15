@@ -4,6 +4,20 @@
 
 This page is a symptom → cause → fix index, distilled from the community's recurring problems. It does not replace the chapters — it points you to the right one fast.
 
+```mermaid
+flowchart TD
+    S["What is wrong?"] --> A["Black screen"]
+    S --> B["No GPU acceleration"]
+    S --> C["Random crash"]
+    S --> D["No WiFi"]
+    S --> E["Dead after BIOS flash"]
+    A --> A1["Check power or use DisplayPort - see 03 and 14"]
+    B --> B1["Firmware symlink or bad kernel - see 06"]
+    C --> C1["Heat or low OC voltage - see 04 and 09"]
+    D --> D1["USB dongle - see 10"]
+    E --> E1["J4004 recovery - see 08"]
+```
+
 ---
 
 ## Boot / display
