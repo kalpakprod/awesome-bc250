@@ -98,6 +98,11 @@ flowchart LR
 
 > **On board dimensions:** the canonical hardware doc does **not** list board dimensions, so exact millimetres remain **⚠ verify**. The chat's single most-reacted hardware post is literally titled *"Размеры amd bc-250"* ("dimensions of the AMD BC-250", ❤20 — [src](https://t.me/c/2424231195/379)), confirming people care about this for case building, but the actual figures in that thread are in an attached image not included in the evidence export. For case fitment, work from a measured 3D model instead — the community-cataloged board STLs (e.g. `BC250 Board.stl`, [Printables 1103626](https://www.printables.com/model/1103626-amd-bc250-board) and the accurate model at [Printables 1341336](https://www.printables.com/model/1341336-accurate-3d-model-of-the-amd-bc-250-board)) are dimensionally correct. See [05-case.md](05-case.md).
 
+<p align="center">
+  <img src="../../assets/img/board-dimensions.jpg" alt="BC-250 board laid against a tape measure to gauge its length" width="80%"><br>
+  <sub>Photo: AMD BC-250 community · <a href="https://t.me/c/2424231195/379">source</a></sub>
+</p>
+
 ### Power connector pinout (read this before plugging anything in)
 
 The BC-250 has **no 24-pin ATX header**. It is powered by **12 V only**, delivered through an **8-pin PCIe power connector (J1000)** — the same physical plug as a graphics card's, but the board expects all three power contacts fed from 12 V. Full wiring and PSU choice are in [03-power-supply.md](03-power-supply.md); the canonical pinout from [hardware.md](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md):

@@ -94,4 +94,4 @@ Docs: [CC-BY-SA-4.0](LICENSE). Scripts under `assets/scripts/`: MIT. Mirrored th
 
 ## 🙏 Credits
 
-The entire BC-250 community. Source: *чат AMD BC-250 community*. Project authors credited by their repo handle above.
+The entire BC-250 community — see **[CREDITS](CREDITS.md)** for the top contributors who made this handbook possible. Source: *чат AMD BC-250 community*. Project authors credited by their repo handle above.

@@ -38,6 +38,11 @@ The stock fins are too dense and often uneven. People open up the channels so ai
 
 > ⚠ **Take the heatsink off the board first** (or fully mask/protect the board and die) before sanding/filing, and **clean every bit of metal dust off before reassembly**. Conductive metal swarf that settles on the board can short it and **kill the board** — this has already happened in the chat.
 
+<p align="center">
+  <img src="../../assets/img/cooling-fin-mod.jpg" alt="An orbital sander masked with tape thinning the BC-250 heatsink fins, dust extraction attached" width="80%"><br>
+  <sub>Photo: AMD BC-250 community · <a href="https://t.me/c/2424231195/31571">source</a></sub>
+</p>
+
 ### 2. Bolt on a real fan
 Mount a **120 mm high-static-pressure fan** pushing air through the fins. Reference result: **Noctua NF-P12 redux → max 73 °C in Furmark, 63–65 °C in games.** ([src](https://t.me/c/2424231195/42843))
 
@@ -50,6 +55,11 @@ Use a **printed fan shroud/adapter** so the fan seals against the heatsink inste
 ## Path B — AIO liquid cooler
 
 A 120 mm AIO mounted to the die via an adapter bracket. Quiet and cold, but more parts and cost. Popular builds use cheap AIOs (e.g. aigo). ([example src](https://t.me/c/2424231195/19336))
+
+<p align="center">
+  <img src="../../assets/img/cooling-aio-build.jpg" alt="An open-frame BC-250 build with an RGB aigo AIO pump and fan mounted in an aluminium bracket" width="80%"><br>
+  <sub>Photo: AMD BC-250 community · <a href="https://t.me/c/2424231195/19336">source</a></sub>
+</p>
 
 ## Path C — Blower ("улитка") — not recommended
 

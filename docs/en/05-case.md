@@ -8,6 +8,32 @@ A "case" here ranges from a 200 g print that takes 20 minutes of work to a multi
 
 ---
 
+## Community builds
+
+A taste of what people have actually printed — from a bare open shell to fully-themed consoles. Same board, wildly different results.
+
+<p align="center">
+  <img src="../../assets/img/case-shell.jpg" alt="onemorecap Shell Case: open side-plate, carry handle, exposed copper fins, Arctic 120 mm fan" width="60%"><br>
+  <sub>Build by Дима Ткач · <a href="https://t.me/c/2424231195/22771">source</a></sub>
+</p>
+
+<p align="center">
+  <img src="../../assets/img/case-frame.jpg" alt="White aluminium open frame with internals on show: twin heatsinks, central white Arctic fan, Flex PSU" width="60%"><br>
+  <sub>Build by Сергей · <a href="https://t.me/c/2424231195/87420">source</a></sub>
+</p>
+
+<p align="center">
+  <img src="../../assets/img/case-orange.jpg" alt="Orange-and-white enclosed console with perforated mesh side panel and a moulded carry handle" width="60%"><br>
+  <sub>Build by Alexander Susl · <a href="https://t.me/c/2424231195/122822">source</a></sub>
+</p>
+
+<p align="center">
+  <img src="../../assets/img/case-arasaka.jpg" alt="ARASAKA cyberpunk-themed console: white face, chrome fan grille, green accents and feet" width="60%"><br>
+  <sub>Build by Maxim Perelygin · <a href="https://t.me/c/2424231195/98072">source</a></sub>
+</p>
+
+---
+
 ## How to choose
 
 Three questions decide which case fits you:
