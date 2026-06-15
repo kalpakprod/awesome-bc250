@@ -42,6 +42,9 @@ flowchart TD
 
 The BC-250's amdgpu driver does not expose normal sysfs overclocking. The community solution is a **governor** — a small daemon that writes clock/voltage states directly. For a new install today the recommended one is **cyan-skillfish-governor-smu**; **oberon-governor** is the original and still works (kept below as the established alternative).
 
+<p align="center"><img src="../../assets/diagrams/gpu-clock-tradeoff.svg" alt="GPU core clock: FPS gain vs power and heat" width="85%"></p>
+<sub>📈 Editable source: <a href="../../assets/diagrams/gpu-clock-tradeoff.drawio">gpu-clock-tradeoff.drawio</a> (open in <a href="https://draw.io">draw.io</a>). Green = gain, red = cost.</sub>
+
 ### cyan-skillfish-governor-smu (recommended)
 
 [filippor/cyan-skillfish-governor](https://github.com/filippor/cyan-skillfish-governor), SMU branch — drives clock/voltage through **SMU firmware calls**, so it needs **no kernel frequency patch on any distro**, is actively maintained, and is packaged on every major distro. It also adds **memory-controller power-profile** control, which lowers idle TDP to **~30–35 W** (cooler and quieter at idle) ([src](https://t.me/c/2424231195/125821)).
@@ -208,6 +211,9 @@ The tool's flags: `bc250-detect -f <MHz> -v <mV>` to test, add **`-k`** to keep 
 ## Step 3 — Undervolting (do this for heat, every chip differs)
 
 Undervolting is the highest-value move on this board: **same clock, far less heat**, and it's *required* if you raise the CPU clock. But **every chip is different** — silicon lottery is real here. One owner ran three near-sequential boards and only one held 900 mV under stress; identical cooling, identical temps, different stability ([src](https://t.me/c/2424231195/50568)).
+
+<p align="center"><img src="../../assets/diagrams/undervolt-tradeoff.svg" alt="Undervolt: efficiency vs instability risk" width="85%"></p>
+<sub>📈 Editable source: <a href="../../assets/diagrams/undervolt-tradeoff.drawio">undervolt-tradeoff.drawio</a> (open in <a href="https://draw.io">draw.io</a>). Green = gain, red = cost.</sub>
 
 **Target clock → voltage, real community numbers (your chip will vary):**
 
@@ -390,7 +396,12 @@ How much of the 16 GB is handed to the GPU vs left for the CPU is an ordinary BI
 
 ### GDDR6 clock & timings — modded BIOS, expert-only
 
+<p align="center"><img src="../../assets/diagrams/memory-tradeoff.svg" alt="GDDR6 memory tuning: small gain, brick risk" width="85%"></p>
+<sub>📈 Editable source: <a href="../../assets/diagrams/memory-tradeoff.drawio">memory-tradeoff.drawio</a> (open in <a href="https://draw.io">draw.io</a>). Green = gain, red = cost.</sub>
+
 The default GDDR6 timings are conservative; there is real bandwidth to gain, but **this is BIOS/mod-tool territory, not the governor** — it ties directly to the modded BIOS in [08-bios.md](08-bios.md). The community reference is the pinned **"#BC-250 GDDR6 Memory Explained"** writeup ([src](https://t.me/c/2424231195/126436)); a parallel English note puts it bluntly: *"if you screw this up, you will crash the chip. That said, the defaults suck, there is a lot of performance to be had"* ([src](https://t.me/c/2424231195/55353)).
+
+> ❓ **"What does memory tuning actually buy me?" — honestly, very little.** Stock GDDR6 clock is **1750 MHz**, and the most a board will usually POST at is **~1875 MHz** ([src](https://t.me/c/2424231195/126436)); members who tune it commonly settle around **1800 MHz @ 860 mV**, kept under ~70 °C in games ([src](https://t.me/c/2424231195/140223), [src](https://t.me/c/2424231195/139654)). **The gain is small.** Memory clock/timings mostly add a little bandwidth, which only helps the GPU-bandwidth-bound moments; the BC-250's real performance comes from **GPU core clock + the 40-CU unlock + cooling**, not memory. Memory tuning is the "last few %" for enthusiasts — and it carries the **highest risk on the whole board**: a bad clock/timing is written to CMOS and can permanently brick (1950 MHz bricked boards; 1800 MHz booted one board and bricked another). So **tune GPU core + cooling first**, and only touch memory if you've read [08-bios.md](08-bios.md) and accept the brick risk. The chart above visualizes exactly this — a tiny green gain line against a steep red brick-risk cliff.
 
 What the writeup says is tunable (values are **one tester's** results, not universal — ⚠ verify against your own board) ([src](https://t.me/c/2424231195/126436)):
 
@@ -443,6 +454,27 @@ This tooling changed fast over 2025–2026. Watch the dates:
 
 ---
 
+## 🔎 Dig deeper on Reddit
+
+The Telegram chat and the **BC-250 Discord** are where the bleeding-edge work happens, but Reddit has the best searchable, long-form write-ups of the overclock / CU-unlock journey. Two subreddits:
+
+- **[r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/)** — the main BC-250 hub (OC, CU unlock, cooling, distro picks).
+- **[r/linux_gaming](https://www.reddit.com/r/linux_gaming/)** — broader Linux-gaming context and the honest "should I even buy one" threads.
+
+**Useful search terms:** `BC-250 40CU unlock` · `BC-250 overclock` · `BC-250 undervolt governor` · `BC-250 GDDR6 memory timings` · `BC-250 idle power` · `BC-250 2575mhz limit` · `BC-250 cooling fins` · `BC-250 SteamOS Batocera`.
+
+**Notable threads worth reading:**
+- "GPU CU cores unlock" — the original 40-CU discovery thread.
+- "BC-250 8-Core Unlock possible?" — why the two locked CPU cores stay locked (and why it wouldn't help).
+- "The 40 CU unlock and BC250 original purpose" — context on the mining-era binning.
+- "i think i found the limit of my bc250 (2575mhz)" — real-world GPU clock ceiling.
+- "My BC250 Journey: From Bazzite to CachyOS" — a full setup/tuning walkthrough.
+- "What are the main downsides of the BC-250 board?" (on r/linux_gaming) — the honest cons before you commit.
+
+> 💬 Most of the **active OC / CU-unlock / power-state development** happens on the **BC-250 Discord**, which these threads link to — Reddit is the best place to find that invite and the back-story behind each technique.
+
+---
+
 ## Sources
 
 - cyan-skillfish-governor-smu (recommended GPU governor — no kernel patch, idle power) — https://github.com/filippor/cyan-skillfish-governor · idle TDP — https://t.me/c/2424231195/125821 · swap recipe — https://t.me/c/2424231195/118249
@@ -455,7 +487,8 @@ This tooling changed fast over 2025–2026. Watch the dates:
 - Quiet/efficient sweet-spot (~1600 MHz GPU / ~3500 MHz CPU for best perf-per-noise-per-watt) — r/BC250Gaming (Reddit) community report
 - Superposition 24-vs-40-CU result — https://t.me/c/2424231195/137035
 - **[r/BC250Gaming (Reddit) community reports](https://www.reddit.com/r/BC250Gaming/)** — 40-CU unlock is a lottery (many boards stable only at 38, "line" artifact / crashes on the last CUs, test incrementally with `bc250-cu-live-manager`); full 40 CU needs AIO/large air cooler + extra power on J2000/J2001; 8-core CPU unlock not currently possible (eFuse/SMU-locked) and marginal for gaming anyway
-- GDDR6 memory — VRAM/UMA allocation: behaviour & llvmpipe fallback — https://t.me/c/2424231195/81203 · set 512 MB fixed (driver shares full 16 GB) — https://t.me/c/2424231195/38599 · https://t.me/c/2424231195/17948 · correct 5.8/11.5/1.6 split at 512 MB — https://t.me/c/2424231195/138294 · workload-dependent / Cyberpunk swap & hangs — https://t.me/c/2424231195/131105 · https://t.me/c/2424231195/94993 · https://t.me/c/2424231195/139016 · "GDDR6 Memory Explained" timings — https://t.me/c/2424231195/126436 · English timing note — https://t.me/c/2424231195/55353 · CMOS write-cycle caveat — https://t.me/c/2424231195/126437
+- **Dig deeper on Reddit** — [r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/) (main hub) · [r/linux_gaming](https://www.reddit.com/r/linux_gaming/) (cons / context); search `BC-250 40CU unlock`, `BC-250 overclock`, `BC-250 undervolt governor`, `BC-250 GDDR6 memory timings`, `BC-250 2575mhz limit`; threads "GPU CU cores unlock", "BC-250 8-Core Unlock possible?", "My BC250 Journey: From Bazzite to CachyOS", "What are the main downsides of the BC-250 board?" — most active OC/CU dev happens on the **BC-250 Discord** linked from these
+- GDDR6 memory — VRAM/UMA allocation: behaviour & llvmpipe fallback — https://t.me/c/2424231195/81203 · set 512 MB fixed (driver shares full 16 GB) — https://t.me/c/2424231195/38599 · https://t.me/c/2424231195/17948 · correct 5.8/11.5/1.6 split at 512 MB — https://t.me/c/2424231195/138294 · workload-dependent / Cyberpunk swap & hangs — https://t.me/c/2424231195/131105 · https://t.me/c/2424231195/94993 · https://t.me/c/2424231195/139016 · "GDDR6 Memory Explained" timings & stock 1750 / ~1875 POST max — https://t.me/c/2424231195/126436 · English timing note — https://t.me/c/2424231195/55353 · CMOS write-cycle caveat — https://t.me/c/2424231195/126437 · tuned 1800 MHz @ 860 mV setpoint — https://t.me/c/2424231195/140223 · https://t.me/c/2424231195/139654
 - GDDR6 brick risk — 1950 MHz brick — https://t.me/c/2424231195/55317 · freq booted on one board, bricked another / CMOS reset doesn't help — https://t.me/c/2424231195/54971 · timings brick — https://t.me/c/2424231195/54851 · programmer-only recovery — https://t.me/c/2424231195/94419 · "перепутал тайминг" — https://t.me/c/2424231195/66381
 - Memory for AI/LLM — UMA as model buffer — https://t.me/c/2424231195/57659 · 14B @ ~24 tok/s + kernel patch — https://t.me/c/2424231195/57767 · large-VRAM Vulkan / dynamic-alloc-above-512 patch — https://t.me/c/2424231195/20001 · https://t.me/c/2424231195/20002
 - Monitoring tools — [LACT](https://github.com/ilya-zlobintsev/LACT) · [MangoHud](https://github.com/flightlessmango/MangoHud) · [amdgpu_top](https://github.com/Umio-Yasuno/amdgpu_top)
