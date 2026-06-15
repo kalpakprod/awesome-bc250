@@ -1,6 +1,6 @@
 # Cooling
 
-> **TL;DR** — The BC-250's stock heatsink was built for a server rack's forced air tunnel, not a desk. Out of the box it throttles. The community fix: **thin out the dense stock fins** (file/sand them) and bolt a **high-static-pressure 120 mm fan** (Noctua NF-P12 is the reference) blowing *through* them. That alone takes a modded board to **~73 °C in Furmark, 63–65 °C in games**. Liquid AIO and full custom cases are the next tiers.
+> **TL;DR** — The BC-250's stock heatsink was built for a server rack's forced air tunnel, not a desk. Out of the box it throttles. The community fix: **thin out the dense stock fins** (file/sand them) and bolt a **high-static-pressure 120 mm fan** (**Arctic P12 Max/Pro** is the reference; Noctua NF-P12 redux is the quiet premium alternative) blowing *through* them. That alone takes a modded board to **~73 °C in Furmark, 63–65 °C in games**. Liquid AIO and full custom cases are the next tiers.
 
 Cooling is the **#1 thing a newcomer gets wrong**, so do this before chasing overclocks.
 
@@ -79,7 +79,7 @@ Rough temperature payoff (elektricM): **straightening bent fins ~5–10 °C**, *
 </p>
 
 ### 2. Bolt on a real fan
-Mount a **120 mm high-static-pressure fan** pushing air through the fins. Reference result: **Noctua NF-P12 redux → max 73 °C in Furmark, 63–65 °C in games.** ([src](https://t.me/c/2424231195/42843))
+Mount a **120 mm high-static-pressure fan** pushing air through the fins. The reference pick is the **Arctic P12 Max (or P12 Pro)** — highest static pressure (~6.9 mm H₂O), the community + elektricM choice for this dense heatsink. The **Noctua NF-P12 redux** is the quiet premium alternative, and posted a reference result of **max 73 °C in Furmark, 63–65 °C in games** ([src](https://t.me/c/2424231195/42843)).
 
 **Concrete fan picks with specs** (elektricM — pick on *static pressure*, not airflow):
 
@@ -92,7 +92,7 @@ Mount a **120 mm high-static-pressure fan** pushing air through the fins. Refere
 
 elektricM's **most-recommended pick is the Arctic P12 Max / P12 Pro** — its ~6.9 mm H₂O static pressure dwarfs the Noctua's 2.34 mm and is far cheaper; the P12 Pro is the quieter, more widely-stocked version. The premium Noctua is quieter still but only matches the Arctic on temps at higher RPM. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
-> ⚠ **verify (which fan is "the reference")** — our box-out above leads with **Noctua NF-P12** as the reference fan (chat result: 73 °C Furmark). elektricM instead leads with the **Arctic P12 Max/Pro** as the community favourite on price-per-static-pressure. Both are valid high-static-pressure picks; treat *either* as a correct starter and choose on price/noise/availability.
+> **Reference vs quiet alternative.** The **Arctic P12 Max/Pro** is the reference fan here — highest static pressure (~6.9 mm H₂O), cheapest, the community + elektricM pick for this dense heatsink. The **Noctua NF-P12 redux** is the quiet premium alternative (the chat's 73 °C Furmark result), matching the Arctic on temps only at higher RPM. Pick Arctic for best price/performance, Noctua if quiet matters most.
 
 Use a **printed fan shroud/adapter** so the fan seals against the heatsink instead of leaking air around it. Community STLs:
 - `Fan_Shroud_Single_120mm.stl`, `Fan_Shroud_Dual_120mm.stl`, `Fan_Shroud_Single_140mm.stl`, `Twin_120mm_Fan_Shroud.stl`
@@ -216,7 +216,7 @@ There's also a short video walkthrough of the simplest method pinned in the topi
 
 | Tier | Do this | Expect |
 |------|---------|--------|
-| Minimum | Sand fins (orbital sander) + 1× Noctua/Arctic P12 + printed shroud | ~73 °C Furmark |
+| Minimum | Sand fins (orbital sander) + 1× Arctic P12 Max/Pro (or Noctua NF-P12) + printed shroud | ~73 °C Furmark |
 | Better | Push–pull (2× P12) through shroud | lower, quieter at same temp |
 | Max | 120 mm AIO on adapter | coldest, more build effort |
 

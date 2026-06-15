@@ -1,6 +1,6 @@
 # Display & Output
 
-> **TL;DR** — The BC-250 drives your monitor over **DisplayPort**. That's the connector to plug into. If your board also has an HDMI port, it **frequently shows nothing** — so a black screen there is *not* a dead board, you're just on the wrong output. Need HDMI? Use an **active DP→HDMI adapter** — the community has tested it and **both video and audio pass through fine, no lag** ([src](https://t.me/c/2424231195/9148)). One real quirk: **DisplayPort audio comes out distorted/slowed on Linux**; the same DP→HDMI adapter sidesteps it, and a proper kernel-side fix lands around **kernel 6.17** ([src](https://t.me/c/2424231195/17953), [src](https://t.me/c/2424231195/68051)).
+> **TL;DR** — The BC-250 drives your monitor over **DisplayPort**. That's the connector to plug into. If your board also has an HDMI port, it **frequently shows nothing** — so a black screen there is *not* a dead board, you're just on the wrong output. Need HDMI? Use a **DP→HDMI adapter** — **video always passes, no lag**; some adapters carry **audio** too (a tested one did, [src](https://t.me/c/2424231195/9148)) but audio depends on the specific adapter, so don't count on it (see the audio section). One real quirk: **DisplayPort audio comes out distorted/slowed on Linux**; the same DP→HDMI adapter sidesteps it, and a proper kernel-side fix lands around **kernel 6.17** ([src](https://t.me/c/2424231195/17953), [src](https://t.me/c/2424231195/68051)).
 
 "No picture on first boot" is the **#1 newcomer panic**. Read the box below before you decide anything is broken.
 
@@ -20,7 +20,7 @@ flowchart TD
     A["First boot"] --> B{"Picture on HDMI?"}
     B -->|"No - common"| C["Plug into DisplayPort - the working output"]
     B -->|"Yes"| Z["Done"]
-    C --> D["Need HDMI? Use an ACTIVE DP to HDMI adapter - passes video plus audio"]
+    C --> D["Need HDMI? DP to HDMI adapter - video always; audio depends on the adapter"]
     D --> E{"DP audio distorted on Linux?"}
     C --> E
     E -->|"Yes"| F["Use the DP to HDMI adapter, or build kernel 6.17 ATI HDMI codec"]
@@ -36,7 +36,7 @@ flowchart TD
 |--------|--------|-------|
 | **DisplayPort** | **Yes — this is the output** | Primary/only display connector; carries audio. Repo I/O spec lists `1x DisplayPort` ([repo](https://github.com/mothenjoyer69/bc250-documentation)). It's **DisplayPort 1.4**, ceiling **4K@120 Hz**, with HDR10 ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). |
 | **HDMI port** (if fitted) | **Often blank** | Newcomers think the board is dead; it usually isn't — switch to DP. ([src](https://t.me/c/2424231195/104784)) |
-| **DP → HDMI via active adapter** | **Yes — video + audio** | Community-tested, no lag ([src](https://t.me/c/2424231195/9148)). Also the standard fix for DP audio distortion (below). |
+| **DP → HDMI via adapter** | **Video: yes. Audio: depends on the adapter** | Video passes with no lag ([src](https://t.me/c/2424231195/9148)); audio is chipset-dependent — test it (see audio section). Also the standard fix for DP audio distortion (below). |
 | **Second video output** | **Not out of the box** | Electrically present but **not populated**; forcing a 2nd monitor needs hacks, and others say the chip has no real 2nd head — treat single-output as the safe assumption. ([src](https://t.me/c/2424231195/92978), [src](https://t.me/c/2424231195/104682)) |
 | **Second screen over the network** | **Yes** | Stream the BC-250's output to another machine over LAN (Steam/Sunshine). ([src](https://t.me/c/2424231195/23660)) |
 
@@ -70,11 +70,11 @@ The blunt, reliable workaround the chat settled on: **run the signal through a D
 **If you have no adapter handy,** route audio over **Bluetooth** instead — most speakers/headsets support it and it dodges the DP path entirely ([src](https://t.me/c/2424231195/89769)). See [10-wifi-bt.md](10-wifi-bt.md) for the BT dongle.
 
 ### Adapter notes (community)
-- **Get an *active* DP→HDMI adapter/cable.** A working, tested example: **UGREEN DP125 (DP→HDMI 4K cable)** — rated 4K@30 but negotiated 4K@60 on a TV ([src](https://t.me/c/2424231195/52398)).
+- **For 4K@60+ you need an *active* adapter/cable** (passive caps ~1440p@60). A working, tested example: **UGREEN DP125 (DP→HDMI 4K cable)** — rated 4K@30 but negotiated 4K@60 on a TV ([src](https://t.me/c/2424231195/52398)). Active vs passive sets the resolution ceiling — it does **not** decide whether audio passes (see below).
 - **Not all adapters carry audio.** One owner's Belsis adapter passed 4K@60 *with* sound, while several pricier Ugreen units showed "HDMI digital audio" in the device list but output no sound — and one shifted voices down an octave ([src](https://t.me/c/2424231195/106617)). If you get video but no audio, the adapter is the variable — try another.
 - Cheap **4K@60 DP→HDMI** adapters that pass both video and audio do exist and are reported working ([src](https://t.me/c/2424231195/133977)).
 - Some adapters misbehave specifically on **4K monitors** ([src](https://t.me/c/2424231195/1988)).
-- ⚠ verify — **active vs passive disagreement.** elektricM's guide reaches the *opposite* conclusion on audio: it reports **passive** DP→HDMI adapters pass audio reliably while **active** adapters consistently break audio on the BC-250 (video fine, no sound — e.g. Cable Matters/StarTech active units), and recommends a USB DAC when audio is needed ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)). Our community reports above are adapter-by-adapter (some active units carry audio, some don't), so treat "active = audio" as **not guaranteed** — the safe takeaways both sources share: **audio over any adapter is the variable, test before you commit, and a passive adapter caps at ~1440p@60**.
+- **Audio over a DP→HDMI adapter is inconsistent and depends on the adapter's chipset — not simply on active vs passive.** Video always passes; **audio is the variable.** Our community reports are adapter-by-adapter (UGREEN/Belsis units reported carrying sound, some other units silent), and elektricM's guide reports the *opposite* split (passive carrying audio, some active units silent — e.g. Cable Matters/StarTech) — which is exactly why the active/passive label doesn't predict it ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)). For **reliable** audio, don't bet on an adapter: prefer a **DisplayPort-native display/AV receiver**, or output sound over **USB (a USB DAC/sound device)**. If you do use an adapter, **test audio before you rely on it** — and remember a **passive** adapter caps at ~**1440p@60**.
 
 ### The kernel-6.17 fix (DP-direct audio, no adapter)
 
@@ -141,6 +141,6 @@ This is also the practical way to get a "dual display" feel without the unpopula
 - Hardware I/O reference (`1x DisplayPort`) — [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) · [`hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
 - DP 1.4 / 4K@120 / HDR10, resolution+cable limits, MST hubs (max 2), DisplayLink, Wayland-login black screen — elektricM [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
 - HDR + VRR working on CachyOS (Plasma 6 + Wayland) vs broken on Bazzite; Forza Horizon 6 1440p High HDR+VRR over UGREEN DP→HDMI 2.1 — r/BC250Gaming (Reddit) community report (see [06-linux.md](06-linux.md))
-- Active-vs-passive adapter audio (opposite finding), low-res llvmpipe check — elektricM [`troubleshooting/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)
+- Adapter audio is chipset-dependent (elektricM saw passive carry it / some active silent; community saw the reverse — so prefer DP-native or a USB DAC), low-res llvmpipe check — elektricM [`troubleshooting/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)
 
 > Driver/kernel setup is in [06-linux.md](06-linux.md); audio/output gotchas are also indexed in [troubleshooting.md](troubleshooting.md) and [faq.md](faq.md).

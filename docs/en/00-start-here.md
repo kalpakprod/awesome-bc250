@@ -65,7 +65,7 @@ This is the make-or-break step. Easiest for newcomers: a **Bazzite-based image**
 > Thinking Windows? As of early 2026 there is **no working Windows GPU driver** — it's experimental. Use Linux. → **[07 — Windows](07-windows.md)**
 
 ### 7. Verify it works at stock, then overclock
-Once the desktop is accelerated, install the **oberon-governor** and push clocks (1500 MHz stock is weak; **2000 MHz ≈ +30 % FPS**). Optionally unlock all **40 CUs** and undervolt. Re-test temps under the new clocks. → **[09 — Overclocking & Undervolting](09-overclock-undervolt.md)**
+Once the desktop is accelerated, install a **GPU governor** (cyan-skillfish-smu is the current recommendation; oberon also works) and push clocks (1500 MHz stock is weak; **2000 MHz ≈ +30 % FPS**). Optionally unlock all **40 CUs** and undervolt. Re-test temps under the new clocks. → **[09 — Overclocking & Undervolting](09-overclock-undervolt.md)**
 
 ### 8. Get online
 No onboard WiFi — add a **known-good USB dongle** (aic8800d80 is the community favorite) and its driver. → **[10 — WiFi & Bluetooth](10-wifi-bt.md)**
@@ -98,7 +98,7 @@ Black screen, no acceleration, random resets, dongle drops, a brick after a BIOS
 | Cooling | Fins thinned + 120 mm fan/shroud; <80 °C in Furmark |
 | OS | Bazzite-bc250 installed, boots to desktop |
 | GPU | `vainfo`/`dmesg` show amdgpu active, not CPU fallback |
-| Overclock | oberon-governor running, ~2000 MHz, stable in a real game |
+| Overclock | GPU governor running (cyan-skillfish-smu recommended), ~2000 MHz, stable in a real game |
 | Network | USB dongle connects and stays up |
 | Game | Runs at expected FPS for your clocks |
 
@@ -119,7 +119,7 @@ vulkaninfo | grep deviceName             # → AMD Radeon Graphics (RADV GFX1013
 cat /sys/class/drm/card0/device/pp_dpm_sclk   # multiple freqs, current marked *
 ```
 
-**Governor** (clocks stick at 1500 MHz without it). Ours defaults to `oberon-governor`; elektricM ships the newer SMU fork via COPR — either works:
+**Governor** (clocks stick at 1500 MHz without it). Recommended is `cyan-skillfish-governor-smu` (no kernel patch); the original `oberon-governor` also works — see [09](09-overclock-undervolt.md):
 ```bash
 sudo dnf copr enable filippor/bazzite
 sudo dnf install cyan-skillfish-governor-smu          # rpm-ostree install … on Bazzite
