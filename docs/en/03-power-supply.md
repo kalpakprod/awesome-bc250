@@ -180,6 +180,11 @@ An old branded PSU can have a high total wattage and **still fail**, because it 
 - **A working desk unit:** board standing on its I/O bracket, LEDs lit, running off an external 12 V brick ([src](https://t.me/c/2424231195/27556)).
 - **Experts-only:** a **Molex Micro-Fit connector soldered directly to the board's 12 V pads** with thick copper and heavy solder — the "bypass the stock plug" overclock mod. Effective but unforgiving; only attempt if you know ГОСТ-grade soldering ([src](https://t.me/c/2424231195/135782), and [Jack Fisher's teardown notes](https://t.me/c/2424231195/92185)).
 
+<p align="center">
+  <img src="../../assets/img/power-build.jpg" alt="A complete open-bench BC-250 build in a 3D-printed shroud with an external fan and PSU wiring" width="80%"><br>
+  <sub>Photo: Maxim · <a href="https://t.me/c/2424231195/39231">source</a></sub>
+</p>
+
 ---
 
 ## Recommended starter setup
