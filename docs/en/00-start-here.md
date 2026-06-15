@@ -22,6 +22,21 @@ Have these on hand *before* you begin, so you don't discover each one mid-build:
 
 ## The path
 
+```mermaid
+flowchart TD
+    A["Buy the board"] --> B["Power - PCIe 8-pin 12V"]
+    B --> C["Cool - thin fins plus 120mm fan"]
+    C --> D["Assemble"]
+    D --> E["Install Linux - Bazzite"]
+    E --> F["Apply amdgpu firmware fix"]
+    F --> G["Verify GPU acceleration"]
+    G --> H["Overclock - governor about 2000MHz"]
+    H --> I["Add USB WiFi dongle"]
+    I --> J["Play"]
+    E -.->|"HDMI blank"| K["Use DisplayPort"]
+    K -.-> F
+```
+
 ### 0. Know what you have
 A BC-250 is a server/mining blade: one APU (Zen 2 CPU + RDNA2-class GPU, "Cyan Skillfish/Oberon"), 16 GB GDDR6, **passive heatsink**, powered by a single **12 V PCIe 8-pin**. No onboard WiFi, no working Windows GPU driver, no hardware video encode. → **[01 — What Is the BC-250](01-what-is-bc250.md)**
 

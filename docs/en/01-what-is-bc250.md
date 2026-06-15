@@ -58,6 +58,24 @@ This is the half newcomers underestimate. None of it is a dealbreaker, but all o
 
 Specs marked **⚠ verify** could not be confirmed against a primary datasheet at time of writing (AMD publishes none; TechPowerUp spec pages were unreachable). The pinout and power figures below come from the canonical community hardware doc.
 
+The board at a glance — power in on the left, the APU and its shared memory in the middle, I/O on the right:
+
+```mermaid
+flowchart LR
+    PWR["12V PCIe 8-pin IN J1000"] --> BOARD["BC-250 board"]
+    BOARD --> CPU
+    BOARD --> M2["M.2 slot"]
+    BOARD --> GBE["Gigabit Ethernet"]
+    GPU --> DP["DisplayPort OUT"]
+    subgraph APU["Cyan Skillfish APU"]
+        CPU["Zen 2 CPU 6 cores"]
+        GPU["RDNA2 GPU 24 CU"]
+        MEM["16 GB GDDR6 shared"]
+        CPU --> MEM
+        GPU --> MEM
+    end
+```
+
 ### Core specs
 
 | Spec | Value | Source |

@@ -24,6 +24,18 @@ Two honest caveats from the chat before you start:
 
 > ⚠️ **Safety floor.** Throttling starts around **85 °C** and the board hard-crashes / resets around **90 °C** (see [04-cooling.md](04-cooling.md)). If you cross ~85 °C under load, you are *over* your cooling budget — drop the clock or undervolt, don't push higher.
 
+```mermaid
+flowchart TD
+    Cool["Cool adequately FIRST see 04-cooling"] --> Gov["Install oberon-governor ONLY one governor"]
+    Gov --> Clock["Raise GPU clock toward 2000 MHz"]
+    Clock --> Test["Test with OCCT plus a REAL game Furmark alone is not game-stable"]
+    Test --> Q{"Stable and under temp"}
+    Q -->|"No over 90C crashes"| Back["Back off clock or improve cooling or raise undervolt voltage"]
+    Back --> Clock
+    Q -->|"Yes"| Unlock["Optional 40-CU unlock 24 to 40"]
+    Unlock --> Uv["Optional undervolt same clock less heat"]
+```
+
 ---
 
 ## Step 1 — GPU clock & undervolt: the governor
