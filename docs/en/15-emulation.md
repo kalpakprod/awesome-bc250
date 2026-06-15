@@ -31,6 +31,8 @@ This board has no emulation-specific quirks beyond the two prerequisites above �
 
 Then **launch through Steam** ("add a non-Steam game") for controller support and an overlay — the same flow the chat uses for everything else (see [11-gaming.md](11-gaming.md)).
 
+> **Want a dedicated emulation distro instead?** **Batocera** (a ready-made emulation distro + frontend) is **community-confirmed running on the BC-250** ([r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)) — boot it instead of a desktop Linux and you get a console-style, plug-and-play emulation box rather than installing emulators one by one. It's listed as a confirmed-booting distro in [06-linux.md](06-linux.md). The same overclock + cooling prerequisites still apply.
+
 > **Watch the governor.** If an emulator runs slow, check your clocks before blaming the emulator: it may be sitting at 1000 MHz. Set the oberon-governor to its max value (some run it pinned at ~2250 MHz) before launching, then verify with an overlay (`amdgpu_top` / MangoHud). ([src](https://t.me/c/2424231195/130879), [src](https://t.me/c/2424231195/130955))
 
 > **No preconfigured emulation image.** Newcomers regularly ask for a ready-made image with emulators set up. The community treats a shared "configured BC-250 image" as taboo — set it up yourself from the guides; it's not hard once the board is overclocked. ([src](https://t.me/c/2424231195/130845), [src](https://t.me/c/2424231195/130877))
@@ -149,6 +151,7 @@ One row per platform. **Emulator** is the best current Linux choice; **Status on
 - Governor stuck at 1000 MHz in emulator; set max manually — https://t.me/c/2424231195/130879 · https://t.me/c/2424231195/130955 · Zelda 30→60 patch — https://t.me/c/2424231195/130887
 - No preconfigured image (community taboo) — https://t.me/c/2424231195/130845 · https://t.me/c/2424231195/130877
 - Nintendo litigates Switch emulators / keys hard to find — https://t.me/c/2424231195/136649
+- Batocera (emulation distro) confirmed running on the BC-250 — [r/linux_gaming thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)
 - Hardware spec (6× Zen 2 @ ~3.5 GHz, RDNA2 24→40 CU, 16 GB GDDR6) — [elektricm/amd-bc250-docs](https://elektricm.github.io/amd-bc250-docs/hardware/specifications/)
 - General emulation-capability framing (⚠ verify; this third-party guide miscounts cores as 8) — [koukan.co.uk BC-250 guide](https://www.koukan.co.uk/blog/amd-bc-250-guide)
 
