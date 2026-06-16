@@ -149,6 +149,20 @@ cmake --build build --config Release
 
 **Честная оценка:** ~30–40 ток/с на MoE 20–35B вполне годятся для чата, помощи с кодом и agent/tool-циклов. Это **не** 4090. Качество ограничено агрессивным квантованием, которое навязывают 16 ГБ (IQ2/Q3 на моделях 35B) — и один пользователь отметил, что 30B в более жёстком кванте «будет делать очень много ошибок» ([src](https://t.me/c/2424231195/101077)). Золотая середина — **gpt-oss-20b**, которую неоднократно описывают как «умнее всех мелких», оставаясь при этом стабильной ([src](https://t.me/c/2424231195/101077)).
 
+### Ускоряет ли разблокировка 40 CU работу LLM? Да — измерено вживую на плотной модели
+
+Разблокировка 40 CU (см. [09-overclock-undervolt.md](09-overclock-undervolt.md)) помогает инференсу сильнее, чем играм, потому что генерация токенов реально использует вычислительные блоки. Видео измерило это **вживую**, переключая CU на **плотной** модели — Qwen3.5-9B (~10 ГБ GDDR6) на **Ollama + Vulkan** — и пропускная способность шла почти линейно за числом CU ([Old Lamer — RU-видео про CU](https://youtu.be/M7PsojWr4KA), ~8:30–12:03): *(⚠ автосубтитры — считай десятые ≈.)*
+
+| Активных CU | Скорость генерации | vs 24 CU |
+|---|---|---|
+| 24 CU (сток) | ≈25.7 ток/с | базис |
+| шаг разблокировки | ≈31.9 ток/с | **~+16–17 %** |
+| 36 CU | ≈33.4 ток/с | **~+20 % итого** |
+
+Эта плата **упёрлась в 36 CU** — последние два CU были реально дефектными, и **llama крашилась при загрузке**, когда их включали, — конкретный пример тезиса «38/40 — лотерея» из главы про разгон. Окружение Ollama совпадало с рецептом выше (`OLLAMA_VULKAN=1`, KV-кэш `q4_0`, контекст 65536, `ttm.pages_limit=4194304`). Поскольку модель *плотная*, прирост — чистое масштабирование по CU, без множителя от MoE-роутинга экспертов сверху ([Old Lamer — RU-видео про CU](https://youtu.be/M7PsojWr4KA)).
+
+> 💬 **Непроверенные MoE-датапоинты (комментарии Hackaday — как слухи).** Из читательских комментариев, а не из воспроизведённого прогона: Qwen «27b» с **MTP** (multi-token prediction) на **≈14.5 ток/с** и «35b» с MTP на **≈47 ток/с**. Широкий разброс — ровно то, что дали бы MTP + разница в активных параметрах MoE, но ни одна цифра здесь независимо не подтверждена — приведено для контекста, не как бенчмарк. ⚠ verify
+
 ---
 
 ## Что болезненно (честно)
@@ -177,6 +191,8 @@ cmake --build build --config Release
 - Рецепт LLM для BC-250 (Ollama+Vulkan, фикс TTM, ток/с) — [akandr/bc250 §Ollama+Vulkan](https://github.com/akandr/bc250#3-ollama--vulkan-setup)
 - Рабочая конфигурация, gpt-oss-20b, прибавка от Oberon, заметки про OOM/дистрибутивы — https://t.me/c/2424231195/101077
 - MoE vs dense, пропускная способность мульти-карт — https://t.me/c/2424231195/125233
+- Масштабирование LLM от разблокировки 40 CU, измерено вживую (⚠ ASR — приблизительно) — Qwen3.5-9B плотная на Ollama+Vulkan: 25.7 → 31.9 → 33.4 ток/с (24 → разблокировка → 36 CU, ~+20 % итого); плата упёрлась в 36 CU (2 CU дефектны, llama крашилась при загрузке) — [Old Lamer — RU-видео про CU](https://youtu.be/M7PsojWr4KA)
+- Датапоинты MoE с MTP (⚠ непроверено, комментарии Hackaday) — Qwen «27b»+MTP ≈14.5 тк/с, «35b»+MTP ≈47 тк/с — ветка комментариев статьи Hackaday про BC-250
 - Проверенная команда пакета — https://t.me/c/2424231195/101026 · симлинк прошивки Navi10→Cyan Skillfish — https://t.me/c/2424231195/7458/136321
 - Сборка llama.cpp (Vulkan / HIP) — [ggml-org/llama.cpp build.md](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md) · [релизы](https://github.com/ggml-org/llama.cpp/releases) · [install](https://github.com/ggml-org/llama.cpp/blob/master/docs/install.md)
 - Реальность ROCm на gfx1013 — [ROCm/ROCm](https://github.com/ROCm/ROCm) · [woodrex83/ROCm-For-RX580 (только gfx803)](https://github.com/woodrex83/ROCm-For-RX580) · [ulyssesrr/docker-rocm-xtra (заархивирован; нет gfx1013)](https://github.com/ulyssesrr/docker-rocm-xtra) · [xuhuisheng/rocm-build navi10](https://github.com/xuhuisheng/rocm-build/tree/master/navi10) · [robertrosenbusch/gfx803_rocm](https://github.com/robertrosenbusch/gfx803_rocm)

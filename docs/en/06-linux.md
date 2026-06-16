@@ -83,6 +83,8 @@ Bazzite is an immutable Fedora-based gaming OS (SteamOS-like). The community mai
 1. Download from **[bazzite.gg](https://bazzite.gg/#image-picker)** (pick the desktop or "Deck"/Gaming-Mode variant).
 2. Flash to USB (Ventoy, Rufus, or balenaEtcher) and install normally. **Create a non-root user** — Steam refuses to launch as root ([src](https://t.me/c/2424231195/121246)).
 
+> **Picking the right Bazzite image (step-by-step).** On [bazzite.gg](https://bazzite.gg/) walk the picker **Desktop PC → AMD (modern) → KDE → Gaming-Mode image** — grab the **Gaming-Mode** build, not the plain live ISO: the live ISO installs fine but **can't actually run games**. Flash it with **Balena Etcher** onto a **≥16 GB** USB stick. The install **target** can be an M.2 NVMe, a SATA SSD on an M.2-to-SATA adapter, or even an **external USB** drive. A mid-November-2025 image shipped **Mesa 25.2.4** out of the box ([Old Lamer — Part IV](https://youtu.be/YuBmGF536II)).
+
 > **Flash drive too small?** The Bazzite ISO is >9 GB. You can install plain **Fedora** (≈3 GB ISO, e.g. Kinoite/KDE) on a small stick, then *rebase* to Bazzite from the terminal ([src](https://t.me/c/2424231195/121246)):
 > ```bash
 > # KDE desktop:
@@ -126,6 +128,8 @@ rpm-ostree rollback   # if an update breaks something, roll back and reboot
 ```
 
 > **Two Bazzite gotchas worth knowing** ([elektricM: Bazzite](https://elektricm.github.io/amd-bc250-docs/linux/bazzite/)): constant **micro-stutter** in even light 2D games is usually the Handheld Daemon failing on a loop — disable it with `sudo systemctl mask --now hhd`. And **freezes when loading levels** after a BIOS flash usually mean the **CMOS wasn't cleared** — clear CMOS, reapply the VRAM setting.
+
+> ⚠ **Bazzite's immutability blocks low-level network tools.** The read-only `/usr` means traffic-shaping / anti-throttling tools that install system services or kernel pieces (e.g. `zapret`-style tools) don't install cleanly. If you depend on one — common for some ISPs that throttle Steam — a mutable distro (Fedora/Arch) is the easier host (RU-specific details in the Russian edition).
 
 ### A3. Done — verify
 Skip to **[Verifying GPU acceleration](#verifying-gpu-acceleration)** below. On the BC-250 image (or after A2) the firmware symlink, kernel params and governor are already in place.
@@ -258,6 +262,83 @@ A `cyan-skillfish-governor-tt` variant exists for those who prefer the kernel-pa
 
 ---
 
+## Niche-distro deltas (Alpine / CoreOS / Debian / CachyOS)
+
+The four paths above cover most people. The distros below need the *same three things*, but with distro-specific package names and mechanisms — these are the BC-250 deltas, not full install guides.
+
+### CachyOS — pick the right microarch level
+CachyOS asks you to choose an x86-64 **microarchitecture level** at install. **Pick `x86-64-v3`** — it's the best-compatibility choice for **Zen 2** ([elektricM: CachyOS](https://elektricm.github.io/amd-bc250-docs/linux/cachyos/)). ⚠ Do **not** pick `x86-64-v4`: that level requires AVX-512, which the BC-250's Zen 2 cores lack, so a v4 install won't run. Use the LTS kernel — `sudo pacman -S linux-cachyos-lts linux-cachyos-lts-headers`. To migrate an **existing Arch** box onto CachyOS repos instead of reinstalling:
+```bash
+wget https://mirror.cachyos.org/cachyos-repo.tar.xz
+tar xvf cachyos-repo.tar.xz
+cd cachyos-repo
+sudo ./cachyos-repo.sh   # choose x86-64-v3 when prompted
+```
+Everything else (firmware, Mesa 25.1+, governor, kernel params) follows **Path C** above.
+
+### Debian — pin Mesa to `experimental`
+Stable/Testing Mesa is too old; you want Mesa **only** from `experimental` without dragging the rest of the system there ([elektricM: Debian](https://elektricm.github.io/amd-bc250-docs/linux/debian/)). Add the repo:
+```
+deb http://deb.debian.org/debian experimental main contrib non-free non-free-firmware
+```
+Then **APT-pin** so only the Mesa packages track experimental — `/etc/apt/preferences.d/experimental`:
+```
+Package: mesa-vulkan-drivers libgl1-mesa-dri
+Pin: release a=experimental
+Pin-Priority: 500
+```
+Install Mesa and a newer kernel:
+```bash
+sudo apt install -t experimental mesa-vulkan-drivers libgl1-mesa-dri
+sudo apt install linux-xanmod-lts-x64v3       # Xanmod LTS, v3 build
+```
+The governor has **no COPR/AUR on Debian** — install it from the upstream release tarball:
+```bash
+tar -xf cyan-skillfish-governor-smu-*-x86_64-linux.tar.gz
+cd cyan-skillfish-governor-smu-*/
+sudo ./scripts/install.sh
+sudo systemctl enable --now cyan-skillfish-governor-smu.service
+```
+
+### Alpine — the only systemd-free governor recipe
+Alpine uses **OpenRC**, not systemd, so the governor needs hand-wiring ([elektricM: Alpine](https://elektricm.github.io/amd-bc250-docs/linux/alpine/)). The firmware package is **`linux-firmware-amdgpu`** (it ships `cyan_skillfish_gpu_info.bin`) — the generic `linux-firmware` name used elsewhere in this doc **does not apply on Alpine**. Install the stack (no `sudo` by default — use **`doas`**, or `apk add sudo`):
+```sh
+doas apk add linux-lts linux-firmware-amdgpu \
+  mesa-vulkan-ati vulkan-loader vulkan-tools mesa-dri-gallium
+```
+Kernel params go in **`/etc/update-extlinux.conf`** (Alpine uses extlinux, **not** grub/dracut); after editing, rebuild:
+```sh
+doas mkinitfs
+doas update-extlinux
+```
+The governor is built from the **`smu`** branch with `cargo build --release`, and because it talks over D-Bus it needs **both** a D-Bus policy file and an OpenRC service:
+- **D-Bus policy** `/etc/dbus-1/system.d/com.cyan.skillfishgovernor.conf` (lets it own the bus name `com.cyan.SkillFishGovernor`);
+- **OpenRC service** `/etc/init.d/cyan-skillfish-governor-smu`, which declares `need dbus`.
+
+Enable D-Bus and reboot:
+```sh
+doas rc-update add dbus default
+doas rc-service dbus start
+```
+
+### Fedora CoreOS — immutable-host 40-CU unlock & ACPI fix
+On the immutable CoreOS host you can't just pass `amdgpu.bc250_cc_write_mode=3` the easy way, so the 40-CU unlock is done as a **boot service via `umr`** that writes the GPU registers once per boot ([elektricM: CoreOS](https://elektricm.github.io/amd-bc250-docs/linux/fedora-coreos/)):
+```bash
+rpm-ostree install umr
+# then a oneshot /etc/systemd/system/gpu-unlock.service that runs the umr
+# register writes (mmRLC_PG_ALWAYS_ON_WGP_MASK / mmCC_GC_SHADER_ARRAY_CONFIG /
+# mmSPI_PG_ENABLE_STATIC_WGP_MASK on *.gfx1013) after a short boot delay,
+# then: systemctl enable gpu-unlock.service
+```
+The **ACPI cpufreq fix** (the `bc250-acpi-fix` SSDT tables) is applied the rpm-ostree way — drop the `.aml` files in `/etc/dracut.conf.d/acpi/`, add `/etc/dracut.conf.d/99-acpi-override.conf`:
+```
+acpi_override="yes"
+acpi_table_dir="/etc/dracut.conf.d/acpi"
+```
+then bake them into the initramfs with `rpm-ostree initramfs --enable` and reboot. (See *Known-bad kernels & gotchas* below for the non-atomic dracut route.)
+
+---
+
 ## What each kernel parameter does
 
 Cross-checked against the [elektricm BC-250 docs](https://elektricm.github.io/amd-bc250-docs/linux/kernel/) and the AMD-BC-250 / mothenjoyer69 setup scripts:
@@ -272,6 +353,10 @@ Cross-checked against the [elektricm BC-250 docs](https://elektricm.github.io/am
 > ⚠ **Do NOT pass `amd_iommu=on`** to make the memory params work — they work *without* IOMMU, which must stay off (next section). The values above can also go in `/etc/modprobe.d/` instead of the kernel cmdline: `options ttm pages_limit=3959290 page_pool_size=3959290` / `options amdgpu gttsize=14750`, then rebuild initramfs.
 
 > **A note on VRAM/buffer size:** the APU performs best with the **smallest** GPU framebuffer carve-out (e.g. 512 MB) so it can share the 16 GB pool dynamically — but changing that needs a **modified BIOS**, covered in [08-bios.md](08-bios.md) ([src](https://t.me/c/2424231195/38599)).
+
+> 📋 **One veteran's canonical daily-driver config (quick reference):** **CPU 4 GHz / GPU 2 GHz 40 CU / VRAM BIOS 512 MB / `mitigations=off` / zswap + 32 GB swap.** That's the whole tuned setup in one line — GPU clock + the 40-CU unlock + a tiny 512 MB BIOS split + mitigations off + the zswap swap fix below ([Old Lamer](https://youtu.be/bXlKcFPeSoU)). Each piece is detailed in [09-overclock-undervolt.md](09-overclock-undervolt.md) and the boxes around here.
+
+> 💥 **Games crashing for lack of RAM (RDR2, Company of Heroes 3)? Use zswap + a big Btrfs swapfile.** With only 16 GB shared between CPU and GPU, memory-hungry titles run out and crash — and systemd's **ZRAM** swap makes it worse on the 512 MB dynamic split (it confuses the allocator into OOM-ing with RAM still free). The fix that holds: **disable systemd ZRAM, enable zswap, and add a 32 GB Btrfs swapfile** (on Btrfs use `btrfs filesystem mkswapfile`). It doesn't add real memory, but it stops the RAM-shortage crashes ([Old Lamer — Part XIV](https://youtu.be/A6juAoY70aU)). Full step-by-step (zswap `lz4`, swapfile, `vm.swappiness=180`, the Bazzite/`rpm-ostree` variant) is in [09-overclock-undervolt.md](09-overclock-undervolt.md).
 
 ---
 
@@ -313,6 +398,11 @@ sudo dmesg | grep -i active_cu_number
 ```
 This is the quickest check that the firmware loaded and (if you set `bc250_cc_write_mode=3`) that all 40 CUs came up. ⚠ verify — exact `dmesg` field name can vary by kernel; if it's empty, also try `dmesg | grep -i amdgpu` and look for successful firmware loads rather than `cyan_skillfish_gpu_info` *failed to load* errors.
 
+> **`dmesg`/CU-check shows nothing as a normal user?** Many distros restrict kernel-log access, so the CU readout and helper scripts like **`cu_map.sh`** print empty. Lift the restriction for the session so the checks display correctly ([4pda — das504](https://4pda.to/forum/index.php?showtopic=1104980)):
+> ```bash
+> sudo sysctl kernel.dmesg_restrict=0
+> ```
+
 **5. Sanity-check temps/clocks** ([src](https://t.me/c/2424231195/23542); elektricM notes the module needs kernel **6.11+**):
 ```bash
 sudo modprobe nct6683 force=true   # force=true is ALWAYS required — the chip isn't auto-detected
@@ -348,6 +438,18 @@ A good default Steam launch line: `RADV_DEBUG=nohiz mangohud %command%`. For **m
 
 > **Compute / LLM note:** ROCm on GFX1013 is barely functional (rocBLAS ships no `gfx1013` kernels) — use the **Vulkan** backend instead. `llama.cpp` Vulkan runs a 4-bit 8B model at ~60 tok/s; set `GGML_VK_FORCE_MAX_ALLOCATION_SIZE=2000000000` to avoid OOM. Vulkan sees only ~10 GB of a 12 GB split. To expose containers' GPU under Podman: `--device /dev/dri --device /dev/kfd` ([elektricM: RADV](https://elektricm.github.io/amd-bc250-docs/drivers/radv/), [elektricM: CoreOS](https://elektricm.github.io/amd-bc250-docs/linux/fedora-coreos/)).
 
+> ⚠ **After a Mesa upgrade, a stale shader cache can cause new crashes/artifacts.** Bisect it by launching with `MESA_SHADER_CACHE_DISABLE=1` — if the problem disappears, clear the cache and let it rebuild ([elektricM: RADV](https://elektricm.github.io/amd-bc250-docs/drivers/radv/)):
+> ```bash
+> rm -rf ~/.cache/mesa_shader_cache
+> rm -rf ~/.local/share/Steam/steamapps/shadercache   # Steam keeps its own
+> ```
+
+> **The definitive "is the GPU actually loaded?" check** is the debugfs `amdgpu_pm_info` — it prints live SCLK/MCLK and power draw, so a moving clock under load proves the GPU (not LLVMpipe) is doing the work; it complements `pp_dpm_sclk` from the governor checks above:
+> ```bash
+> sudo cat /sys/kernel/debug/dri/0/amdgpu_pm_info
+> ```
+> ⚠ verify — the path is the standard amdgpu **debugfs** node (the DRI index may be `0` or `1`; try both). The elektricM RADV page itself documents `pp_dpm_sclk` + `nvtop` for this; treat `amdgpu_pm_info` as the kernel-level complement.
+
 ---
 
 ## Sensors & fan control
@@ -358,6 +460,10 @@ The BC-250's Super-I/O chip is a **Nuvoton NCT6686D**. Two drivers exist — pic
 - **`nct6687`** (out-of-tree, [Fred78290/nct6687d](https://github.com/Fred78290/nct6687d)) — **read + write, including PWM fan control.** Needed for CoolerControl/manual curves.
 
 Both need **`force=true`** (the chip isn't auto-detected) and both report as `nct6686-isa-0a20`. **Don't load both** — they conflict.
+
+> **Install `lm-sensors` first — the package name is split.** It's **`lm_sensors`** (underscore) on **Fedora/Bazzite** (`sudo dnf install lm_sensors`) and **Arch** (`sudo pacman -S lm_sensors`), but **`lm-sensors`** (hyphen) on **Debian/Ubuntu** (`sudo apt install lm-sensors`). Then run `sudo sensors-detect` (answer **YES** to all prompts) ([elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/)).
+
+> **The two drivers also label the fields differently** ([elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/)). `nct6683` (read-only) shows **generic** labels — `VIN0`–`VIN16`, `fan1`–`fan5`, and temps like `AMD TSI Addr 98h` / `Thermistor 14/15`. `nct6687` (writable PWM) shows **friendly** labels — `+12V`, `+5V`, `+3.3V`, `CPU Soc`, `CPU Vcore`, `VRM MOS`, `CPU Fan`, `Pump Fan`, `System Fan #1`–`#6`. Alongside the Nuvoton chip, the CPU temperature itself comes from **`k10temp`** (adapter `k10temp-pci-00c3`, field `Tctl`) — that's the Zen 2 die sensor, separate from `nct6686`.
 
 **Read-only (nct6683):**
 ```bash
@@ -377,7 +483,32 @@ echo 'nct6687'                    | sudo tee    /etc/modules-load.d/99-sensors.c
 
 > ⚠ **PWM values don't persist across reboot** with `nct6687` — use **CoolerControl** (`ujust install-coolercontrol` on Bazzite; `dnf install coolercontrol` from the Terra COPR on Fedora; `yay -S coolercontrol` on Arch) or a systemd/udev rule to set them at boot.
 
-The board has two fan headers (**J1** primary, **J4003** secondary); the main fan usually shows up as **Pump Fan** / `fan2`. Useful direct reads: GPU temp `cat /sys/class/drm/card0/device/hwmon/hwmon*/temp1_input` (millidegrees), GPU power `…/power1_average` (microwatts). Terminal monitors: `nvtop`, `radeontop`, `MangoHud` in-game. The BIOS also has **Default / Full Speed / Customize** fan modes — use **Full Speed** while validating cooling ([elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/)).
+The board has two fan headers (**J1** primary, **J4003** secondary); the main fan usually shows up as **Pump Fan** / `fan2`. Useful direct reads — the raw sysfs files come in milli-/micro- units, so pipe through `awk` to get human values ([elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/)):
+```bash
+# GPU temp: temp1_input is milli-°C → °C
+cat /sys/class/drm/card0/device/hwmon/hwmon*/temp1_input    | awk '{print $1/1000 "°C"}'
+# GPU power: power1_average is µW → W
+cat /sys/class/drm/card0/device/hwmon/hwmon*/power1_average | awk '{print $1/1000000 "W"}'
+```
+Terminal monitors: `nvtop`, `radeontop`, `MangoHud` in-game. The BIOS also has **Default / Full Speed / Customize** fan modes — use **Full Speed** while validating cooling ([elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/)).
+
+### In-game overlay — a ready MangoHud config
+`MangoHud` shows GPU/CPU temps, power, VRAM/RAM and frame timing right on top of the game (Steam launch line `mangohud %command%`, or `mangohud <app>`). Drop this in `~/.config/MangoHud/MangoHud.conf` for a BC-250-appropriate readout ([elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/)):
+```ini
+gpu_temp
+cpu_temp
+gpu_power
+cpu_power
+vram
+ram
+fps_limit=60
+frame_timing=1
+position=top-left
+font_size=24
+```
+`gpu_power`/`cpu_power` read the same hwmon sensors as above; `fps_limit=60` caps the frame rate (the BC-250 is happiest fed a fixed target rather than racing), and `frame_timing=1` draws the frametime graph that exposes stutter.
+
+> **Don't want to hand-edit the config?** Install **`goverlay`** (`dnf install goverlay` on Fedora, also packaged for Arch/Bazzite) — a GUI front-end that writes `MangoHud.conf` for you. For a plain always-on **desktop** monitor outside games, **GKrellM** is a lightweight temp/clock widget ([4pda](https://4pda.to/forum/index.php?showtopic=1104980)).
 
 ---
 
@@ -397,7 +528,16 @@ The driver story changed a lot across the chat's 17 months. The elektricM kernel
 | 7.0-rc | 🔬 Mainline | Untested on BC-250, not for daily use |
 
 - **Two broken windows, not one.** Earlier chat flagged `6.14.7` ([Fedora warning thread](https://www.reddit.com/r/Fedora/comments/1kqyhyf/warning_for_amdgpu_users_dont_update_to_6147_or/)); the durable ranges to avoid are **6.15.0–6.15.6** and **6.17.8–6.17.10**. A user's Fedora silently booted a bad 6.17, amdgpu couldn't load firmware (`amdgpu: Failed to get gpu_info firmware` / `Fatal error during GPU init`), everything fell to CPU. Fix: boot a working kernel, then **remove and version-lock** the bad one ([src](https://t.me/c/2424231195/98466)) — `dnf versionlock add kernel` (Fedora), `IgnorePkg = linux` in `/etc/pacman.conf` (Arch), `apt-mark hold` (Debian).
+  - **Arch — concrete downgrade recipe.** To drop back to a known-good kernel and then hold it ([4pda — InfernalWolf666](https://4pda.to/forum/index.php?showtopic=1104980)):
+    ```bash
+    yay -S downgrade
+    sudo downgrade linux          # in the list, pick e.g. 6.17.7 arch 1-2
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+    # then skip it on future upgrades:
+    sudo pacman -Syu --ignore linux,linux-headers,linux-zen
+    ```
 - **When stuck, use LTS.** Several newcomers hit a wall building dev libs / drivers on a bleeding-edge kernel and were unblocked by switching to an **LTS kernel** ([src](https://t.me/c/2424231195/56529)).
+- **On Arch, snapshot before every update.** Because a kernel/Mesa bump can break the GPU, put the root on **Btrfs** and take a **snapper** or **timeshift** snapshot before `pacman -Syu` — then a bad update is a one-command rollback instead of a reinstall ([4pda](https://4pda.to/forum/index.php?showtopic=1104980)). (Atomic distros like Bazzite get this for free via `rpm-ostree rollback`.)
 - **Unpatched kernels cap GPU clocks at 1000–2000 MHz.** The extended **350–2230 MHz** range needs either the kernel frequency patch (pre-applied in Bazzite/PikaOS) **or** the SMU governor, which unlocks it without patching ([elektricM: kernel](https://elektricm.github.io/amd-bc250-docs/linux/kernel/)).
 - **HDMI audio on kernel 6.17+** needed a workaround (rebuild with `CONFIG_SND_HDA_CODEC_HDMI_ATI=m` / `snd-hda-codec-atihdmi.ko`) — DisplayPort is the safer output ([src](https://t.me/c/2424231195/68051)). DisplayPort audio on the BC-250 can also come out **pitched-down/slowed** — a passive DP→HDMI or USB audio adapter is the fix ([elektricM: Arch](https://elektricm.github.io/amd-bc250-docs/linux/arch/)).
 - **CPU frequency scaling needs the ACPI fix.** Out of the box the BC-250 has **no working `cpufreq`** — the CPU is stuck. Installing the [`bc250-acpi-fix`](https://github.com/bc250-collective/bc250-acpi-fix) SSDT-PST/CST tables (drop the `.aml` files via dracut/initramfs) enables 8 P-states (800–3200 MHz); then `schedutil` is the recommended governor ([elektricM: Fedora](https://elektricm.github.io/amd-bc250-docs/linux/fedora/), [elektricM: CoreOS](https://elektricm.github.io/amd-bc250-docs/linux/fedora-coreos/)).
@@ -427,6 +567,8 @@ A typical finished result — a BC-250 in a custom case with a little status LCD
 - **Sensors / fan PWM:** [Fred78290/nct6687d](https://github.com/Fred78290/nct6687d) · **CPU cpufreq:** [bc250-collective/bc250-acpi-fix](https://github.com/bc250-collective/bc250-acpi-fix) · **40-CU unlock:** [duggasco/bc250-40cu-unlock](https://github.com/duggasco/bc250-40cu-unlock)
 - **Mesa upstream:** [MR !33116](https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/33116) · [MR !33962](https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/33962)
 - **Community reports:** SteamOS (main-branch image) + Batocera confirmed booting on the BC-250 — [r/linux_gaming thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)
+- **Old Lamer (YouTube) BC-250 series:** [Part IV — Bazzite install](https://youtu.be/YuBmGF536II) · [Part XIV — zswap + 32 GB Btrfs swap](https://youtu.be/A6juAoY70aU) · [Part XV — `install_gpu_usage_fix.sh` (655 % MangoHud)](https://youtu.be/lSipaWjU6D4) · [daily-driver config](https://youtu.be/bXlKcFPeSoU)
+- **4pda BC-250 thread** ([forum topic 1104980](https://4pda.to/forum/index.php?showtopic=1104980)): Arch kernel downgrade (InfernalWolf666) · `kernel.dmesg_restrict=0` for CU checks (das504) · goverlay/GKrellM/snapper-timeshift tips
 - **Chat highlights:** firmware symlink — https://t.me/c/2424231195/45453 · EndeavourOS guide — https://t.me/c/2424231195/50399 · SteamOS guide — https://t.me/c/2424231195/52411 · Fedora→Bazzite rebase — https://t.me/c/2424231195/121246 · bad-kernel rescue — https://t.me/c/2424231195/98466 · Mesa 25.1 upstream — https://t.me/c/2424231195/20891
 
 > Overclocking/undervolting and the 40-CU unlock are in [09-overclock-undervolt.md](09-overclock-undervolt.md). WiFi/BT dongle drivers are in [10-wifi-bt.md](10-wifi-bt.md).

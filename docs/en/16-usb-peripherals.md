@@ -84,6 +84,7 @@ flowchart LR
 - **"USB 3.0" hubs that aren't** — a 160 ₽ AliExpress "USB 3.0 hub/dock" was flagged as **definitely not real 3.0** at that price. ([src](https://t.me/c/2424231195/8761)) · ([src](https://t.me/c/2424231195/8764))
 - **Daisy-chaining hubs** to multiply ports — raised as an idea ([src](https://t.me/c/2424231195/104653)) but it stacks the power problem; one weak rail now feeds two hubs. Use a single good powered hub instead.
 - **SATA-splitter "hubs"** off the M.2 slot — a recurring confusion. With only **2 PCIe lanes** on the M.2 you can't sanely hang a SATA controller and expect it to fan out; "those one-SATA-in, many-out hubs are rubbish." ([src](https://t.me/c/2424231195/22539)) Not a USB topic — just don't confuse it with USB expansion.
+- ★ **M.2→SATA controller PH516 (6-port) — confirmed NOT working.** The port enumerates but the disk won't attach, and a **second person reproduced** the same failure ([4pda — Strange999](https://4pda.to/forum/index.php?showtopic=1104980)). Buy the community-recommended **ASM1166** instead (see the storage section) — PH516 is a known dead end on this board.
 
 A hub with a **built-in audio codec** is a neat space-saver for cased builds (one device gives you extra ports *and* a 3.5 mm jack), and people do use them. ([src](https://t.me/c/2424231195/8751)) Audio-quality varies — it's a cheap codec. ([src](https://t.me/c/2424231195/39708))
 
@@ -112,9 +113,29 @@ This is one of the **most common newcomer questions** — *"is this the adapter 
 
 > ⚠ verify — the ASM1166 card is a community recommendation, not a tested-by-many result on the BC-250 specifically. Confirm your chosen adapter enumerates and boots before relying on it. Note also that the M.2's **2 PCIe lanes** can't sanely feed a one-SATA-in / many-out *splitter* — see **Junk to avoid** above. ([src](https://t.me/c/2424231195/22539))
 
+#### ★ Powering a 2.5″ SATA drive (the board is 12 V-only)
+
+The adapter card above handles **data**, but a 2.5″ SATA drive also needs **5 V power** on its SATA-power connector — and the BC-250 board only delivers **12 V**, with no SATA-power header to tap. The practical fix from one build: a **USB→SATA-power adapter feeding 5 V** to the drive, with a **12 V→5 V step-down (buck) converter** producing that 5 V off the board's 12 V ([TMG HD build](https://youtu.be/OEO0r01zcfU); ⚠ approx — paraphrased from the video walkthrough). In other words: ASM1166 (or an M.2 SATA stick) carries the SATA *data*; the buck-converter + USB→SATA-power adapter carries the SATA *power*. A self-powered 2.5″ enclosure or a powered dock sidesteps the whole problem by bringing its own 5 V rail.
+
+#### ★ SteamOS "no nvme drive detected" with an M.2 SATA stick
+
+If you boot SteamOS with an **M.2 SATA SSD** (e.g. a **Kingston SNS41**) instead of NVMe, the installer/repair flow can fail with **"no nvme drive detected"** — SteamOS assumes the disk is an NVMe device (`nvme…`), but a SATA stick enumerates as `sda`. The fix is to edit the repair script and point it at the right device name ([4pda — pornocrat](https://4pda.to/forum/index.php?showtopic=1104980)):
+
+```bash
+# Edit the SteamOS repair script and replace the device name nvme -> sda
+nano ~/tools/repair_device.sh
+# change every "nvme" reference to "sda", save, then re-run the install/repair
+```
+
+This is purely a device-naming mismatch — the SATA stick works fine once SteamOS is told to look at `sda` rather than an `nvme` node.
+
 ### Older SATA drives are fine
 
 Because the M.2 link caps everything at ~1 GB/s anyway, an old **2.5″ SATA HDD/SSD** is perfectly adequate for a **game library or older games** — the speed you'd lose is speed the board can't deliver. ([src](https://t.me/c/2424231195/132739)) A **USB-NVMe enclosure** is another option if you'd rather keep the M.2 slot free, but the enclosures that actually do NVMe (not SATA) start more expensive — for a small boot stick it's not worth it. ([src](https://t.me/c/2424231195/111022))
+
+### Intel Optane 16 GB as cache/swap — community idea, lukewarm verdict
+
+Using a small **Intel Optane 16 GB NVMe** module as a cache or swap device came up as an idea, with a sober verdict ([4pda](https://4pda.to/forum/index.php?showtopic=1104980)): the **16 GB "Optane" modules sold on Ozon turned out not to be real Optane** by members' own tests, the board's **M.2 slot is slow** (PCIe 2.0 ×2, ~1 GB/s) so the latency advantage is blunted, and while a **swap file is possible in theory**, it isn't a clear win here. Treat it as a curiosity, not a recommended upgrade.
 
 ---
 
@@ -127,6 +148,16 @@ A USB-C / Thunderbolt-style **dock** can act as one fat hub (USB + Ethernet + so
 - For extra **monitors specifically**, a dock won't dodge the GPU's own output limit — see **[14-display.md](14-display.md)** before counting on it.
 
 Bottom line: docks are fine as **powered hubs** (they bring their own supply, which neatly sidesteps the 5 V problem). Don't buy one expecting its **video** output to work.
+
+---
+
+## Controllers & input
+
+Gamepads ride the same weak USB rail and the same flaky-Bluetooth story as everything else (see **[10-wifi-bt.md](10-wifi-bt.md)** for BT dongles). A few specific findings:
+
+- **DualSense on Linux via DS5Dongle (Raspberry Pi Pico 2W).** This open dongle gives the DualSense its **HD haptics + speaker** on Linux and a **web UI** for polling rate / volume — but there's a catch for game audio: Wine/Proton titles only get the controller's audio in **Direct mode** (the controller shows up as a single **4-channel audio card**), and **not every distro exposes that mode** ([4pda — korotyshev](https://4pda.to/forum/index.php?showtopic=1104980)). Separately, the kernel **`hid-playstation`** driver (native DualSense support) needs **Bluetooth ≥ 5.0** on the adapter ([4pda — xDarkman](https://4pda.to/forum/index.php?showtopic=1104980)).
+- **GameSir T4 Kaleid + its 2.4 GHz dongle** is a working controller/input path that sidesteps Bluetooth entirely — wired-feel input over a 2.4 GHz USB receiver instead of fighting BT pairing ([TiredDadTech](https://youtu.be/zi7sldeRd2w); ⚠ approx — paraphrased from the video).
+- **BT-dongle port matters: UGREEN Bluetooth dongle works only in a USB 2.0 port, not USB 3.0.** The 3.0 ports' RF noise/electrical wiring breaks it; move it to one of the two **USB 2.0** ports and it works ([4pda — InfernalWolf666](https://4pda.to/forum/index.php?showtopic=1104980)). (Same USB-3.0-noise effect that plagues WiFi/BT sticks — see [10-wifi-bt.md](10-wifi-bt.md).)
 
 ---
 
@@ -152,6 +183,13 @@ A popular cased reference build is exactly this: **Cooler Master MasterBox NR200
 - Hoco hub unreliable / resoldered twice — https://t.me/c/2424231195/74531 · fake "3.0" cheap hub — https://t.me/c/2424231195/8761 · https://t.me/c/2424231195/8764
 - SATA-splitter confusion — https://t.me/c/2424231195/22539 · daisy-chaining hubs — https://t.me/c/2424231195/104653
 - Storage: M.2 is PCIe 2.0 ×2 / ~1 GB/s — https://t.me/c/2424231195/66275 · put M.2 SATA SSD instead — https://t.me/c/2424231195/135506 · ASM1166 M.2→SATA card — https://t.me/c/2424231195/135180 · M.2 SATA straight in board — https://t.me/c/2424231195/87411 · "what adapter to connect a drive?" — https://t.me/c/2424231195/135164 · https://t.me/c/2424231195/135165 · old 2.5″ SATA fine for game library — https://t.me/c/2424231195/132739 · USB-NVMe enclosures cost more — https://t.me/c/2424231195/111022
+- ★ Powering a 2.5″ SATA drive (USB→SATA-power + 12 V→5 V buck) on the 12 V-only board — [TMG HD build](https://youtu.be/OEO0r01zcfU) (⚠ approx, paraphrased)
+- ★ M.2→SATA PH516 (6-port) confirmed NOT working, reproduced by a second person — [4pda — Strange999](https://4pda.to/forum/index.php?showtopic=1104980)
+- ★ SteamOS "no nvme drive detected" with M.2 SATA stick (Kingston SNS41), fix = edit `~/tools/repair_device.sh`, rename `nvme`→`sda` — [4pda — pornocrat](https://4pda.to/forum/index.php?showtopic=1104980)
+- Intel Optane 16 GB as cache/swap (Ozon ones not real Optane, slow M.2, swap-file in theory) — [4pda](https://4pda.to/forum/index.php?showtopic=1104980)
+- DS5Dongle (RPi Pico 2W) for DualSense on Linux — HD haptics/speaker/web-UI, Wine/Proton audio only in Direct mode (single 4-ch card) — [4pda — korotyshev](https://4pda.to/forum/index.php?showtopic=1104980) · `hid-playstation` needs BT ≥5.0 — [4pda — xDarkman](https://4pda.to/forum/index.php?showtopic=1104980)
+- GameSir T4 Kaleid + 2.4 GHz dongle as controller/input fix over Bluetooth — [TiredDadTech](https://youtu.be/zi7sldeRd2w) (⚠ approx, paraphrased)
+- UGREEN BT dongle works only in a USB 2.0 port, not 3.0 — [4pda — InfernalWolf666](https://4pda.to/forum/index.php?showtopic=1104980)
 - Hub with built-in audio — https://t.me/c/2424231195/8751 · https://t.me/c/2424231195/39708
 - USB 3.1 Type-E → USB 3.0 cable (AXONUS) — https://t.me/c/2424231195/133182 · Xiwai Type-E 20-pin — https://t.me/c/2424231195/125127 · splice stock cable — https://t.me/c/2424231195/135957
 - USB 2.0 confirmed, 3.0 to be tested — https://t.me/c/2424231195/136215

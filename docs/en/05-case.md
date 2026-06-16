@@ -46,6 +46,8 @@ Three questions decide which case fits you:
 
 > **Jargon, once:** **STL** = the standard 3D-print mesh file you load into a slicer. **STEP / 3MF** = editable CAD formats (use these if you want to modify the design). **Shroud / sleeve / adapter** = a printed funnel that makes the fan seal against the fins instead of leaking air around them. **Flex / SFX ATX** = small form-factor PC power supplies. **LOP** = the Meanwell LOP-300 industrial PSU the community favours.
 
+> **💡 Print an access hole to the CMOS-clear jumper.** Every time you change the VRAM/UMA split you have to **clear CMOS** (see [BIOS](08-bios.md)), so designing a sealed case that buries the jumper means cracking it open repeatedly. Leave a **⌀10 mm access hole** over the clear-CMOS jumper in any enclosed design — or, better, wire a small **3-position switch** out to the panel so you can reset it without tools. ([4pda — nix0root](https://4pda.to/forum/index.php?showtopic=1104980))
+
 ---
 
 ## Tier 1 — Minimal "cooling sleeve" (start here)
@@ -121,6 +123,10 @@ A minimalist **FlexATX** console run **fins-open**, holding **~67 °C @ 2145 MHz
 
 A full self-contained console with a complete **build guide**: internal storage, **WiFi 6**, and an **ESP32 temperature display**. [GitHub isaacalvex/AMD-BC-250-Project-Guide](https://github.com/isaacalvex/AMD-BC-250-Project-Guide).
 
+### Simple Case for the ASRock AMD BC-250
+
+A named, publicly-downloadable console enclosure published by the author of the [Ukrainian build walkthrough on YouTube](https://youtu.be/p5Zd86vFe8w) — a straightforward closed box for those who want a finished print without the multi-part complexity. [MakerWorld 2870270](https://makerworld.com/en/models/2870270).
+
 ---
 
 ## Tier 4 — Big builds: ATX PSU, AIO liquid, screens
@@ -135,6 +141,18 @@ The **most-pointed-to 3D project** in the community (reposted 7×). A family of 
 - [Printables 1614131 — Pro Liquid-Cooled](https://www.printables.com/model/1614131-nexgen3d-diy-steam-machine-pro-liquid-cooled-bc-25) · [Printables 1649679 — Redux](https://www.printables.com/model/1649679-nexgen3d-diy-steam-machine-redux-edition) · [Printables 1554003 — AIO mount](https://www.printables.com/model/1554003-nexgen3d-aio-mount-for-the-bc-250)
 - **Fan/cooling:** 120 mm air **or** 120 mm AIO depending on variant
 - **PSU:** LOP version and ATX versions documented
+
+### "Steam Machine Pro" liquid-cooled reference build (Old Lamer)
+
+A high-end, fully liquid-cooled build documented end-to-end on video — useful as a parts shopping list if you're going all-in on an AIO machine ([Old Lamer](https://youtu.be/afYhUQFa-AY)). The published BOM:
+
+- **AIO:** TEUCER AF 240 (240 mm all-in-one) on the die
+- **PSU:** Mean Well **LOP-600-12** (or **LOP-500-12** as the smaller option) — see [Power Supply](03-power-supply.md)
+- **Fans:** 2× Arctic **P12 Pro** + 1× Arctic **P8**
+- **Remote power:** an **ESP32 relay board** to switch the machine on/off remotely
+- **Software:** **OpenLinkHub** / **Commander Duo** under Linux to drive the AIO pump and fans
+
+---
 
 ### ATX-PSU cases (Victor L., V\ad, server-PSU v3/v4)
 
@@ -199,6 +217,7 @@ Files marked *(chat)* are mirrored under `assets/stl/`; everything else download
 | **The Lanboy** | portable arcade + 16″ eDP screen | Printables files | 12 V ATX breakout | [Printables 1746364](https://www.printables.com/model/1746364) |
 | **BC250 Vented Edition** (MaelremremDotXYZ) | FlexATX console, fins-open | MakerWorld files | 120 | [MakerWorld 2899020](https://makerworld.com/en/models/2899020) |
 | **Stellar 250** (isaacalvex) | console + build guide (WiFi6, ESP32) | GitHub guide | 120 | [GitHub isaacalvex/...Project-Guide](https://github.com/isaacalvex/AMD-BC-250-Project-Guide) |
+| **Simple Case for the ASRock AMD BC-250** | console | MakerWorld files | 120 | [MakerWorld 2870270](https://makerworld.com/en/models/2870270) |
 | **BC250-HUD** (Bloodyly) | internal Pi Zero 2 status screen | GitHub sources | — | [GitHub Bloodyly/BC250-HUD](https://github.com/Bloodyly/BC250-HUD) |
 | **Generic ITX mount** (majzok) | adapter (any ITX case) | search Printables/MakerWorld | — | "BC-250 ITX Mount" |
 | **Thermalright AXP90/AXP120 mount** | low-profile cooler adapter | Printables files | low-profile tower | [Printables 1694793](https://www.printables.com/model/1694793) |
@@ -302,5 +321,8 @@ Named, downloadable designs from [elektricM's 143-design catalog](https://elektr
 - Board reference model — [src](https://t.me/c/2424231195/55496) · [Printables 1341336](https://www.printables.com/model/1341336-accurate-3d-model-of-the-amd-bc-250-board)
 - GitHub case repos — [onemorecap/bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case) · [ivanov-innokentii/BC250-case](https://github.com/ivanov-innokentii/BC250-case) · [rLapchynski/bc250-enclosure](https://github.com/rLapchynski/bc250-enclosure)
 - **elektricM full case catalog (~143 designs, searchable/filterable)** — [elektricm.github.io/amd-bc250-docs/community/cases](https://elektricm.github.io/amd-bc250-docs/community/cases/)
+- Simple Case (MakerWorld 2870270) + Ukrainian build walkthrough — [MakerWorld 2870270](https://makerworld.com/en/models/2870270) · [Old Lamer (YouTube)](https://youtu.be/p5Zd86vFe8w)
+- CMOS-clear access-hole lifehack — [4pda — nix0root](https://4pda.to/forum/index.php?showtopic=1104980)
+- "Steam Machine Pro" liquid-cooled build BOM (TEUCER AF 240, Mean Well LOP-600-12, Arctic P12 Pro/P8, ESP32 relay, OpenLinkHub/Commander Duo) — [Old Lamer (YouTube)](https://youtu.be/afYhUQFa-AY)
 
 > Fan-shroud STLs are shared with [Cooling](04-cooling.md). All chat-hosted STL/STEP/3MF files are mirrored under `assets/stl/`.

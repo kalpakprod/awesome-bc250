@@ -17,6 +17,7 @@ The BC-250 was never sold at retail to consumers — it's decommissioned mining/
 | 🇷🇺 Russia | **Барахолка** (in-chat) | The community's own classifieds topic — human-to-human only, see below. ([src](https://t.me/c/2424231195/89793)) |
 | 🇺🇦 Ukraine | **OLX** | Where Ukrainian buyers find boards; ~7k ₴ reported for a BC-250. ([src](https://t.me/c/2424231195/129132), [listing](https://www.olx.ua/d/obyavlenie/igrovaya-platforma-asrock-amd-bc-250-IDYryBv.html)) |
 | 🇰🇿/🇬🇪 Local | **Hand-to-hand / regional buyers** | Buyers in Kazakhstan and Georgia (priced in лари) resell into RU/CIS; arranged via chat DMs. ([KZ buyer](https://t.me/c/2424231195/20434), [GE src](https://t.me/c/2424231195/35367)) |
+| 🇺🇿→🇷🇺 Route | **Uzbekistan → Moscow** | A board bought in UZ for **≈$85**, then **SDEK ≈$32** to a Moscow pickup point; the deal itself closed through a **Telegram guarantor**. ([4pda — Beat_ON](https://4pda.to/forum/index.php?showtopic=1104980)) |
 
 > Shop links here are **community-shared, not endorsements**. Listings expire, sellers change, and the chat has seen both honest resellers and gougers. Always check the seller's history and ask for photos before paying.
 
@@ -32,6 +33,10 @@ If you're not in the US, the established method is to buy the eBay listing throu
 4. Sum it up, pay to their card, and **wait ~a month** — or walk away.
 
 Typical forwarder economics reported in the chat: commission around **7%**, and shipping to KZ/Russia adding roughly **1–2k ₽** on top of the eBay price. People have used buyers from **Chelyabinsk** and **Kazakhstan** with good results. ([7% / Chelyabinsk src](https://t.me/c/2424231195/21260), [KZ buyer src](https://t.me/c/2424231195/20434))
+
+> **Useful for shipping-cost math:** a bare board weighs **≈0.86 kg**, so a forwarder/SDEK quote is easy to estimate before you commit. ([4pda — deemon12345](https://4pda.to/forum/index.php?showtopic=1104980))
+
+A worked CIS route from another buyer: a board bought in **Uzbekistan for ≈$85**, forwarded by **SDEK for ≈$32** to a Moscow pickup point, with the payment held by a **Telegram guarantor** until handover. ([4pda — Beat_ON](https://4pda.to/forum/index.php?showtopic=1104980))
 
 One member's all-in cost through a forwarder landed at **$630** for a built unit; another quoted **~$69 board → ~$94 in four days** as the listing's price climbed (see prices below). ([$630 src](https://t.me/c/2424231195/38483), [climb src](https://t.me/c/2424231195/36286))
 
@@ -67,6 +72,8 @@ Listings vary wildly in what's included. Match the price to the bundle:
 There is **no "official bundle"** — heatsink presence, PSU model, and SSD size all differ listing to listing, so read the description carefully.
 
 > **What to check / avoid in a listing** (elektricM): **any BIOS version is fine** — P2.00, P3.00, P4.00, P5.00 all flash to the community-modded BIOS, so don't pay a premium for a specific one. **Avoid boards sold without a heatsink, or with visible physical damage.** Most boards are functionally identical; minor heatsink fin-tab variations don't meaningfully affect cooling. Practical ordering tip: **buy the board first** (it has the longest shipping/forwarding wait) and order the [PSU](03-power-supply.md), [cooling](04-cooling.md) and storage while you wait. ([elektricM prerequisites](https://elektricm.github.io/amd-bc250-docs/getting-started/prerequisites/), [introduction](https://elektricm.github.io/amd-bc250-docs/getting-started/introduction/))
+
+> **💡 Budgeting the [case](05-case.md) print (RU).** If you have no printer: commercial print shops mostly **won't take a one-off case job under ≈5.5k ₽**, but printing **through an acquaintance who supplies the filament** runs only **≈1.5k ₽**. ([4pda — step781](https://4pda.to/forum/index.php?showtopic=1104980)) An online option is the RU service **[3dprint.alexgyver.ru](https://3dprint.alexgyver.ru)** at **≈8 ₽/g**. Prefer **matte PETG** for the enclosure — its higher softening temperature stands up better to the board's hot exhaust than glossy PETG. ([4pda — johnnyperovvip / GeoWFHC](https://4pda.to/forum/index.php?showtopic=1104980))
 
 ---
 
@@ -106,6 +113,12 @@ Prices are **set by demand, not by a manufacturer**, and they move fast. Treat t
 | Full serviced build | **~20k–25k ₽** | Барахолка, with PSU/SSD/OS/cooling ([src](https://t.me/c/2424231195/95708), [src](https://t.me/c/2424231195/131411)) |
 | All-in via forwarder | **~$630** | a complete unit, shipped ([src](https://t.me/c/2424231195/38483)) |
 
+**RU all-in build budgets (real datapoints).** What members actually spent assembling a usable machine, not just the board:
+
+- **≈16k ₽** — board + PSU + thermal pads + miscellany, reusing an SSD and cooler they already had. ([4pda — sftk](https://4pda.to/forum/index.php?showtopic=1104980))
+- **≈28k ₽** — a complete all-in build (counting three PSUs bought along the way, a case, and an M.2). ([4pda — Susa.ru9](https://4pda.to/forum/index.php?showtopic=1104980))
+- **On the 11.11 sale:** a **500 W PSU for 51 €**, the **board for 80 €**, and a **256 GB M.2 for 24 €** — a snapshot of how low the parts can go when timed to a sale. ([4pda — dulimov](https://4pda.to/forum/index.php?showtopic=1104980))
+
 A "good deal" is a **working board near the bottom of these ranges with a known-good PSU included** and a seller who'll show photos. Above ~$130 for a bare board, you're paying the hype premium — wait for the next batch.
 
 ---
@@ -139,5 +152,6 @@ Because eBay pricing is so listing-and-volume sensitive, members coordinate purc
 - Ukraine OLX (~7k ₴) — https://t.me/c/2424231195/129132
 - Marketplaces — Ozon https://www.ozon.ru/product/videokarta-amd-bc-250-dlya-mayninga-3516734147/ · Avito (forwarder) https://www.avito.ru/tomsk/predlozheniya_uslug/vykup_i_dostavka_tovarov_s_ebay_4506584736 · OLX https://www.olx.ua/d/obyavlenie/igrovaya-platforma-asrock-amd-bc-250-IDYryBv.html · AliExpress https://aliexpress.ru/item/1005009654316985.html
 - Honest downsides & reliability (idle power, feature gaps, mining-hardware longevity) — r/linux_gaming community thread (2026) https://www.reddit.com/r/linux_gaming/comments/1nvsgji/
+- RU/CIS purchasing data — board weight ≈0.86 kg (deemon12345), UZ→Moscow + SDEK + TG guarantor (Beat_ON), build budgets ≈16k/≈28k ₽ (sftk, Susa.ru9), 11.11 parts prices (dulimov), RU 3D-print pricing & matte-PETG (step781, johnnyperovvip, GeoWFHC) — 4pda thread https://4pda.to/forum/index.php?showtopic=1104980
 
 > Prices change constantly — these are dated community snapshots, **not** a live price feed. Re-check several listings yourself before buying. See [03-power-supply.md](03-power-supply.md) and [04-cooling.md](04-cooling.md) for what a board-only purchase still needs.

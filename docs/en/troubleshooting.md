@@ -65,10 +65,10 @@ flowchart TD
 | Steam / FSR / vsync broken | "Gamer" distro fork interfering | Some tuned forks break these; plain Fedora/Bazzite-bc250 is safer → [06 — Linux](06-linux.md) |
 | GPU **locked at 1500 MHz** regardless of load | No user-space governor (default is BIOS-locked) | Install a GPU governor (cyan-skillfish-governor-smu) to scale frequency ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) → [09 — Overclock](09-overclock-undervolt.md) |
 | Governor runs but GPU **won't exceed 2000 MHz** | Kernel lacks the frequency-range patch (default cap 1000–2000) | Use a patched kernel (Bazzite/CachyOS pre-patched) or apply `amdgpu-frequency-range.patch` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) → [09 — Overclock](09-overclock-undervolt.md) |
-| MangoHud shows **655 %** GPU usage | amdgpu leaves the activity metric at `0xFFFF`; MangoHud reads 65535/100 | Run cyan-skillfish-governor-smu (smu branch) — it patches `gpu_metrics`; no MangoHud change needed ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) → [09 — Overclock](09-overclock-undervolt.md) |
+| MangoHud shows **655 %** GPU usage | amdgpu leaves the activity metric at `0xFFFF`; MangoHud reads 65535/100 | Run cyan-skillfish-governor-smu (smu branch) — it patches `gpu_metrics`; no MangoHud change needed. Or apply the standalone **`install_gpu_usage_fix.sh`** ([Old Lamer — Part XV](https://youtu.be/lSipaWjU6D4)) ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) → [09 — Overclock](09-overclock-undervolt.md) |
 | **Headless** "GPU does nothing" in a load test | `glmark2 --off-screen` silently falls back to **llvmpipe** (CPU) without a display | Test with `clpeak` / `vkmark` / `llama-bench -ngl 99`; confirm SCLK & power climb ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) → [06 — Linux](06-linux.md) |
 | 60+ FPS but **stutters** / uneven frame times | Frame pacing (X11 compositor, or audio-tied pacing) | Run through **gamescope** (`-W 1920 -H 1080 -f`), or disable the compositor / try Wayland ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) → [11 — Gaming](11-gaming.md) |
-| Game **crashes OOM / artifacts then dies** (RDR2, CoH3) | **512 MB dynamic VRAM + ZRAM** conflict | Switch BIOS to **fixed VRAM** (e.g. 10 GB RAM / 6 GB VRAM) or disable ZRAM ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md)) → [08 — BIOS](08-bios.md) |
+| Game **crashes OOM / artifacts then dies** (RDR2, CoH3) | **512 MB dynamic VRAM + ZRAM** conflict, or simply **out of RAM** | Switch BIOS to **fixed VRAM** (e.g. 10 GB RAM / 6 GB VRAM); **or** disable systemd ZRAM and use **zswap + a 32 GB Btrfs swapfile** ([Old Lamer — Part XIV](https://youtu.be/A6juAoY70aU), recipe in [06](06-linux.md)/[09](09-overclock-undervolt.md)) ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md)) → [08 — BIOS](08-bios.md) |
 | Specific game (e.g. **RDR2**) renders on CPU/llvmpipe | Game defaults to the wrong graphics adapter | Set the adapter to the AMD GPU in-game; RDR2: launch with `-useMaximumSettings` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) → [11 — Gaming](11-gaming.md) |
 
 ## Network
@@ -78,6 +78,7 @@ flowchart TD
 | No WiFi at all | No onboard WiFi; dongle needs a driver | Use a known-good dongle (aic8800d80) + build its driver → [10 — WiFi/BT](10-wifi-bt.md) |
 | WiFi drops every few minutes | Realtek chipset + USB power under load | Known with some RTL882x dongles; switch to aic8800d80 or a confirmed model → [10 — WiFi/BT](10-wifi-bt.md) |
 | Driver gone after reboot | Built with raw `make`, not packaged | Use the repo's RPM/DKMS path so it survives kernel updates → [10 — WiFi/BT](10-wifi-bt.md) |
+| ISP **throttles Steam** to a crawl | DPI/throttling on Steam CDN traffic | Anti-throttling tools (`zapret`-style) help — but **Bazzite's read-only FS blocks them**; use a mutable distro (Fedora/Arch). RU-operator specifics (Yota, zapret+warp) in the [Russian edition](../ru/06-linux.md) → [06 — Linux](06-linux.md) |
 
 ## Windows
 
@@ -106,4 +107,6 @@ flowchart TD
 
 ### Sources for the rows above
 - elektricM troubleshooting guides — [`boot.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/boot.md) · [`display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md) · [`performance.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md) · [`stability.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md) · [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
+- Old Lamer (YouTube): [Part XIV — zswap + 32 GB Btrfs swap](https://youtu.be/A6juAoY70aU) · [Part XV — `install_gpu_usage_fix.sh`](https://youtu.be/lSipaWjU6D4)
+- [4pda BC-250 thread](https://4pda.to/forum/index.php?showtopic=1104980) — RU ISP Steam-throttling (Yota, zapret+warp).
 - Per-chapter community-chat citations live in each linked chapter's **Sources**.

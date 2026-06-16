@@ -63,9 +63,21 @@
 | **Company of Heroes 3** | 1080p | играбельно — **нужна разбивка VRAM 4 ГБ** (512 МБ = артефакты/краши) | BC-250 | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
 | **Red Dead Redemption 2** (бенч) | флаг `-useMaximumSettings` | **45+** мин | BC-250 — может определить не тот GPU-адаптер, выстави вручную | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
 | **CS2** / **Rocket League** / **Elden Ring** | 1080p | **100+** / **120+** / **60** | BC-250 | [elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/) |
+| **Helldivers 2** | 1080p, низкие (как заявлено) | **≈82** | BC-250, сток, один Noctua NF-P12 — GPU 73 °C / CPU 76 °C; ⚠ ASR | ([«Temps Shocked Me»](https://youtu.be/d7Hwqxn9yg8) ~5:08) |
+| **Stalker 2** | средние (как заявлено) | **≈80** | BC-250 — автор отмечает упор в CPU / 8 ГБ ОЗУ; ⚠ ASR | ([RU-обзор](https://youtu.be/19l03qneKJ4) ~0:23) |
+| **Stalker 2** | QHD (2560×1600), FSR Quality + Frame Gen, патч 1.21 (как заявлено) | **57–70** (1080p, без FG **≈45**) | BC-250; ⚠ ASR | ([RU-обзор](https://youtu.be/19l03qneKJ4) ~18:52) |
+| **Arc Raiders** | 1080p (как заявлено) | **≈56–80** | BC-250, сток; ⚠ ASR | ([Temps Shocked Me](https://youtu.be/d7Hwqxn9yg8) ~5:58) |
+| **Spider-Man 2** | 1080p, High, FSR Frame Gen (как заявлено) | **≈100** сред. (нативно <60) | BC-250; ⚠ ASR | ([ETA Prime](https://youtu.be/q_CxcbS5HI8) ~11:04) |
+| **Forza Horizon 5** | 1080p, Medium, без FSR (как заявлено) | **70–95** | BC-250; ⚠ ASR | ([ETA Prime](https://youtu.be/q_CxcbS5HI8) ~12:19) |
+| **Metro Exodus** | QHD, High (как заявлено) | **≈58** | BC-250; ⚠ ASR | ([RU-обзор](https://youtu.be/19l03qneKJ4) ~14:12) |
+| **Palworld** | 1080p, средне-высокие (как заявлено) | **<60** (играбельно) | BC-250; ⚠ ASR | ([Pixels & Power](https://youtu.be/4S0DvIpqm0E) ~21:04) |
+| **Red Dead Redemption 2** | 1080p, средне-высокие, FSR Quality (как заявлено) | **уверенные 60** | BC-250; ⚠ ASR | ([Pixels & Power](https://youtu.be/4S0DvIpqm0E) ~21:19) |
+| **Left 4 Dead 2** | 1080p, макс (как заявлено) | **>150** | BC-250; ⚠ ASR | ([ETA Prime](https://youtu.be/q_CxcbS5HI8) ~10:18) |
 | _Для сравнения: сборка с дискреткой_ | бенч RE-движка, 1080p, High, без RT | **сред. 67.99** (мин 58, макс 82) | **RX 6600** + Xeon E5-2667v4, Win10 | ([src](https://t.me/c/2424231195/116494)) |
 
 > Строка с RX 6600 — **это не результат BC-250**: участник запускал дискретную карту на том же корпусе/процессоре для сравнения. Включено, чтобы показать, что способен вытянуть *сам процессор*.
+
+> ⚠️ **Elden Ring — результаты разнятся.** ~60 FPS выше (elektricM, 1080p) не у всех: на одной сборке сообщества частота была **зафиксирована на 30 FPS на High, и 60 не выдавала даже на 720p на низких** (упор в CPU). Считайте 60 лучшим случаем, а не гарантией. ([Pixels & Power](https://youtu.be/4S0DvIpqm0E) ~21:50)
 
 ### Порты от первых лиц / консольные — золотая середина
 
@@ -174,6 +186,7 @@ RT здесь начального уровня — нормально для *�
 - Обзор эмуляции — https://t.me/c/2424231195/78988
 - Сравнительный прогон с дискреткой RX 6600 — https://t.me/c/2424231195/116494
 - Совместимость игр elektricM (настройки/FPS по играм, проблемные игры, таблица RT, Proton и параметры запуска, приросты FSR) — https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/
+- YouTube-записи с FPS (авто-субтитры / ASR — цифры приблизительные): ETA Prime (Spider-Man 2, Forza H5, Left 4 Dead 2) — https://youtu.be/q_CxcbS5HI8 · «Temps Shocked Me» (Helldivers 2, Arc Raiders) — https://youtu.be/d7Hwqxn9yg8 · RU-обзор (Stalker 2, Metro Exodus) — https://youtu.be/19l03qneKJ4 · Pixels & Power (Palworld, RDR2, Elden Ring 30 FPS) — https://youtu.be/4S0DvIpqm0E
 - Жёсткие блоки по mesh-шейдерам / аппаратному VRS (FF7 Rebirth, Doom: The Dark Ages Update 2) — [тред r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)
 - Таблица тестов игр сообщества — https://docs.google.com/spreadsheets/d/1kJleOY5k-YREGak1pQhVWIGckA9YA3OWJyCbybZbk00/edit?usp=sharing
 

@@ -46,6 +46,8 @@
 
 > **Жаргон, один раз:** **STL** — стандартный mesh-файл для печати, грузишь в слайсер. **STEP / 3MF** — редактируемые CAD-форматы (бери их, если хочешь переделать модель). **Шрауд / рукав / переходник** — печатная воронка, заставляющая вентилятор прижиматься к рёбрам, а не сливать воздух мимо. **Flex / SFX ATX** — компактные ПК-блоки питания. **LOP** — индустриальный Meanwell LOP-300, любимый в комьюнити.
 
+> **💡 Выведи отверстие к джамперу сброса CMOS.** Каждый раз при смене объёма VRAM/UMA приходится **сбрасывать CMOS** (см. [BIOS](08-bios.md)), так что закрытый корпус, прячущий джампер, придётся вскрывать снова и снова. Оставь в любом закрытом дизайне **отверстие ⌀10 мм** над джампером сброса CMOS — а лучше выведи на панель маленький **трёхпозиционный переключатель**, чтобы сбрасывать без инструмента. ([4pda — nix0root](https://4pda.to/forum/index.php?showtopic=1104980))
+
 ---
 
 ## Уровень 1 — Минимальный «рукав охлаждения» (начни отсюда)
@@ -121,6 +123,10 @@
 
 Полностью автономная консоль с подробным **гайдом по сборке**: внутренний накопитель, **WiFi 6** и **дисплей температур на ESP32**. [GitHub isaacalvex/AMD-BC-250-Project-Guide](https://github.com/isaacalvex/AMD-BC-250-Project-Guide).
 
+### Simple Case for the ASRock AMD BC-250
+
+Именованный, публично-скачиваемый консольный корпус от автора [украинского видео-разбора сборки](https://youtu.be/p5Zd86vFe8w) — простая закрытая коробка для тех, кому нужна готовая печать без многодетальной возни. [MakerWorld 2870270](https://makerworld.com/en/models/2870270).
+
 ---
 
 ## Уровень 4 — Большие сборки: ATX-БП, СЖО, экраны
@@ -135,6 +141,18 @@
 - [Printables 1614131 — Pro Liquid-Cooled](https://www.printables.com/model/1614131-nexgen3d-diy-steam-machine-pro-liquid-cooled-bc-25) · [Printables 1649679 — Redux](https://www.printables.com/model/1649679-nexgen3d-diy-steam-machine-redux-edition) · [Printables 1554003 — крепление AIO](https://www.printables.com/model/1554003-nexgen3d-aio-mount-for-the-bc-250)
 - **Охлаждение:** 120 мм воздух **или** 120 мм AIO в зависимости от версии
 - **БП:** документированы LOP- и ATX-версии
+
+### Эталонная сборка на СЖО «Steam Machine Pro» (Old Lamer)
+
+Топовая сборка целиком на жидкостном охлаждении, разобранная на видео от и до — пригодится как список покупок, если идёшь во всё-в-AIO ([Old Lamer](https://youtu.be/afYhUQFa-AY)). Опубликованный BOM:
+
+- **СЖО:** TEUCER AF 240 (240 мм AIO) на кристалл
+- **БП:** Mean Well **LOP-600-12** (или **LOP-500-12** как вариант поменьше) — см. [Блок питания](03-power-supply.md)
+- **Вентиляторы:** 2× Arctic **P12 Pro** + 1× Arctic **P8**
+- **Удалённое питание:** **плата-реле на ESP32** для включения/выключения машины по сети
+- **Софт:** **OpenLinkHub** / **Commander Duo** под Linux для управления помпой и вентиляторами AIO
+
+---
 
 ### Корпуса под ATX-БП (Victor L., V\ad, серверный v3/v4)
 
@@ -199,6 +217,7 @@
 | **The Lanboy** | портативная аркада + 16″ eDP-экран | файлы Printables | 12 В ATX-брейкаут | [Printables 1746364](https://www.printables.com/model/1746364) |
 | **BC250 Vented Edition** (MaelremremDotXYZ) | FlexATX-консоль, рёбра открыты | файлы MakerWorld | 120 | [MakerWorld 2899020](https://makerworld.com/en/models/2899020) |
 | **Stellar 250** (isaacalvex) | консоль + гайд (WiFi6, ESP32) | гайд на GitHub | 120 | [GitHub isaacalvex/...Project-Guide](https://github.com/isaacalvex/AMD-BC-250-Project-Guide) |
+| **Simple Case for the ASRock AMD BC-250** | консоль | файлы MakerWorld | 120 | [MakerWorld 2870270](https://makerworld.com/en/models/2870270) |
 | **BC250-HUD** (Bloodyly) | внутренний экран статуса на Pi Zero 2 | исходники GitHub | — | [GitHub Bloodyly/BC250-HUD](https://github.com/Bloodyly/BC250-HUD) |
 | **Универсальное ITX-крепление** (majzok) | переходник (любой ITX-корпус) | искать на Printables/MakerWorld | — | «BC-250 ITX Mount» |
 | **Крепление Thermalright AXP90/AXP120** | переходник под низкопрофильный кулер | файлы Printables | низкопроф. башня | [Printables 1694793](https://www.printables.com/model/1694793) |
@@ -302,5 +321,8 @@
 - Референс-модель платы — [src](https://t.me/c/2424231195/55496) · [Printables 1341336](https://www.printables.com/model/1341336-accurate-3d-model-of-the-amd-bc-250-board)
 - GitHub-репозитории корпусов — [onemorecap/bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case) · [ivanov-innokentii/BC250-case](https://github.com/ivanov-innokentii/BC250-case) · [rLapchynski/bc250-enclosure](https://github.com/rLapchynski/bc250-enclosure)
 - **Полный каталог корпусов elektricM (~143 дизайна, поиск/фильтры)** — [elektricm.github.io/amd-bc250-docs/community/cases](https://elektricm.github.io/amd-bc250-docs/community/cases/)
+- Simple Case (MakerWorld 2870270) + украинский видео-разбор сборки — [MakerWorld 2870270](https://makerworld.com/en/models/2870270) · [Old Lamer (YouTube)](https://youtu.be/p5Zd86vFe8w)
+- Лайфхак с отверстием под сброс CMOS — [4pda — nix0root](https://4pda.to/forum/index.php?showtopic=1104980)
+- BOM сборки на СЖО «Steam Machine Pro» (TEUCER AF 240, Mean Well LOP-600-12, Arctic P12 Pro/P8, реле на ESP32, OpenLinkHub/Commander Duo) — [Old Lamer (YouTube)](https://youtu.be/afYhUQFa-AY)
 
 > STL шраудов общие с разделом [Охлаждение](04-cooling.md). Все размещённые в чате файлы STL/STEP/3MF зеркалируются в `assets/stl/`.

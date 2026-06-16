@@ -29,6 +29,10 @@ A PCIe 8-pin is rated for **150 W** by the PCIe standard, and the board's three 
 
 **How much PSU power to buy:** target **300 W or more on the 12 V rail**. A 300 W unit gives a healthy margin over the ~235 W peak and keeps the PSU fan calm; people report a 500 W Flex server PSU runs near-silent on this load ([src](https://t.me/c/2424231195/31076)). Don't buy below ~250 W "to save money" — you'll run it at the edge and it will get loud or shut down.
 
+> **Clamp-meter power curve (first-party amperage).** A teardown clamped a DC ammeter on the 12 V feed and read the board's actual current: **gaming pulls ≈17 A / ~190 W**, while a **full synthetic stress load hits ≈21 A / ~240–250 W** at **2000 MHz / 960 mV**; nudging the voltage higher pushes it to **22–23 A and beyond** ([Old Lamer — Part VII](https://youtu.be/pxahl9-YgkY) ~9:01). These sharpen the community wall-power figures above with measured rail amperage — and confirm why the 300 W target leaves the right margin. *(Figures read from auto-captions — treat the exact numbers as approximate.)*
+
+> ⚠️ **Named PSUs to avoid:** the cheap **Dell D220P-01** (220 W) and **Dell D250AD-00** (250 W) are called out as **insufficient and dangerous** for this board — at 220 W / 250 W they sit below the board's peak and have been reported to cut out or even break under gaming load. Don't buy a unit just because it's cheap and "looks like enough." ([elektricM: power](https://elektricm.github.io/amd-bc250-docs/hardware/power/))
+
 ---
 
 ## ⚠️ The two mistakes that destroy boards
@@ -54,6 +58,12 @@ This is the single most-repeated safety warning in the chat. Cheap pre-made adap
 **Test before you trust:** a magnet sticks to steel, not to copper. If a connector or wire is magnetic, throw the cable out.
 
 This isn't only no-name cable. **Apevia Flex/ITX PSUs have been seen with steel wires** — magnet-test them, because steel gets very hot under load and is a fire hazard. The **Apevia ITX-PFC400W** Mini-ITX uses a **14-pin connector** (it works with the [LITE adapter](#automatic-ps_on--community-adapter) below, but is advised against). (r/BC250Gaming)
+
+> 🔴 **Never power the BC-250 through a SATA or Molex adapter.** The board pulls **220–280 W**, and these connectors physically cannot deliver that safely:
+> - A **SATA→PCIe/8-pin adapter is a fire hazard** — a SATA power connector is rated for only **~54 W** ([elektricM: power](https://elektricm.github.io/amd-bc250-docs/hardware/power/)).
+> - A **bare Molex feed tops out at ~156 W** combined (two Molex connectors) — still not enough ([elektricM: power](https://elektricm.github.io/amd-bc250-docs/hardware/power/)).
+>
+> Feed the board only from a **real PCIe 8-pin / EPS-class 12 V source**. This is separate from the copper-vs-steel warning above: even a *full-copper* SATA or Molex adapter is unsafe here, because the connector itself is under-rated for a 220–280 W load.
 
 ---
 
@@ -144,6 +154,15 @@ You do not need the rack backplane. The repeated chat recipe is simply: **run on
 
 Only populate the **12 V and GND** positions (match the pinout table above); leave `PGD` / `LED1` / `LED2` empty. Use the same **real-copper, ≥16 AWG** wire and crimp discipline as the [main 8-pin — see wire-gauge guidance](#wire-gauge--connector-guidance); a hand-crimped 12 V feed that overheats is exactly the fire risk described earlier in this chapter.
 
+> 🛠 **Micro-Fit assembly gotchas (from a Molex how-to).** Practical notes for crimping these plugs ([Molex Micro-Fit video](https://youtu.be/aaDUkPn9ASE)):
+> - **Wire gauge:** **18 AWG recommended, 20 AWG acceptable** — the load splits three ways across the three 12 V pins, so each wire carries a third.
+> - **Shave the plastic latch** off the plug so it seats flush against the board.
+> - **The two connectors are NOT interchangeable** — once wired, **mark them** so you never swap J2000's and J2001's plugs.
+> - **No crimper? Solder is a valid alternative** — solder the wire into the terminal instead of crimping.
+> - Done right, the **nine 12 V lines across both connectors carry >400 W safely.**
+
+
+
 ### Feeding a 40-CU board — the triple-output cable mod
 
 After a **40-CU unlock** the board can pull **~280 W at the wall** in FurMark (measured in CPU-X), and a **single 8-pin PCIe peaks ~220 W** in FurMark — so a heavily-unlocked board wants more than one feed. The **[Metalfish 500W](#popular-psu-models-the-community-uses)** has **3 shared PCIe/CPU outputs**; for a 40-CU build, wire **all three** to the board (a *"triple-output cable mod"*):
@@ -161,6 +180,8 @@ After a **40-CU unlock** the board can pull **~280 W at the wall** in FurMark (m
 ## PSU options the community uses
 
 There are three practical roads. All deliver 12 V; they differ in price, size, noise, and how much wiring work you do.
+
+> 💡 **Powering several boards from one PSU?** Everything in this chapter is written for a single board. For a multi-board rig fed by one big server PSU, use the community **[Needleroozer/bc250-power-board](https://github.com/Needleroozer/bc250-power-board)** — a power-distribution PCB that splits one PSU into clean 12 V feeds to each BC-250 ([elektricM: power](https://elektricm.github.io/amd-bc250-docs/hardware/power/)).
 
 | Option | What it is | Price | Pros | Cons |
 |--------|-----------|-------|------|------|
@@ -182,9 +203,21 @@ Other proven server/console bricks people use: **PlayStation 3 FAT PSU** (32 A /
 
 > **Heads-up on the fan:** the stock 40 mm fan in these bricks can spin to ~15 000 RPM and *"sound like a jet taking off."* In practice, on the BC-250's modest load it stays calm, and several users confirm it's *"not noisy at all with our little board"* ([src](https://t.me/c/2424231195/33455)). If it bothers you, swap in a quieter 40 mm fan with adequate airflow.
 
+> 💡 **Best budget pick = a used server PSU.** A second-hand ~500 W server supply at **$10–30** is the cheapest route to a big single 12 V rail and is hard to beat on price-per-watt ([Old Lamer — Part VII](https://youtu.be/pxahl9-YgkY) ~10:12). **A 12 V LED-strip / CCTV power brick will also run the board**, but be careful: these often **lack the protection circuits a PC PSU has** (over-current, over-temp, short-circuit cutoff), so a fault has nothing to trip it. Prefer a real PC/server PSU; use an LED-strip supply only as a last resort and keep it well within its rating. *(Caption-sourced — numbers approximate.)*
+
 ### Option B — Mean Well industrial brick
 
 A new **Mean Well LOP-300-12** (300 W, 12 V, 25 A) or **LRS-350** is the tidy, reliable choice: a single 12 V rail straight from the datasheet, no rail-splitting games, and quiet. Larger **LOP-500** exists if you want maximum overclock headroom. You still wire the PCIe 8-pin to its screw terminals yourself, and because the terminals are exposed you should box it in. Product pages circulated in the chat: [LOP-300-12 on ChipDip](https://www.chipdip.ru/product/lop-300-12-blok-pitaniya-12v-25a-300vt-mean-well-9001511866) · [LRS-350-12](https://www.chipdip.ru/product/lrs-350-12-blok-pitaniya-12v-29a-348vt-mean-well-9000334417).
+
+**DIY 8-pin BOM for the LOP-300 (RU build).** One builder documented the exact JST parts to crimp a board-side connector, all from ChipDip ([4pda — sftk](https://4pda.to/forum/index.php?showtopic=1104980)):
+
+| Part | JST number | Role |
+|------|-----------|------|
+| 6-pin housing | **VHR-6N** | the +12 V / GND plug body |
+| Crimp terminal | **SVH-21T-P1.1** | one per wire |
+| 3-pin housing | **VHR-3N** (a.k.a. **PHU2-03**) | secondary feed |
+
+Pinout on the 6-pin: positions **1-2-3 = +12 V (yellow wires)**, positions **4-5-6 = GND (black wires)**. Wire it in **16 AWG** copper (the **18 AWG minimum** still passes; **22 AWG is not an option** — too thin for the current). Same real-copper rule as the [wire-gauge guidance](#wire-gauge--connector-guidance) above.
 
 ### Option C — A normal PC PSU (easiest, safest for a newcomer)
 
@@ -264,6 +297,7 @@ These are the exact units people in the chat actually built with — **community
 | **Mean Well LOP-300(-12)** | Industrial open/enclosed brick | 300 W / 25 A on 12 V | The most popular compact pick; fits the smallest cases. Used in several tidy builds ([src](https://t.me/c/2424231195/80841), [src](https://t.me/c/2424231195/78870), [src](https://t.me/c/2424231195/134585)) and sold on as new ([src](https://t.me/c/2424231195/74703)). |
 | **Mean Well LRS-350-12** | Industrial open-frame | 350 W / 29 A on 12 V | Open-frame 350 W 12 V option from the same family ([src](https://t.me/c/2424231195/41013)). |
 | **Mean Well LOP-500 / LOP-600** | Industrial brick | 500–600 W | Bigger siblings for maximum overclock headroom; one user ordered the LOP-500-12 ([src](https://t.me/c/2424231195/111161)). ⚠ verify exact specs on the datasheet. |
+| ★ **Mean Well GST280A12-C6P** | Enclosed desktop adapter | 280 W (~252 W usable) on 12 V | **The no-soldering pick.** Ships with a **factory PCIe 6-pin output** — connect it through an **8-pin-180° adapter** and you're done, no re-pinning. Bought on Ozon ([4pda — sairius](https://4pda.to/forum/index.php?showtopic=1104980)). |
 | **Flex ATX** (e.g. Seasonic flex, SSP-250SUB) | Flex-ATX server brick | ~250–400 W | Common compact server form. A Seasonic flex powered a moded all-in-one ([src](https://t.me/c/2424231195/30914)); another build used a generic flex-ATX ([src](https://t.me/c/2424231195/84001)). |
 | **TFX** (e.g. Vinga 400W / TFX-400) | TFX | ~400 W | Used in several builds — e.g. a Vinga 400 W (TFX-400) running a 3750/2000 OC ([src](https://t.me/c/2424231195/118771)). |
 | **SFX** | SFX | varies (~250–600 W) | Compact PC form, drops straight in — e.g. an SFX unit in a MasterBox NR200P build ([src](https://t.me/c/2424231195/81149)). |
@@ -274,6 +308,8 @@ These are the exact units people in the chat actually built with — **community
 | **FSP500-30AS** | Flex ATX (10-pin) | 500 W | **The US community pick** (see geo note above). Originally built for NUC systems, so **short the main lead to force it on**, like a 24-pin ATX. ~$10–30 on eBay. Works with the [FSP500 plug-and-play adapter](#automatic-ps_on--community-adapter). Re-pin tip below. |
 
 > **FSP500-30AS no-crimp re-pin trick (r/BC250Gaming).** The RTX 30-series Founders Edition shipped a **dual female-PCIe → 12-pin Micro-Fit pigtail**; buy one aftermarket (~$12–18 on Amazon), plus blank Micro-Fit housings and a **~$6 Micro-Fit pin-ejector tool**, then **extract the factory-crimped pins and re-slot them** into new housings matching the BC-250 pinout — **no cutting, crimping or soldering**.
+
+> ★ **The one PSU that skips wiring entirely — Mean Well GST280A12-C6P.** Every other pick here (LOP / LRS / Metalfish / FSP) makes you **solder or re-pin an 8-pin** yourself. The **GST280A12-C6P** is the exception: it leaves the factory with a **6-pin PCIe plug already attached**, so you just feed it through an **8-pin-180° adapter** — **no soldering, no re-pinning**. Leave the two inner pins of the board's 8-pin free (the 6-pin only populates the outer positions, matching the [J1000 pinout](#the-8-pin-pinout-j1000)). 280 W rated ≈ **252 W usable** on 12 V — enough for stock and light OC. Sourced on Ozon ([4pda — sairius](https://4pda.to/forum/index.php?showtopic=1104980)).
 
 ---
 
@@ -293,6 +329,7 @@ An old branded PSU can have a high total wattage and **still fail**, because it 
 - **The connector area:** close-up of the board showing the white **fan header** and the black **power connectors** (J2000/J2001 region) you'll be wiring to ([src](https://t.me/c/2424231195/39395)).
 - **A working desk unit:** board standing on its I/O bracket, LEDs lit, running off an external 12 V brick ([src](https://t.me/c/2424231195/27556)).
 - **Experts-only:** a **Molex Micro-Fit connector soldered directly to the board's 12 V pads** with thick copper and heavy solder — the "bypass the stock plug" overclock mod. Effective but unforgiving; only attempt if you know ГОСТ-grade soldering ([src](https://t.me/c/2424231195/135782), and [Jack Fisher's teardown notes](https://t.me/c/2424231195/92185)).
+- **A PSU that couldn't take it:** one owner ran a **Corsair VS450** and saw its **wires heat to 40–60 °C** before the unit **shut down under load**; swapping to an **Aerocool W550** fixed it with no further trouble ([4pda — IlopGG](https://4pda.to/forum/index.php?showtopic=1104980)). A textbook case of the [single-vs-multi-rail / margin rule](#the-one-psu-spec-that-catches-everyone-single-vs-multi-rail-12-v) below — too little 12 V headroom shows up as hot wires and shutdowns.
 
 <p align="center">
   <img src="../../assets/img/power-build.jpg" alt="A complete open-bench BC-250 build in a 3D-printed shroud with an external fan and PSU wiring" width="80%"><br>
@@ -319,6 +356,7 @@ Whatever you pick: **single 12 V rail, ≥300 W, real-copper wire ≥16 AWG, PCI
 - PCIe-vs-CPU polarity & pinout warning — https://t.me/c/2424231195/14450
 - Single-rail vs multi-rail 12 V — https://t.me/c/2424231195/7561
 - Fake copper-clad-steel wire fire hazard — https://t.me/c/2424231195/108733 · https://t.me/c/2424231195/133546 · Apevia steel-wire / ITX-PFC400W 14-pin warning — r/BC250Gaming
+- Unsafe SATA/Molex adapters (SATA ~54 W, two Molex ~156 W combined), named-dangerous Dell D220P-01 / D250AD-00, multi-board power-distribution PCB ([Needleroozer/bc250-power-board](https://github.com/Needleroozer/bc250-power-board)) — [elektricM: power](https://elektricm.github.io/amd-bc250-docs/hardware/power/)
 - Automatic PS_ON adapter (u/pilim_, "BC250 ATX PSU Control Adapter") — store https://mosfet.party/products/adapter-1 · NexGen3D "Redux" v4.1 LITE mount https://www.printables.com/model/1614131 · r/BC250Gaming
 - True-ATX hardware mod (iamdarkyoshi) — YouTube https://youtube.com/watch?v=jIhgyB8x3fQ · BC-250 Discord https://discord.gg/8eZfFWhczz · r/BC250Gaming
 - Metalfish 500W (non-US pick) / FSP500-30AS (US pick), 600W not reliable, 40-CU triple-output cable mod (Korayosulu, after an Oldlamer YouTube video), FSP500-30AS no-crimp re-pin trick — r/BC250Gaming
@@ -331,5 +369,8 @@ Whatever you pick: **single 12 V rail, ≥300 W, real-copper wire ≥16 AWG, PCI
 - ESP32 auto power-on for Flex/LOP PSU — [dexikdex/ESP32-BC250-LOP_PSU-PowerON-Xbox](https://github.com/dexikdex/ESP32-BC250-LOP_PSU-PowerON-Xbox) ([src](https://t.me/c/2424231195/142498))
 - PSU power on/off control (PS_ON → GND rocker switch + AUTO_PWRON jumper; modular PS_ON pin locations — TFSkywind 4+11, Apevia 8+13; 1 green + 3 yellow + 6 black harness; PSU-fan-to-board-header workaround) — r/linux_gaming community thread https://www.reddit.com/r/linux_gaming/comments/1nvsgji/
 - Mean Well product pages — [LOP-300-12](https://www.chipdip.ru/product/lop-300-12-blok-pitaniya-12v-25a-300vt-mean-well-9001511866) · [LRS-350-12](https://www.chipdip.ru/product/lrs-350-12-blok-pitaniya-12v-29a-348vt-mean-well-9000334417)
+- Clamp-meter power curve (gaming ≈17 A/190 W, stress ≈21 A/240–250 W @2000 MHz/960 mV), 12 V LED-strip-PSU caution, used server PSU as best budget pick — [Old Lamer — Part VII](https://youtu.be/pxahl9-YgkY) (auto-caption / ASR — exact figures approximate)
+- Mean Well GST280A12-C6P (factory 6-pin, no soldering, via 8-pin-180° adapter, Ozon), RU LOP-300 DIY BOM (JST VHR-6N / SVH-21T-P1.1 / VHR-3N a.k.a. PHU2-03 from ChipDip; 1-2-3=+12 V yellow, 4-5-6=GND black; 16 AWG, 18 AWG min, 22 AWG not an option), Corsair VS450 overheated/shut down → Aerocool W550 — [4pda thread](https://4pda.to/forum/index.php?showtopic=1104980) (sairius, sftk, IlopGG)
+- Molex Micro-Fit assembly (18 AWG rec / 20 AWG ok, shave the latch, mark the two non-interchangeable connectors, solder as a no-crimp alternative, 9× 12 V lines >400 W) — [Molex Micro-Fit video](https://youtu.be/aaDUkPn9ASE)
 
 > Cooling the PSU's airflow into the board's heatsink is covered in [04-cooling.md](04-cooling.md). Case builds that integrate the PSU are in [05-case.md](05-case.md).
