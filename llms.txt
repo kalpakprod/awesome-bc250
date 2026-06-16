@@ -1,0 +1,51 @@
+# Awesome BC-250
+
+> The newcomer's handbook for the ASRock AMD BC-250 — a PlayStation 5-derived APU board (Cyan Skillfish / Oberon: 6-core Zen 2 + 24/40 RDNA 2 compute units, 16 GB GDDR6) sold cheap as an ex-mining card and repurposed into a Linux gaming & AI mini PC, a DIY budget Steam Machine. Bilingual EN/RU, distilled from 125k+ community messages and cross-checked against the canonical project repositories.
+
+Repository: https://github.com/lildebil0/awesome-bc250 (open source, MIT / CC-BY-SA). Last updated June 2026, actively maintained.
+
+## Quick facts
+
+- What it is: the ASRock AMD BC-250 is a cut-down PlayStation 5 APU board (6-core Zen 2 CPU + 24/40 RDNA 2 CUs codenamed "Cyan Skillfish", 16 GB unified GDDR6), originally a crypto-mining card.
+- Cost: roughly $60–130 for the bare board; a full build (PSU, cooler, SSD) lands near $150–250.
+- Gaming: about 1080p 60 FPS in most titles (RX 6600-class) with FSR / Frame-Gen and a GPU+CPU overclock.
+- Operating system: Linux only for GPU acceleration — Bazzite, Fedora, CachyOS or Arch with Mesa 25.1+. There is no Windows GPU driver.
+- AI / LLM: llama.cpp and Ollama over the Vulkan backend use the 16 GB GDDR6 as VRAM (~30–47 tokens/sec on small models); ROCm is not viable on gfx1013.
+- Cooling: the stock passive server heatsink throttles on a desk — thin the dense fins and add a 120 mm high-static-pressure fan, or water-cool. Throttling starts ~85 °C, crash ~90 °C.
+- Power: a single PCIe 8-pin covers stock load (~190 W gaming, 240–250 W stress); the 40-CU unlock plus overclock pulls 300 W+ and needs a second feed (Molex Micro-Fit).
+- Overclock: GPU ~2000 MHz and CPU ~4 GHz via the cyan-skillfish-smu / oberon governor and bc250_smu_oc; a firmware 24→40 CU unlock adds compute (most boards stable at 36–38 CU).
+
+## Handbook (English; Russian mirror at docs/ru)
+
+- [Start here — the golden path](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/00-start-here.md): buy, power, cool, install the OS, drivers, overclock, play.
+- [What is the BC-250](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/01-what-is-bc250.md): specs, dimensions, pinout, realistic expectations.
+- [Buying guide](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/02-buying.md): where to buy, price ranges, risks, group buys, regional import routes.
+- [Power supply](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/03-power-supply.md): LOP-300 / Flex ATX / server-PSU picks, 8-pin pinout, wiring, measured draw.
+- [Cooling](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/04-cooling.md): heatsink fin-thinning, fan shrouds, water cooling, thermal pads, test method.
+- [Cases & 3D printing](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/05-case.md): printable case catalog (STL) and reference builds.
+- [Linux drivers & setup](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/06-linux.md): distro choice, amdgpu/Mesa, governors, per-distro specifics.
+- [Windows drivers & setup](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/07-windows.md): driver status (no GPU acceleration), what works.
+- [BIOS & brick recovery](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/08-bios.md): modded BIOS, flashing, CH341A un-brick, pinouts, silicon BOM.
+- [Overclocking & undervolting](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/09-overclock-undervolt.md): governor config, undervolt curves, SMU CPU OC, 24→40 CU unlock, memory tuning.
+- [WiFi & Bluetooth dongles](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/10-wifi-bt.md): USB dongles and chipsets that work on Linux.
+- [Gaming results & settings](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/11-gaming.md): per-game FPS, resolution/FSR settings, Proton tips.
+- [AI / LLM on BC-250](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/12-ai-llm.md): llama.cpp / Ollama / Vulkan, VRAM allocation, tokens/sec.
+- [macOS / Hackintosh](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/13-macos.md): status (no GPU acceleration).
+- [Display & output](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/14-display.md): DisplayPort, DP→HDMI adapters, dual-monitor via MST, audio.
+- [Emulation](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/15-emulation.md): realistic per-console/platform status.
+- [USB, hubs & storage](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/16-usb-peripherals.md): hubs, 5 V power mod, M.2 / SATA adapters (what works, what to avoid).
+- [FAQ](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/faq.md): common questions and direct answers.
+- [Troubleshooting](https://github.com/lildebil0/awesome-bc250/blob/main/docs/en/troubleshooting.md): symptom → cause → fix tables (boot, display, performance, stability, network).
+
+## Canonical projects (primary sources)
+
+- [elektricM/amd-bc250-docs](https://github.com/elektricM/amd-bc250-docs) ([site](https://elektricm.github.io/amd-bc250-docs/)): comprehensive community documentation (pinouts, per-distro, troubleshooting).
+- [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation): the main hardware reverse-engineering reference.
+- [mothenjoyer69/oberon-governor](https://gitlab.com/mothenjoyer69/oberon-governor): the GPU clock/voltage governor most builds run.
+- [filippor/cyan-skillfish-governor](https://github.com/filippor/cyan-skillfish-governor): the SMU governor (no kernel patch needed).
+- [bc250-collective/bc250_smu_oc](https://github.com/bc250-collective/bc250_smu_oc): CPU overclocking via the SMU.
+- [duggasco/bc250-40cu-unlock](https://github.com/duggasco/bc250-40cu-unlock): the 24→40 compute-unit unlock.
+
+## Other languages
+
+Full handbook in English (docs/en) and Russian (docs/ru). Entry docs (start-here, FAQ, troubleshooting) additionally translated into Ukrainian, Kazakh, Kyrgyz, Spanish, Brazilian Portuguese, French, German, Polish, Turkish, Chinese, Japanese, Arabic and Hindi.

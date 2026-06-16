@@ -10,6 +10,8 @@ Everything you need to go **from a board in a box to running games** — curated
 
 🌍 **English** · [Русский](README.ru.md) · [Українська](README.uk.md) · [Қазақша](README.kk.md) · [Кыргызча](README.ky.md) · [Español](README.es.md) · [Português (BR)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Polski](README.pl.md) · [Türkçe](README.tr.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
+<sub>_Maintained · last updated **June 2026** · [llms.txt](llms.txt) for AI agents_</sub>
+
 ---
 
 ## ❓ Quick answers
