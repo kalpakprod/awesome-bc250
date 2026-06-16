@@ -4,6 +4,8 @@
 
 If you only need internet for setup, a **wired USB-Ethernet adapter or the onboard NIC** sidesteps this entire page. Reach for a WiFi/BT dongle when you actually need wireless or a Bluetooth controller.
 
+> **About the onboard Realtek RTL8111 ethernet:** it's the path of least resistance, but the RTL8111/8168 family is **flaky-to-unreliable on Linux** — the stock `r8169` driver is widely reported to cause random link up/down, dropouts under bandwidth, and sometimes a drop to 100 Mbit. Switching to the out-of-tree `r8168` module is the usual mitigation. If the onboard port misbehaves, **prefer an Intel or MediaTek USB/PCIe NIC** — their Linux drivers are far more dependable. ([Intel/MediaTek vs Realtek is a long-standing Linux reliability gap](https://www.linuxquestions.org/questions/linux-hardware-18/realtek-rtl8111-8168-8411-ethernet-controller-r8168-driver-install-r8169-driver-doesn't-work-4175641982/)) ⚠ the RTL8111 flakiness is a general-Linux pattern, not BC-250-specific — verify on your board.
+
 ---
 
 ## The one thing to understand first
@@ -122,6 +124,8 @@ sudo modprobe 8851bu
 
 ⚠ verify — this repo wasn't shown being built in-chat on a BC-250; commands are from the repo README.
 
+> **A named example of this class — TP-Link Archer TX10UB Nano ("AX900 WiFi 6 + BT 5.3").** This is a real, easy-to-find product, and its **WiFi works on Linux** — it carries an **RTL8851BU** chip, so it falls under Path C (you'll need the `8851bu`/`biglinux/rtl8831` driver, not stock rtw88). **But its Bluetooth is *not* vendor-supported on Linux:** TP-Link's own spec lists the adapter as Windows 10/11 only and explicitly says the **Bluetooth function is not compatible with Mac, Linux, or TV** ([TP-Link product page](https://www.tp-link.com/us/home-networking/usb-adapter/archer-tx10ub-nano/)). So treat it as **"WiFi works on Linux (via the 8851bu driver); BT is not vendor-supported on Linux."** The community may get its BT up through generic Realtek BT drivers, but that's unverified — **don't buy it expecting a clean plug-and-play WiFi+BT Linux dongle.** **UGreen** also sells an "AX900" stick that's community-reported as an alternative, but it's the same RTL8851BU family — verify the chipset and the same BT caveat applies. ⚠ verify.
+
 ---
 
 ## Fixing random dropouts
@@ -132,6 +136,7 @@ If your stick connects and then drops (the classic Realtek-on-BC-250 symptom):
 2. **Re-seat / re-plug after boot.** Some sticks aren't detected on cold boot and need one unplug-replug. ([src](https://t.me/c/2424231195/16325))
 3. **Reset the device in software instead of unplugging** — use `usbreset` (no need to physically pull it). ([src](https://t.me/c/2424231195/135895)) · [how-to (Superuser)](https://superuser.com/questions/141908/how-do-i-reset-an-usb-device-without-unplugging-it-in-linux)
 4. **Try a different USB port** (ideally a rear/root-hub port) — the symptom looks power/bandwidth-related under load. ([src](https://t.me/c/2424231195/17319))
+5. **Keep the dongle off USB 3.0.** USB 3.0 ports are a documented source of **2.4 GHz RF interference** — the high-speed signaling adds ~20 dB of broadband noise across 2.4–2.5 GHz that no filter can remove, degrading WiFi *and* Bluetooth right where they live. Intel's white paper is the canonical reference. Plug WiFi/BT dongles into a **USB 2.0 port**, or use a **short USB extension cable** to move the dongle a few inches away from the USB 3.0 connectors and any DisplayPort/HDMI cabling. ([Intel: USB 3.0 RF Interference Impact on 2.4 GHz Wireless Devices](https://www.intel.com/content/www/us/en/content-details/841692/usb-3-0-radio-frequency-interference-impact-on-2-4-ghz-wireless-devices-white-paper.html) · [USB-IF PDF](https://www.usb.org/sites/default/files/327216.pdf))
 
 ---
 
@@ -166,3 +171,6 @@ If you want the lowest-risk path, in order:
 - Digma works OOB — https://t.me/c/2424231195/138520 · listing — https://www.ozon.ru/product/setevoy-adapter-wifi-bluetooth-digma-dwa-bt5-ac600c-dvuhdiapazonnyy-1689608277/
 - AI-recommended RTL8822BU drops — https://t.me/c/2424231195/138512 · Edimax escape — https://t.me/c/2424231195/120503
 - BT vs WiFi speed — https://t.me/c/2424231195/123366 · usbreset — https://t.me/c/2424231195/135895 · [Superuser how-to](https://superuser.com/questions/141908/how-do-i-reset-an-usb-device-without-unplugging-it-in-linux)
+- Onboard RTL8111/8168 flaky on Linux; r8168 mitigation, prefer Intel/MediaTek — [LinuxQuestions r8169 vs r8168](https://www.linuxquestions.org/questions/linux-hardware-18/realtek-rtl8111-8168-8411-ethernet-controller-r8168-driver-install-r8169-driver-doesn't-work-4175641982/)
+- USB 3.0 interferes with 2.4 GHz WiFi/BT (use USB 2.0 / extension) — [Intel white paper](https://www.intel.com/content/www/us/en/content-details/841692/usb-3-0-radio-frequency-interference-impact-on-2-4-ghz-wireless-devices-white-paper.html) · [USB-IF PDF](https://www.usb.org/sites/default/files/327216.pdf)
+- TP-Link Archer TX10UB Nano — WiFi works on Linux (RTL8851BU), BT vendor-listed Windows-only / not Linux — [TP-Link product page](https://www.tp-link.com/us/home-networking/usb-adapter/archer-tx10ub-nano/)

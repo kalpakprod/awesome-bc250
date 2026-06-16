@@ -4,6 +4,8 @@
 
 Если интернет нужен только для установки, **проводной USB-Ethernet или встроенный сетевой порт** полностью обходят эту страницу. Донгл WiFi/BT берите, когда реально нужна беспроводная сеть или Bluetooth-геймпад.
 
+> **Про встроенный Ethernet Realtek RTL8111:** это путь наименьшего сопротивления, но семейство RTL8111/8168 **капризно-ненадёжно в Linux** — про стоковый драйвер `r8169` массово сообщают случайные link up/down, отвалы под нагрузкой и иногда сброс до 100 Мбит. Обычное лечение — переключиться на внешний модуль `r8168`. Если встроенный порт чудит, **лучше возьмите Intel- или MediaTek-NIC (USB/PCIe)** — их Linux-драйверы куда надёжнее. ([Intel/MediaTek против Realtek — давняя разница в надёжности под Linux](https://www.linuxquestions.org/questions/linux-hardware-18/realtek-rtl8111-8168-8411-ethernet-controller-r8168-driver-install-r8169-driver-doesn't-work-4175641982/)) ⚠ капризность RTL8111 — общелинуксовый паттерн, а не специфика BC-250 — проверьте на своей плате.
+
 ---
 
 ## Что нужно понять в первую очередь
@@ -122,6 +124,8 @@ sudo modprobe 8851bu
 
 ⚠ проверьте — сборку этого репозитория именно на BC-250 в чате не показывали; команды взяты из README репозитория.
 
+> **Именованный пример этого класса — TP-Link Archer TX10UB Nano («AX900 WiFi 6 + BT 5.3»).** Это реальный, легко находимый товар, и его **WiFi в Linux работает** — внутри чип **RTL8851BU**, так что он попадает под Путь C (нужен драйвер `8851bu`/`biglinux/rtl8831`, а не стоковый rtw88). **Но его Bluetooth вендором под Linux *не* поддержан:** в спецификации TP-Link адаптер заявлен только для Windows 10/11 и прямо сказано, что **функция Bluetooth несовместима с Mac, Linux и ТВ** ([страница товара TP-Link](https://www.tp-link.com/us/home-networking/usb-adapter/archer-tx10ub-nano/)). Поэтому считай его как **«WiFi работает в Linux (через драйвер 8851bu); BT вендором под Linux не поддержан».** Сообщество, возможно, поднимет его BT через дженерик-драйверы Realtek BT, но это не подтверждено — **не бери его в расчёте на чистый plug-and-play WiFi+BT-донгл под Linux.** **UGreen** тоже продаёт «AX900»-свисток, который по сообществу называют альтернативой, но это то же семейство RTL8851BU — проверь чипсет, и оговорка про BT та же. ⚠ проверьте.
+
 ---
 
 ## Борьба со случайными отвалами
@@ -132,6 +136,7 @@ sudo modprobe 8851bu
 2. **Передёрните после загрузки.** Некоторые свистки не определяются при холодном старте, помогает одно «вынул-вставил». ([src](https://t.me/c/2424231195/16325))
 3. **Сбросьте устройство программно вместо передёргивания** — используйте `usbreset` (физически вынимать не нужно). ([src](https://t.me/c/2424231195/135895)) · [как (Superuser)](https://superuser.com/questions/141908/how-do-i-reset-an-usb-device-without-unplugging-it-in-linux)
 4. **Попробуйте другой USB-порт** (лучше задний/корневого хаба) — симптом похож на нехватку питания/полосы под нагрузкой. ([src](https://t.me/c/2424231195/17319))
+5. **Держите донгл подальше от USB 3.0.** Порты USB 3.0 — документированный источник **радиопомех в диапазоне 2,4 ГГц**: высокоскоростная передача добавляет ~20 дБ широкополосного шума по 2,4–2,5 ГГц, который ничем не отфильтровать, и он гадит ровно там, где живут WiFi *и* Bluetooth. Каноничный источник — белая книга Intel. Втыкайте донглы WiFi/BT в **порт USB 2.0** либо используйте **короткий USB-удлинитель**, чтобы отнести донгл на пару сантиметров от разъёмов USB 3.0 и кабелей DisplayPort/HDMI. ([Intel: влияние радиопомех USB 3.0 на устройства 2,4 ГГц](https://www.intel.com/content/www/us/en/content-details/841692/usb-3-0-radio-frequency-interference-impact-on-2-4-ghz-wireless-devices-white-paper.html) · [PDF USB-IF](https://www.usb.org/sites/default/files/327216.pdf))
 
 ---
 
@@ -166,3 +171,6 @@ sudo modprobe 8851bu
 - Digma работает из коробки — https://t.me/c/2424231195/138520 · товар — https://www.ozon.ru/product/setevoy-adapter-wifi-bluetooth-digma-dwa-bt5-ac600c-dvuhdiapazonnyy-1689608277/
 - ИИ-рекомендованный RTL8822BU отваливается — https://t.me/c/2424231195/138512 · побег на Edimax — https://t.me/c/2424231195/120503
 - Скорость BT против WiFi — https://t.me/c/2424231195/123366 · usbreset — https://t.me/c/2424231195/135895 · [как (Superuser)](https://superuser.com/questions/141908/how-do-i-reset-an-usb-device-without-unplugging-it-in-linux)
+- Встроенный RTL8111/8168 капризен в Linux; лечение r8168, предпочесть Intel/MediaTek — [LinuxQuestions r8169 против r8168](https://www.linuxquestions.org/questions/linux-hardware-18/realtek-rtl8111-8168-8411-ethernet-controller-r8168-driver-install-r8169-driver-doesn't-work-4175641982/)
+- USB 3.0 мешает WiFi/BT в 2,4 ГГц (бери USB 2.0 / удлинитель) — [белая книга Intel](https://www.intel.com/content/www/us/en/content-details/841692/usb-3-0-radio-frequency-interference-impact-on-2-4-ghz-wireless-devices-white-paper.html) · [PDF USB-IF](https://www.usb.org/sites/default/files/327216.pdf)
+- TP-Link Archer TX10UB Nano — WiFi работает в Linux (RTL8851BU), BT вендором заявлен только под Windows / не под Linux — [страница товара TP-Link](https://www.tp-link.com/us/home-networking/usb-adapter/archer-tx10ub-nano/)

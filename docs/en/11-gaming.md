@@ -26,6 +26,8 @@ Practical consequences:
 - **Clocks.** Stock GPU ~1500 MHz is the slow default; the community runs **GPU 2000 MHz, mem ~1900–2000 MHz** as the everyday target, with some pushing **2.65 GHz core on a dGPU-class build**. Stock vs. 2000 MHz is roughly **+30 % FPS** in GPU-bound scenes. ([overclock guide](09-overclock-undervolt.md))
 - **40 CU unlock.** The board ships with CUs disabled. Unlocking all **40 CUs** gives a measurable, broad uplift — one user reported Doom: The Dark Ages going from broken to **60 FPS High**, a "007" title at **60 FPS High**, and steadier frame-times in Great Pragmata after the unlock. ([src](https://t.me/c/2424231195/141193)) See [09-overclock-undervolt.md](09-overclock-undervolt.md).
 - **FSR / FSR 4.** Use Quality or Balanced at 1440p/4K to keep the GPU fed and temps down. The community is actively porting **FSR 4** (DLL packages shared in-thread). ([FSR4 INT8 discussion src](https://t.me/c/2424231195/136354)) elektricM's measured FSR gains: **Quality +20–30 %, Balanced +30–40 %, Performance +40–60 %** FPS; **Frame Generation can roughly double** frame rate (slight latency). **FSR 4 via Optiscaler** — community finds **Balanced beats native FSR 3.1.5 Quality**. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
+  - **Which upscaler to actually use:** **FSR 1–3 is the practical choice** here — it's mature, cheap, and well-supported. **FSR 4 and XeSS *can* technically run** on this RDNA2 silicon via the **DP4a (INT8) path** — RDNA2 has dp4a/Rapid Packed Math, so OptiScaler's FSR 4 INT8 build and the GPU-agnostic XeSS-DP4a variant both load — but on a GPU this weak they're **slow and experimental**: the DP4a fallback is ~10–20 % heavier than the WMMA path newer cards use, and image quality on XeSS-DP4a is below the XMX version. Treat FSR 4 / XeSS as something to experiment with, not your daily driver. ([OptiScaler FSR4 INT8 on RDNA2 — VideoCardz](https://videocardz.com/newz/optiscaler-update-brings-fsr-4-int8-support-to-rdna-2-on-newer-radeon-drivers) · [PC Gamer](https://www.pcgamer.com/hardware/graphics-cards/optiscaler-updated-to-support-fsr-4-on-older-amd-rx-6000-gpus-without-the-need-for-driver-mods/)) **Official AMD FSR 4 for RDNA2 (RX 6000-class) lands ~early 2027**; until then it's the OptiScaler/modded route. ([Tom's Hardware](https://www.tomshardware.com/pc-components/gpu-drivers/amd-makes-fsr-4-upscaling-official-for-radeon-rx-7000-and-6000-series-cards-rdna-3-and-rdna-2-chips-will-soon-enjoy-improved-visuals))
+- **Frame generation beyond FSR — LSFG.** **Lossless Scaling Frame-Generation (LSFG)** runs on Linux through the **`lsfg-vk`** Vulkan layer ([github.com/PancakeTAS/lsfg-vk](https://github.com/PancakeTAS/lsfg-vk)) — a game-agnostic frame-gen layer that hooks any Vulkan title. The community uses it to **roughly double FPS** (e.g. 30 → 60) in games without built-in frame generation. Like all frame-gen it adds latency and wants a reasonable real framerate to interpolate from, but it's a genuine option when FSR's own FG isn't available.
 - **VRAM split (UMA).** It's a unified 16 GB pool. In one careful sweep (1440p, 1850 MHz), the GDDR6 split (512 MB vs 8 GB reserved) **barely changed average FPS** — but a too-small or wrong UMA setting can drop you into software rendering (`llvmpipe`) or hang a benchmark. Auto / a sane reserve is fine; don't over-think it. ([src](https://t.me/c/2424231195/81203))
 - **VSync off** for benchmarking; **frame generation on** where offered (it helped Wukong hit triple-digit averages, see below).
 - **`mitigations=off`** (kernel boot flag) is a common tweak; in the VRAM sweep it had only minor, noisy effects on FPS. Treat it as small. ⚠ **verify (magnitude disputed)** — elektricM reports a much larger gain (**+18 FPS in Cyberpunk, "+10–15 %"** in their tips). It's clearly game-dependent: big in some CPU-bound titles, negligible in others. Try it and measure; don't assume either number. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
@@ -50,7 +52,12 @@ These are community-reported figures with their settings and source. **Benchmark
 | **The Witcher 3** | 4K, Medium, FSR Balanced | **~50** | BC-250 | ([src](https://t.me/c/2424231195/81894)) |
 | **Kingdom Come: Deliverance II** | 4K, Med/High, FSR Quality | **~30** ("PS5 experience") | BC-250 | ([src](https://t.me/c/2424231195/81893)) |
 | **The Last of Us Part II** | 1080p, default preset | playable (video) | BC-250 | ([src](https://t.me/c/2424231195/94237)) |
-| **Doom: The Dark Ages** | High | **60** (after 40 CU unlock + fix) | BC-250, 40 CU | ([src](https://t.me/c/2424231195/141193)) · [Reddit fix](https://www.reddit.com/r/BC250Gaming/comments/1rqw0v6/a_solution_to_get_doom_the_dark_ages_running/) |
+| **Doom: The Dark Ages** | High | **60** (after 40 CU unlock + fix) | BC-250, 40 CU | ([src](https://t.me/c/2424231195/141193)) · [Reddit fix](https://www.reddit.com/r/BC250Gaming/comments/1rqw0v6/a_solution_to_get_doom_the_dark_ages_running/) · [Vulkan_NullVRS](https://github.com/bangstk/Vulkan_NullVRS) |
+| **Doom Eternal** | RT on (community-reported) | **60 + RT** | BC-250; community-reported (r/BC250Gaming) | ([Reddit synthesis](https://www.reddit.com/r/BC250Gaming/)) |
+| **Tekken 8** | (community-reported) | **~60** | BC-250; community-reported (r/BC250Gaming) | ([Reddit synthesis](https://www.reddit.com/r/BC250Gaming/)) |
+| **Street Fighter 6** | (community-reported) | **~60** | BC-250; community-reported (r/BC250Gaming) | ([Reddit synthesis](https://www.reddit.com/r/BC250Gaming/)) |
+| **Stellar Blade** | (community-reported) | **~70–80** | BC-250; community-reported (r/BC250Gaming) | ([Reddit synthesis](https://www.reddit.com/r/BC250Gaming/)) |
+| **Resident Evil Requiem** | Frame Generation on (community-reported) | **60 → 100** (FG) | BC-250; community-reported (r/BC250Gaming) | ([Reddit synthesis](https://www.reddit.com/r/BC250Gaming/)) |
 | **Resident Evil Requiem** | (video) | playable | BC-250, CPU stock, **GPU 2000** | ([src](https://t.me/c/2424231195/121772)) |
 | **Gothic Remake** | Medium | **stutters** — "no optimization" | BC-250 | ([src](https://t.me/c/2424231195/142708)) |
 | **Hi-Fi Rush** | (video, OBS capture) | smooth | BC-250, `mitigations=off` | ([src](https://t.me/c/2424231195/91022)) |
@@ -105,14 +112,16 @@ elektricM tracks titles ours didn't cover that **fail or fight the platform** �
 
 ### Hard-blocked by missing GPU features (not fixable)
 
-This is **RDNA 2-class silicon** (GFX1013). A handful of newer titles **hard-require GPU features RDNA 2 doesn't have** — chiefly **mesh shaders** and **hardware variable-rate shading (VRS)** — and simply refuse to run. This is a **hardware limitation, not a driver bug**: no Mesa update, kernel param or Proton version will fix it. Confirmed examples ([r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)):
+This is **RDNA 2-class silicon** (GFX1013). A handful of newer titles **hard-require GPU features RDNA 2 doesn't have** — chiefly **mesh shaders** and **hardware variable-rate shading (VRS)** — and refuse to run. The missing silicon is a **hardware limitation, not a driver bug**: no Mesa update, kernel param or Proton version adds the feature itself. **Mesh shaders** are a true wall. A **VRS** requirement is sometimes only a launch-time check that a userspace Vulkan layer can stub out (see the Doom note below) — so it's not always fatal. Confirmed examples ([r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)):
 
 | Game | Hard requirement the BC-250 lacks |
 |------|------------------------------------|
 | **Final Fantasy VII Rebirth** | **Mesh shaders** — won't run (this is also why it trips the DX12 GPU-compat check in the table above) |
-| **Doom: The Dark Ages — Update 2** | **Vulkan fragment shading rate** (hardware VRS) — the earlier, pre-Update-2 build runs (60 FPS after the 40 CU unlock, above), but Update 2 made VRS mandatory and it no longer launches |
+| **Doom: The Dark Ages — Update 2** | **Vulkan fragment shading rate** (hardware VRS) — Update 2 made VRS mandatory *at launch*; the GPU lacks it, so the unmodified game no longer starts (the pre-Update-2 build ran at 60 FPS after the 40 CU unlock, above). **Workaround exists** — see note below. |
 
-> Before buying a brand-new AAA title, check whether it lists mesh shaders or hardware VRS as a requirement — if it does, the BC-250 can't run it at any settings.
+> **Doom: The Dark Ages Update 2 — there is now a workaround.** The game only *checks for* VRS at launch; it never actually needs it for gameplay. The **`bangstk/Vulkan_NullVRS`** Vulkan layer ([github.com/bangstk/Vulkan_NullVRS](https://github.com/bangstk/Vulkan_NullVRS)) intercepts `vkCmdSetFragmentShadingRateKHR()` and no-ops it, satisfying the launch check so the game runs with no in-game side effects. So Doom: The Dark Ages is **not** a permanent hard block. **Mesh shaders are different** — there is no equivalent shim for FF7 Rebirth's mesh-shader requirement, so that one really won't run.
+
+> Before buying a brand-new AAA title, check whether it lists mesh shaders or hardware VRS as a requirement. **Mesh shaders** are a true hardware wall here (no workaround). A **hardware-VRS** requirement is often only a launch-time gate — sometimes shimmable (as with Doom above), sometimes not — so check the community before assuming either way.
 
 ## Ray tracing — what's actually been tested
 
@@ -137,6 +146,9 @@ RT is entry-level here — fine for *lighting-only* in well-optimized games, not
   - Combined: `RADV_DEBUG=nohiz mangohud gamemoderun %command%`.
 - **VRAM per game (UMA split):** esports/indie are fine on **512 MB**; **most games want 4 GB**; AAA/RT also want the extra-VRAM kernel params (`amdgpu.gttsize=...`, see [06-linux.md](06-linux.md) / [08-bios.md](08-bios.md)). A too-small split causes artifacts, crashes, or a drop into software rendering. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
 - **Stutter on first run** is usually **shader compilation** — let Steam finish pre-compiling before judging FPS; a bigger shader cache helps. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
+- **Per-game fixes** (community-reported, r/BC250Gaming — try if you hit these exact bugs):
+  - **Resident Evil Requiem — broken/glitchy hair:** add `RADV_DEBUG=nohiz %command%` to the launch options (the same RADV flag listed above, applied here specifically). ([Reddit synthesis](https://www.reddit.com/r/BC250Gaming/))
+  - **Spider-Man 2 / Assassin's Creed Shadows — freezes:** enabling **zswap** (compressed swap) reportedly stops the freezes. ([Reddit synthesis](https://www.reddit.com/r/BC250Gaming/))
 
 ---
 
@@ -144,9 +156,9 @@ RT is entry-level here — fine for *lighting-only* in well-optimized games, not
 
 Emulators are CPU-heavy, so results are mixed but several are solid ([src](https://t.me/c/2424231195/78988)):
 
-- **Switch — Eden:** works well and fast. ✅
+- **Switch — Eden / Ryujinx:** works well and fast. Community-reported (r/BC250Gaming): **Mario Kart ~60 FPS**; **Tears of the Kingdom ~30–40 FPS**. ✅ ([Reddit synthesis](https://www.reddit.com/r/BC250Gaming/))
 - **PS4 — shadPS4 (0.9.0+):** Bloodborne runs well with no drops; some titles (The Last Guardian) artifact but hold stable FPS. ✅
-- **PS3 — RPCS3:** works, but needs per-game tweaking. ⚠️
+- **PS3 — RPCS3:** works, but needs per-game tweaking. ⚠️ **Known quirk** (community-reported, r/BC250Gaming): an emulator bug **locks the GPU at 1000 MHz** under RPCS3, so the GPU can't clock up — the workaround is to **overclock the CPU to compensate** for the lost GPU headroom. ([Reddit synthesis](https://www.reddit.com/r/BC250Gaming/))
 - **Xbox 360 — Xenia Canary:** menus load, gameplay drops to a black screen (still investigating). ❌
 
 ---
@@ -188,6 +200,11 @@ The community posts a lot of gameplay/benchmark video. A few in-thread captures 
 - elektricM game compatibility (per-game settings/FPS, problem games, RT table, Proton & launch options, FSR gains) — https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/
 - YouTube FPS captures (auto-caption / ASR — figures approximate): ETA Prime (Spider-Man 2, Forza H5, Left 4 Dead 2) — https://youtu.be/q_CxcbS5HI8 · "Temps Shocked Me" (Helldivers 2, Arc Raiders) — https://youtu.be/d7Hwqxn9yg8 · RU review (Stalker 2, Metro Exodus) — https://youtu.be/19l03qneKJ4 · Pixels & Power (Palworld, RDR2, Elden Ring 30 FPS) — https://youtu.be/4S0DvIpqm0E
 - Mesh-shader / hardware-VRS hard blocks (FF7 Rebirth, Doom: The Dark Ages Update 2) — [r/linux_gaming thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)
+- **Doom: The Dark Ages VRS workaround — `bangstk/Vulkan_NullVRS`** (no-op Vulkan layer for `vkCmdSetFragmentShadingRateKHR`) — https://github.com/bangstk/Vulkan_NullVRS
+- **LSFG frame generation on Linux — `lsfg-vk`** (Vulkan layer) — https://github.com/PancakeTAS/lsfg-vk
+- **FSR 4 / XeSS via DP4a (INT8) on RDNA2** — OptiScaler FSR4 INT8 build: [VideoCardz](https://videocardz.com/newz/optiscaler-update-brings-fsr-4-int8-support-to-rdna-2-on-newer-radeon-drivers) · [PC Gamer](https://www.pcgamer.com/hardware/graphics-cards/optiscaler-updated-to-support-fsr-4-on-older-amd-rx-6000-gpus-without-the-need-for-driver-mods/) · [OptiScaler FSR4 compat wiki](https://github.com/optiscaler/OptiScaler/wiki/FSR4-Compatibility-List)
+- **Official AMD FSR 4 for RDNA2 (~early 2027) / RDNA3 (July 2026)** — [Tom's Hardware](https://www.tomshardware.com/pc-components/gpu-drivers/amd-makes-fsr-4-upscaling-official-for-radeon-rx-7000-and-6000-series-cards-rdna-3-and-rdna-2-chips-will-soon-enjoy-improved-visuals)
+- **Community-reported game results (r/BC250Gaming)** — Tekken 8, Street Fighter 6, Stellar Blade, RE Requiem Frame-Gen, Doom Eternal RT, Switch (Mario Kart / TOTK), RPCS3 1000 MHz GPU lock, RE Requiem hair / Spider-Man 2 / AC Shadows fixes — https://www.reddit.com/r/BC250Gaming/
 - Community game-test spreadsheet — https://docs.google.com/spreadsheets/d/1kJleOY5k-YREGak1pQhVWIGckA9YA3OWJyCbybZbk00/edit?usp=sharing
 
 > Clocks and the 40 CU unlock live in [09-overclock-undervolt.md](09-overclock-undervolt.md); do the [04-cooling.md](04-cooling.md) mod before running 2000 MHz.
