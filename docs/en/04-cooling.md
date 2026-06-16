@@ -109,6 +109,17 @@ Use a **printed fan shroud/adapter** so the fan seals against the heatsink inste
 
 > ⚠ **Don't drill/screw fans directly into the fins.** The aluminium is soft and the fins are thin — screwing into them damages the fin stack and hurts cooling. Use zip ties or a printed shroud. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
+> ### 🛠 Airflow engineering — what actually moves the needle
+>
+> Community findings on *how* the air is moved, not just which fan:
+>
+> - **Static pressure beats raw CFM** through the dense fin stack — that's why the high-static-pressure **Arctic P12 Max (6.9 mm H₂O)** outperforms quieter high-airflow/low-pressure fans on this heatsink.
+> - **One centered fan can beat two side-by-side** on a fully-cut fin plane: a single central fan loads the **4 central heat pipes** directly, while two fans leave a dead "seam" of plastic over the centre. The builder who first cut the fins full-plane measured a couple °C **lower** on one central fan than on two ([src](https://t.me/c/2424231195/46175)).
+> - **Add an exhaust fan = −3 to −5 °C.** Intake-only **73 °C** → with exhaust **67–68 °C** ([src](https://t.me/c/2424231195/68183), [src](https://t.me/c/2424231195/31553)). So the optimal simple setup is **1 central intake + 1 rear exhaust**, not two intakes side-by-side.
+> - **The backplate is blind and hot.** VRM MOSFETs reach **~100 °C uncooled** ([src](https://t.me/c/2424231195/110955)) — it **must** get pads + heatsinks + dedicated airflow; with rear heatsinks it runs *"cold under load"* ([src](https://t.me/c/2424231195/93056)).
+> - **Free physics.** Warm air rises, so even a **tilt/chimney** orientation helps — a barely-ventilated backplate measured **47 °C just from convection** ([src](https://t.me/c/2424231195/76962)). And a **black-anodized radiator radiates ~1.8×** a polished one, letting you shrink fin area **~45 %** in passive/semi-passive compact builds ([src](https://t.me/c/2424231195/86878)).
+> - **Run intake > exhaust** (slight **positive pressure**) so the un-sensored VRM/VRAM stay bathed in fresh air.
+
 ### Alternative: keep the stock fins (no-cut push-pull case)
 Cutting the fins isn't mandatory. **penzoiders** designed a case ([MakerWorld, FreeCAD source](https://makerworld.com/models/2505974)) that does **not** cut the heatsink: it uses **push-pull high-static-pressure fans** to force air through the **stock, un-modified fins**, plus a **two-chamber pressure differential** that also cools the backplate (5 mm heatsinks + thermal pads; reused NVMe heatsinks work). A tuning that stays cool: **CPU 3800 MHz / 1050 mV, GPU 2100 MHz / 950 mV** → parallel Furmark + `stress-ng` stays **below 85 °C**; gaming **~75 °C at roughly 50 % fan duty** (CoolerControl curve), "barely audible". ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
 
@@ -132,6 +143,16 @@ With an AIO you can push much harder. **NexGen3D** wall-measured (Furmark Vulkan
 | 2 | 4100 MHz | 2450 MHz | ~75 °C | <400 W | hotter, louder |
 
 Normal 1080p gaming runs **10–15 °C below** these burn temps and **under 250 W** on Profile 1. **Airflow scheme worth copying:** the 120 mm fans **exhaust out through the radiator**, which pulls fresh external air in across the **VRMs / PSU / VRAM backplate**; a separate **80 mm fan (Arctic P8 Max)** cools the GPU VRMs — this answers the "un-sensored VRM/VRAM still need airflow" warning above. ([r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/))
+
+## Custom water loop (advanced)
+
+Beyond a closed AIO, a few people run a **full custom loop**. It's a real but **DIY/expert** scene: builders **CNC-mill or solder a custom waterblock** that covers the **die *and* the VRM** in one block ([src](https://t.me/c/2424231195/131065), [src](https://t.me/c/2424231195/131844), [src](https://t.me/c/2424231195/118582)). Fittings are non-critical — *"you can source, turn or glue almost any"* ([src](https://t.me/c/2424231195/132007)).
+
+**What it buys you:** a rough custom loop reaches **~50 °C under load with the fans at only 30 %, the external pump nearly silent** ([src](https://t.me/c/2424231195/133040)). (One builder then noticed coil-whine from the VRM chokes under load on the default cyan-skillfish governor config — a *separate* issue, not thermal.) You also **don't need a Corsair Commander**: the BC-250's own [fan control](#controlling-the-fan-speed-software) can drive the pump plus **~5 fans** ([src](https://t.me/c/2424231195/140123)).
+
+> ⚠ **Why this is "advanced": the BC-250 does not survive a coolant flood.** Real failures from the community: a hose **kinked at 90°, burst, and flooded the GPU and PSU** ([src](https://t.me/c/2424231195/81158)); a **seized Corsair AIO pump cooked the CPU** ([src](https://t.me/c/2424231195/133147), [src](https://t.me/c/2424231195/126053)). Also watch **pump cavitation/noise above ~50 % pump speed** ([src](https://t.me/c/2424231195/7034)). **Leak-test the whole loop OFF the board for 24 h before the first wet power-on.**
+
+**Verdict:** the lowest temps and the quietest of any option, and it enables sustained 40-CU — but the highest risk and effort. **Not a first build.**
 
 ## Path C — Blower ("улитка") — not recommended
 
