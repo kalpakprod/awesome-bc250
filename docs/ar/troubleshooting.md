@@ -67,10 +67,10 @@ flowchart TD
 | Steam / FSR / vsync معطوبة | تشعّب توزيعة "للألعاب" يتداخل | بعض التشعّبات المضبوطة تكسر هذه؛ Fedora العادية/Bazzite-bc250 أأمن ← [06 — Linux](../en/06-linux.md) |
 | GPU **مقفولة عند 1500 MHz** بغض النظر عن الحمل | لا منظِّم في فضاء المستخدم (الافتراضي مقفول من BIOS) | ثبّت منظِّم GPU (cyan-skillfish-governor-smu) لتحجيم التردد ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) ← [09 — كسر السرعة](../en/09-overclock-undervolt.md) |
 | المنظِّم يعمل لكن GPU **لا تتجاوز 2000 MHz** | النواة تفتقر إلى رقعة نطاق التردد (السقف الافتراضي 1000–2000) | استخدم نواة مرقَّعة (Bazzite/CachyOS مرقَّعتان مسبقًا) أو طبّق `amdgpu-frequency-range.patch` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) ← [09 — كسر السرعة](../en/09-overclock-undervolt.md) |
-| MangoHud يُظهر استخدام GPU **655 %** | amdgpu يترك مقياس النشاط عند `0xFFFF`؛ MangoHud يقرأ 65535/100 | شغّل cyan-skillfish-governor-smu (فرع smu) — يرقّع `gpu_metrics`؛ لا حاجة لتغيير MangoHud ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) ← [09 — كسر السرعة](../en/09-overclock-undervolt.md) |
+| MangoHud يُظهر استخدام GPU **655 %** | amdgpu يترك مقياس النشاط عند `0xFFFF`؛ MangoHud يقرأ 65535/100 | شغّل cyan-skillfish-governor-smu (فرع smu) — يرقّع `gpu_metrics`؛ لا حاجة لتغيير MangoHud. أو طبّق سكربت **`install_gpu_usage_fix.sh`** المستقل ([Old Lamer — Part XV](https://youtu.be/lSipaWjU6D4)) ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) ← [09 — كسر السرعة](../en/09-overclock-undervolt.md) |
 | في وضع **بلا رأس (headless)** "GPU لا تفعل شيئًا" في اختبار حمل | `glmark2 --off-screen` يرجع بصمت إلى **llvmpipe** (المعالج) دون شاشة | اختبر بـ `clpeak` / `vkmark` / `llama-bench -ngl 99`؛ أكّد ارتفاع SCLK والطاقة ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) ← [06 — Linux](../en/06-linux.md) |
 | 60+ إطارًا لكن **تلعثم** / أزمنة إطارات غير منتظمة | إيقاع الإطارات (مُركِّب X11، أو إيقاع مرتبط بالصوت) | شغّل عبر **gamescope** (`-W 1920 -H 1080 -f`)، أو عطّل المُركِّب / جرّب Wayland ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) ← [11 — الألعاب](../en/11-gaming.md) |
-| اللعبة **تنهار بنفاد الذاكرة / تشوّهات ثم تموت** (RDR2، CoH3) | تعارض **512 MB من VRAM الديناميكي + ZRAM** | بدّل BIOS إلى **VRAM ثابت** (مثلًا 10 GB RAM / 6 GB VRAM) أو عطّل ZRAM ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md)) ← [08 — BIOS](../en/08-bios.md) |
+| اللعبة **تنهار بنفاد الذاكرة / تشوّهات ثم تموت** (RDR2، CoH3) | تعارض **512 MB من VRAM الديناميكي + ZRAM**، أو ببساطة **نفاد RAM** | بدّل BIOS إلى **VRAM ثابت** (مثلًا 10 GB RAM / 6 GB VRAM)؛ **أو** عطّل ZRAM الخاص بـ systemd واستخدم **zswap + ملف تبديل Btrfs بحجم 32 GB** ([Old Lamer — Part XIV](https://youtu.be/A6juAoY70aU)، الوصفة في [06](../en/06-linux.md)/[09](../en/09-overclock-undervolt.md)) ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md)) ← [08 — BIOS](../en/08-bios.md) |
 | لعبة بعينها (مثل **RDR2**) تُعرَض على المعالج/llvmpipe | اللعبة تتخلّف إلى مهايئ الرسومات الخاطئ افتراضيًا | اضبط المهايئ على GPU من AMD داخل اللعبة؛ RDR2: شغّلها بـ `-useMaximumSettings` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)) ← [11 — الألعاب](../en/11-gaming.md) |
 
 ## الشبكة
@@ -80,6 +80,7 @@ flowchart TD
 | لا WiFi إطلاقًا | لا WiFi مدمج؛ الدونجل يحتاج تعريفًا | استخدم دونجلًا معروف الجودة (aic8800d80) + ابنِ تعريفه ← [10 — WiFi/BT](../en/10-wifi-bt.md) |
 | WiFi ينقطع كل بضع دقائق | طقم رقائق Realtek + طاقة USB تحت الحمل | معروف مع بعض دونجلات RTL882x؛ انتقل إلى aic8800d80 أو طراز مؤكَّد ← [10 — WiFi/BT](../en/10-wifi-bt.md) |
 | التعريف يختفي بعد إعادة التشغيل | بُني بـ `make` خام، لا كحزمة | استخدم مسار RPM/DKMS من المستودع كي يصمد عبر تحديثات النواة ← [10 — WiFi/BT](../en/10-wifi-bt.md) |
+| مزوّد الخدمة **يخنق Steam** حتى الزحف | DPI/خنق على حركة شبكة Steam (CDN) | أدوات مكافحة الخنق (من نوع `zapret`) تساعد — لكن **نظام ملفات Bazzite للقراءة فقط يحجبها**؛ استخدم توزيعة قابلة للتعديل (Fedora/Arch). تفاصيل مزوّدي الخدمة الروس (Yota، zapret+warp) في [النسخة الروسية](../ru/06-linux.md) ← [06 — Linux](../en/06-linux.md) |
 
 ## Windows
 
@@ -108,4 +109,6 @@ flowchart TD
 
 ### مصادر للصفوف أعلاه
 - أدلة استكشاف الأخطاء من elektricM — [`boot.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/boot.md) · [`display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md) · [`performance.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md) · [`stability.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md) · [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
+- Old Lamer (YouTube): [Part XIV — zswap + 32 GB Btrfs swap](https://youtu.be/A6juAoY70aU) · [Part XV — `install_gpu_usage_fix.sh`](https://youtu.be/lSipaWjU6D4)
+- [4pda BC-250 thread](https://4pda.to/forum/index.php?showtopic=1104980) — خنق Steam من مزوّدي الخدمة الروس (Yota، zapret+warp).
 - استشهادات محادثة المجتمع لكل فصل تعيش في **المصادر** لكل فصل مرتبط.

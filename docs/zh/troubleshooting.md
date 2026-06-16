@@ -67,10 +67,10 @@ flowchart TD
 | Steam / FSR / vsync 坏了 | "玩家向"发行版分支在干扰 | 有些调过的分支会破坏这些；纯 Fedora/Bazzite-bc250 更稳 → [06 —— Linux](../en/06-linux.md) |
 | GPU 不论负载都**锁在 1500 MHz** | 没有用户态 governor（默认被 BIOS 锁定） | 装一个 GPU governor（cyan-skillfish-governor-smu）来调频（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [09 —— 超频](../en/09-overclock-undervolt.md) |
 | governor 在跑但 GPU **超不过 2000 MHz** | 内核缺少频率范围补丁（默认上限 1000–2000） | 用一个打过补丁的内核（Bazzite/CachyOS 已预打补丁）或应用 `amdgpu-frequency-range.patch`（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [09 —— 超频](../en/09-overclock-undervolt.md) |
-| MangoHud 显示 **655 %** GPU 占用 | amdgpu 把活动指标停在 `0xFFFF`；MangoHud 读成 65535/100 | 跑 cyan-skillfish-governor-smu（smu 分支）—— 它会修补 `gpu_metrics`；无需改 MangoHud（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [09 —— 超频](../en/09-overclock-undervolt.md) |
+| MangoHud 显示 **655 %** GPU 占用 | amdgpu 把活动指标停在 `0xFFFF`；MangoHud 读成 65535/100 | 跑 cyan-skillfish-governor-smu（smu 分支）—— 它会修补 `gpu_metrics`；无需改 MangoHud。或应用独立的 **`install_gpu_usage_fix.sh`**（[Old Lamer —— 第十五部分](https://youtu.be/lSipaWjU6D4)）（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [09 —— 超频](../en/09-overclock-undervolt.md) |
 | 负载测试中**无显示头**时"GPU 什么都不干" | 没有显示时 `glmark2 --off-screen` 会悄悄回退到 **llvmpipe**（CPU） | 用 `clpeak` / `vkmark` / `llama-bench -ngl 99` 测试；确认 SCLK 与功耗爬升（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [06 —— Linux](../en/06-linux.md) |
 | 60+ FPS 但**卡顿** / 帧时间不均 | 帧节奏（X11 合成器，或与音频绑定的节奏） | 通过 **gamescope** 运行（`-W 1920 -H 1080 -f`），或关闭合成器 / 试 Wayland（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [11 —— 游戏](../en/11-gaming.md) |
-| 游戏 **OOM 崩溃 / 花屏后挂掉**（RDR2、CoH3） | **512 MB 动态 VRAM + ZRAM** 冲突 | 把 BIOS 切到**固定 VRAM**（例如 10 GB 内存 / 6 GB VRAM）或禁用 ZRAM（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md)）→ [08 —— BIOS](../en/08-bios.md) |
+| 游戏 **OOM 崩溃 / 花屏后挂掉**（RDR2、CoH3） | **512 MB 动态 VRAM + ZRAM** 冲突，或单纯**内存耗尽** | 把 BIOS 切到**固定 VRAM**（例如 10 GB 内存 / 6 GB VRAM）；**或者**禁用 systemd ZRAM 并改用 **zswap + 一个 32 GB 的 Btrfs swapfile**（[Old Lamer —— 第十四部分](https://youtu.be/A6juAoY70aU)，配方见 [06](../en/06-linux.md)/[09](../en/09-overclock-undervolt.md)）（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md)）→ [08 —— BIOS](../en/08-bios.md) |
 | 特定游戏（如 **RDR2**）在 CPU/llvmpipe 上渲染 | 游戏默认选了错误的显示适配器 | 在游戏内把适配器设为 AMD GPU；RDR2：以 `-useMaximumSettings` 启动（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [11 —— 游戏](../en/11-gaming.md) |
 
 ## 网络
@@ -80,6 +80,7 @@ flowchart TD
 | 完全没有 WiFi | 没有板载 WiFi；适配器需要驱动 | 用一个已知好用的适配器（aic8800d80）+ 编译它的驱动 → [10 —— WiFi/BT](../en/10-wifi-bt.md) |
 | WiFi 每隔几分钟掉线 | Realtek 芯片组 + 负载下 USB 供电 | 某些 RTL882x 适配器的已知问题；换成 aic8800d80 或一个确认好用的型号 → [10 —— WiFi/BT](../en/10-wifi-bt.md) |
 | 重启后驱动没了 | 用裸 `make` 编译的，没打包 | 用仓库的 RPM/DKMS 路径，好让它扛过内核更新 → [10 —— WiFi/BT](../en/10-wifi-bt.md) |
+| 运营商把 **Steam 限速**到龟速 | 对 Steam CDN 流量做 DPI/限速 | 反限速工具（`zapret` 这类）有帮助 —— 但 **Bazzite 的只读文件系统会挡住它们**；改用可变（mutable）发行版（Fedora/Arch）。俄罗斯运营商的具体细节（Yota、zapret+warp）见[俄文版](../ru/06-linux.md) → [06 —— Linux](../en/06-linux.md) |
 
 ## Windows
 
@@ -108,4 +109,6 @@ flowchart TD
 
 ### 上述各行的来源
 - elektricM 故障排查指南 —— [`boot.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/boot.md) · [`display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md) · [`performance.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md) · [`stability.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md) · [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
+- Old Lamer（YouTube）：[第十四部分 —— zswap + 32 GB Btrfs swap](https://youtu.be/A6juAoY70aU) · [第十五部分 —— `install_gpu_usage_fix.sh`](https://youtu.be/lSipaWjU6D4)
+- [4pda BC-250 讨论帖](https://4pda.to/forum/index.php?showtopic=1104980) —— 俄罗斯运营商对 Steam 的限速（Yota、zapret+warp）。
 - 各章的社区聊天引用见每个所链接章节的 **Sources**。
