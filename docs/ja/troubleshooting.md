@@ -67,10 +67,10 @@ flowchart TD
 | Steam / FSR / vsync が壊れる | 「ゲーマー」向けディストロのフォークが干渉 | 一部のチューン済みフォークはこれらを壊す。素の Fedora/Bazzite-bc250 が安全 → [06 — Linux](../en/06-linux.md) |
 | 負荷に関係なく GPU が **1500 MHz にロック** | ユーザー空間の governor がない（デフォルトは BIOS ロック） | GPU governor（cyan-skillfish-governor-smu）をインストールして周波数をスケールさせる（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [09 — オーバークロック](../en/09-overclock-undervolt.md) |
 | governor は動くが GPU が **2000 MHz を超えない** | カーネルに周波数範囲パッチがない（デフォルト上限 1000–2000） | パッチ済みカーネル（Bazzite/CachyOS はパッチ済み）を使うか、`amdgpu-frequency-range.patch` を適用（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [09 — オーバークロック](../en/09-overclock-undervolt.md) |
-| MangoHud が GPU 使用率 **655 %** を表示 | amdgpu がアクティビティ指標を `0xFFFF` のままにし、MangoHud が 65535/100 を読む | cyan-skillfish-governor-smu（smu ブランチ）を実行 — `gpu_metrics` をパッチする。MangoHud 側の変更は不要（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [09 — オーバークロック](../en/09-overclock-undervolt.md) |
+| MangoHud が GPU 使用率 **655 %** を表示 | amdgpu がアクティビティ指標を `0xFFFF` のままにし、MangoHud が 65535/100 を読む | cyan-skillfish-governor-smu（smu ブランチ）を実行 — `gpu_metrics` をパッチする。MangoHud 側の変更は不要。または単体の **`install_gpu_usage_fix.sh`** を適用（[Old Lamer — Part XV](https://youtu.be/lSipaWjU6D4)）（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [09 — オーバークロック](../en/09-overclock-undervolt.md) |
 | 負荷テストで **ヘッドレス**「GPU が何もしない」 | `glmark2 --off-screen` はディスプレイなしだと黙って **llvmpipe**（CPU）にフォールバックする | `clpeak` / `vkmark` / `llama-bench -ngl 99` でテスト。SCLK と電力が上がることを確認（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [06 — Linux](../en/06-linux.md) |
 | 60+ FPS だが **カクつく** / フレームタイムが不均一 | フレームペーシング（X11 コンポジター、または音声連動のペーシング） | **gamescope** 経由で実行（`-W 1920 -H 1080 -f`）、またはコンポジターを無効化 / Wayland を試す（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [11 — ゲーミング](../en/11-gaming.md) |
-| ゲームが **OOM でクラッシュ / アーティファクト後に死亡**（RDR2、CoH3） | **512 MB ダイナミック VRAM + ZRAM** の競合 | BIOS を **固定 VRAM** に切り替える（例: 10 GB RAM / 6 GB VRAM）、または ZRAM を無効化（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md)）→ [08 — BIOS](../en/08-bios.md) |
+| ゲームが **OOM でクラッシュ / アーティファクト後に死亡**（RDR2、CoH3） | **512 MB ダイナミック VRAM + ZRAM** の競合、または単に **RAM 不足** | BIOS を **固定 VRAM** に切り替える（例: 10 GB RAM / 6 GB VRAM）。**または** systemd ZRAM を無効化し、**zswap + 32 GB の Btrfs スワップファイル** を使う（[Old Lamer — Part XIV](https://youtu.be/A6juAoY70aU)、レシピは [06](../en/06-linux.md)/[09](../en/09-overclock-undervolt.md)）（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md)）→ [08 — BIOS](../en/08-bios.md) |
 | 特定のゲーム（例: **RDR2**）が CPU/llvmpipe でレンダリングされる | ゲームが誤ったグラフィックスアダプターを既定にしている | ゲーム内でアダプターを AMD GPU に設定。RDR2: `-useMaximumSettings` で起動（[elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md)）→ [11 — ゲーミング](../en/11-gaming.md) |
 
 ## ネットワーク
@@ -80,6 +80,7 @@ flowchart TD
 | WiFi がまったくない | オンボード WiFi なし。ドングルにドライバーが必要 | 実績のあるドングル（aic8800d80）を使い、ドライバーをビルド → [10 — WiFi/BT](../en/10-wifi-bt.md) |
 | WiFi が数分ごとに切断 | Realtek チップセット + 負荷時の USB 電源 | 一部の RTL882x ドングルで既知。aic8800d80 または実績のあるモデルに切り替える → [10 — WiFi/BT](../en/10-wifi-bt.md) |
 | 再起動後にドライバーが消える | 素の `make` でビルドし、パッケージ化していない | リポジトリの RPM/DKMS の手順を使い、カーネル更新を生き延びさせる → [10 — WiFi/BT](../en/10-wifi-bt.md) |
+| ISP が **Steam を激遅にスロットリング** | Steam CDN トラフィックへの DPI/スロットリング | アンチスロットリングツール（`zapret` 系）が有効 — ただし **Bazzite の読み取り専用 FS がそれらをブロックする**。可変（mutable）なディストロ（Fedora/Arch）を使う。RU 事業者ごとの詳細（Yota、zapret+warp）は [ロシア語版](../ru/06-linux.md) にあり → [06 — Linux](../en/06-linux.md) |
 
 ## Windows
 
@@ -108,4 +109,6 @@ flowchart TD
 
 ### 上記の行の出典
 - elektricM のトラブルシューティングガイド — [`boot.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/boot.md) · [`display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md) · [`performance.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/performance.md) · [`stability.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/stability.md) · [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
+- Old Lamer（YouTube）: [Part XIV — zswap + 32 GB Btrfs スワップ](https://youtu.be/A6juAoY70aU) · [Part XV — `install_gpu_usage_fix.sh`](https://youtu.be/lSipaWjU6D4)
+- [4pda BC-250 スレッド](https://4pda.to/forum/index.php?showtopic=1104980) — RU ISP の Steam スロットリング（Yota、zapret+warp）。
 - 章ごとのコミュニティチャットの引用は、リンク先の各章の **出典** にあります。
