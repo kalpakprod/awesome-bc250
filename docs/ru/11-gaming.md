@@ -26,6 +26,8 @@
 - **Частоты.** Сток GPU ~1500 МГц — медленный дефолт; сообщество живёт на **GPU 2000 МГц, память ~1900–2000 МГц** как повседневной цели, некоторые гонят **2,65 ГГц по ядру на сборке уровня дискретки**. Сток против 2000 МГц — примерно **+30 % FPS** в сценах с упором в GPU. ([гайд по разгону](09-overclock-undervolt.md))
 - **Разблокировка 40 CU.** Плата поставляется с отключёнными CU. Разблокировка всех **40 CU** даёт заметный широкий прирост — один пользователь сообщил, что Doom: The Dark Ages из «не работает» превратился в **60 FPS на High**, «007»-тайтл выдал **60 FPS на High**, а в Great Pragmata стабилизировался фреймтайм. ([src](https://t.me/c/2424231195/141193)) См. [09-overclock-undervolt.md](09-overclock-undervolt.md).
 - **FSR / FSR 4.** На 1440p/4K используйте Quality или Balanced, чтобы кормить GPU и держать температуры. Сообщество активно портирует **FSR 4** (DLL-пакеты выкладывают прямо в ветке). ([обсуждение FSR4 INT8 src](https://t.me/c/2424231195/136354)) Замеренные приросты FSR у elektricM: **Quality +20–30 %, Balanced +30–40 %, Performance +40–60 %** FPS; **Frame Generation примерно удваивает** FPS (небольшая задержка). **FSR 4 через Optiscaler** — сообщество находит, что **Balanced лучше нативного FSR 3.1.5 Quality**. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
+  - **Какой апскейлер реально использовать:** **FSR 1–3 — практичный выбор** здесь: он зрелый, дешёвый и хорошо поддержан. **FSR 4 и XeSS технически *могут* работать** на этом кремнии RDNA2 через путь **DP4a (INT8)** — у RDNA2 есть dp4a/Rapid Packed Math, поэтому грузятся и INT8-сборка FSR 4 из OptiScaler, и GPU-агностичный вариант XeSS-DP4a — но на столь слабом GPU они **медленные и экспериментальные**: fallback на DP4a примерно на 10–20 % тяжелее пути WMMA, который используют новые карты, а качество картинки у XeSS-DP4a ниже версии под XMX. Считайте FSR 4 / XeSS тем, с чем можно поэкспериментировать, а не повседневным режимом. ([OptiScaler FSR4 INT8 на RDNA2 — VideoCardz](https://videocardz.com/newz/optiscaler-update-brings-fsr-4-int8-support-to-rdna-2-on-newer-radeon-drivers) · [PC Gamer](https://www.pcgamer.com/hardware/graphics-cards/optiscaler-updated-to-support-fsr-4-on-older-amd-rx-6000-gpus-without-the-need-for-driver-mods/)) **Официальная поддержка FSR 4 для RDNA2 (класс RX 6000) выходит ~в начале 2027**; до этого — только путь OptiScaler/моды. ([Tom's Hardware](https://www.tomshardware.com/pc-components/gpu-drivers/amd-makes-fsr-4-upscaling-official-for-radeon-rx-7000-and-6000-series-cards-rdna-3-and-rdna-2-chips-will-soon-enjoy-improved-visuals))
+- **Генерация кадров помимо FSR — LSFG.** **Lossless Scaling Frame-Generation (LSFG)** работает на Linux через Vulkan-слой **`lsfg-vk`** ([github.com/PancakeTAS/lsfg-vk](https://github.com/PancakeTAS/lsfg-vk)) — игронезависимый слой генерации кадров, цепляющийся к любому Vulkan-тайтлу. Сообщество использует его, чтобы **примерно удвоить FPS** (например, 30 → 60) в играх без встроенной генерации кадров. Как и любая генерация кадров, он добавляет задержку и хочет разумного реального FPS для интерполяции, но это настоящая опция, когда собственного FG у FSR нет.
 - **Разбивка VRAM (UMA).** Это единый пул 16 ГБ. В одном аккуратном тесте (1440p, 1850 МГц) разбивка GDDR6 (512 МБ против 8 ГБ в резерв) **почти не меняла средний FPS** — но слишком малое или неправильное значение UMA может сбросить вас в программный рендеринг (`llvmpipe`) или повесить бенчмарк. Auto / разумный резерв — нормально, не усложняйте. ([src](https://t.me/c/2424231195/81203))
 - **VSync выкл.** для бенчей; **генерацию кадров вкл.** где есть (она помогла Wukong выйти на трёхзначный средний FPS, см. ниже).
 - **`mitigations=off`** (флаг загрузки ядра) — частый твик; в тесте VRAM он давал лишь небольшие шумные эффекты на FPS. Считайте влияние малым. ⚠ **verify (величина спорная)** — elektricM сообщает гораздо больший прирост (**+18 FPS в Cyberpunk, «+10–15 %»** в их советах). Явно зависит от игры: много в некоторых CPU-bound тайтлах, ничтожно в других. Попробуйте и замерьте, не верьте ни одной цифре вслепую. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
@@ -50,7 +52,12 @@
 | **The Witcher 3** | 4K, Medium, FSR Balanced | **~50** | BC-250 | ([src](https://t.me/c/2424231195/81894)) |
 | **Kingdom Come: Deliverance II** | 4K, Med/High, FSR Quality | **~30** («опыт PS5») | BC-250 | ([src](https://t.me/c/2424231195/81893)) |
 | **The Last of Us Part II** | 1080p, дефолтный пресет | играбельно (видео) | BC-250 | ([src](https://t.me/c/2424231195/94237)) |
-| **Doom: The Dark Ages** | High | **60** (после разблокировки 40 CU + фикс) | BC-250, 40 CU | ([src](https://t.me/c/2424231195/141193)) · [фикс Reddit](https://www.reddit.com/r/BC250Gaming/comments/1rqw0v6/a_solution_to_get_doom_the_dark_ages_running/) |
+| **Doom: The Dark Ages** | High | **60** (после разблокировки 40 CU + фикс) | BC-250, 40 CU | ([src](https://t.me/c/2424231195/141193)) · [фикс Reddit](https://www.reddit.com/r/BC250Gaming/comments/1rqw0v6/a_solution_to_get_doom_the_dark_ages_running/) · [Vulkan_NullVRS](https://github.com/bangstk/Vulkan_NullVRS) |
+| **Doom Eternal** | RT вкл (по сообщениям сообщества) | **60 + RT** | BC-250; по сообщениям сообщества (r/BC250Gaming) | ([Reddit-синтез](https://www.reddit.com/r/BC250Gaming/)) |
+| **Tekken 8** | (по сообщениям сообщества) | **~60** | BC-250; по сообщениям сообщества (r/BC250Gaming) | ([Reddit-синтез](https://www.reddit.com/r/BC250Gaming/)) |
+| **Street Fighter 6** | (по сообщениям сообщества) | **~60** | BC-250; по сообщениям сообщества (r/BC250Gaming) | ([Reddit-синтез](https://www.reddit.com/r/BC250Gaming/)) |
+| **Stellar Blade** | (по сообщениям сообщества) | **~70–80** | BC-250; по сообщениям сообщества (r/BC250Gaming) | ([Reddit-синтез](https://www.reddit.com/r/BC250Gaming/)) |
+| **Resident Evil Requiem** | Frame Generation вкл (по сообщениям сообщества) | **60 → 100** (FG) | BC-250; по сообщениям сообщества (r/BC250Gaming) | ([Reddit-синтез](https://www.reddit.com/r/BC250Gaming/)) |
 | **Resident Evil Requiem** | (видео) | играбельно | BC-250, CPU сток, **GPU 2000** | ([src](https://t.me/c/2424231195/121772)) |
 | **Gothic Remake** | Medium | **статтерит** — «оптимизацию не завезли» | BC-250 | ([src](https://t.me/c/2424231195/142708)) |
 | **Hi-Fi Rush** | (видео, запись OBS) | плавно | BC-250, `mitigations=off` | ([src](https://t.me/c/2424231195/91022)) |
@@ -105,14 +112,16 @@ elektricM отслеживает тайтлы, которых у нас не б�
 
 ### Жёстко заблокированы отсутствующими функциями GPU (не лечится)
 
-Это **кремний класса RDNA 2** (GFX1013). Часть новых тайтлов **жёстко требует функций GPU, которых у RDNA 2 нет** — прежде всего **mesh-шейдеров** и **аппаратного variable-rate shading (VRS)** — и просто отказывается запускаться. Это **ограничение железа, а не баг драйвера**: ни обновление Mesa, ни параметр ядра, ни версия Proton это не исправят. Подтверждённые примеры ([тред сообщества r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)):
+Это **кремний класса RDNA 2** (GFX1013). Часть новых тайтлов **жёстко требует функций GPU, которых у RDNA 2 нет** — прежде всего **mesh-шейдеров** и **аппаратного variable-rate shading (VRS)** — и отказывается запускаться. Отсутствие кремния — **ограничение железа, а не баг драйвера**: ни обновление Mesa, ни параметр ядра, ни версия Proton саму функцию не добавят. **Mesh-шейдеры** — настоящая стена. Требование **VRS** иногда лишь проверка при запуске, которую может заглушить пользовательский Vulkan-слой (см. заметку про Doom ниже) — так что оно не всегда фатально. Подтверждённые примеры ([тред сообщества r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)):
 
 | Игра | Жёсткое требование, которого нет у BC-250 |
 |------|--------------------------------------------|
 | **Final Fantasy VII Rebirth** | **Mesh-шейдеры** — не запустится (поэтому же спотыкается и о проверку DX12-совместимости GPU в таблице выше) |
-| **Doom: The Dark Ages — Update 2** | **Vulkan fragment shading rate** (аппаратный VRS) — ранняя сборка до Update 2 идёт (60 FPS после разблокировки 40 CU, выше), но Update 2 сделал VRS обязательным, и игра больше не стартует |
+| **Doom: The Dark Ages — Update 2** | **Vulkan fragment shading rate** (аппаратный VRS) — Update 2 сделал VRS обязательным *при запуске*; у GPU его нет, поэтому немодифицированная игра больше не стартует (сборка до Update 2 шла на 60 FPS после разблокировки 40 CU, выше). **Обход есть** — см. заметку ниже. |
 
-> Перед покупкой свежего AAA-тайтла проверь, не указаны ли в требованиях mesh-шейдеры или аппаратный VRS — если да, BC-250 не потянет её ни на каких настройках.
+> **Doom: The Dark Ages Update 2 — теперь есть обход.** Игра лишь *проверяет* наличие VRS при запуске; для геймплея он ей не нужен. Vulkan-слой **`bangstk/Vulkan_NullVRS`** ([github.com/bangstk/Vulkan_NullVRS](https://github.com/bangstk/Vulkan_NullVRS)) перехватывает `vkCmdSetFragmentShadingRateKHR()` и превращает его в no-op, удовлетворяя проверку запуска, так что игра идёт без побочных эффектов. То есть Doom: The Dark Ages — **не** вечный жёсткий блок. **С mesh-шейдерами иначе** — для требования mesh-шейдеров у FF7 Rebirth аналогичной заглушки нет, так что эта действительно не запустится.
+
+> Перед покупкой свежего AAA-тайтла проверь, не указаны ли в требованиях mesh-шейдеры или аппаратный VRS. **Mesh-шейдеры** здесь настоящая стена железа (обхода нет). Требование **аппаратного VRS** часто лишь проверка при запуске — иногда обходится заглушкой (как с Doom выше), иногда нет — поэтому сверься с сообществом, прежде чем делать выводы в любую сторону.
 
 ## Рейтрейсинг — что реально тестировали
 
@@ -137,6 +146,9 @@ RT здесь начального уровня — нормально для *�
   - Вместе: `RADV_DEBUG=nohiz mangohud gamemoderun %command%`.
 - **VRAM по игре (разбивка UMA):** киберспорт/инди норм на **512 МБ**; **большинству игр нужно 4 ГБ**; AAA/RT хотят ещё и kernel-параметры под доп. VRAM (`amdgpu.gttsize=...`, см. [06-linux.md](06-linux.md) / [08-bios.md](08-bios.md)). Слишком малая разбивка = артефакты, краши или скат в программный рендеринг. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
 - **Статтер на первом запуске** — обычно **компиляция шейдеров**; дайте Steam докомпилировать, прежде чем судить о FPS; больший кэш шейдеров помогает. ([elektricM](https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/))
+- **Пофиксы по конкретным играм** (по сообщениям сообщества, r/BC250Gaming — пробуйте, если ловите именно эти баги):
+  - **Resident Evil Requiem — сломанные/глючные волосы:** добавьте `RADV_DEBUG=nohiz %command%` в параметры запуска (тот же флаг RADV, что выше, применённый здесь точечно). ([Reddit-синтез](https://www.reddit.com/r/BC250Gaming/))
+  - **Spider-Man 2 / Assassin's Creed Shadows — зависания:** включение **zswap** (сжатый swap), по сообщениям, убирает зависания. ([Reddit-синтез](https://www.reddit.com/r/BC250Gaming/))
 
 ---
 
@@ -144,9 +156,9 @@ RT здесь начального уровня — нормально для *�
 
 Эмуляторы нагружают CPU, поэтому результаты смешанные, но некоторые крепкие ([src](https://t.me/c/2424231195/78988)):
 
-- **Switch — Eden:** работает хорошо и шустро. ✅
+- **Switch — Eden / Ryujinx:** работает хорошо и шустро. По сообщениям сообщества (r/BC250Gaming): **Mario Kart ~60 FPS**; **Tears of the Kingdom ~30–40 FPS**. ✅ ([Reddit-синтез](https://www.reddit.com/r/BC250Gaming/))
 - **PS4 — shadPS4 (0.9.0+):** Bloodborne идёт без просадок; некоторые тайтлы (The Last Guardian) артефачат, но держат стабильный FPS. ✅
-- **PS3 — RPCS3:** работает, но требует допила от игры к игре. ⚠️
+- **PS3 — RPCS3:** работает, но требует допила от игры к игре. ⚠️ **Известная особенность** (по сообщениям сообщества, r/BC250Gaming): баг эмулятора **фиксирует GPU на 1000 МГц** под RPCS3, так что видеоядро не может поднять частоту — обход в том, чтобы **разогнать CPU**, компенсируя потерю запаса GPU. ([Reddit-синтез](https://www.reddit.com/r/BC250Gaming/))
 - **Xbox 360 — Xenia Canary:** меню грузятся, геймплей уходит в чёрный экран (ещё разбираются). ❌
 
 ---
@@ -188,6 +200,11 @@ RT здесь начального уровня — нормально для *�
 - Совместимость игр elektricM (настройки/FPS по играм, проблемные игры, таблица RT, Proton и параметры запуска, приросты FSR) — https://elektricm.github.io/amd-bc250-docs/gaming/compatibility/
 - YouTube-записи с FPS (авто-субтитры / ASR — цифры приблизительные): ETA Prime (Spider-Man 2, Forza H5, Left 4 Dead 2) — https://youtu.be/q_CxcbS5HI8 · «Temps Shocked Me» (Helldivers 2, Arc Raiders) — https://youtu.be/d7Hwqxn9yg8 · RU-обзор (Stalker 2, Metro Exodus) — https://youtu.be/19l03qneKJ4 · Pixels & Power (Palworld, RDR2, Elden Ring 30 FPS) — https://youtu.be/4S0DvIpqm0E
 - Жёсткие блоки по mesh-шейдерам / аппаратному VRS (FF7 Rebirth, Doom: The Dark Ages Update 2) — [тред r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)
+- **Обход VRS для Doom: The Dark Ages — `bangstk/Vulkan_NullVRS`** (no-op Vulkan-слой для `vkCmdSetFragmentShadingRateKHR`) — https://github.com/bangstk/Vulkan_NullVRS
+- **Генерация кадров LSFG на Linux — `lsfg-vk`** (Vulkan-слой) — https://github.com/PancakeTAS/lsfg-vk
+- **FSR 4 / XeSS через DP4a (INT8) на RDNA2** — INT8-сборка FSR4 из OptiScaler: [VideoCardz](https://videocardz.com/newz/optiscaler-update-brings-fsr-4-int8-support-to-rdna-2-on-newer-radeon-drivers) · [PC Gamer](https://www.pcgamer.com/hardware/graphics-cards/optiscaler-updated-to-support-fsr-4-on-older-amd-rx-6000-gpus-without-the-need-for-driver-mods/) · [вики совместимости FSR4 OptiScaler](https://github.com/optiscaler/OptiScaler/wiki/FSR4-Compatibility-List)
+- **Официальная поддержка AMD FSR 4 для RDNA2 (~начало 2027) / RDNA3 (июль 2026)** — [Tom's Hardware](https://www.tomshardware.com/pc-components/gpu-drivers/amd-makes-fsr-4-upscaling-official-for-radeon-rx-7000-and-6000-series-cards-rdna-3-and-rdna-2-chips-will-soon-enjoy-improved-visuals)
+- **Результаты по играм по сообщениям сообщества (r/BC250Gaming)** — Tekken 8, Street Fighter 6, Stellar Blade, RE Requiem Frame-Gen, Doom Eternal RT, Switch (Mario Kart / TOTK), фиксация RPCS3 на 1000 МГц, фиксы RE Requiem (волосы) / Spider-Man 2 / AC Shadows — https://www.reddit.com/r/BC250Gaming/
 - Таблица тестов игр сообщества — https://docs.google.com/spreadsheets/d/1kJleOY5k-YREGak1pQhVWIGckA9YA3OWJyCbybZbk00/edit?usp=sharing
 
 > Частоты и разблокировка 40 CU — в [09-overclock-undervolt.md](09-overclock-undervolt.md); сделайте доработку из [04-cooling.md](04-cooling.md) до запуска на 2000 МГц.

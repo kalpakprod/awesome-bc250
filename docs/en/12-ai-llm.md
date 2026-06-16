@@ -10,7 +10,8 @@ The BC-250 is a fine *budget inference box* and a poor *training box*. Treat it 
 
 The GPU die is **Cyan Skillfish = `gfx1013`** (an RDNA-1.x-class part, sibling to Navi 10/`gfx1010`). This single fact decides everything:
 
-- **ROCm does not ship support for `gfx1013`.** AMD's ROCm stack targets a specific allowlist of GPU IDs, and Cyan Skillfish is not on it. So the official `ROCm/ROCm` path simply doesn't see the card.
+- **ROCm does not ship support for `gfx1013`.** AMD's ROCm stack targets a specific allowlist of GPU IDs, and Cyan Skillfish is not on it. So the official `ROCm/ROCm` path simply doesn't see the card. Concretely: `gfx1013` *is* listed in LLVM as `rocm-amdhsa`-capable, but **AMD's ROCm userspace (rocBLAS/Tensile) ships no `gfx1013` math (solution) libraries** — so the moment a GEMM hits rocBLAS you get `rocblas_abort()` ("GFX1013 not in GPU list"). There's no math kernel to call ([akandr/bc250 §2](https://github.com/akandr/bc250#2-why-vulkan-not-rocm)).
+- **Even setting that aside, ROCm has no usable shader cache on these APUs — it recompiles every launch**, whereas the **Vulkan backend caches compiled shaders to disk**. That alone makes Vulkan the practical compute path: akandr's testing concludes Vulkan was the only GPU-compute path found usable on this board ([akandr/bc250 §2](https://github.com/akandr/bc250#2-why-vulkan-not-rocm)). (Note this is a *driver/library* gap, **not** a missing-hardware-feature one — RDNA2's `gfx103x` ISA does include INT8 dp4a, e.g. `v_dot4c_i32_i8`; the problem is purely that ROCm ships nothing for this ID.)
 - The well-known "unlock ROCm on old cards" repos **don't cover it either**:
   - [`woodrex83/ROCm-For-RX580`](https://github.com/woodrex83/ROCm-For-RX580) is **`gfx803` only** (Polaris: RX 580/570/480). Wrong architecture entirely — not usable here.
   - [`ulyssesrr/docker-rocm-xtra`](https://github.com/ulyssesrr/docker-rocm-xtra) adds extra targets (`gfx803`, `gfx900/906/908`, `gfx1010/1011/1012`, `gfx1030…`) — but **`gfx1013` is not in the list**, and the repo was **archived 2025-08-12**. You can *try* to masquerade as `gfx1010` (Navi 10) with `HSA_OVERRIDE_GFX_VERSION=10.1.0`, the same way people symlink Navi 10 firmware to bring up the display driver (`navi10_gpu_info.bin → cyan_skillfish_gpu_info.bin`, [src](https://t.me/c/2424231195/7458/136321)), but this is unverified for compute on the BC-250 and nobody in the chat reports a working ROCm LLM stack.  ⚠ verify
@@ -161,6 +162,15 @@ The 40-CU unlock (see [09-overclock-undervolt.md](09-overclock-undervolt.md)) he
 
 That board **topped out at 36 CU** — the last two CUs were genuinely defective and **llama crashed on load** when they were enabled, a concrete example of the "38/40 is a lottery" point from the OC chapter. The Ollama environment matched the recipe above (`OLLAMA_VULKAN=1`, KV-cache `q4_0`, context 65536, `ttm.pages_limit=4194304`). Because it's a *dense* model, the gain is pure CU scaling — no MoE expert-routing multiplier on top ([Old Lamer — RU CU-unlock video](https://youtu.be/M7PsojWr4KA)).
 
+The `akandr/bc250` guide ran a fuller A/B on **MoE** models across the 40-CU unlock (the unlock patch itself lives in [`duggasco/bc250-40cu-unlock`](https://github.com/duggasco/bc250-40cu-unlock), not akandr; akandr adds an independent FP32 sanity check + throughput re-run). Two headline generation deltas, both **via llama.cpp** ([akandr/bc250 §B9](https://github.com/akandr/bc250#b9-40-cu-unlock-results)):
+
+| Model | Quant | Gen @ 24 CU | Gen @ 40 CU | Δ |
+|---|---|---|---|---|
+| gpt-oss-20b (MoE) | MXFP4 | 66.1 tok/s | 87.5 tok/s | **+32 %** |
+| Qwen3.5-35B-A3B (MoE) | — | 59.5 tok/s | 78.7 tok/s | **+32 %** |
+
+Across 11 models the median was **+32 % generation / +50 % prefill** from the unlock. Two things worth pulling out of that table: **gpt-oss-20b runs comfortably (66 → 87 tok/s)**, confirming the chat's favorite, and akandr measured MoE models **substantially faster through `llama.cpp` directly than through Ollama** (Ollama's expert-dispatch path is less efficient for this architecture — e.g. Qwen3.5-35B-A3B was 25.1 tok/s on Ollama vs 59.5 tok/s on llama.cpp at stock clocks) ([akandr/bc250 §4](https://github.com/akandr/bc250#4-benchmarks)).
+
 > 💬 **Unverified MoE datapoints (Hackaday comments — treat as hearsay).** From reader comments rather than a reproduced run: a Qwen "27b" with **MTP** (multi-token prediction) at **≈14.5 tok/s**, and a "35b" with MTP at **≈47 tok/s**. The wide spread is exactly what MTP + MoE active-parameter differences would produce, but neither figure is independently confirmed here — flagged for context, not as a benchmark. ⚠ verify
 
 ---
@@ -189,6 +199,8 @@ That board **topped out at 36 CU** — the last two CUs were genuinely defective
 ## Sources
 
 - BC-250 LLM recipe (Ollama+Vulkan, TTM fix, tok/s) — [akandr/bc250 §Ollama+Vulkan](https://github.com/akandr/bc250#3-ollama--vulkan-setup)
+- Why ROCm fails on gfx1013 (no rocBLAS/Tensile solution libs → `rocblas_abort()`; ROCm recompiles every launch vs Vulkan caches shaders) — [akandr/bc250 §2](https://github.com/akandr/bc250#2-why-vulkan-not-rocm) · RDNA2 `gfx103x` ISA has INT8 dp4a (`v_dot4c_i32_i8`), so this is a library gap not a hardware one — [LLVM GFX1030 ISA](https://llvm.org/docs/AMDGPU/AMDGPUAsmGFX1030.html)
+- 40-CU unlock on MoE, measured generation deltas (gpt-oss-20b 66.1→87.5, Qwen3.5-35B-A3B 59.5→78.7, median +32 % gen / +50 % prefill across 11 models; llama.cpp ≫ Ollama for MoE) — [akandr/bc250 §B9](https://github.com/akandr/bc250#b9-40-cu-unlock-results) · [§4 benchmarks](https://github.com/akandr/bc250#4-benchmarks) · unlock patch: [duggasco/bc250-40cu-unlock](https://github.com/duggasco/bc250-40cu-unlock)
 - Working setup, gpt-oss-20b, Oberon uplift, OOM/distro notes — https://t.me/c/2424231195/101077
 - MoE vs dense, multi-card bandwidth — https://t.me/c/2424231195/125233
 - 40-CU unlock LLM scaling, measured live (⚠ ASR — approximate) — Qwen3.5-9B dense on Ollama+Vulkan: 25.7 → 31.9 → 33.4 tok/s (24 → unlock → 36 CU, ~+20 % total); board capped at 36 CU (2 CUs defective, llama crashed on load) — [Old Lamer — RU CU-unlock video](https://youtu.be/M7PsojWr4KA)
