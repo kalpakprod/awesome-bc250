@@ -155,6 +155,8 @@ After flashing **and** clearing CMOS (next section), enter Setup (spam **Del**) 
 
 First verify the CMOS clear actually took — the **clock should read wrong**; if it's still correct, repeat the clear. Then F10 to save. The `512MB` choice is *dynamic* allocation, not a 512 MB cap (see [09-overclock-undervolt.md](09-overclock-undervolt.md)).
 
+> ★ **Why 512 MB UMA *gains* FPS (the mechanism).** Setting the UMA buffer to **512 MB** doesn't starve the GPU — it lets the system **dynamically balance RAM vs VRAM** instead of locking a big fixed slice away, and that rebalancing alone was credited with a real FPS jump: Cyberpunk 2077 went **60 → 66 fps (at 2 GHz OC) → 76 fps** under FSR 3.0 *balanced*, 1080p, Steam-Deck preset ([Old Lamer — Part I](https://youtu.be/ohpEY2XQ_lo) ~11:21; ⚠ approx — figures transcribed from the video, treat as one build's result). So "512 MB is best" isn't just safe sizing — the small dynamic buffer is *part of* the performance story, not a compromise.
+
 **flashrom fallback** (if AFU errors out) ([src](https://t.me/c/2424231195/54979), suggested & tested by `@mrartemsid`):
 
 ```bash
@@ -244,6 +246,97 @@ Many cheap **black-PCB CH341A** programmers drive their **data lines at 5 V even
 
 ---
 
+### Low-level headers, debug & on-board silicon
+
+Beyond the J4004 flash header above, the board carries several other headers and a known set of on-board chips. These are reverse-engineered in the elektricM hardware docs and are useful for clearing CMOS, debug probing, fan wiring, and confirming which chip is which before you flash. Pin values transcribed verbatim from ([elektricM: pinouts](https://elektricm.github.io/amd-bc250-docs/hardware/pinouts/)).
+
+**CLRCMOS1 — clear-CMOS jumper (3-pin).** This is the jumper referenced everywhere in this chapter as "short the CMOS jumper" — here is its map:
+
+| Position | Behavior |
+|---|---|
+| Pins 1–2 | CR2032 powers CMOS (default) |
+| Pins 2–3 | Clear CMOS |
+
+> 💡 When the [post-flash checklist](#before-you-flash--the-safety-checklist) and ["After every flash"](#after-every-flash--clear-cmos-dont-skip-this) tell you to "short the CMOS jumper for ~20 seconds," **CLRCMOS1** is that jumper: move it from pins 1–2 to pins 2–3, wait, then move it back. (Removing the CR2032 for 60+ s is the alternative.)
+
+**TPMS1 — LPC debug header (18-pin, 2.0 mm pitch):**
+
+| Pin | Signal | Pin | Signal |
+|---|---|---|---|
+| 1 | PCICLK | 2 | GND |
+| 3 | FRAME | 4 | SMB_CLK_MAIN |
+| 5 | PCIRST# | 6 | SMB_DATA_MAIN |
+| 7 | LAD3 | 8 | LAD2 |
+| 9 | 3V | 10 | LAD1 |
+| 11 | LAD0 | 12 | GND |
+| 13 | (empty) | 14 | S_PWRDWN# |
+| 15 | 3VSB | 16 | SERIRQ# |
+| 17 | GND | 18 | GND |
+
+> 💡 **Pin 9 (3V) is live only when the board is powered on** — so it works as a "system-on" detect signal. That makes it an alternative sense point for auto-power-on / true-ATX adapter builds (cross-ref the [`AUTO_PWRON` jumper in 03-power-supply.md](03-power-supply.md)).
+
+**J2 — JTAG/HDT debug header (20-pin, 1.27 mm pitch, unpopulated, on the bottom of the board):**
+
+| Pin | Signal | Pin | Signal |
+|---|---|---|---|
+| 1 | VDDIO | 2 | TCK |
+| 3 | GND | 4 | TMS |
+| 5 | GND | 6 | TDI |
+| 7 | GND | 8 | TDO |
+| 9 | TRST_L | 10 | PWROK_BUF |
+| 11 | DBRDY3 | 12 | RESET_L |
+| 13 | DBRDY2 | 14 | DBRDY0 |
+| 15 | DBRDY1 | 16 | DBREQ_L |
+| 17 | GND | 18 | TEST19 |
+| 19 | VDDIO | 20 | TEST18 |
+
+> TEST18, TEST19 and DBRDY0 are left floating. This is the **only** hardware reset/debug interface on the board.
+
+**I2C_HEADER1 (3-pin):** `SCL · SDA · GND`. SCL is the pin **closer to the power connectors**. This bus carries **PMBUS to the Intersil PMICs** — a power-telemetry access point.
+
+**CPU_FAN1 (4-pin):** `PWM · Tach · 12V · GND`.
+
+**J4003 — multi-fan header (16-pin, 2×8, 2.54 mm):**
+
+| Row 1 | 1 GND | 2 F1T | 3 F2T | 4 F3T | 5 F4T | 6 F5T | 7 DET | 8 (empty) |
+|---|---|---|---|---|---|---|---|---|
+| **Row 2** | 1 GND | 2 F1P | 3 F2P | 4 F3P | 5 F4P | 6 F5P | 7 GND | 8 GND |
+
+Here `T` = tach and `P` = PWM, per fan 1–5.
+
+> 💡 **DET (row 1, pin 7) is grounded when the board sits on a fan / power-distribution board** — i.e. it detects the carrier. (The BIOS↔Linux fan numbering is covered in [06-linux.md → Sensors & fan control](06-linux.md#sensors--fan-control); it isn't duplicated here.)
+
+**On-board silicon (BOM).** The repo already names `SIO1_R` and `BIOS_A1` in the flashing sections but never gave part numbers or sizes; this table lets a flasher confirm which chip is which (the 16 MiB Winbond is the BIOS, the 512 KiB Macronix is the SuperIO — leave it alone):
+
+| Designator | Part | Role |
+|---|---|---|
+| PUA1 | Intersil ISL69247 | Main PMIC |
+| PUIO1 | Intersil ISL95712 | Core-supply PMIC |
+| PUA11… | Intersil ISL99360 | Smart power stages (phases) |
+| M2U2 | NXP CBTL04083B | 2:1 PCIe x4 mux |
+| U30 | Realtek RTL8111H | Ethernet NIC (PCIe x1) |
+| SU1 | AMD 218-0844029 | A68H "Bolton-D2H" FCH chipset |
+| UIO1 | Nuvoton NCT6686D | SuperIO (the hwmon sensor chip) |
+| BIOS_A1 | Winbond 25Q128JVSQ | 16 MiB SPI flash = the **BIOS** (flash THIS) |
+| SIO1_R | Macronix MX25L4006E | 512 KiB SPI flash = SuperIO program (**do NOT flash — bricks the SuperIO**) |
+
+> The SuperIO sensor chip named here (Nuvoton **NCT6686D**) is the one the Linux `nct6687`/`nct6683` driver binds to — see [06-linux.md](06-linux.md) for the sensor/fan setup.
+
+---
+
+## Secure Boot & CSM (boot prerequisites)
+
+Add these two to the BIOS-setup prerequisite list — required or **custom/patched kernels won't boot** (the 40-CU patch, the frequency patch, etc.):
+
+| Setting | Value |
+|---|---|
+| Secure Boot | **Disabled** |
+| CSM (Compatibility Support Module) | **Disabled** |
+
+Source: [elektricM: boot troubleshooting](https://elektricm.github.io/amd-bc250-docs/troubleshooting/boot/).
+
+---
+
 ## The "srep" auto-reset idea (experimental — not a finished feature)
 
 Because a bad setting can brick the board and **CMOS clear doesn't fix it**, death experimented with baking an **`srep`** routine into the BIOS to **auto-reset settings on a brick** — idea originally from `@Jacky_Fish` ([src](https://t.me/c/2424231195/60552)). The concept: have the BIOS patch its NVRAM/`amdsetup` variables back to defaults, optionally only when trigger files are present on a USB stick (so it doesn't wipe your settings every boot). As of the chat, **this did not work yet** — *"the board stubbornly pretends to be a complete brick and nothing resets"* ([src](https://t.me/c/2424231195/60883)). Treat any "self-healing BIOS" claim as **unproven**; your real safety net remains the external programmer. `⚠ verify` before relying on any srep build.
@@ -294,7 +387,9 @@ BIOS images discussed in the chat are mirrored under `assets/firmware/` for **re
 - Most-referenced BIOS repo — [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios/) (`BC250_3.00_CHIPSETMENU.ROM`, `CHIPSETMENU.md`)
 - Community flashing/recovery guide (verified SHA-256 table, `Flash.nsh`/`Robin5.00` recipe, `blk0:` selector, DisplayPort/HDMI gotcha, 15-min hang rule, J4004 pinout + pins 7/8, W25Q128JVSQ/"25Q168" typo, CH347, post-flash Setup values, Segfault credit) — [elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)
 - Recovery guide (SPI 8-pin pinout, MX25L4005 = SuperIO detection, flash with PSU unplugged, scenario walkthroughs) — [elektricM: BIOS recovery](https://elektricm.github.io/amd-bc250-docs/bios/recovery/)
+- Board pinouts & on-board silicon (CLRCMOS1, TPMS1 LPC, J2 JTAG/HDT, I2C_HEADER1, CPU_FAN1, J4003 multi-fan, Intersil/NXP/Realtek/Nuvoton/Winbond/Macronix BOM) — [elektricM: pinouts](https://elektricm.github.io/amd-bc250-docs/hardware/pinouts/)
 - VRAM guide (`bc250_memcfg` no-flash sizing, UMA Frame Buffer values, kernel-param VRAM, Vulkan-vs-OpenGL reporting) — [elektricM: BIOS VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)
+- ★ 512 MB UMA → dynamic RAM/VRAM balance → FPS-gain mechanism (Cyberpunk 60 → 66 @ 2 GHz OC → 76 fps, FSR 3.0 balanced, 1080p, Steam-Deck preset) — [Old Lamer — Part I](https://youtu.be/ohpEY2XQ_lo) ~11:21 (⚠ approx, transcribed from video)
 - `Smokeless_UMAF` danger note — [elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)
 - No-flash VRAM tool — [fanoush/bc250_memcfg](https://github.com/fanoush/bc250_memcfg)
 - Memory-timing utility — `Mem_Timing_Utility.zip` https://t.me/c/2424231195/55351

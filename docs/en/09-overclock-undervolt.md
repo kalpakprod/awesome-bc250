@@ -109,6 +109,8 @@ The file lets you set the **maximum and minimum voltage and frequency** for the 
 
 > 🔴 **700 mV is a hard floor.** Setting the governor's *minimum* GPU voltage below **700 mV locks the GPU back to 1500 MHz** — it defeats the whole point. Keep min voltage ≥ 700 mV in any governor ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/), [elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)).
 
+> 🔴 **~1100–1129 mV is the ceiling — the counterpart to the 700 mV floor.** Don't push the governor's *maximum* GPU voltage past the stock `OD_RANGE` top of **1129 mV**; beyond that is **silicon-degradation risk for no stability gain**. The conservative air-cooled ceiling sits around **1100 mV (high risk above)**, and only liquid cooling justifies the **1125 mV** top tier (table below). If a curve needs more than ~1129 mV to be stable, the real fix is *cooling or a lower clock*, not more volts ([elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)).
+
 > **Verify the right GPU is targeted.** The governor may control `card0` or `card1` depending on your system — `ls /sys/class/drm/ | grep card`. If settings don't apply, you may need to point the config at the correct card. On Arch/CachyOS the governor sometimes won't activate until the GPU is first used — run a game/benchmark once after boot ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
 
 #### The cyan-skillfish-smu config schema (section-based TOML)
@@ -147,9 +149,50 @@ voltage   = 1000      # many boards hold a flat 1000 mV here; bump per-board onl
 
 > **GPU-reset black-screen, governor-specific.** If the GPU crashes *while the governor is actively writing sysfs*, the reset can't complete and you get a permanent black screen (system still alive over SSH) needing a hard reboot. Workaround: `systemctl stop` the governor before known crash-prone games; real fix is a stable curve ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
 
+##### How the SMU governor pushes past 2230 MHz — and why it ships disabled
+
+Because the SMU branch talks to the SMU firmware directly rather than through the amdgpu `OD_RANGE`, it can **exceed Oberon's 2230 MHz hard cap** — one walkthrough drove it to **≈2700 MHz** on a single board ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)). That headroom is exactly why filippor ships it carefully:
+
+> 🔴 **The SMU governor's default config can black-screen on boot — so it is shipped NOT auto-starting.** filippor deliberately leaves the service disabled after install so a bad default curve can't lock you out at boot; you get a chance to **tune and test the curve first, then `systemctl enable` it** once it's stable on your board. Enable it *before* you've validated a curve and a black screen on next boot is on you ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)). *(⚠ figures auto-captioned — treat the exact MHz as approximate.)*
+
+Unlike Oberon's hard frequency drop on overheat, the SMU governor **ramps gradually toward a temperature target**. The walkthrough also exposes extra `config.toml` fields beyond the schema above ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)):
+
+```toml
+# extra tuning knobs shown in the Part XII walkthrough
+[ramp-rates]
+normal = 1
+burst  = 50
+[gpu-usage]
+burst-samples = 60
+down-events   = 5
+[frequency-thresholds]
+adjust = 10
+[temperature]
+throttling_recovery = 80
+```
+
+> ⚠️ **Author-experimental 16-point air curve — NOT recommended, exceeds this guide's air ceiling.** The Part XII author ran this curve on air, but its top points (2333–2400 MHz at 1120–1150 mV) sit **above the conservative air-cooled limits documented in Step 3** (≈2230 MHz / 1060 mV on air; 1125 mV is a *liquid-only* tier). It is shown for reference, not as a target — on air, stop where Step 3's cooling-class table says to:
+>
+> ```toml
+> # ⚠ author-experimental, air-cooled — DO NOT copy blindly (exceeds the air ceiling)
+> # frequency (MHz) @ voltage (mV)
+> 1000@800,  1175@850,  1500@900,  1700@920,
+> 2000@960,  2100@1000, 2150@1035, 2200@1050,
+> 2250@1070, 2300@1090, 2333@1120, 2400@1150
+> ```
+>
+> At the top of that curve, **2.4 GHz pulled ~30 A ≈ 360 W** — enough that it needs **dual Molex / a second board feed** ([03-power-supply.md](03-power-supply.md)), not a single connector. Superposition scaled **≈4200 at 2.2 GHz → ≈4500 at 2.4 GHz** ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)). *(⚠ all values auto-captioned — approximate.)*
+
 #### GPU frequency-range kernel patch (only for TT / manual sysfs)
 
-The amdgpu driver's stock GPU range is **1000–2000 MHz**; a one-line driver patch (by **ViRazY**, `linux-6.12-bc250-freq.mypatch`) widens it to **350–2230 MHz** (350 MHz deep-idle saves power; the top end enables 2230+ overclocks). **Bazzite, PikaOS, and the Arch AUR kernels ship it pre-patched**, and the **SMU governor bypasses the need for it entirely** via firmware calls — so you only patch manually if you want the TT governor or raw sysfs OC with the extended range on an unpatched distro. Verify with `cat …/pp_od_clk_voltage` (should show 350–2230). **Do not** use the extended-voltage (600–1300 mV) patch — unnecessary and risky ([elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)).
+The amdgpu driver's stock GPU range is **1000–2000 MHz**; a one-line driver patch (by **ViRazY**, `linux-6.12-bc250-freq.mypatch`, ~**639 bytes**, tested on kernels **6.12 / 6.15 / 6.16.x**) widens it to **350–2230 MHz** (350 MHz deep-idle saves power; the top end enables 2230+ overclocks). **Bazzite, PikaOS, and the Arch AUR kernels ship it pre-patched**, and the **SMU governor bypasses the need for it entirely** via firmware calls — so you only patch manually if you want the TT governor or raw sysfs OC with the extended range on an unpatched distro. Verify with `cat …/pp_od_clk_voltage` (should show 350–2230). **Do not** use the extended-voltage (600–1300 mV) patch — unnecessary and risky ([elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)).
+
+> 🔧 **Raw sysfs undervolt (one-off probing).** For a quick per-point stability probe without the governor, write a voltage-curve point straight to sysfs (format `vc <level> <MHz> <mV>`) and commit it ([elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)):
+> ```bash
+> echo "vc 0 2100 1025" | sudo tee /sys/class/drm/card0/device/pp_od_clk_voltage   # set point: 2100 MHz @ 1025 mV
+> echo "c" | sudo tee /sys/class/drm/card0/device/pp_od_clk_voltage                # commit
+> ```
+> This is for quick probing only — it doesn't survive a reboot. The governor's `config.toml` is the recommended **persistent** path; use raw sysfs to find a stable per-point voltage, then bake it into the governor curve.
 
 #### PS5GPU-BC250 — a GUI controller (no config files)
 
@@ -198,6 +241,36 @@ Why 4 GHz is the ceiling: AMD considers up to ~4 GHz safe for this silicon; the 
 
 The tool's flags: `bc250-detect -f <MHz> -v <mV>` to test, add **`-k`** to keep the OC after the tool exits, **`-c <path>`** to write a config. Make it permanent with `bc250-apply -a -i /etc/bc250-overclock.conf` then `systemctl enable bc250-smu-oc`. Authors: **mrfrakes & dantistnfs** (SMU reverse-engineering) ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/), [elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)). Note **4000 MHz throttled at the stock-ish PWM 80 fan** — the ceiling is cooling-bound, consistent with the air-vs-water note above.
 
+#### How `bc250-detect` actually searches (and the voltage ceiling it enforces)
+
+A video walkthrough of the same tool shows the auto-search mechanics: it **ramps up from 3.5 GHz in 100 MHz / 25 mV steps**, running a **~300 s stress test** at each step and only advancing if it passes — e.g. `bc250-detect -f 3850 -v 1150 -k` to test 3.85 GHz @ 1150 mV and keep it. On Bazzite the install is `sudo rpm-ostree install stress pipx` then `pipx install .` ([Old Lamer — Part VIII](https://youtu.be/ciDpPhoioKM)).
+
+> ⚠️ **Two voltage ceilings — note both, they disagree.** The Part VIII video states a **hard 1300 mV** CPU-Vid ceiling, which is **more conservative** than the repo's documented **1.325 V** limit used above. They don't contradict the safety message (stay well under ~1.35 V), but the *exact* number differs by source — when in doubt, take the lower (1300 mV) as your working cap and never exceed 1.325 V ([Old Lamer — Part VIII](https://youtu.be/ciDpPhoioKM)). *(⚠ the 1300 mV figure is auto-captioned.)*
+
+In that run, **4 GHz @ 1225 mV passed the short quick-test but crashed in-game**, so the author dropped back to a stable **3.85 GHz @ 1150 mV** — the same "4 GHz quick-passes, fails sustained" pattern the elektricM table shows ([Old Lamer — Part VIII](https://youtu.be/ciDpPhoioKM)). *(⚠ ASR — approximate values.)*
+
+**End-to-end CPU+GPU scaling (Horizon Zero Dawn, 1080p Ultra, native, 1× Arctic P12 Pro ~2200 rpm).** A single video stacks each lever and measures the in-game result, which is the clearest demonstration of why this board is **CPU-bound**: the GPU is happy to render ~88–90 fps long before the CPU can feed it ([Old Lamer — Part X](https://youtu.be/1hgSQxf6RXE)). *(⚠ all fps/°C auto-captioned — treat as ≈.)*
+
+| Step (cumulative) | GPU clock @ mV | CPU clock @ mV | In-game fps | GPU-capable fps | CPU / GPU temp |
+|---|---|---|---|---|---|
+| Stock undervolt | 1500 @ 850 | 3.5 G @ 1020 | **≈62** | — | 53 / 51 °C |
+| + GPU OC | 2000 @ 960 | 3.5 G @ 1020 | **≈69** | 81 | 64 / 63 °C |
+| + CPU OC | 2000 @ 960 | 3.85 G @ 1155 | **≈72** | — | 65 / 64 °C |
+| + GPU OC | 2200 @ 1030 | 3.85 G @ 1155 | **≈74** | 88 | ~70 °C |
+| + CPU OC | 2200 @ 1030 | 4.0 G @ 1270 | **≈76–77** | 88 | 72 / 68 °C |
+| + mitigations off | 2200 @ 1030 | 4.0 G @ 1270 | **≈80** | 90 | — |
+
+**Net: ≈62 → ≈80 fps (~+29 %), and it's hard CPU-bound** — the GPU renders 88–90 fps internally while the CPU caps the playable rate around 80. Notes from the same run ([Old Lamer — Part X](https://youtu.be/1hgSQxf6RXE)):
+
+- **4 GHz needs ~1270 mV** here, or the board green-screens — pairing the clock with enough Vid is mandatory (echoes the "never raise frequency without undervolting" rule above).
+- **`bc250_smu_oc` has a built-in ~90 °C auto-throttle**, so the tool itself backs off before the board's hard-crash temp.
+- **mitigations=off bought only ≈+3 fps** (the CPU-vuln kernel mitigations); a small, optional last squeeze.
+- **Custom memory timings gave no gain here and carry brick risk** — skip them (see the GDDR6 section below).
+- **3.85 GHz @ 1155 mV is called the CPU sweet spot** — matching the elektricM 7-zip table, where 4 GHz throttles on stock-ish cooling.
+- At the final OC the board ran **1440p Ultra native @ 60**, and **4K + FSR near 60** ([Old Lamer — Part X](https://youtu.be/1hgSQxf6RXE)).
+
+> 📊 **Stock-baseline FurMark sanity numbers (different run).** A separate walkthrough logged FurMark at **stock FHD ≈4085 points / 67 fps**; raising the GPU **1500 → 2000 MHz gained ~+30 % (≈5340 points / 87 fps)**, while **2229 MHz added almost nothing and ran >90 °C** (throttle). Rule of thumb from that video: **"<80 °C in FurMark + CPU stress ⇒ <70 °C in games,"** and **FurMark Vulkan heats the chip more than the GL path** ([Old Lamer — Part IV](https://youtu.be/YuBmGF536II)). *(⚠ ASR — approximate.)*
+
 #### CPU frequency scaling needs the ACPI fix (else there's no cpufreq at all)
 
 > ❗ **Out of the box the BC-250 exposes no CPU frequency scaling** — there is *no* cpufreq interface, so `cpupower`/`schedutil` do nothing and the CPU sits at a fixed clock. The **[bc250-collective/bc250-acpi-fix](https://github.com/bc250-collective/bc250-acpi-fix)** ships two SSDT tables (loaded via an initrd override) that fix this ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)):
@@ -205,6 +278,21 @@ The tool's flags: `bc250-detect -f <MHz> -v <mV>` to test, add **`-k`** to keep 
 > - **SSDT-CST** → enables **C1/C2/C3 idle states** so cores actually sleep at idle (lower idle power).
 >
 > Both confirmed working on kernel 6.19.8. Install builds a cpio from `SSDT-CST.aml`+`SSDT-PST.aml` into `/boot`, prepended to the initrd line (Fedora BLS) or via `GRUB_EARLY_INITRD_LINUX_CUSTOM` (GRUB). Then `echo schedutil | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor`. **Caveat:** a kernel update won't carry the override into the new boot entry — re-add it or use a kernel-install hook. Combined with `bc250_smu_oc`, the CPU then scales **800 MHz idle → 3900 MHz load** instead of running pinned ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/), [elektricM: power](https://elektricm.github.io/amd-bc250-docs/system/power/)).
+
+#### Idle power — why it's high, and how far tuning gets you
+
+The BC-250 idles hot and hungry by default; tuning lowers it in clear tiers ([elektricM: power](https://elektricm.github.io/amd-bc250-docs/system/power/)):
+
+- **Idle ladder: ~105 W (no governor) → ~85 W (governor) → ~55 W (optimized: Debian + governor + undervolt).** The governor alone saves ~20 W; **~55 W is the best-case idle floor**, and you only reach it by stacking distro + governor + undervolt.
+- **Why idle is high — unoptimized breakdown (~93 W):** **CPU+GPU ~31 W**, **RAM + memory controller ~35 W**, **rest of board ~27 W**. The memory subsystem is the single biggest idle draw, and most of the board figure is fixed silicon — i.e. tuning can shave the CPU/GPU and (via the governor's memory-controller profile) some of the RAM draw, but a large chunk is untouchable.
+
+Three named tuning profiles bracket the realistic envelopes (idle power / sustained temp) ([elektricM: power](https://elektricm.github.io/amd-bc250-docs/system/power/)):
+
+| Profile | Power | Temp |
+|---|---|---|
+| Efficiency | 55–65 W | 60–70 °C |
+| Gaming | 70–85 W | 65–75 °C |
+| Performance | 85–95 W | 75–85 °C |
 
 ---
 
@@ -223,6 +311,18 @@ Undervolting is the highest-value move on this board: **same clock, far less hea
 | 2000 MHz | **~955 mV** | Furmark-stable at 905 mV but artifacts in games until 955 mV ([src](https://t.me/c/2424231195/68126), [src](https://t.me/c/2424231195/136773)) |
 | 2000 MHz | ~960 mV → **75 °C** stress | the popular daily-driver setpoint ([src](https://t.me/c/2424231195/66972)) |
 | 2229 MHz | ~1030–1050 mV → **93 °C** stress | "turned it off, I'm scared" — diminishing returns ([src](https://t.me/c/2424231195/66972)) |
+
+**What each cooling class can actually hold** — the table above stops at "2229 MHz @ ~1030–1050 mV → scary" on stock-ish cooling. To go higher you need the matching cooling; these are elektricM's per-cooling-class ceilings ([elektricM: BIOS overclocking](https://elektricm.github.io/amd-bc250-docs/bios/overclocking/)):
+
+| Cooling | GPU clock | Voltage |
+|---|---|---|
+| Conservative air (max) | 2230 MHz | 1060 mV |
+| High static-pressure air (Arctic P12 Max) | 2300 MHz | 1075 mV |
+| Liquid (per NexGen3D) | 2400 MHz | 1125 mV |
+
+> 🧪 **Community undervolt setpoints (4pda).** Two more real curves from the Russian forum, useful starting points (still chip-dependent): on a **24-CU (Oberon)** board, a two-point curve `1000 MHz @ 0.8 V + 1700 MHz @ 0.85 V` ([4pda — dreamerok](https://4pda.to/forum/index.php?showtopic=1104980)); on a **40-CU** board, `1500 MHz @ 900 mV`. For a high-leakage chip, start low — `500 MHz / 900 mV` — and **add frequency from there** rather than chasing voltage down ([4pda — Lakan](https://4pda.to/forum/index.php?showtopic=1104980)).
+
+> ⚡ **Perf-per-watt framing.** Community testing notes that an **undervolted + underclocked 40-CU draws ~100 W less than a 24-CU at the same FurMark score** — i.e. for equal output the wider-but-slower part is the more efficient operating point, which is the whole argument for unlocking and then *under*-clocking rather than pushing 24 CU hard.
 
 > **Furmark alone is not a stability test.** Its fixed load hides instability that only shows up when the *context* changes — alt-tabbing, loading textures, menus. A board "stable" in Furmark at 905 mV threw texture artifacts in real games after 1–2 hours until voltage went to 955 mV. Validate in **actual games + an alt-tab/menu sweep**, and use a varied stress tool like **OCCT** (it loads the VRM, not just the shaders), not just Furmark ([src](https://t.me/c/2424231195/68126), [src](https://t.me/c/2424231195/136773), [src](https://t.me/c/2424231195/23545)).
 
@@ -264,6 +364,20 @@ The chart below sums up why this lever is worth it but tricky: **compute scales 
 <p align="center"><img src="../../assets/diagrams/cu40-tradeoff.svg" alt="40-CU unlock: big compute gain, tiny gaming gain, rising power and lottery" width="85%"></p>
 <sub>📈 Editable source: <a href="../../assets/diagrams/cu40-tradeoff.drawio">cu40-tradeoff.drawio</a> (open in <a href="https://draw.io">draw.io</a>). Green = compute, amber = gaming FPS, red = power/instability.</sub>
 
+#### How much the extra CUs are worth (FurMark)
+
+The 40-CU video series quantifies the compute jump in FurMark — a near-pure GPU load, so it shows the *upper bound* of what the unlock buys (games gain far less, being CPU-bound). On one board ([Old Lamer — Part I](https://youtu.be/Zvo4UsNocDQ)): *(⚠ all figures auto-captioned — ≈.)*
+
+| Config | FurMark fps | vs 24-CU stock |
+|---|---|---|
+| 24 CU @ 2000 MHz | ≈91 | baseline |
+| 40 CU @ 1500 MHz (base) | ≈110 | **~+25 %** |
+| 40 CU @ 2000 MHz | — | **≈+60 %** |
+
+An **OC'd 24-CU draws about the same power/temp as a stock 40-CU**, while an **OC'd 40-CU pulls ~+40 W** over stock. Black Myth: Wukong gained **~+30 % at equal frequency going 24 → 40 CU**. Pushing it, the **board crashed at 2.4 GHz with 40 CU** — the combined clock+CU envelope is the limit, not either alone ([Old Lamer — Part I](https://youtu.be/Zvo4UsNocDQ)).
+
+> 🟢 **Live FurMark scaling via `bc250-cu-live-manager` (no kernel rebuild).** Toggling CUs live at a fixed **1500 MHz** in Vulkan FurMark walked the score up cleanly: **24 CU ≈70 → 32 CU ≈100 → 40 CU ≈127–128 fps** ([Old Lamer — 40CU Part III](https://youtu.be/lAxY2RZcvg0)). The TUI hotkeys are **E** = edit the WGP table, **F** = full-dispatch, **W** = write the table, **I** = install the systemd service, **Q** = quit; the default sudo password on the image is `bazzite`. It needs **no custom kernel** and **survives Bazzite updates**, because it writes the registers at runtime via `umr` rather than patching amdgpu — write the table once, install the service once, reboot. *(⚠ fps auto-captioned — ≈.)*
+
 ### Easiest path — the project build script
 
 [duggasco/bc250-40cu-unlock](https://github.com/duggasco/bc250-40cu-unlock) ships a script that does the build/enable for you (needs `gcc`, `make`, `zstd`, and kernel headers):
@@ -272,8 +386,19 @@ The chart below sums up why this lever is worth it but tricky: **compute scales 
 git clone https://github.com/duggasco/bc250-40cu-unlock.git
 cd bc250-40cu-unlock
 sudo ./scripts/bc250-enable-40cu.sh build
-sudo ./scripts/bc250-enable-40cu.sh enable   # writes the modprobe config and reboots
+sudo ./scripts/bc250-enable-40cu.sh enable    # writes the modprobe config and reboots
+# Roll back if anything misbehaves:
+sudo ./scripts/bc250-enable-40cu.sh disable   # turn the unlock off
+sudo ./scripts/bc250-enable-40cu.sh restore   # restore the original amdgpu module
 ```
+
+The script backs up the stock module before patching, as `…/amdgpu/amdgpu.ko.*.bc250-backup-*`, so `restore` always has an original to fall back to. **Per-distro build dependencies** ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)):
+
+| Distro | Packages |
+|---|---|
+| Debian / Ubuntu | `linux-headers-$(uname -r) build-essential zstd` |
+| Fedora | `kernel-devel gcc make zstd curl` |
+| Arch / CachyOS | `linux-headers` |
 
 ### Manual path (patch the module yourself)
 
@@ -305,14 +430,21 @@ sudo rpm-ostree kargs --append-if-missing='amdgpu.bc250_cc_write_mode=3'
 sudo systemctl reboot
 ```
 
+> 📦 **Prebuilt 40-CU-unlock kernel on Bazzite, and the safe ordering.** There is a packaged unlock kernel `6.17.7-ba29.fc43.bc250cu.x86_64` for Bazzite. The walkthrough's sequence is: `rpm-ostree update` → **pin the current deployment** (so you can roll back) → **disable + stop the GPU governor *before* the unlock** (a governor writing clocks during the CU change can wedge the GPU) → swap in the unlock kernel → reboot → recheck the CU map. Do the governor-stop first; that ordering is the part people miss ([Old Lamer — 40CU Part I](https://youtu.be/Zvo4UsNocDQ)). *(⚠ kernel string per the video — verify against the repo.)*
+
+> 🥾 **On CachyOS the unlock uses Limine, not GRUB.** If your CachyOS install boots via the **Limine** bootloader, the `amdgpu.bc250_cc_write_mode=3` kernel argument goes in **`/etc/default/limine`**, not a GRUB config — a step-by-step is in the [psenyukov.ru guide](https://psenyukov.ru/topics/5564) (linked from the [RU CU-unlock video](https://youtu.be/M7PsojWr4KA)). Same parameter, different bootloader file.
+
 ### Verify the unlock worked
 
 ```bash
 sudo dmesg | grep active_cu_number     # success = ...active_cu_number 40
 sudo dmesg | grep bc250-40cu           # shows the mode=3 register writes
+
+# Non-root check (no sudo needed) — ask the Vulkan driver directly:
+RADV_DEBUG=info vulkaninfo --summary 2>&1 | grep num_cu   # expect: num_cu = 40 and num_cu_per_sh = 10
 ```
 
-If the count ends in **40**, all CUs are live ([src](https://t.me/c/2424231195/137241)). You should also see log lines like `bc250-40cu-enable: mode=3 ... CC=0xfff80000->0xffe00000 SPI=0x00000007->0x0000001f` ([src](https://t.me/c/2424231195/137889)).
+If the count ends in **40**, all CUs are live ([src](https://t.me/c/2424231195/137241)). You should also see log lines like `bc250-40cu-enable: mode=3 ... CC=0xfff80000->0xffe00000 SPI=0x00000007->0x0000001f` ([src](https://t.me/c/2424231195/137889)). If `vulkaninfo` shows `num_cu = 24` (or `active_cu_number` is 24), the patched module didn't load ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)).
 
 > **Don't want to recompile a kernel?** The community is building helper scripts and prebuilt module bundles. See [WinnieLV/bc250-cu-live-manager](https://github.com/WinnieLV/bc250-cu-live-manager) (toggle CUs live) and [gennro/bc250-toolkit](https://github.com/gennro/bc250-toolkit) (`bc250-toolkit.sh` / `bc250-unlock.sh`). These move fast — check the repos for current status.
 
@@ -328,6 +460,8 @@ sudo ./scripts/bc250-cu-health-test.sh start
 ```
 
 Masking uses the stock **`amdgpu.disable_cu`** parameter at **WGP granularity** (disabling CU 6 also disables CU 7 — same WGP).
+
+> 🧩 **Manual masking by pair-id (the hand-rolled route).** A separate walkthrough does this by hand: first **rebase the image** (`brh → bazzite-deck → stable → tag 20260406`), then mask CUs by a **pair-id notation** `row.col`, where the row is one of `00 / 01 / 10 / 11` (the four shader arrays) and the col is `0–4` (the WGP) — e.g. `011`, `013`. You **append those ids to `rpm-ostree kargs amdgpu.disable_cu`**. Because CUs disable **in pairs**, masking two pairs lands you at **36 CU** and masking a single id at **38 CU**; the author keeps a **~210-combination lookup chart** to pick which ids to drop. (AMD reportedly built the die to a **24-CU spec contractually agreed with ASRock**, which is why the harvest exists at all.) ([Old Lamer — 40CU Part II](https://youtu.be/iUVLXmoMyqM)) *(⚠ tag/ids per the video — verify before applying.)*
 
 #### Thermal reality check — 40 CU at 2 GHz will throttle on stock cooling
 
@@ -491,6 +625,8 @@ The Telegram chat and the **BC-250 Discord** are where the bleeding-edge work ha
 - Silicon lottery & safe limits — https://t.me/c/2424231195/50568 · https://t.me/c/2424231195/115726
 - Quiet/efficient sweet-spot (~1600 MHz GPU / ~3500 MHz CPU for best perf-per-noise-per-watt) — r/BC250Gaming (Reddit) community report
 - Superposition 24-vs-40-CU result — https://t.me/c/2424231195/137035
+- **Old Lamer YouTube series (⚠ auto-captioned / ASR — exact figures approximate)** — CPU+GPU end-to-end scaling, Horizon Zero Dawn, 3.85 GHz @1155 sweet spot, 4 GHz needs ~1270 mV, mitigations≈+3 fps, 1440p@60 / 4K+FSR — [Part X](https://youtu.be/1hgSQxf6RXE) · `bc250-detect` 100 MHz/25 mV steps, 300 s stress test, 1300 mV ceiling (vs repo 1.325 V), 4 GHz@1225 crashed → 3.85 GHz@1150 — [Part VIII](https://youtu.be/ciDpPhoioKM) · FurMark stock 4085 pts/67 fps, 1500→2000 = +30 %, 2229 minimal >90 °C, Vulkan hotter than GL — [Part IV](https://youtu.be/YuBmGF536II) · SMU governor exceeds Oberon 2230 cap (≈2700), ships not-auto-starting, ramp fields, experimental 16-pt air curve (NOT recommended), 2.4 GHz ≈30 A/360 W, Superposition 2.2 GHz≈4200 / 2.4≈4500 — [Part XII](https://youtu.be/Chzxaryjncs) · FurMark 24/40-CU scaling (91→110→+60 %), Wukong +30 %, crash at 2.4 GHz+40CU, prebuilt unlock kernel `6.17.7-ba29.fc43.bc250cu`, disable governor before unlock — [40CU Part I](https://youtu.be/Zvo4UsNocDQ) · selective masking by pair-id, rebase tag 20260406, pairs→36/38, ~210-combo chart, 24-CU ASRock spec — [40CU Part II](https://youtu.be/iUVLXmoMyqM) · live FurMark via bc250-cu-live-manager @1500 MHz (70→100→127–128), TUI hotkeys E/F/W/I/Q, default pwd `bazzite`, no custom kernel — [40CU Part III](https://youtu.be/lAxY2RZcvg0) · Limine bootloader path for CachyOS unlock — [RU CU-unlock video](https://youtu.be/M7PsojWr4KA) + [psenyukov.ru guide](https://psenyukov.ru/topics/5564)
+- Community undervolt setpoints (4pda) — 24-CU Oberon `1000@0.8V + 1700@0.85V` / 40-CU `1500@900mV` / start `500 MHz/900 mV` for high-leakage chips — [4pda — dreamerok / Lakan](https://4pda.to/forum/index.php?showtopic=1104980); perf-per-watt: undervolted 40-CU ~100 W less than 24-CU at equal FurMark score (community framing)
 - **[r/BC250Gaming (Reddit) community reports](https://www.reddit.com/r/BC250Gaming/)** — 40-CU unlock is a lottery (many boards stable only at 38, "line" artifact / crashes on the last CUs, test incrementally with `bc250-cu-live-manager`); full 40 CU needs AIO/large air cooler + extra power on J2000/J2001; 8-core CPU unlock not currently possible (eFuse/SMU-locked) and marginal for gaming anyway
 - **Dig deeper on Reddit** — [r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/) (main hub) · [r/linux_gaming](https://www.reddit.com/r/linux_gaming/) (cons / context); search `BC-250 40CU unlock`, `BC-250 overclock`, `BC-250 undervolt governor`, `BC-250 GDDR6 memory timings`, `BC-250 2575mhz limit`; threads "GPU CU cores unlock", "BC-250 8-Core Unlock possible?", "My BC250 Journey: From Bazzite to CachyOS", "What are the main downsides of the BC-250 board?" — most active OC/CU dev happens on the **BC-250 Discord** linked from these
 - GDDR6 memory — VRAM/UMA allocation: behaviour & llvmpipe fallback — https://t.me/c/2424231195/81203 · set 512 MB fixed (driver shares full 16 GB) — https://t.me/c/2424231195/38599 · https://t.me/c/2424231195/17948 · correct 5.8/11.5/1.6 split at 512 MB — https://t.me/c/2424231195/138294 · workload-dependent / Cyberpunk swap & hangs — https://t.me/c/2424231195/131105 · https://t.me/c/2424231195/94993 · https://t.me/c/2424231195/139016 · "GDDR6 Memory Explained" timings & stock 1750 / ~1875 POST max — https://t.me/c/2424231195/126436 · English timing note — https://t.me/c/2424231195/55353 · CMOS write-cycle caveat — https://t.me/c/2424231195/126437 · tuned 1800 MHz @ 860 mV setpoint — https://t.me/c/2424231195/140223 · https://t.me/c/2424231195/139654

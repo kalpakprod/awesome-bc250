@@ -149,6 +149,20 @@ Sources: speeds from [`akandr/bc250`](https://github.com/akandr/bc250#3-ollama--
 
 **Honest read:** ~30–40 tok/s on a 20–35B MoE is genuinely usable for chat, coding help, and agent/tool loops. It is **not** a 4090. Quality is capped by the aggressive quantization the 16 GB forces (IQ2/Q3 on the 35B models) — and one user noted that pushing a 30B in a harsher quant "will probably make a lot of mistakes" ([src](https://t.me/c/2424231195/101077)). The sweet spot is **gpt-oss-20b**, repeatedly described as "smarter than all the small ones" while staying stable ([src](https://t.me/c/2424231195/101077)).
 
+### Does the 40-CU unlock speed up LLMs? Yes — measured live on a dense model
+
+The 40-CU unlock (see [09-overclock-undervolt.md](09-overclock-undervolt.md)) helps inference more than it helps games, because token generation actually uses the compute units. A video measured it **live** while toggling CUs on a **dense** model — Qwen3.5-9B (~10 GB of GDDR6) on **Ollama + Vulkan** — and the throughput tracked the CU count almost linearly ([Old Lamer — RU CU-unlock video](https://youtu.be/M7PsojWr4KA), ~8:30–12:03): *(⚠ auto-captioned — treat the decimals as ≈.)*
+
+| Active CUs | Gen speed | vs 24 CU |
+|---|---|---|
+| 24 CU (stock) | ≈25.7 tok/s | baseline |
+| unlock step | ≈31.9 tok/s | **~+16–17 %** |
+| 36 CU | ≈33.4 tok/s | **~+20 % total** |
+
+That board **topped out at 36 CU** — the last two CUs were genuinely defective and **llama crashed on load** when they were enabled, a concrete example of the "38/40 is a lottery" point from the OC chapter. The Ollama environment matched the recipe above (`OLLAMA_VULKAN=1`, KV-cache `q4_0`, context 65536, `ttm.pages_limit=4194304`). Because it's a *dense* model, the gain is pure CU scaling — no MoE expert-routing multiplier on top ([Old Lamer — RU CU-unlock video](https://youtu.be/M7PsojWr4KA)).
+
+> 💬 **Unverified MoE datapoints (Hackaday comments — treat as hearsay).** From reader comments rather than a reproduced run: a Qwen "27b" with **MTP** (multi-token prediction) at **≈14.5 tok/s**, and a "35b" with MTP at **≈47 tok/s**. The wide spread is exactly what MTP + MoE active-parameter differences would produce, but neither figure is independently confirmed here — flagged for context, not as a benchmark. ⚠ verify
+
 ---
 
 ## What's painful (be honest)
@@ -177,6 +191,8 @@ Sources: speeds from [`akandr/bc250`](https://github.com/akandr/bc250#3-ollama--
 - BC-250 LLM recipe (Ollama+Vulkan, TTM fix, tok/s) — [akandr/bc250 §Ollama+Vulkan](https://github.com/akandr/bc250#3-ollama--vulkan-setup)
 - Working setup, gpt-oss-20b, Oberon uplift, OOM/distro notes — https://t.me/c/2424231195/101077
 - MoE vs dense, multi-card bandwidth — https://t.me/c/2424231195/125233
+- 40-CU unlock LLM scaling, measured live (⚠ ASR — approximate) — Qwen3.5-9B dense on Ollama+Vulkan: 25.7 → 31.9 → 33.4 tok/s (24 → unlock → 36 CU, ~+20 % total); board capped at 36 CU (2 CUs defective, llama crashed on load) — [Old Lamer — RU CU-unlock video](https://youtu.be/M7PsojWr4KA)
+- MoE w/ MTP datapoints (⚠ unverified, Hackaday comments) — Qwen "27b"+MTP ≈14.5 tk/s, "35b"+MTP ≈47 tk/s — Hackaday BC-250 article comment thread
 - Verified package command — https://t.me/c/2424231195/101026 · Navi10→Cyan Skillfish firmware symlink — https://t.me/c/2424231195/7458/136321
 - llama.cpp build (Vulkan / HIP) — [ggml-org/llama.cpp build.md](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md) · [releases](https://github.com/ggml-org/llama.cpp/releases) · [install](https://github.com/ggml-org/llama.cpp/blob/master/docs/install.md)
 - ROCm reality on gfx1013 — [ROCm/ROCm](https://github.com/ROCm/ROCm) · [woodrex83/ROCm-For-RX580 (gfx803 only)](https://github.com/woodrex83/ROCm-For-RX580) · [ulyssesrr/docker-rocm-xtra (archived; no gfx1013)](https://github.com/ulyssesrr/docker-rocm-xtra) · [xuhuisheng/rocm-build navi10](https://github.com/xuhuisheng/rocm-build/tree/master/navi10) · [robertrosenbusch/gfx803_rocm](https://github.com/robertrosenbusch/gfx803_rocm)

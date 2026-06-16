@@ -21,8 +21,13 @@ Community-observed limits: throttling starts around **85 °C**, hard crash/reset
 | GPU/APU edge | 40–50 °C | 50–60 °C | 65–80 °C | 90 °C |
 | CPU (Tctl) | 45–55 °C | 55–65 °C | 70–85 °C | 95 °C |
 | Memory (underside) | 40–55 °C | 50–65 °C | 55–70 °C | 80 °C |
+| NVMe/SSD | 40–55 °C | 50–65 °C | 60–75 °C | 80 °C (critical 81.8 °C) |
 
-Aim for **70–80 °C GPU in games**. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
+Aim for **70–80 °C GPU in games**. The NVMe ceiling matters here because **the GDDR6 and the M.2 SSD share the hot back side of the board** — the SSD sits in the worst thermal spot and can cook, so watch it (`80 °C` max, `81.8 °C` critical per the drive spec). ([elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/))
+
+> **CPU Tctl ladder.** elektricM flags **90 °C Tctl** as the recommended back-off point; the table's **95 °C** is the upper edge you'll still see under heavy gaming; **TJmax = 100 °C** is the absolute silicon limit (the package-power table below pins the CPU at exactly that under a sustained stress run). So: **90 °C = "back off now," 95 °C = "into the red," 100 °C = "at the wall."** ([elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/))
+
+> **Package power per thermal state** (elektricM pairs each state with a board power draw): Idle **50–70 W**, Light **100–150 W**, Heavy **150–200 W**, Stress **200–235 W**. Useful for sizing the PSU and reading how hard the board is actually working from the wall. ([elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/))
 
 > **Pixel artifacts during gaming = VRAM overheating.** Because the back-side GDDR6 has no sensor, that visual glitch is your warning sign — add backplate airflow/pads (below). ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
@@ -97,6 +102,12 @@ Mount a **120 mm high-static-pressure fan** pushing air through the fins. The re
 
 elektricM's **most-recommended pick is the Arctic P12 Max / P12 Pro** — its ~6.9 mm H₂O static pressure dwarfs the Noctua's 2.34 mm and is far cheaper; the P12 Pro is the quieter, more widely-stocked version. The premium Noctua is quieter still but only matches the Arctic on temps at higher RPM. ([elektricM Cooling](https://elektricm.github.io/amd-bc250-docs/hardware/cooling/))
 
+**Other named fans from community builds** (specific models people fitted, beyond the Arctic/Noctua-P12 reference):
+
+- **Noctua NF-A12x25 G2** (PWM) as the **120 mm die cooler** — the newer G2 revision of the A12x25, used as the main fan ([TiredDadTech](https://youtu.be/zi7sldeRd2w)). (The fan table above lists only the *original* NF-A12x25.)
+- **Noctua NF-A6x15 PWM** (≈3500 rpm) as a **60 mm PSU-fan swap** — the quiet replacement for a screaming server-brick fan ([TiredDadTech](https://youtu.be/zi7sldeRd2w)).
+- **Thermalright 120 mm 1550 rpm ARGB** as a budget die fan, and **6.0 W/mK thermal pads** for the backplate — both from a **TMG HD build BOM** ([build overview](https://youtu.be/OEO0r01zcfU)).
+
 > **Reference vs quiet alternative.** The **Arctic P12 Max/Pro** is the reference fan here — highest static pressure (~6.9 mm H₂O), cheapest, the community + elektricM pick for this dense heatsink. The **Noctua NF-P12 redux** is the quiet premium alternative (the chat's 73 °C Furmark result), matching the Arctic on temps only at higher RPM. Pick Arctic for best price/performance, Noctua if quiet matters most.
 
 Use a **printed fan shroud/adapter** so the fan seals against the heatsink instead of leaking air around it. Community STLs:
@@ -114,7 +125,8 @@ Use a **printed fan shroud/adapter** so the fan seals against the heatsink inste
 > Community findings on *how* the air is moved, not just which fan:
 >
 > - **Static pressure beats raw CFM** through the dense fin stack — that's why the high-static-pressure **Arctic P12 Max (6.9 mm H₂O)** outperforms quieter high-airflow/low-pressure fans on this heatsink.
-> - **One centered fan can beat two side-by-side** on a fully-cut fin plane: a single central fan loads the **4 central heat pipes** directly, while two fans leave a dead "seam" of plastic over the centre. The builder who first cut the fins full-plane measured a couple °C **lower** on one central fan than on two ([src](https://t.me/c/2424231195/46175)).
+> - **One centered fan can beat two side-by-side** on a fully-cut fin plane: a single central fan loads the **4 central heat pipes** directly, while two fans leave a dead "seam" of plastic over the centre. The builder who first cut the fins full-plane measured a couple °C **lower** on one central fan than on two ([src](https://t.me/c/2424231195/46175)). A teardown reaches the same conclusion from the airflow side: **two fans bolted side-by-side are not better than one** because a **dead zone forms right over the hot die centre** where the two intakes meet — **leave a gap between them, or go push-pull instead** ([Old Lamer — Part VII](https://youtu.be/pxahl9-YgkY) ~19:55). *(Caption-sourced — treat as qualitative, not exact.)*
+> - **120 mm fan-speed floor ≈1800 RPM** to actually move air through this dense stack; the **Arctic P12 Pro** ($8–10, **600–3000 rpm** range) is an easy pick that idles quiet and still has the headroom ([Old Lamer — Part VII](https://youtu.be/pxahl9-YgkY)). *(ASR figures — approximate.)*
 > - **Add an exhaust fan = −3 to −5 °C.** Intake-only **73 °C** → with exhaust **67–68 °C** ([src](https://t.me/c/2424231195/68183), [src](https://t.me/c/2424231195/31553)). So the optimal simple setup is **1 central intake + 1 rear exhaust**, not two intakes side-by-side.
 > - **The backplate is blind and hot.** VRM MOSFETs reach **~100 °C uncooled** ([src](https://t.me/c/2424231195/110955)) — it **must** get pads + heatsinks + dedicated airflow; with rear heatsinks it runs *"cold under load"* ([src](https://t.me/c/2424231195/93056)).
 > - **Free physics.** Warm air rises, so even a **tilt/chimney** orientation helps — a barely-ventilated backplate measured **47 °C just from convection** ([src](https://t.me/c/2424231195/76962)). And a **black-anodized radiator radiates ~1.8×** a polished one, letting you shrink fin area **~45 %** in passive/semi-passive compact builds ([src](https://t.me/c/2424231195/86878)).
@@ -215,8 +227,15 @@ Whatever fan/heatsink you run, the **thermal interface material (TIM)** between 
 
 A reference cased build on PTM7950 (Honeywell, 26×30) plus a backplate radiator peaks at **~84 °C over an hour, 66–71 °C in games** at CPU 3850 MHz / GPU 2100 MHz. ([src](https://t.me/c/2424231195/125748))
 
+> **Named pairing: Upsiren putty under the heatsink + PTM7950 on the die.** A build video pairs **Upsiren UTP-6 / UTP-8 thermal putty** (the **UTP-8** grade is rated ≈**14.8 W/mK**) for the gap-filling spots with a **PTM7950 sheet cut 40×80×0.25 mm** laid on the die ([PTM7950 + Upsiren video](https://youtu.be/FJapqZSdt6I)). The putty is for filling uneven gaps to a heatsink/plate; the phase-change film goes on the die itself.
+>
+> - **Cheap AliExpress PTM7950 works.** A ~**$13** AliExpress sheet was verified to perform — you don't need the name-brand Honeywell cut ([PTM7950 + Upsiren video](https://youtu.be/FJapqZSdt6I)).
+> - **PTM7950 needs break-in.** It reaches its best temps only after **several heat/cool cycles** — don't judge it on the first run ([laptop TIM demo](https://youtu.be/U4Zm8msXJHM)).
+>
+> *(Both sources are auto-captioned — treat the exact W/mK and dimensions as approximate.)*
+
 ### Backplate & GDDR6 pads (cool the back, blind)
-The **GDDR6 and VRM on the back of the board have no temperature sensor** — you cool them blind. Add a **heatsink/radiator on the backplate** coupled with **thermal pads** so that back-side heat has somewhere to go. ([src](https://t.me/c/2424231195/125748))
+The **GDDR6 and VRM on the back of the board have no temperature sensor** — you cool them blind. Add a **heatsink/radiator on the backplate** coupled with **thermal pads** so that back-side heat has somewhere to go. ([src](https://t.me/c/2424231195/125748)) One RU builder simply grabbed a **heatsink off Yandex.Market**, stuck it on the backplate, and it **cooled the bottom plate well** — any reasonably sized aluminium heatsink does the job here ([4pda — mananoid1](https://4pda.to/forum/index.php?showtopic=1104980)).
 
 Reported pad thicknesses (community-shared, "saved this" reaction):
 - **VRM: 1 mm**
@@ -252,6 +271,8 @@ From the pinned procedure ([src](https://t.me/c/2424231195/108407)):
 3. **Test under your overclock**, not stock — 1500 MHz is weak; **2000 MHz is ~+30 % FPS** and what you'll actually run, so cool for that.
 4. Watch temps; if you cross ~85 °C you're throttling — add fan/shroud/fin work.
 
+> ℹ️ **Don't conflate two different "+30 %" claims.** The **GPU-clock +30 %** here (1500 → 2000 MHz raising FPS by roughly a third) is a *performance* gain from overclocking. It is **not** the same as the **~+30 % thermal improvement** quoted for a **re-paste** in a separate laptop-TIM demonstration ([laptop TIM demo](https://youtu.be/U4Zm8msXJHM)) — that one is a *temperature* result on different hardware. Same number, unrelated things.
+
 There's also a short video walkthrough of the simplest method pinned in the topic. ([src](https://t.me/c/2424231195/100024))
 
 ---
@@ -274,8 +295,13 @@ There's also a short video walkthrough of the simplest method pinned in the topi
 - AIO example — https://t.me/c/2424231195/19336
 - Thermal interface — repaste −4–5 °C https://t.me/c/2424231195/88565 · MX-6 https://t.me/c/2424231195/30211 · stock baseline https://t.me/c/2424231195/22992 · PTM7950 https://t.me/c/2424231195/101582 · https://t.me/c/2424231195/61511 · PTM7950 build + backplate https://t.me/c/2424231195/125748 · pad thickness https://t.me/c/2424231195/121181 · liquid metal https://t.me/c/2424231195/18098 · https://t.me/c/2424231195/69688
 - elektricM cooling guide (heatsink variants, per-component temp table, sustained-load data, fan specs, CoolerControl/BIOS fan modes, tower cooler, pad scheme) — https://elektricm.github.io/amd-bc250-docs/hardware/cooling/
+- [elektricM: sensors](https://elektricm.github.io/amd-bc250-docs/system/sensors/) (thermal thresholds: CPU Tctl 90 °C max / TJmax 100 °C, NVMe/SSD 80 °C max / 81.8 °C critical, package power per thermal state)
 - r/BC250Gaming (community reports: silicon-lottery variance, scissors+ruler fin method, comb-tool breakage, no-cut push-pull case, AIO bracket + 240 mm result, liquid OC profiles, AM4/AM5 + AXP90-X53 brackets) — https://www.reddit.com/r/BC250Gaming/ · AM4/AM5 cooler adapter [MakerWorld 2596083](https://makerworld.com/en/models/2596083) · AXP90-X53 mount [Printables 1694793](https://www.printables.com/model/1694793) · NexGen3D AIO bracket [Printables 1554003](https://www.printables.com/model/1554003) · no-cut push-pull case [MakerWorld 2505974](https://makerworld.com/models/2505974)
 - Hardware reference — [mothenjoyer69/bc250-documentation `hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
 - Cases/adapters with cooling — [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter)
+- Two-fans-side-by-side dead zone over the die / leave a gap or push-pull, 120 mm ≈1800 RPM floor, Arctic P12 Pro ($8–10, 600–3000 rpm) — [Old Lamer — Part VII](https://youtu.be/pxahl9-YgkY) (auto-caption / ASR — figures approximate)
+- Upsiren UTP-6 / UTP-8 putty (UTP-8 ≈14.8 W/mK) + PTM7950 cut 40×80×0.25 mm on the die, cheap AliExpress PTM7950 (~$13) verified — [PTM7950 + Upsiren video](https://youtu.be/FJapqZSdt6I) · PTM7950 needs several heat/cool break-in cycles + the separate repaste "+30 %" (laptop, not the GPU-clock +30 %) — [laptop TIM demo](https://youtu.be/U4Zm8msXJHM)
+- Named fans: Noctua NF-A12x25 G2 (120 mm die cooler) + NF-A6x15 PWM 3500 rpm (60 mm PSU-fan swap) — [TiredDadTech](https://youtu.be/zi7sldeRd2w) · Thermalright 120 mm 1550 rpm ARGB + 6.0 W/mK pads (TMG HD build BOM) — [build overview](https://youtu.be/OEO0r01zcfU)
+- RU backplate radiator (Yandex.Market heatsink cooled the bottom plate) — [4pda — mananoid1](https://4pda.to/forum/index.php?showtopic=1104980)
 
 > Fan-shroud and adapter STLs are cataloged in [05-case.md](05-case.md) and mirrored under `assets/stl/`.
