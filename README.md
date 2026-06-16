@@ -4,11 +4,22 @@
 
 # Awesome BC-250 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> The newcomer's bible for the **AMD BC-250** — a PlayStation 5-derived APU board (Cyan Skillfish / Oberon, 16 GB GDDR6) repurposed as a cheap Linux gaming & AI box.
+> The newcomer's bible for the **ASRock AMD BC-250** — a PlayStation 5-derived APU board (Cyan Skillfish / Oberon, 6-core Zen 2 + RDNA 2, 16 GB GDDR6) repurposed as a cheap **Linux gaming & AI mini PC** — a DIY budget Steam Machine.
 
 Everything you need to go **from a board in a box to running games** — curated from 125k+ messages of the BC-250 community, ranked by what people actually upvoted and pinned, and cross-checked against the canonical project repos.
 
 🌍 **English** · [Русский](README.ru.md) · [Українська](README.uk.md) · [Қазақша](README.kk.md) · [Кыргызча](README.ky.md) · [Español](README.es.md) · [Português (BR)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Polski](README.pl.md) · [Türkçe](README.tr.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
+
+---
+
+## ❓ Quick answers
+
+- **What is the ASRock AMD BC-250?** A PlayStation 5-derived APU board — 6-core Zen 2 + 24/40 RDNA 2 CUs ("Cyan Skillfish"), 16 GB GDDR6 — sold cheap as an ex-mining card and repurposed into a Linux gaming & AI mini PC, a DIY budget Steam Machine.
+- **How much does it cost?** Around **$60–130** for the bare board; a full build (PSU, cooler, SSD) lands near **$150–250**. See [Buying](docs/en/02-buying.md).
+- **How well does it game?** Roughly **1080p 60 FPS** in most titles (RX 6600-class) with FSR / Frame-Gen and a GPU+CPU overclock. See [Gaming results](docs/en/11-gaming.md).
+- **Which OS?** **Linux only** for GPU acceleration — Bazzite, Fedora, CachyOS or Arch with Mesa 25.1+. There is no Windows GPU driver. See [Linux setup](docs/en/06-linux.md).
+- **Can it run LLMs?** Yes — llama.cpp / Ollama over Vulkan use the 16 GB GDDR6 as VRAM (~30–47 tok/s on small models). See [AI / LLM](docs/en/12-ai-llm.md).
+- **How do I cool it?** The stock server heatsink throttles on a desk; thin the fins and add a 120 mm fan, or go water. See [Cooling](docs/en/04-cooling.md).
 
 ---
 

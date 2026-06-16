@@ -4,11 +4,22 @@
 
 # Awesome BC-250 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> Библия новичка для **AMD BC-250** — платы на базе APU от PlayStation 5 (Cyan Skillfish / Oberon, 16 ГБ GDDR6), превращённой в дешёвый Linux-бокс для игр и AI.
+> Библия новичка для **ASRock AMD BC-250** — платы на базе APU от PlayStation 5 (Cyan Skillfish / Oberon, 6-ядерный Zen 2 + RDNA 2, 16 ГБ GDDR6), превращённой в дешёвый **Linux mini-PC для игр и AI** — самодельную бюджетную Steam Machine.
 
 Всё, чтобы пройти путь **от платы в коробке до запущенной игры** — выжато из 125k+ сообщений комьюнити BC-250, ранжировано по тому, что люди реально лайкали и закрепляли, и сверено с каноническими репозиториями проекта.
 
 🌍 [English](README.md) · **Русский** · [Українська](README.uk.md) · [Қазақша](README.kk.md) · [Кыргызча](README.ky.md) · [Español](README.es.md) · [Português (BR)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Polski](README.pl.md) · [Türkçe](README.tr.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
+
+---
+
+## ❓ Быстрые ответы
+
+- **Что такое ASRock AMD BC-250?** Плата на базе APU от PlayStation 5 — 6 ядер Zen 2 + 24/40 CU RDNA 2 («Cyan Skillfish»), 16 ГБ GDDR6 — продаётся дёшево как бывшая майнинг-карта и превращается в Linux mini-PC для игр и AI, самодельную бюджетную Steam Machine.
+- **Сколько стоит?** Порядка **$60–130** за голую плату; полная сборка (БП, кулер, SSD) — около **$150–250**. См. [Покупка](docs/ru/02-buying.md).
+- **Как тянет игры?** Примерно **1080p 60 FPS** в большинстве тайтлов (уровень RX 6600) с FSR / Frame-Gen и разгоном GPU+CPU. См. [Игры](docs/ru/11-gaming.md).
+- **Какая ОС?** **Только Linux** для ускорения GPU — Bazzite, Fedora, CachyOS или Arch с Mesa 25.1+. Windows-драйвера для GPU нет. См. [Linux](docs/ru/06-linux.md).
+- **Тянет ли LLM?** Да — llama.cpp / Ollama через Vulkan используют 16 ГБ GDDR6 как VRAM (~30–47 tok/s на малых моделях). См. [AI / LLM](docs/ru/12-ai-llm.md).
+- **Как охлаждать?** Стоковый серверный радиатор троттлит на столе; проредить рёбра и поставить 120-мм вентилятор, или вода. См. [Охлаждение](docs/ru/04-cooling.md).
 
 ---
 
