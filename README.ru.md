@@ -10,6 +10,8 @@
 
 🌍 [English](README.md) · **Русский** · [Українська](README.uk.md) · [Қазақша](README.kk.md) · [Кыргызча](README.ky.md) · [Español](README.es.md) · [Português (BR)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Polski](README.pl.md) · [Türkçe](README.tr.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
+<sub>_Поддерживается · обновлено **июнь 2026** · [llms.txt](llms.txt) для AI-агентов_</sub>
+
 ---
 
 ## ❓ Быстрые ответы
