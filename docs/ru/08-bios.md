@@ -385,6 +385,7 @@ sudo flashrom -p ch347_spi -v BC250_3.00_CHIPSETMENU.ROM
 - Нужен сброс CMOS после прошивки — https://t.me/c/2424231195/97290
 - Ловушка CH341A 5В→3.3В на линиях данных — https://t.me/c/2424231195/100285 · разбор фикса — https://sawyershepherd.org/post/solderless-ch341ab-fix-5v-to-33v-data-lines/
 - Самый упоминаемый BIOS-репозиторий — [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios/) (`BC250_3.00_CHIPSETMENU.ROM`, `CHIPSETMENU.md`)
+- База BIOS на TheRetroWeb (чипсет BC-250) — дампы стоковых BIOS, просмотр/скачивание по версиям — [theretroweb.com/bios](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) (сверь SHA-256 перед прошивкой)
 - Гайд комьюнити по прошивке (проверенная таблица SHA-256, рецепт `Flash.nsh`/`Robin5.00`, селектор `blk0:`, засада DisplayPort/HDMI, правило 15 минут при зависании, распиновка J4004 + пины 7/8, W25Q128JVSQ/опечатка «25Q168», CH347, значения Setup после прошивки, кредит Segfault) — [elektricM: прошивка BIOS](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)
 - Гайд восстановления (распиновка SPI 8-pin, MX25L4005 = определение SuperIO, прошивка с выдернутым БП, разборы сценариев) — [elektricM: восстановление BIOS](https://elektricm.github.io/amd-bc250-docs/bios/recovery/)
 - Распиновки платы и чипы (CLRCMOS1, TPMS1 LPC, J2 JTAG/HDT, I2C_HEADER1, CPU_FAN1, J4003 multi-fan, BOM Intersil/NXP/Realtek/Nuvoton/Winbond/Macronix) — [elektricM: pinouts](https://elektricm.github.io/amd-bc250-docs/hardware/pinouts/)

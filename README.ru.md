@@ -84,6 +84,7 @@
 
 ### BIOS / прошивки
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — самые упоминаемые образы BIOS и моды
+- [TheRetroWeb — база BIOS BC-250](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — дампы стоковых BIOS, просмотр/скачивание по версиям
 - Прошивка и раскирпичивание — см. [docs/ru/08-bios.md](docs/ru/08-bios.md)
 
 ### WiFi / BT донглы

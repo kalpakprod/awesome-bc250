@@ -84,6 +84,7 @@ Canonical community projects, ranked by how often the community pointed to them.
 
 ### BIOS / Firmware
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — most-referenced BIOS images & mods
+- [TheRetroWeb — BC-250 BIOS database](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — stock BIOS dumps, browse/download by version
 - See [docs/en/08-bios.md](docs/en/08-bios.md) for flashing & brick recovery
 
 ### WiFi / BT dongles
