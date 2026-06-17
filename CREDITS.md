@@ -8,7 +8,7 @@ Ranked by the community's own reactions to their messages — the *useful, upvot
 
 | Contributor | Useful reactions | Notable contribution |
 |---|---:|---|
-| **Volodymyr Spyrydonov** | ❤1491 | the cooling test method + guides · 165 files · 3 pinned |
+| **Volodymyr Spyrydonov** (Old Lamer on YouTube) | ❤1491 | the cooling test method + guides · 165 files · 3 pinned |
 | **Владислав** | ❤1122 | prolific sharer · 341 files |
 | **Jack Fisher** | ❤1035 | newcomer guides & moderation · 6 pinned · 137 files |
 | **King** | ❤708 | 282 files |
