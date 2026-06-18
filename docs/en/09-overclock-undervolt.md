@@ -149,6 +149,8 @@ voltage   = 1000      # many boards hold a flat 1000 mV here; bump per-board onl
 
 > **GPU-reset black-screen, governor-specific.** If the GPU crashes *while the governor is actively writing sysfs*, the reset can't complete and you get a permanent black screen (system still alive over SSH) needing a hard reboot. Workaround: `systemctl stop` the governor before known crash-prone games; real fix is a stable curve ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
 
+> **`perf_profile` — the memory-controller / Infinity Fabric tier (separate from the GPU curve).** The SMU exposes a performance-profile index `0–3`: **3** is the highest memory-controller / Infinity-Fabric performance, while **1** is the recommended low-power profile for the lowest idle point. The governor forces it to **3** automatically whenever CPU load crosses `cpu-load-target.upper`. ([bc250-collective/cyan-skillfish-governor](https://github.com/bc250-collective/cyan-skillfish-governor))
+
 ##### How the SMU governor pushes past 2230 MHz — and why it ships disabled
 
 Because the SMU branch talks to the SMU firmware directly rather than through the amdgpu `OD_RANGE`, it can **exceed Oberon's 2230 MHz hard cap** — one walkthrough drove it to **≈2700 MHz** on a single board ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)). That headroom is exactly why filippor ships it carefully:
