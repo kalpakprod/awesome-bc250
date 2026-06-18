@@ -89,6 +89,11 @@ git clone https://github.com/shenmintao/aic8800d80.git && cd aic8800d80
 
 Архив с прошивкой/драйвером, которым пользовался участник (*AX90BT(D80MU3)*), выкладывали в чат. ([src](https://t.me/c/2424231195/119991)) Есть альтернативный апстрим [`goecho/aic8800_linux_drvier`](https://github.com/goecho/aic8800_linux_drvier), но один пользователь CachyOS просидел 6 часов и не смог его собрать — на BC-250 предпочитайте `shenmintao`. ([src](https://t.me/c/2424231195/82100)) ⚠ проверьте под свой дистрибутив.
 
+> **Подводные камни aic8800d80 (из трекера задач драйвера):**
+> - Прошивка `fmacfw_8800d80_u02.bin` должна лежать в `/lib/firmware/aic8800D80/`; неудачная загрузка прошивки оставляет интерфейс в состоянии `DOWN`. ([aic8800d80 #37](https://github.com/shenmintao/aic8800d80/issues/37) · [#10](https://github.com/shenmintao/aic8800d80/issues/10))
+> - **Ядро 7.0 / 7.1:** драйвер 1.0.0 не собирается через DKMS — изменились сигнатуры `cfg80211_new_sta` / `cfg80211_del_sta`, и сборку валит ошибка `-Wimplicit-fallthrough`. Сиди на старом ядре или патчь исходник, пока апстрим не догонит. ([aic8800d80 #49](https://github.com/shenmintao/aic8800d80/issues/49))
+> - **Debian 13 (ядро 6.12.90):** WiFi-интерфейс может не подниматься или не видеть сети. ([aic8800d80 #58](https://github.com/shenmintao/aic8800d80/issues/58))
+
 ---
 
 ## Путь B — Realtek RTL8821 / RTL8822 (rtw88)
@@ -144,6 +149,7 @@ sudo modprobe 8851bu
 
 - Комбо-свистки WiFi+BT делят радио **2,4 ГГц**, поэтому **скорость WiFi падает при активном Bluetooth**. Один участник намерил **~150 Мбит с включённым BT против ~190 Мбит без него** — реально, но «не так драматично». ([src](https://t.me/c/2424231195/123366)) · ([src](https://t.me/c/2424231195/123367))
 - У драйвера aic8800d80 есть **отдельная ветка `bluetooth`** для поддержки BT. ([ветка репозитория](https://github.com/shenmintao/aic8800d80/tree/bluetooth?tab=readme-ov-file))
+- **Если Bluetooth вообще не появляется — устройство первым перехватил штатный `btusb`.** BT-контроллеру aic8800 нужен собственный модуль `aic_btusb` — встроенный `btusb` его не инициализирует. Переключи их: `sudo rmmod btusb && sudo modprobe aic_btusb`, либо закрепи через `softdep btusb pre: aic_btusb` в `/etc/modprobe.d/aic8800-bt.conf`. ([aic8800d80 #53](https://github.com/shenmintao/aic8800d80/issues/53) · [#44](https://github.com/shenmintao/aic8800d80/issues/44))
 
 ---
 
