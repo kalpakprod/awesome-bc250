@@ -89,6 +89,11 @@ git clone https://github.com/shenmintao/aic8800d80.git && cd aic8800d80
 
 The firmware/driver archive a member used (*AX90BT(D80MU3)*) was shared in-chat. ([src](https://t.me/c/2424231195/119991)) An alternate upstream, [`goecho/aic8800_linux_drvier`](https://github.com/goecho/aic8800_linux_drvier), exists but one CachyOS user spent 6 h and couldn't get it to compile — prefer `shenmintao` on the BC-250. ([src](https://t.me/c/2424231195/82100)) ⚠ verify on your distro.
 
+> **aic8800d80 gotchas (from the driver's issue tracker):**
+> - The firmware `fmacfw_8800d80_u02.bin` must live in `/lib/firmware/aic8800D80/`; a failed firmware upload leaves the interface stuck `DOWN`. ([aic8800d80 #37](https://github.com/shenmintao/aic8800d80/issues/37) · [#10](https://github.com/shenmintao/aic8800d80/issues/10))
+> - **Kernel 7.0 / 7.1:** the 1.0.0 driver fails to build under DKMS — the `cfg80211_new_sta` / `cfg80211_del_sta` signatures changed and a `-Wimplicit-fallthrough` error trips the compile. Stay on an older kernel or patch the source until upstream catches up. ([aic8800d80 #49](https://github.com/shenmintao/aic8800d80/issues/49))
+> - **Debian 13 (kernel 6.12.90):** the Wi-Fi interface can fail to come up or detect networks. ([aic8800d80 #58](https://github.com/shenmintao/aic8800d80/issues/58))
+
 ---
 
 ## Path B — Realtek RTL8821 / RTL8822 (rtw88)
@@ -144,6 +149,7 @@ If your stick connects and then drops (the classic Realtek-on-BC-250 symptom):
 
 - WiFi+BT combo sticks share the **2.4 GHz** radio, so **WiFi throughput drops while Bluetooth is active**. One member measured **~150 Mbit with BT on vs ~190 Mbit with it off** — real, but "not that dramatic." ([src](https://t.me/c/2424231195/123366)) · ([src](https://t.me/c/2424231195/123367))
 - The aic8800d80 driver has a **separate `bluetooth` branch** for BT support. ([repo branch](https://github.com/shenmintao/aic8800d80/tree/bluetooth?tab=readme-ov-file))
+- **If Bluetooth never shows up, the generic `btusb` driver grabbed the device first.** The aic8800 BT controller needs its own `aic_btusb` module — the in-kernel `btusb` can't initialise it. Swap them with `sudo rmmod btusb && sudo modprobe aic_btusb`, or make it persist by adding `softdep btusb pre: aic_btusb` to `/etc/modprobe.d/aic8800-bt.conf`. ([aic8800d80 #53](https://github.com/shenmintao/aic8800d80/issues/53) · [#44](https://github.com/shenmintao/aic8800d80/issues/44))
 
 ---
 

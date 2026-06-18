@@ -322,6 +322,11 @@ Here `T` = tach and `P` = PWM, per fan 1–5.
 
 > The SuperIO sensor chip named here (Nuvoton **NCT6686D**) is the one the Linux `nct6687`/`nct6683` driver binds to — see [06-linux.md](06-linux.md) for the sensor/fan setup.
 
+**Firmware tooling (advanced).** Two utilities come up repeatedly for digging into the image:
+
+- **`psptool`** inspects and extracts the AMD firmware blobs inside a BIOS dump. `psptool -E bios.bin` lists the entries; `psptool -X -d 0 -e 1 -o firmware.bin bios.bin` pulls the SMU firmware out for analysis. ([bc250-collective/amd_smu_reverse_engineering](https://github.com/bc250-collective/amd_smu_reverse_engineering))
+- **`Zentool`** patches the CPU microcode — for example to replace the `RDRAND` instruction. ([AMD-BC-250/documentation #1](https://github.com/AMD-BC-250/documentation/issues/1))
+
 ---
 
 ## Secure Boot & CSM (boot prerequisites)
