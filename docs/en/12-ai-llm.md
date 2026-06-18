@@ -20,6 +20,8 @@ The other repos people throw around — [`xuhuisheng/rocm-build` (navi10)](https
 
 **Bottom line (as of mid-2026):** ROCm on the BC-250 is an unsolved/uneconomic hack. Every working setup the community has shared runs on **Vulkan via Mesa RADV**, which the BC-250's driver stack already gives you for gaming. If someone gets ROCm working, it'll be by impersonating `gfx1010` in a patched container — expect to lose a weekend, with no guarantee.
 
+> **Update — someone got HIP/ROCm working (Discord, mid-2026).** Postdating the "nobody reports a working stack" verdict above, a member reported **ROCm, HIP and PyTorch compute running** on the BC-250 after **modifying the MEC firmware**, changing BIOS settings, and recompiling the stack ([src](https://discord.com/channels/1315924807128449065/1315933088668454942/1482848457478901851)). On that path, **`llama.cpp` built against HIP** measured **709 tok/s on TinyLlama-1.1B (pp512)** and **115 tok/s on Llama-3.1-8B (pp512)** at stock clocks ([src](https://discord.com/channels/1315924807128449065/1315933088668454942/1483073888551440384)), and prefill scaled with the CU unlock — **~230 tok/s at 24 CU (94–95 W) vs 371.6 tok/s at 40 CU (125 W), both at 1500 MHz** ([src](https://discord.com/channels/1315924807128449065/1315933088668454942/1506023598048022588)). This is a firmware-deep, experimental path — not the recommended route — but it shows the "ROCm is impossible" verdict is no longer absolute. ⚠ advanced.
+
 ---
 
 ## The 16 GB VRAM advantage (and its catch)
