@@ -6,7 +6,7 @@
 
 > The newcomer's bible for the **ASRock AMD BC-250** — a PlayStation 5-derived APU board (Cyan Skillfish / Oberon, 6-core Zen 2 + RDNA 2, 16 GB GDDR6) repurposed as a cheap **Linux gaming & AI mini PC** — a DIY budget Steam Machine.
 
-Everything you need to go **from a board in a box to running games** — curated from 125k+ messages of the BC-250 community, ranked by what people actually upvoted and pinned, and cross-checked against the canonical project repos.
+Everything you need to go **from a board in a box to running games** — curated from 125k+ messages of the BC-250 community, ranked by what people upvoted and pinned, and cross-checked against the canonical project repos.
 
 🌍 **English** · [Русский](README.ru.md) · [Українська](README.uk.md) · [Қазақша](README.kk.md) · [Кыргызча](README.ky.md) · [Español](README.es.md) · [Português (BR)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Polski](README.pl.md) · [Türkçe](README.tr.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
@@ -64,12 +64,12 @@ Canonical community projects, ranked by how often the community pointed to them.
 ### Documentation
 - [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) — the main hardware reference (reverse-engineering)
 - [elektricM/amd-bc250-docs](https://github.com/elektricM/amd-bc250-docs) · [site](https://elektricm.github.io/amd-bc250-docs/) — comprehensive community docs (pinouts, per-distro, troubleshooting)
-- [AMD-BC-250/documentation](https://github.com/AMD-BC-250/documentation) — org docs
-- [kenavru/BC-250](https://github.com/kenavru/BC-250) — builds & scripts
+- [AMD-BC-250/documentation](https://github.com/AMD-BC-250/documentation) — organization documentation
+- [kenavru/BC-250](https://github.com/kenavru/BC-250) — builds and scripts
 
 ### Overclock / Undervolt / SMU
-- [mothenjoyer69/oberon-governor](https://gitlab.com/mothenjoyer69/oberon-governor) — the governor most builds run (sets clocks/voltage)
-- [ZEROAESQUERDA/PS5GPU-BC250](https://github.com/ZEROAESQUERDA/PS5GPU-BC250) — oberon-governor fork with a GUI (Linux)
+- [mothenjoyer69/oberon-governor](https://gitlab.com/mothenjoyer69/oberon-governor) — the governor most builds run (sets clocks and voltage)
+- [ZEROAESQUERDA/PS5GPU-BC250](https://github.com/ZEROAESQUERDA/PS5GPU-BC250) — oberon-governor fork with a Linux GUI
 - [bc250-collective/amd_smu_reverse_engineering](https://github.com/bc250-collective/amd_smu_reverse_engineering)
 - [bc250-collective/bc250_smu_oc](https://github.com/bc250-collective/bc250_smu_oc)
 - [filippor/cyan-skillfish-governor](https://github.com/filippor/cyan-skillfish-governor) · [bc250-collective fork](https://github.com/bc250-collective/cyan-skillfish-governor)
@@ -78,14 +78,14 @@ Canonical community projects, ranked by how often the community pointed to them.
 - [alexghow903/oberon-governor-atomic](https://github.com/alexghow903/oberon-governor-atomic)
 
 ### Drivers
-- [ZEROAESQUERDA/BC250-windowsDriverTest](https://github.com/ZEROAESQUERDA/BC250-windowsDriverTest) — Windows GPU driver (experimental, no full accel as of early 2026)
-- [Keshas-dev/AMD-BC-250-PSP-Driver](https://github.com/Keshas-dev/AMD-BC-250-PSP-Driver) — PSP/GPU driver work
+- [ZEROAESQUERDA/BC250-windowsDriverTest](https://github.com/ZEROAESQUERDA/BC250-windowsDriverTest) — Windows GPU driver (experimental, no full acceleration as of early 2026)
+- [Keshas-dev/AMD-BC-250-PSP-Driver](https://github.com/Keshas-dev/AMD-BC-250-PSP-Driver) — PSP and GPU driver development
 - [AMD-BC-250/kernel.opensuse](https://github.com/AMD-BC-250/kernel.opensuse) — Linux kernel
 
 ### BIOS / Firmware
-- [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — most-referenced BIOS images & mods
+- [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — most-referenced BIOS images and mods
 - [TheRetroWeb — BC-250 BIOS database](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — stock BIOS dumps, browse/download by version
-- See [docs/en/08-bios.md](docs/en/08-bios.md) for flashing & brick recovery
+- See [docs/en/08-bios.md](docs/en/08-bios.md) for flashing and brick recovery
 
 ### WiFi / BT dongles
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -109,4 +109,4 @@ Docs: [CC-BY-SA-4.0](LICENSE). Scripts under `assets/scripts/`: MIT. Mirrored th
 
 ## 🙏 Credits
 
-The entire BC-250 community — see **[CREDITS](CREDITS.md)** for the top contributors who made this handbook possible. Source: *чат AMD BC-250 community*. Project authors credited by their repo handle above.
+The entire BC-250 community — see **[CREDITS](CREDITS.md)** for the top contributors who made this handbook possible. Source: *the AMD BC-250 community chat*. Project authors credited by their repo handle above.
