@@ -1,42 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" font-family="Segoe UI,Arial,sans-serif">
-<rect width="600" height="350" fill="#0d1117"/>
-<text x="300.0" y="26" fill="#fff" font-size="17" font-weight="700" text-anchor="middle">40-CU unlock — big compute gain, tiny gaming gain</text>
-<text x="300.0" y="45" fill="#8b949e" font-size="11" text-anchor="middle">more CUs help compute a lot, games barely (CPU-bound) — and the last CUs are a lottery</text>
-<line x1="90" y1="264.0" x2="540" y2="264.0" stroke="#30363d"/>
-<text x="82" y="268.0" fill="#8b949e" font-size="10" text-anchor="end">0</text>
-<line x1="90" y1="214.0" x2="540" y2="214.0" stroke="#30363d"/>
-<text x="82" y="218.0" fill="#8b949e" font-size="10" text-anchor="end">25</text>
-<line x1="90" y1="164.0" x2="540" y2="164.0" stroke="#30363d"/>
-<text x="82" y="168.0" fill="#8b949e" font-size="10" text-anchor="end">50</text>
-<line x1="90" y1="114.0" x2="540" y2="114.0" stroke="#30363d"/>
-<text x="82" y="118.0" fill="#8b949e" font-size="10" text-anchor="end">75</text>
-<line x1="90" y1="64.0" x2="540" y2="64.0" stroke="#30363d"/>
-<text x="82" y="68.0" fill="#8b949e" font-size="10" text-anchor="end">100</text>
-<text x="20" y="164" fill="#8b949e" font-size="10" text-anchor="middle" transform="rotate(-90 20 164)">relative</text>
-<line x1="90" y1="264" x2="540" y2="264" stroke="#8b949e" stroke-width="1.5"/>
-<text x="90.0" y="282.0" fill="#c9d1d9" font-size="11" text-anchor="middle">24</text>
-<text x="240.0" y="282.0" fill="#c9d1d9" font-size="11" text-anchor="middle">36</text>
-<text x="390.0" y="282.0" fill="#c9d1d9" font-size="11" text-anchor="middle">38</text>
-<text x="540.0" y="282.0" fill="#c9d1d9" font-size="11" text-anchor="middle">40</text>
-<text x="315.0" y="300.0" fill="#8b949e" font-size="10" text-anchor="middle">active CUs (stock 24)</text>
-<polyline points="90.0,184.0 240.0,124.0 390.0,104.0 540.0,84.0" fill="none" stroke="#3fb950" stroke-width="3"/>
-<circle cx="90.0" cy="184.0" r="4" fill="#3fb950"/>
-<circle cx="240.0" cy="124.0" r="4" fill="#3fb950"/>
-<circle cx="390.0" cy="104.0" r="4" fill="#3fb950"/>
-<circle cx="540.0" cy="84.0" r="4" fill="#3fb950"/>
-<polyline points="90.0,184.0 240.0,176.0 390.0,172.0 540.0,170.0" fill="none" stroke="#d29922" stroke-width="3" stroke-dasharray="6 4"/>
-<circle cx="90.0" cy="184.0" r="4" fill="#d29922"/>
-<circle cx="240.0" cy="176.0" r="4" fill="#d29922"/>
-<circle cx="390.0" cy="172.0" r="4" fill="#d29922"/>
-<circle cx="540.0" cy="170.0" r="4" fill="#d29922"/>
-<polyline points="90.0,214.0 240.0,154.0 390.0,120.0 540.0,64.0" fill="none" stroke="#f85149" stroke-width="3"/>
-<circle cx="90.0" cy="214.0" r="4" fill="#f85149"/>
-<circle cx="240.0" cy="154.0" r="4" fill="#f85149"/>
-<circle cx="390.0" cy="120.0" r="4" fill="#f85149"/>
-<circle cx="540.0" cy="64.0" r="4" fill="#f85149"/>
-<rect x="90" y="326" width="12" height="12" fill="#3fb950"/><text x="107" y="336" fill="#c9d1d9" font-size="11">compute (e.g. Superposition)</text>
-<rect x="326" y="326" width="12" height="12" fill="#d29922"/><text x="343" y="336" fill="#c9d1d9" font-size="11">gaming FPS</text>
-<rect x="436" y="326" width="12" height="12" fill="#f85149"/><text x="453" y="336" fill="#c9d1d9" font-size="11">power + instability</text>
-<text x="387" y="60" fill="#d29922" font-size="10" text-anchor="middle">38 = typical stable max</text>
-<text x="540" y="320" fill="#f85149" font-size="10" text-anchor="end">40 = lottery: artifacts/crash; needs &gt;300W (J2000) + AIO</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="t-cu40-tradeoff d-cu40-tradeoff" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+<title id="t-cu40-tradeoff">40-CU unlock — big compute gain, tiny gaming gain</title>
+<desc id="d-cu40-tradeoff">More CUs help compute a lot and games barely, because games are CPU-bound; the last CUs are a lottery. compute (Superposition): 40, 70, 80, 90. gaming FPS: 40, 44, 46, 47. power + instability: 25, 55, 72, 100. 40 CU is a lottery: artifacts and crashes; needs &gt;300 W (J2000) and an AIO.</desc>
+<rect width="1200" height="640" rx="18" fill="#0d1117"/>
+<rect x="1" y="1" width="1198" height="638" rx="17" fill="none" stroke="#30363d" stroke-width="2"/>
+<text x="150" y="66" font-size="38" font-weight="700" fill="#e6edf3">40-CU unlock — big compute gain, tiny gaming gain</text>
+<text x="150" y="102" font-size="21" fill="#8b949e">More CUs help compute a lot and games barely, because games are CPU-bound; the</text>
+<text x="150" y="132" font-size="21" fill="#8b949e">last CUs are a lottery.</text>
+<rect x="480" y="150" width="330" height="320" fill="#1f6feb" opacity="0.14"/>
+<text x="645" y="448" text-anchor="middle" font-size="20" font-weight="600" fill="#58a6ff">38 CU is the typical stable maximum</text>
+<line x1="150" y1="470" x2="1140" y2="470" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="478" text-anchor="end" font-size="20" fill="#8b949e">0</text>
+<line x1="150" y1="390" x2="1140" y2="390" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="398" text-anchor="end" font-size="20" fill="#8b949e">25</text>
+<line x1="150" y1="310" x2="1140" y2="310" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="318" text-anchor="end" font-size="20" fill="#8b949e">50</text>
+<line x1="150" y1="230" x2="1140" y2="230" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="238" text-anchor="end" font-size="20" fill="#8b949e">75</text>
+<line x1="150" y1="150" x2="1140" y2="150" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="158" text-anchor="end" font-size="20" fill="#8b949e">100</text>
+<text transform="translate(46 310) rotate(-90)" text-anchor="middle" font-size="20" fill="#6e7681">relative, %</text>
+<polyline points="150,342 480,246 810,214 1140,182" fill="none" stroke="#58a6ff" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="150" cy="342" r="7" fill="#58a6ff"/>
+<circle cx="480" cy="246" r="7" fill="#58a6ff"/>
+<circle cx="810" cy="214" r="7" fill="#58a6ff"/>
+<circle cx="1140" cy="182" r="7" fill="#58a6ff"/>
+<polyline points="150,342 480,329.2 810,322.8 1140,319.6" fill="none" stroke="#d29922" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="10 8"/>
+<path d="M150 335 L157 342 L150 349 L143 342 Z" fill="#d29922"/>
+<path d="M480 322.2 L487 329.2 L480 336.2 L473 329.2 Z" fill="#d29922"/>
+<path d="M810 315.8 L817 322.8 L810 329.8 L803 322.8 Z" fill="#d29922"/>
+<path d="M1140 312.6 L1147 319.6 L1140 326.6 L1133 319.6 Z" fill="#d29922"/>
+<polyline points="150,390 480,294 810,239.6 1140,150" fill="none" stroke="#f0883e" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="144" y="384" width="12" height="12" fill="#f0883e"/>
+<rect x="474" y="288" width="12" height="12" fill="#f0883e"/>
+<rect x="804" y="233.6" width="12" height="12" fill="#f0883e"/>
+<rect x="1134" y="144" width="12" height="12" fill="#f0883e"/>
+<line x1="150" y1="470" x2="1140" y2="470" stroke="#30363d" stroke-width="3"/>
+<text x="150" y="506" text-anchor="start" font-size="21" fill="#e6edf3">24</text>
+<text x="480" y="506" text-anchor="middle" font-size="21" fill="#e6edf3">36</text>
+<text x="810" y="506" text-anchor="middle" font-size="21" fill="#e6edf3">38</text>
+<text x="1140" y="506" text-anchor="end" font-size="21" fill="#e6edf3">40</text>
+<text x="645" y="538" text-anchor="middle" font-size="20" fill="#6e7681">active compute units (stock 24)</text>
+<circle cx="158" cy="572" r="7" fill="#58a6ff"/>
+<text x="176" y="578" font-size="21" fill="#e6edf3">compute (Superposition)</text>
+<path d="M445 565 L452 572 L445 579 L438 572 Z" fill="#d29922"/>
+<text x="463" y="578" font-size="21" fill="#e6edf3">gaming FPS</text>
+<rect x="583" y="566" width="12" height="12" fill="#f0883e"/>
+<text x="607" y="578" font-size="21" fill="#e6edf3">power + instability</text>
+<text x="150" y="616" font-size="19" fill="#f0883e">40 CU is a lottery: artifacts and crashes; needs &gt;300 W (J2000) and an AIO.</text>
 </svg>

@@ -33,6 +33,41 @@ New board, know nothing? Follow the golden path in order:
 
 ---
 
+## 📈 What tuning actually buys you
+
+Every knob on this board trades something. These are the four that matter, drawn from what the community measured — read them before you flash anything.
+
+<p align="center">
+  <img src="assets/diagrams/gpu-clock-tradeoff.svg" width="100%" alt="GPU core clock: FPS gain rises to about 95% by 2000 MHz and then flattens as the CPU limits it, while power and heat keep climbing to 95%. Sweet spot around 2000 MHz, roughly +30% FPS.">
+</p>
+
+<p align="center">
+  <img src="assets/diagrams/undervolt-tradeoff.svg" width="100%" alt="Undervolt: efficiency climbs from 20% to 95% as voltage drops from 1129 mV to 700 mV, while instability risk climbs from 15% to 100%. Game-stable range is roughly 905 to 955 mV; below 700 mV the GPU locks itself to 1500 MHz.">
+</p>
+
+<p align="center">
+  <img src="assets/diagrams/cu40-tradeoff.svg" width="100%" alt="40-CU unlock: compute rises from 40% to 90% while gaming FPS moves only from 40% to 47%, and power with instability climbs from 25% to 100%. 38 CU is the typical stable maximum; 40 CU is a lottery needing over 300 W and an AIO.">
+</p>
+
+<p align="center">
+  <img src="assets/diagrams/memory-tradeoff.svg" width="100%" alt="GDDR6 memory tuning: bandwidth and FPS gain move only from 30% to 52% while brick risk climbs from 20% to 100%. 1950 MHz is where boards came back bricked.">
+</p>
+
+<details>
+<summary>Idle power — why the wall meter barely moves</summary>
+
+<p align="center">
+  <img src="assets/diagrams/idle-power-tradeoff.svg" width="100%" alt="Idle power: GPU draw falls from 80 W to 5 W across governor, undervolt and auto-suspend, but total wall draw only falls from 125 W to 110 W until suspend drops it to 10 W.">
+</p>
+
+The governor and undervolt cut the GPU, but the CPU and GDDR6 keep drawing regardless. Until auto-suspend kicks in, the wall meter hardly notices. High-leakage batches floor out around 70–80 W.
+
+</details>
+
+<sub>Source data: [`assets/diagrams/data.json`](assets/diagrams/data.json) · rebuild with `node assets/diagrams/build.mjs`</sub>
+
+---
+
 ## 📚 Handbook
 
 | # | Section | For |
