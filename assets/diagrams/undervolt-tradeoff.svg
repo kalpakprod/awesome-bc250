@@ -1,29 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 340" font-family="Segoe UI,Arial,sans-serif">
-<rect width="560" height="340" fill="#0d1117"/>
-<text x="280.0" y="26" fill="#fff" font-size="17" font-weight="700" text-anchor="middle">Undervolt — cooler &amp; quieter, until it crashes</text>
-<text x="280.0" y="44" fill="#8b949e" font-size="11" text-anchor="middle">lower voltage = less heat/power, but stability margin shrinks</text>
-<line x1="80" y1="260.0" x2="500" y2="260.0" stroke="#30363d" stroke-width="1"/>
-<text x="72" y="264.0" fill="#8b949e" font-size="10" text-anchor="end">0</text>
-<line x1="80" y1="210.0" x2="500" y2="210.0" stroke="#30363d" stroke-width="1"/>
-<text x="72" y="214.0" fill="#8b949e" font-size="10" text-anchor="end">25</text>
-<line x1="80" y1="160.0" x2="500" y2="160.0" stroke="#30363d" stroke-width="1"/>
-<text x="72" y="164.0" fill="#8b949e" font-size="10" text-anchor="end">50</text>
-<line x1="80" y1="110.0" x2="500" y2="110.0" stroke="#30363d" stroke-width="1"/>
-<text x="72" y="114.0" fill="#8b949e" font-size="10" text-anchor="end">75</text>
-<line x1="80" y1="60.0" x2="500" y2="60.0" stroke="#30363d" stroke-width="1"/>
-<text x="72" y="64.0" fill="#8b949e" font-size="10" text-anchor="end">100</text>
-<line x1="185.0" y1="60" x2="185.0" y2="260" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4 3"/>
-<line x1="80" y1="260" x2="500" y2="260" stroke="#8b949e" stroke-width="1.5"/>
-<text x="80.0" y="278.0" fill="#c9d1d9" font-size="11" text-anchor="middle">1129</text>
-<text x="185.0" y="278.0" fill="#c9d1d9" font-size="11" text-anchor="middle">955</text>
-<text x="290.0" y="278.0" fill="#c9d1d9" font-size="11" text-anchor="middle">905</text>
-<text x="395.0" y="278.0" fill="#c9d1d9" font-size="11" text-anchor="middle">860</text>
-<text x="500.0" y="278.0" fill="#c9d1d9" font-size="11" text-anchor="middle">700</text>
-<text x="290.0" y="296.0" fill="#8b949e" font-size="10" text-anchor="middle">mV @ ~2000 MHz</text>
-<polyline points="80.0,220.0 185.0,150.0 290.0,110.0 395.0,84.0 500.0,70.0" fill="none" stroke="#3fb950" stroke-width="3"/><circle cx="80.0" cy="220.0" r="4" fill="#3fb950"/><circle cx="185.0" cy="150.0" r="4" fill="#3fb950"/><circle cx="290.0" cy="110.0" r="4" fill="#3fb950"/><circle cx="395.0" cy="84.0" r="4" fill="#3fb950"/><circle cx="500.0" cy="70.0" r="4" fill="#3fb950"/>
-<polyline points="80.0,230.0 185.0,180.0 290.0,136.0 395.0,96.0 500.0,60.0" fill="none" stroke="#f85149" stroke-width="3"/><circle cx="80.0" cy="230.0" r="4" fill="#f85149"/><circle cx="185.0" cy="180.0" r="4" fill="#f85149"/><circle cx="290.0" cy="136.0" r="4" fill="#f85149"/><circle cx="395.0" cy="96.0" r="4" fill="#f85149"/><circle cx="500.0" cy="60.0" r="4" fill="#f85149"/>
-<rect x="80" y="314" width="12" height="12" fill="#3fb950"/><text x="98" y="324" fill="#c9d1d9" font-size="11">efficiency (cooler/quieter)</text>
-<rect x="250" y="314" width="12" height="12" fill="#f85149"/><text x="268" y="324" fill="#c9d1d9" font-size="11">instability risk</text>
-<text x="185.0" y="58.0" fill="#3fb950" font-size="10" text-anchor="middle">game-stable ~905-955 mV</text>
-<text x="500" y="324" fill="#f0883e" font-size="10" text-anchor="end">&lt;700 mV: GPU locks to 1500</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="t-undervolt-tradeoff d-undervolt-tradeoff" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+<title id="t-undervolt-tradeoff">Undervolt — cooler and quieter, until it crashes</title>
+<desc id="d-undervolt-tradeoff">Lower voltage cuts heat and power, but the stability margin shrinks with every step down. efficiency (cooler, quieter): 20, 55, 75, 88, 95. instability risk: 15, 40, 62, 82, 100. Below 700 mV the GPU locks itself to 1500 MHz.</desc>
+<rect width="1200" height="640" rx="18" fill="#0d1117"/>
+<rect x="1" y="1" width="1198" height="638" rx="17" fill="none" stroke="#30363d" stroke-width="2"/>
+<text x="150" y="66" font-size="38" font-weight="700" fill="#e6edf3">Undervolt — cooler and quieter, until it crashes</text>
+<text x="150" y="102" font-size="21" fill="#8b949e">Lower voltage cuts heat and power, but the stability margin shrinks with every</text>
+<text x="150" y="132" font-size="21" fill="#8b949e">step down.</text>
+<rect x="397.5" y="150" width="247.5" height="320" fill="#1f6feb" opacity="0.14"/>
+<text x="521.25" y="448" text-anchor="middle" font-size="20" font-weight="600" fill="#58a6ff">game-stable ~905–955 mV</text>
+<line x1="150" y1="470" x2="1140" y2="470" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="478" text-anchor="end" font-size="20" fill="#8b949e">0</text>
+<line x1="150" y1="390" x2="1140" y2="390" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="398" text-anchor="end" font-size="20" fill="#8b949e">25</text>
+<line x1="150" y1="310" x2="1140" y2="310" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="318" text-anchor="end" font-size="20" fill="#8b949e">50</text>
+<line x1="150" y1="230" x2="1140" y2="230" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="238" text-anchor="end" font-size="20" fill="#8b949e">75</text>
+<line x1="150" y1="150" x2="1140" y2="150" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="158" text-anchor="end" font-size="20" fill="#8b949e">100</text>
+<text transform="translate(46 310) rotate(-90)" text-anchor="middle" font-size="20" fill="#6e7681">relative, %</text>
+<polyline points="150,406 397.5,294 645,230 892.5,188.39999999999998 1140,166" fill="none" stroke="#58a6ff" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="150" cy="406" r="7" fill="#58a6ff"/>
+<circle cx="397.5" cy="294" r="7" fill="#58a6ff"/>
+<circle cx="645" cy="230" r="7" fill="#58a6ff"/>
+<circle cx="892.5" cy="188.39999999999998" r="7" fill="#58a6ff"/>
+<circle cx="1140" cy="166" r="7" fill="#58a6ff"/>
+<polyline points="150,422 397.5,342 645,271.6 892.5,207.60000000000002 1140,150" fill="none" stroke="#f0883e" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="144" y="416" width="12" height="12" fill="#f0883e"/>
+<rect x="391.5" y="336" width="12" height="12" fill="#f0883e"/>
+<rect x="639" y="265.6" width="12" height="12" fill="#f0883e"/>
+<rect x="886.5" y="201.60000000000002" width="12" height="12" fill="#f0883e"/>
+<rect x="1134" y="144" width="12" height="12" fill="#f0883e"/>
+<line x1="150" y1="470" x2="1140" y2="470" stroke="#30363d" stroke-width="3"/>
+<text x="150" y="506" text-anchor="start" font-size="21" fill="#e6edf3">1129</text>
+<text x="397.5" y="506" text-anchor="middle" font-size="21" fill="#e6edf3">955</text>
+<text x="645" y="506" text-anchor="middle" font-size="21" fill="#e6edf3">905</text>
+<text x="892.5" y="506" text-anchor="middle" font-size="21" fill="#e6edf3">860</text>
+<text x="1140" y="506" text-anchor="end" font-size="21" fill="#e6edf3">700</text>
+<text x="645" y="538" text-anchor="middle" font-size="20" fill="#6e7681">core voltage at ~2000 MHz, mV</text>
+<circle cx="158" cy="572" r="7" fill="#58a6ff"/>
+<text x="176" y="578" font-size="21" fill="#e6edf3">efficiency (cooler, quieter)</text>
+<rect x="494" y="566" width="12" height="12" fill="#f0883e"/>
+<text x="518" y="578" font-size="21" fill="#e6edf3">instability risk</text>
+<text x="150" y="616" font-size="19" fill="#f0883e">Below 700 mV the GPU locks itself to 1500 MHz.</text>
 </svg>

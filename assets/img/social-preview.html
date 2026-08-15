@@ -1,0 +1,40 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><style>
+  html,body{margin:0;padding:0;background:#0d1117}
+  .card{position:relative;width:1280px;height:640px;overflow:hidden;background:#0d1117;
+        font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  /* берём только правую часть hero: слева в исходнике его собственная типографика */
+  .bg{position:absolute;inset:0;background-image:url("assets/img/hero.jpg");
+      background-size:auto 118%;background-position:100% 50%;background-repeat:no-repeat}
+  .veil{position:absolute;inset:0;
+      background:linear-gradient(90deg,#0d1117 0%,rgba(13,17,23,.94) 42%,rgba(13,17,23,.35) 78%,rgba(13,17,23,.15) 100%)}
+  .txt{position:absolute;left:72px;top:0;height:100%;width:640px;
+      display:flex;flex-direction:column;justify-content:center;color:#e6edf3}
+  .eyebrow{font:600 20px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:3px;
+      color:#58a6ff;margin-bottom:24px}
+  h1{font-size:88px;font-weight:800;letter-spacing:-3px;line-height:.98;margin:0 0 22px}
+  .sub{font-size:29px;line-height:1.35;color:#c9d1d9;margin:0 0 30px}
+  .sub b{color:#e6edf3;font-weight:600}
+  .chips{display:flex;gap:10px;flex-wrap:wrap}
+  .chip{font:500 20px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#8b949e;
+      border:1px solid #30363d;border-radius:999px;padding:9px 16px;background:#161b22}
+  .foot{position:absolute;left:72px;bottom:44px;
+      font:600 21px/1 ui-monospace,SFMono-Regular,Menlo,monospace;color:#f0883e}
+</style></head>
+<body>
+  <div class="card">
+    <div class="bg"></div><div class="veil"></div>
+    <div class="txt">
+      <div class="eyebrow">AWESOME LIST · 15 LANGUAGES</div>
+      <h1>awesome<br>bc250</h1>
+      <p class="sub">The newcomer's bible for the <b>AMD BC-250</b><br>— a PS5-derived APU board turned into a<br>budget Linux gaming &amp; AI mini PC.</p>
+      <div class="chips">
+        <span class="chip">6× Zen 2</span>
+        <span class="chip">24–40 CU RDNA 2</span>
+        <span class="chip">16 GB GDDR6</span>
+        <span class="chip">$60–130</span>
+      </div>
+    </div>
+    <div class="foot">from a board in a box to running games</div>
+  </div>
+</body></html>

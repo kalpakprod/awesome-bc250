@@ -1,0 +1,72 @@
+{
+  "gpu-clock-tradeoff": {
+    "title": "GPU core clock — gain vs cost",
+    "subtitle": "More clock means more FPS, but the curve flattens once the CPU limits it, while heat and power keep climbing.",
+    "axisX": "GPU core clock, MHz",
+    "axisY": "relative, %",
+    "xLabels": ["1500", "1600", "1800", "2000", "2230"],
+    "yMax": 100,
+    "band": { "from": 3, "to": 4, "label": "sweet spot ~2000 MHz, about +30% FPS" },
+    "series": [
+      { "name": "FPS gain", "role": "gain", "values": [40, 55, 80, 95, 98] },
+      { "name": "power + heat", "role": "cost", "values": [25, 33, 55, 75, 95] }
+    ],
+    "note": "Quiet target is around 1600 MHz."
+  },
+  "undervolt-tradeoff": {
+    "title": "Undervolt — cooler and quieter, until it crashes",
+    "subtitle": "Lower voltage cuts heat and power, but the stability margin shrinks with every step down.",
+    "axisX": "core voltage at ~2000 MHz, mV",
+    "axisY": "relative, %",
+    "xLabels": ["1129", "955", "905", "860", "700"],
+    "yMax": 100,
+    "band": { "from": 1, "to": 2, "label": "game-stable ~905–955 mV" },
+    "series": [
+      { "name": "efficiency (cooler, quieter)", "role": "gain", "values": [20, 55, 75, 88, 95] },
+      { "name": "instability risk", "role": "cost", "values": [15, 40, 62, 82, 100] }
+    ],
+    "note": "Below 700 mV the GPU locks itself to 1500 MHz."
+  },
+  "memory-tradeoff": {
+    "title": "GDDR6 memory tuning — tiny gain, brick cliff",
+    "subtitle": "Clock and timings add very little FPS, and one bad value can permanently brick the board.",
+    "axisX": "memory clock, MHz (stock 1750)",
+    "axisY": "relative, %",
+    "xLabels": ["1750", "1800", "1875", "1950"],
+    "yMax": 100,
+    "band": { "from": 0, "to": 1, "label": "some boards run 1800 @ 860 mV" },
+    "series": [
+      { "name": "bandwidth / FPS gain", "role": "gain", "values": [30, 40, 48, 52] },
+      { "name": "brick risk", "role": "cost", "values": [20, 45, 70, 100] }
+    ],
+    "note": "1950 MHz is where boards came back bricked."
+  },
+  "cu40-tradeoff": {
+    "title": "40-CU unlock — big compute gain, tiny gaming gain",
+    "subtitle": "More CUs help compute a lot and games barely, because games are CPU-bound; the last CUs are a lottery.",
+    "axisX": "active compute units (stock 24)",
+    "axisY": "relative, %",
+    "xLabels": ["24", "36", "38", "40"],
+    "yMax": 100,
+    "band": { "from": 1, "to": 2, "label": "38 CU is the typical stable maximum" },
+    "series": [
+      { "name": "compute (Superposition)", "role": "gain", "values": [40, 70, 80, 90] },
+      { "name": "gaming FPS", "role": "neutral", "values": [40, 44, 46, 47] },
+      { "name": "power + instability", "role": "cost", "values": [25, 55, 72, 100] }
+    ],
+    "note": "40 CU is a lottery: artifacts and crashes; needs >300 W (J2000) and an AIO."
+  },
+  "idle-power-tradeoff": {
+    "title": "Idle power — you can cut the GPU, not the total",
+    "subtitle": "Governor and undervolt drop the GPU, but CPU and GDDR6 stay fixed, so wall draw barely moves until suspend.",
+    "axisX": "tuning applied",
+    "axisY": "watts at the wall",
+    "xLabels": ["stock", "+governor", "+700 mV UV", "+auto-suspend"],
+    "yMax": 130,
+    "series": [
+      { "name": "GPU draw", "role": "gain", "values": [80, 50, 29, 5] },
+      { "name": "total wall draw", "role": "cost", "values": [125, 118, 110, 10] }
+    ],
+    "note": "High-leakage batches floor around 70–80 W; suspend reaches ~10 W."
+  }
+}
