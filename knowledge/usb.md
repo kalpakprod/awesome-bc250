@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # USB & storage
 
-_91 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_92 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - The custom BC-250 case has slots for a front USB hub. — Znyx_ (re62, 2026-01-02) · _r/sffpc_ [[1]](https://www.reddit.com/r/sffpc/comments/1q24une/bc250_bazzite_build/)
   - src: BC-250 Bazzite Build Custom case and modded bc250 for cooling. Case has slots for a usb hub in the front as well. Fun project and now is my living room gaming machine. Runs games great at 1080p 80-100…
@@ -174,6 +174,8 @@ _91 verified facts. Each bullet links to the source message; reaction count (re)
 - The system has only one 10 Gbps USB port. — Niko (re0, 2026-06-09) [[91]](https://t.me/c/2424231195/143412)
   - src: А вот только один юсб на 10гбит это проблема
 
+- USB 2.5 Gbps Ethernet adapters achieve transfer speeds of up to 2.36 Gbps in iperf network benchmark tests. — Qwerty Bkp (@Qwerty_Bkp) (re0, 2026-08-03) [[92]](https://t.me/c/2424231195/152272)
+  - src: 2.36 в iperf получалось 🤷♂️
 # Citations
 
 [1] https://www.reddit.com/r/sffpc/comments/1q24une/bc250_bazzite_build/
@@ -267,3 +269,4 @@ _91 verified facts. Each bullet links to the source message; reaction count (re)
 [89] https://t.me/c/2424231195/135891
 [90] https://t.me/c/2424231195/139211
 [91] https://t.me/c/2424231195/143412
+[92] https://t.me/c/2424231195/152272

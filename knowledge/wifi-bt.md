@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # WiFi & Bluetooth
 
-_230 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_234 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - A USB dongle based on the RTL8822BU chip disconnects after 5 to 10 minutes of use on BC-250 running Bazzite. — Цуцик (re13, 2026-05-21) [[1]](https://t.me/c/2424231195/138512)
   - src: Посоветовался я  с ИИ подойдёт  ли такой донгл к bc 250+ bazzite и он ответеил - бери брат ,идеальное решение.  В общем пришел и  завелся,  но стал отваливаться ,5-10 минут и отваливается.   Вскрыл и …
@@ -361,6 +361,14 @@ _230 verified facts. Each bullet links to the source message; reaction count (re
 - SteamOS was installed on the BC-250, but out-of-the-box Bluetooth and Wi-Fi dongles did not work. — Roman (re0, 2025-08-09) [[230]](https://t.me/c/2424231195/66398)
   - src: Привет, недавно залетел в тему -  купил, распечатал, собрал, поставил стимос, но вот bluetooth - wifi дангл подобрать пока не получилось из коробки ничего не работает. Накидайте пожалуйста рабочих вар…
 
+- The AMD BC-250 motherboard does not come with integrated Wi-Fi or Bluetooth modules. — Victor L. (@victorlesov) (re0, 2026-08-01) [[231]](https://t.me/c/2424231195/152012)
+  - src: Нет ни того, ни другого
+- The Comfast CF-926AC Wi-Fi adapter and USB Bluetooth 5.4 dongles function out of the box on Linux. — Andrew V (@hexdumb) (re0, 2026-08-11) [[232]](https://t.me/c/2424231195/154159)
+  - src: Bluetooth: 5.4 option https://a.aliexpress.com/_EJHQaPG Wifi comfast cf-926ac Bought locally Both work with linux out of the box
+- An M.2 dual adapter allows installing both an NVMe SSD and an M.2 Wi-Fi module simultaneously into the BC-250 M.2 slot. — Vitaly Ermakov (@Dexik2517) (re0, 2026-08-14) [[233]](https://t.me/c/2424231195/154897)
+  - src: Смотрите какая забавная штука . Можно в м2 одновременно пихать Ссд и м2 вайфай.
+- The Intel AX210 Wi-Fi card works on BC-250 when connected through an M.2 slot adapter. — Vitaly Ermakov (@Dexik2517) (re0, 2026-08-14) [[234]](https://t.me/c/2424231195/154946)
+  - src: Интел 210
 # Citations
 
 [1] https://t.me/c/2424231195/138512
@@ -593,3 +601,7 @@ _230 verified facts. Each bullet links to the source message; reaction count (re
 [228] https://t.me/c/2424231195/124787
 [229] https://t.me/c/2424231195/127393
 [230] https://t.me/c/2424231195/66398
+[231] https://t.me/c/2424231195/152012
+[232] https://t.me/c/2424231195/154159
+[233] https://t.me/c/2424231195/154897
+[234] https://t.me/c/2424231195/154946

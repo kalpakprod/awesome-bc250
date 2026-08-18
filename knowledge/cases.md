@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Cases
 
-_427 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_451 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - The Darkside-250 case is custom-built from ABS with a melt point of over 105°C. — Adequate-182 (re79, 2026-03-22) · _r/BC250Gaming_ [[1]](https://www.reddit.com/r/BC250Gaming/comments/1s0nrbq/lesgooooo_bc250_edit_legooooo/)
   - src: Lesgooooo BC-250. Edit: *Legooooo Hello from the Gold Coast, Aus. Here’s my take on the BC-250 build. It has been an excellent project, sad it’s… over…?  Case - Darkside-250 - ABS with melt point of o…
@@ -857,6 +857,54 @@ _427 verified facts. Each bullet links to the source message; reaction count (re
 - A case for the board can be 3D printed. — Vladislav (re0, 2025-07-23) [[427]](https://t.me/c/2424231195/62724)
   - src: Ух, корпус бы напечатать, но сук, мне прислали белый пластик, вместо чёрного
 
+- The Cooler Master MasterCase NC100 enclosure can be adapted to accommodate an AMD BC-250 system build. — Григорий Озеров (@RockStar8597) (re0, 2026-07-01) [[428]](https://t.me/c/2424231195/147345)
+  - src: Cooler master nc100
+- Enclosing the BC-250 board in a custom case increases operating temperatures by approximately 5°C compared to an open test bench. — iSnechik🇺🇦 (@iSanechik) (re0, 2026-07-01) [[429]](https://t.me/c/2424231195/147364)
+  - src: Температура без корпуса и в корпусе примерно на 5 градусов разница
+- A 240mm AIO liquid cooler fits inside the Cooler Master NC100 chassis for BC-250 cooling, whereas a 280mm AIO is too large. — Григорий Озеров (@RockStar8597) (re0, 2026-07-02) [[430]](https://t.me/c/2424231195/147398)
+  - src: Да, с 280ой бы не влезло,
+- The NexGen3D DIY Steam Machine REDUX Edition is a 3D-printable custom enclosure design for the AMD BC-250 motherboard. — Andrew V (@hexdumb) (re0, 2026-07-15) [[431]](https://t.me/c/2424231195/149104)
+  - src: решил подбить суммарньій полньій бюджет с корпусом NexGen3D: DIY Steam Machine - REDUX Edition. Покупалось буквально всьо. Бьіли разве что силиконовьіе провода, предохранители, XT60 папа-мама, термоус
+- The Foxline FL-461 case with an internal depth of 283 mm cannot fit the AMD BC-250 motherboard without modification because the board exceeds 310 mm in length. — Владислав (re0, 2026-07-20) [[432]](https://t.me/c/2424231195/149675)
+  - src: Сама BC-250 свыше 310 и вы её собрались упихать в 283. Если же разворачивать (на 303), то упремся в БП да и подключение шнурков будет через одно место где-то уходить во внутрь корпуса светя огромной д
+- A 3D-printable custom case model named 'NexGen3D DIY Steam Machine Redux Edition' for BC-250 is published on Printables at https://www.printables.com/model/1649679-nexgen3d-diy-steam-machine-redux-edition. — Andrew V (@hexdumb) (re0, 2026-07-22) [[433]](https://t.me/c/2424231195/149896)
+  - src: https://www.printables.com/model/1649679-nexgen3d-diy-steam-machine-redux-edition
+- Printing the v2 case with a 0.6 mm nozzle takes 16 hours per half, 11 hours for the 4-color top lid, about 2 hours per side panel, and 4 hours for the front panel. — Vitaly Ermakov (@Dexik2517) (re0, 2026-07-24) [[434]](https://t.me/c/2424231195/150031)
+  - src: 0.6 соплом 16 часов на каждую половину. Верхняя крышка 11 но там 4 цвета . Боковушки часа по два. Лицевая 4 вроде
+- A water cooling-compatible version of the SteamMachine case for BC-250 is published on GitHub in the NexGen-3D-Printing repository. — Vitaly Ermakov (@Dexik2517) (re0, 2026-07-25) [[435]](https://t.me/c/2424231195/150078)
+  - src: https://github.com/NexGen-3D-Printing/SteamMachine/discussions/11#discussioncomment-17659952
+- A 3D-printable adapter model for mounting the AMD BC-250 motherboard into an ATX case is available at https://www.printables.com/model/1743485-bc250-to-atx-case-adapter. — Andrew V (@hexdumb) (re0, 2026-07-27) [[436]](https://t.me/c/2424231195/150502)
+  - src: https://www.printables.com/model/1743485-bc250-to-atx-case-adapter Вот єтот веселее
+- An alternative 3D-printable ATX-to-BC250 adapter model is hosted at https://www.printables.com/model/1638798-atx-to-bc250-adapter. — Макс (re0, 2026-07-28) [[437]](https://t.me/c/2424231195/150531)
+  - src: Проще есть такое https://www.printables.com/model/1638798-atx-to-bc250-adapter
+- A custom BC-250 chassis can be built using an IKEA Variera module as a metal base paired with an NZXT Kraken X61 cooler, two 140mm fans, and a Dell 495W Platinum server PSU switched via a 3.3V relay. — José Luis (@Luisrosso) (re0, 2026-08-02) [[438]](https://t.me/c/2424231195/152103)
+  - src: В качестве металлического основания я использовал модуль IKEA Variera, а затем спроектировал остальную часть корпуса так, чтобы на нём разместился мой старый Kraken X61 и пара дополнительных 14-сантим
+- A 3D printable liquid-cooled case model for the BC-250 is published on Printables at https://www.printables.com/model/1793043-nexgen3d-diy-steam-machine-pro-v2-liquid-cooled-bc. — iSnechik🇺🇦 (@iSanechik) (re0, 2026-08-02) [[439]](https://t.me/c/2424231195/152211)
+  - src: https://www.printables.com/model/1793043-nexgen3d-diy-steam-machine-pro-v2-liquid-cooled-bc/files#preview.file.Gt9jN
+- Brass threaded inserts for 3D printed BC-250 cases can be easily installed into printed parts using a heated soldering iron. — Pavlo Buznik (re0, 2026-08-03) [[440]](https://t.me/c/2424231195/152418)
+  - src: Моя модель корпуса подразумевала металлические втулки . Пришли , легко устанавливаются небольшим нагревом паяльником. Если кого то останавливала такая конструкция, то ничего сложного.
+- A 3D printable minimalist case model for the AMD BC-250 is available at Printables under model ID 1581724. — ジャッカル 狼 (@Jakkarutoy) (re0, 2026-08-04) [[441]](https://t.me/c/2424231195/152600)
+  - src: Попался вот такой, вот думаю, влезет ли . https://www.printables.com/model/1581724-minimalist-bc-250-case
+- A 3D printable BC-250 case remix supporting TFX power supplies is published on MakerWorld under model ID 2387157. — Pavlo Buznik (re0, 2026-08-04) [[442]](https://t.me/c/2424231195/152750)
+  - src: https://makerworld.com/en/models/2387157-bc-250-case-remix-for-tfx#profileId-2614664 У меня есть такой кулер, попробую поставить в такой корпус.
+- A 3D-printable adapter model for mounting the AMD BC-250 motherboard into standard ATX cases is published on Printables with model ID 1743485. — Pavlo Buznik (re0, 2026-08-07) [[443]](https://t.me/c/2424231195/153210)
+  - src: https://www.printables.com/model/1743485-bc250-to-atx-case-adapter
+- A 3D-printable PlayStation-style case model designed for the AMD BC-250 is available at https://www.printables.com/model/1793431-amd-bc-250-playstation-case. — Volodymyr Spyrydonov (re0, 2026-08-08) [[444]](https://t.me/c/2424231195/153687)
+  - src: https://www.printables.com/model/1793431-amd-bc-250-playstation-case
+- NexGen3D provides 3D-printable case designs and BOM lists for AMD BC-250 builds at https://www.printables.com/@NexGen3D. — Volodymyr Spyrydonov (re0, 2026-08-09) [[445]](https://t.me/c/2424231195/153764)
+  - src: https://www.printables.com/@NexGen3D
+- A 3D-printable BC-250 case designed to fit the smaller build volume of the Bambu Lab A1 Mini is available at https://makerworld.com/models/2481620. — ✧ ℘₂℘ⱥcꪑⱥᶯ ✧ (re0, 2026-08-10) [[446]](https://t.me/c/2424231195/154013)
+  - src: https://makerworld.com/models/2481620?appSharePlatform=copy
+- 3D-printed cases for the AMD BC-250 must be printed from PETG or higher temperature materials rather than PLA due to heat output. — Andrew V (re0, 2026-08-10) [[447]](https://t.me/c/2424231195/154031)
+  - src: Nope no way petg at least
+- Trimming the BC-250 custom case edges by 3 mm in Bambu Studio Slicer allows the model to fit onto the 3D printer build plate. — ✧ ℘₂℘ⱥcꪑⱥᶯ ✧ (@P2PacMan) (re0, 2026-08-10) [[448]](https://t.me/c/2424231195/154101)
+  - src: In the Bambo Studio Slicer, I trimmed the edges of the case by 3 mm so that they would fit on the printing table.
+- Installing the BC-250 inside the PCCooler I100 PRO MESH case requires custom 3D-printed ATX mounting brackets and careful liquid cooler dimension planning. — S Kontyreff (@kontyreff) (re0, 2026-08-12) [[449]](https://t.me/c/2424231195/154245)
+  - src: Но он без доработки напильником не подходит, или нужно тчательней выбирать водянку.Плюс печатал на 3д принтере креалени для atx корпуса.
+- The Cooler Master NC100 case is compatible for building a compact AMD BC-250 system. — Григорий Озеров (@RockStar8597) (re0, 2026-08-14) [[450]](https://t.me/c/2424231195/154852)
+  - src: Cooler master nc100
+- A 3D-printable case design for the ASRock AMD BC-250 is available on MakerWorld at https://makerworld.com/uk/models/2870270-simple-case-for-the-asrock-amd-bc-250#profileId-3576111. — Pavlo Buznik (re0, 2026-08-15) [[451]](https://t.me/c/2424231195/155427)
+  - src: https://makerworld.com/uk/models/2870270-simple-case-for-the-asrock-amd-bc-250#profileId-3576111
 # Citations
 
 [1] https://www.reddit.com/r/BC250Gaming/comments/1s0nrbq/lesgooooo_bc250_edit_legooooo/
@@ -1286,3 +1334,27 @@ _427 verified facts. Each bullet links to the source message; reaction count (re
 [425] https://t.me/c/2424231195/143545
 [426] https://t.me/c/2424231195/145027
 [427] https://t.me/c/2424231195/62724
+[428] https://t.me/c/2424231195/147345
+[429] https://t.me/c/2424231195/147364
+[430] https://t.me/c/2424231195/147398
+[431] https://t.me/c/2424231195/149104
+[432] https://t.me/c/2424231195/149675
+[433] https://t.me/c/2424231195/149896
+[434] https://t.me/c/2424231195/150031
+[435] https://t.me/c/2424231195/150078
+[436] https://t.me/c/2424231195/150502
+[437] https://t.me/c/2424231195/150531
+[438] https://t.me/c/2424231195/152103
+[439] https://t.me/c/2424231195/152211
+[440] https://t.me/c/2424231195/152418
+[441] https://t.me/c/2424231195/152600
+[442] https://t.me/c/2424231195/152750
+[443] https://t.me/c/2424231195/153210
+[444] https://t.me/c/2424231195/153687
+[445] https://t.me/c/2424231195/153764
+[446] https://t.me/c/2424231195/154013
+[447] https://t.me/c/2424231195/154031
+[448] https://t.me/c/2424231195/154101
+[449] https://t.me/c/2424231195/154245
+[450] https://t.me/c/2424231195/154852
+[451] https://t.me/c/2424231195/155427

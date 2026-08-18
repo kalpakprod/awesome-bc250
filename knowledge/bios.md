@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # BIOS & flashing
 
-_746 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_765 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - All 40 CUs of the BC250 were successfully run under SteamOS. — InnoVisionGames (re56, 2026-06-03) · _r/BC250Gaming_ [[1]](https://www.reddit.com/r/BC250Gaming/comments/1tvzh9l/all_40_cus_running_under_steamos/)
   - src: ALL 40 CUs running under SteamOS! https://youtu.be/L88Ws8XEsbY  I managed to get all 40 CUs up and running under SteamOS!  Definitely we need more time testing and profiling things. And in the coming …
@@ -1305,6 +1305,44 @@ _746 verified facts. Each bullet links to the source message; reaction count (re
 - The board ignored attempts to disable specific clusters or cores. — death (re0, 2025-08-08) [[746]](https://t.me/c/2424231195/66254)
   - src: Я думал, отключение именно кластеров/ядер повлияет, но плата заигнорила
 
+- On the AMD BC-250 motherboard, the VBIOS is integrated directly into the main system BIOS image. — radiance (@string_null) (re0, 2026-07-02) [[747]](https://t.me/c/2424231195/147385)
+  - src: Встроен в мейн биос
+- IOMMU should be disabled in the AMD BC-250 BIOS settings because its implementation is unstable. — Алесь (re0, 2026-07-02) [[748]](https://t.me/c/2424231195/147432)
+  - src: выключи, у нас она глючная
+- In a dual-boot setup with SteamOS and Debian, replacing the block device path fs1: with fs4: in menu.nsh allows the BIOS flashing script to locate the required files and unlock all 8 CPU cores. — kDn (@kDnZP) (re0, 2026-07-31) [[749]](https://t.me/c/2424231195/151362)
+  - src: Стосовно скріпта для прошивання біосу зробив реплейсом в menu.nsh блочного пристрою з fs1: на fs4: бо у мене SteamOS та debian у дуалбуті, без цього не знаходило файлів. Прошив, вимкнув повністю, увім
+- AMD BC-250 BIOS flashing can be performed via a bootable USB drive following the documentation and files at https://elektricm.github.io/amd-bc250-docs/bios/flashing/. — Andrew V (@hexdumb) (re0, 2026-07-31) [[750]](https://t.me/c/2424231195/151409)
+  - src: Пишешь файло на флешку, грузишься с нее и шьешь 🤷♂ https://elektricm.github.io/amd-bc250-docs/bios/flashing/
+- Performing a CMOS reset rolls back the unlocked CPU configuration to the stock 6 cores. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-01) [[751]](https://t.me/c/2424231195/151931)
+  - src: Просто сбросить CMOS и возврат к 6 ядрам
+- Testing the CPU unlock with core mask B7 via script verified full operational stability before flashing the modified BIOS. — José Luis (@Luisrosso) (re0, 2026-08-01) [[752]](https://t.me/c/2424231195/151936)
+  - src: Я модифицировал и протестировал его с помощью скрипта. У меня с B7 всё работает нормально, поэтому я теперь использую BIOS, так как он кажется более безопасным.
+- Modifying the unlock script enables all 8 CPU cores on the BC-250, allowing the system to boot with all 8 cores active after flashing an updated BIOS. — José Luis (@Luisrosso) (re0, 2026-08-01) [[753]](https://t.me/c/2424231195/151983)
+  - src: Я не могу говорить за других. Изменив скрипт, я включил все 8 ядер, и, кажется, всё работает нормально. Теперь я прошил новый BIOS, и он загружается со всеми 8 ядрами.
+- The GPU frequency reporting issue on unlocked CPUs is caused by the SMU writing 8 elements into a 6-element array, which overwrites the adjacent GPU clock telemetry data. — pan_Rijovich (@pan_Rijovich) (re0, 2026-08-02) [[754]](https://t.me/c/2424231195/152046)
+  - src: Там проблема в самом smu и его исправить никак не получится, он в массив из 6 элементов пишет 8 элементов и таким образом перезатипает данные что идут следующим, а это частота ГПУ в данном случае
+- The script for unlocking CPU cores on AMD BC-250 is available at https://github.com/rw-r-r-0644/bc250-core-unlock. — Youcef (re0, 2026-08-02) [[755]](https://t.me/c/2424231195/152048)
+  - src: https://github.com/rw-r-r-0644/bc250-core-unlock
+- The AMD BC-250 UEFI v2.2 Firmware Menu Script is available at GitHub repository Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script. — Blank (@wd2blank) (re0, 2026-08-05) [[756]](https://t.me/c/2424231195/152790)
+  - src: https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script
+- Flashing BC-250 BIOS with a CH341A programmer requires checking voltage output, as many cheap CH341A programmers supply 5V instead of the required 3.3V. — Кирилл Павлов (@mrK0ks) (re0, 2026-08-06) [[757]](https://t.me/c/2424231195/152951)
+  - src: ты там прочитай в комменте дают ссылку на базу знаний по BC и в ней написано что нужно с осторожностью прошиваться при помощи CH341, тк у многих вместо 3,3 вольта подается 5 вольт
+- The 8 CPU cores on the AMD BC-250 can be unlocked by flashing a modified BIOS following Old Lamer's video tutorial. — ▪︎_▪︎ (@Panconqueso03) (re0, 2026-08-06) [[758]](https://t.me/c/2424231195/152972)
+  - src: Active los 8 nucleos cambiando la BIOS con el video de old lamer fue facil
+- Custom BC-250 BIOS firmware includes a built-in ACPI fix for 8 CPU cores. — Blank (@wd2blank) (re0, 2026-08-14) [[759]](https://t.me/c/2424231195/154966)
+  - src: Там еще ACPI FIX сразу для 8 ядер есть
+- The core unlock testing script for AMD BC-250 is hosted at https://github.com/rw-r-r-0644/bc250-core-unlock. — Blank (@wd2blank) (re0, 2026-08-14) [[760]](https://t.me/c/2424231195/154973)
+  - src: https://github.com/rw-r-r-0644/bc250-core-unlock
+- Custom UEFI v2.2 firmware menu scripts for AMD BC-250 are available at https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script. — Blank (@wd2blank) (re0, 2026-08-14) [[761]](https://t.me/c/2424231195/154976)
+  - src: https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script
+- A bricked AMD BC-250 board was restored using serprog on a Raspberry Pi Pico 2 with flashrom. — Artem Artem (re0, 2026-08-15) [[762]](https://t.me/c/2424231195/155298)
+  - src: Спасибо за подсказку с serprog В итоге через него и восстановил плату. Немного адаптировали под Pico 2, flashrom увидел чип, прошил BIOS и всё завелось 😁
+- Enabling locked CPU cores to run 8 cores on the AMD BC-250 breaks GPU frequency monitoring in monitoring software without specific kernel patches. — Andrew V (@hexdumb) (re0, 2026-08-16) [[763]](https://t.me/c/2424231195/155649)
+  - src: Включение заблокированньіх ядер ломает мониторинг частотьі гпу есть вроде патчи, чинящие єто я не лез разбираться всьо равно всегда упор в гпу мне єти два доп ядра ваще нах не нужньі 🤷♂
+- The AMD BC-250 PSP rejects VCN firmware from other hardware like the Steam Deck because it requires a specific cryptographic signature from AMD that is not publicly available. — Daniel Lima (@daniellma) (re0, 2026-08-17) [[764]](https://t.me/c/2424231195/155812)
+  - src: Что касается VCN на BC-250: фактически для этой платы нет специальной прошивки VCN. Теоретически можно было бы использовать аналоги, так как там указана версия 2.0.3 (заглушка/placeholder), а чипы на 
+- Reverse engineering dumps and research into the AMD SMU firmware for the BC-250 are available at https://github.com/bc250-collective/amd_smu_reverse_engineering. — Blank (@wd2blank) (re0, 2026-08-17) [[765]](https://t.me/c/2424231195/155847)
+  - src: https://github.com/bc250-collective/amd_smu_reverse_engineering
 # Citations
 
 [1] https://www.reddit.com/r/BC250Gaming/comments/1tvzh9l/all_40_cus_running_under_steamos/
@@ -2053,3 +2091,22 @@ _746 verified facts. Each bullet links to the source message; reaction count (re
 [744] https://t.me/c/2424231195/143076
 [745] https://t.me/c/2424231195/64407
 [746] https://t.me/c/2424231195/66254
+[747] https://t.me/c/2424231195/147385
+[748] https://t.me/c/2424231195/147432
+[749] https://t.me/c/2424231195/151362
+[750] https://t.me/c/2424231195/151409
+[751] https://t.me/c/2424231195/151931
+[752] https://t.me/c/2424231195/151936
+[753] https://t.me/c/2424231195/151983
+[754] https://t.me/c/2424231195/152046
+[755] https://t.me/c/2424231195/152048
+[756] https://t.me/c/2424231195/152790
+[757] https://t.me/c/2424231195/152951
+[758] https://t.me/c/2424231195/152972
+[759] https://t.me/c/2424231195/154966
+[760] https://t.me/c/2424231195/154973
+[761] https://t.me/c/2424231195/154976
+[762] https://t.me/c/2424231195/155298
+[763] https://t.me/c/2424231195/155649
+[764] https://t.me/c/2424231195/155812
+[765] https://t.me/c/2424231195/155847

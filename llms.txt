@@ -1,8 +1,8 @@
 # Awesome BC-250
 
-> The newcomer's handbook for the ASRock AMD BC-250 — a PlayStation 5-derived APU board (Cyan Skillfish / Oberon: 6-core Zen 2 + 24/40 RDNA 2 compute units, 16 GB GDDR6) sold cheap as an ex-mining card and repurposed into a Linux gaming & AI mini PC, a DIY budget Steam Machine. Bilingual EN/RU, distilled from 125k+ community messages and cross-checked against the canonical project repositories.
+> The newcomer's handbook for the ASRock AMD BC-250 — a PlayStation 5-derived APU board (Cyan Skillfish / Oberon: 6-core Zen 2 + 24/40 RDNA 2 compute units, 16 GB GDDR6) sold cheap as an ex-mining card and repurposed into a Linux gaming & AI mini PC, a DIY budget Steam Machine. Bilingual EN/RU, distilled from 130k+ community messages and cross-checked against the canonical project repositories.
 
-Repository: https://github.com/lildebil0/awesome-bc250 (open source, MIT / CC-BY-SA). Last updated June 2026, actively maintained.
+Repository: https://github.com/lildebil0/awesome-bc250 (open source, MIT / CC-BY-SA). Last updated August 2026, actively maintained. Chat coverage runs to 2026-08-17.
 
 ## Quick facts
 
