@@ -17,11 +17,11 @@
 ## ❓ 快速问答
 
 - **什么是 ASRock AMD BC-250？** 一块源自 PlayStation 5 的 APU 板卡 —— 6 核 Zen 2 + 24/40 个 RDNA 2 CU（"Cyan Skillfish"），16 GB GDDR6 —— 作为矿卡退役后低价出售，被改造成 Linux 游戏与 AI 迷你主机，一台 DIY 预算版 Steam Machine。
-- **多少钱？** 裸板约 **$60–130**；完整装机（电源、散热、SSD）约 **$150–250**。见 [购买指南](docs/en/02-buying.md)。
-- **游戏性能如何？** 在 FSR / 补帧（Frame-Gen）和 GPU+CPU 超频下，多数游戏约 **1080p 60 FPS**（RX 6600 级别）。见 [游戏实测与设置](docs/en/11-gaming.md)。
-- **用哪个系统？** GPU 加速**仅限 Linux** —— Bazzite、Fedora、CachyOS 或 Arch + Mesa 25.1+。没有 Windows GPU 驱动。见 [Linux 驱动与配置](docs/en/06-linux.md)。
-- **能跑 LLM 吗？** 可以 —— 通过 Vulkan 运行的 llama.cpp / Ollama 可把 16 GB GDDR6 当作显存使用（小模型约 30–47 tok/s）。见 [AI / LLM](docs/en/12-ai-llm.md)。
-- **怎么散热？** 原装服务器散热器在桌面上会降频；把鳍片磨薄并加装 120 mm 风扇，或直接上水冷。见 [散热](docs/en/04-cooling.md)。
+- **多少钱？** 裸板约 **$60–130**；完整装机（电源、散热、SSD）约 **$150–250**。见 [购买指南](docs/zh/02-buying.md)。
+- **游戏性能如何？** 在 FSR / 补帧（Frame-Gen）和 GPU+CPU 超频下，多数游戏约 **1080p 60 FPS**（RX 6600 级别）。见 [游戏实测与设置](docs/zh/11-gaming.md)。
+- **用哪个系统？** GPU 加速**仅限 Linux** —— Bazzite、Fedora、CachyOS 或 Arch + Mesa 25.1+。没有 Windows GPU 驱动。见 [Linux 驱动与配置](docs/zh/06-linux.md)。
+- **能跑 LLM 吗？** 可以 —— 通过 Vulkan 运行的 llama.cpp / Ollama 可把 16 GB GDDR6 当作显存使用（小模型约 30–47 tok/s）。见 [AI / LLM](docs/zh/12-ai-llm.md)。
+- **怎么散热？** 原装服务器散热器在桌面上会降频；把鳍片磨薄并加装 120 mm 风扇，或直接上水冷。见 [散热](docs/zh/04-cooling.md)。
 
 ---
 
@@ -78,22 +78,22 @@ governor 和降压砍掉了 GPU 的功耗，但 CPU 和 GDDR6 仍在持续耗电
 
 | # | 章节 | 适用于 |
 |---|---------|-----|
-| 01 | [什么是 BC-250](docs/en/01-what-is-bc250.md) | 规格、尺寸、针脚、预期 |
-| 02 | [购买指南](docs/en/02-buying.md) | 渠道、价格、风险、团购 |
-| 03 | [供电](docs/en/03-power-supply.md) | LOP / Flex ATX、8-pin 针脚、接线 |
-| 04 | [散热](docs/en/04-cooling.md) | 散热片、风扇导风罩、测试方法 |
-| 05 | [机箱与 3D 打印](docs/en/05-case.md) | 可打印机箱目录（STL） |
-| 06 | [Linux 驱动与配置](docs/en/06-linux.md) | 发行版选择、amdgpu、安装 |
-| 07 | [Windows 驱动与配置](docs/en/07-windows.md) | 驱动现状、操作方法 |
-| 08 | [BIOS 与变砖恢复](docs/en/08-bios.md) | 改版 BIOS、刷写、解砖 |
-| 09 | [超频与降压](docs/en/09-overclock-undervolt.md) | governor、SMU、40CU 解锁 |
-| 10 | [WiFi 与蓝牙适配器](docs/en/10-wifi-bt.md) | 真正能用的适配器 |
-| 11 | [游戏实测与设置](docs/en/11-gaming.md) | 跑分、逐游戏调优 |
-| 12 | [BC-250 上的 AI / LLM](docs/en/12-ai-llm.md) | llama.cpp、ROCm |
-| 13 | [macOS / 黑苹果](docs/en/13-macos.md) | 现状 |
-| 14 | [显示与输出](docs/en/14-display.md) | DisplayPort、DP→HDMI 转接、双屏 |
-| 15 | [模拟](docs/en/15-emulation.md) | 各主机/平台，真实可用现状 |
-| 16 | [USB、集线器与存储](docs/en/16-usb-peripherals.md) | 集线器、5V 改造、M.2 / SATA 转接 |
+| 01 | [什么是 BC-250](docs/zh/01-what-is-bc250.md) | 规格、尺寸、针脚、预期 |
+| 02 | [购买指南](docs/zh/02-buying.md) | 渠道、价格、风险、团购 |
+| 03 | [供电](docs/zh/03-power-supply.md) | LOP / Flex ATX、8-pin 针脚、接线 |
+| 04 | [散热](docs/zh/04-cooling.md) | 散热片、风扇导风罩、测试方法 |
+| 05 | [机箱与 3D 打印](docs/zh/05-case.md) | 可打印机箱目录（STL） |
+| 06 | [Linux 驱动与配置](docs/zh/06-linux.md) | 发行版选择、amdgpu、安装 |
+| 07 | [Windows 驱动与配置](docs/zh/07-windows.md) | 驱动现状、操作方法 |
+| 08 | [BIOS 与变砖恢复](docs/zh/08-bios.md) | 改版 BIOS、刷写、解砖 |
+| 09 | [超频与降压](docs/zh/09-overclock-undervolt.md) | governor、SMU、40CU 解锁 |
+| 10 | [WiFi 与蓝牙适配器](docs/zh/10-wifi-bt.md) | 真正能用的适配器 |
+| 11 | [游戏实测与设置](docs/zh/11-gaming.md) | 跑分、逐游戏调优 |
+| 12 | [BC-250 上的 AI / LLM](docs/zh/12-ai-llm.md) | llama.cpp、ROCm |
+| 13 | [macOS / 黑苹果](docs/zh/13-macos.md) | 现状 |
+| 14 | [显示与输出](docs/zh/14-display.md) | DisplayPort、DP→HDMI 转接、双屏 |
+| 15 | [模拟](docs/zh/15-emulation.md) | 各主机/平台，真实可用现状 |
+| 16 | [USB、集线器与存储](docs/zh/16-usb-peripherals.md) | 集线器、5V 改造、M.2 / SATA 转接 |
 | ❓ | [FAQ](docs/zh/faq.md) · [故障排查](docs/zh/troubleshooting.md) | 常见问题 |
 
 ---
@@ -134,7 +134,7 @@ governor 和降压砍掉了 GPU 的功耗，但 CPU 和 GDDR6 仍在持续耗电
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) —— 被引用最多的 BIOS 镜像与改版
 - [TheRetroWeb —— BC-250 BIOS 数据库](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) —— 原版 BIOS 固件转储，按版本浏览/下载
 - [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) —— 菜单式固件备份与自定义固件刷写
-- 刷写与变砖恢复见 [docs/en/08-bios.md](docs/en/08-bios.md)
+- 刷写与变砖恢复见 [docs/zh/08-bios.md](docs/zh/08-bios.md)
 
 ### WiFi / BT 适配器
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -144,7 +144,7 @@ governor 和降压砍掉了 GPU 的功耗，但 CPU 和 GDDR6 仍在持续耗电
 
 ### 机箱 / 3D
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables 与 MakerWorld —— 见 [docs/en/05-case.md](docs/en/05-case.md)
+- Printables 与 MakerWorld —— 见 [docs/zh/05-case.md](docs/zh/05-case.md)
 
 ---
 

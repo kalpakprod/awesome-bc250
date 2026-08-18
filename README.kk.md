@@ -17,11 +17,11 @@
 ## ❓ Жылдам жауаптар
 
 - **ASRock AMD BC-250 деген не?** — PlayStation 5 негізіндегі APU тақтасы: 6 ядролы Zen 2 + 24/40 RDNA 2 CU («Cyan Skillfish»), 16 GB GDDR6 — бұрынғы майнинг картасы ретінде арзан сатылып, Linux ойын және AI мини-ПК-ға, DIY бюджеттік Steam Machine-ке айналдырылған.
-- **Қанша тұрады?** Жалаң тақта шамамен **$60–130**; толық құрастыру (қорек көзі, салқындатқыш, SSD) **$150–250** шамасында болады. [Сатып алу](docs/en/02-buying.md) бөлімін қараңыз.
-- **Ойында қалай көрсетеді?** FSR / Frame-Gen және GPU+CPU оверклокымен көптеген ойындарда шамамен **1080p 60 FPS** (RX 6600 деңгейі). [Ойын нәтижелері](docs/en/11-gaming.md) бөлімін қараңыз.
-- **Қандай ОЖ керек?** GPU үдеуі үшін **тек Linux** — Bazzite, Fedora, CachyOS немесе Mesa 25.1+ Arch. Windows GPU драйвері жоқ. [Linux орнату](docs/en/06-linux.md) бөлімін қараңыз.
-- **LLM жүгірте алады ма?** Иә — llama.cpp / Ollama Vulkan арқылы 16 GB GDDR6-ны VRAM ретінде пайдаланады (шағын модельдерде ~30–47 ток/с). [AI / LLM](docs/en/12-ai-llm.md) бөлімін қараңыз.
-- **Қалай салқындату керек?** Жиынтықтағы серверлік радиатор үстелде қолдану кезінде тұншығып (throttle) қалады; қанаттарын жұқартып, 120 мм желдеткіш қосыңыз немесе сумен салқындатуға көшіңіз. [Салқындату](docs/en/04-cooling.md) бөлімін қараңыз.
+- **Қанша тұрады?** Жалаң тақта шамамен **$60–130**; толық құрастыру (қорек көзі, салқындатқыш, SSD) **$150–250** шамасында болады. [Сатып алу](docs/kk/02-buying.md) бөлімін қараңыз.
+- **Ойында қалай көрсетеді?** FSR / Frame-Gen және GPU+CPU оверклокымен көптеген ойындарда шамамен **1080p 60 FPS** (RX 6600 деңгейі). [Ойын нәтижелері](docs/kk/11-gaming.md) бөлімін қараңыз.
+- **Қандай ОЖ керек?** GPU үдеуі үшін **тек Linux** — Bazzite, Fedora, CachyOS немесе Mesa 25.1+ Arch. Windows GPU драйвері жоқ. [Linux орнату](docs/kk/06-linux.md) бөлімін қараңыз.
+- **LLM жүгірте алады ма?** Иә — llama.cpp / Ollama Vulkan арқылы 16 GB GDDR6-ны VRAM ретінде пайдаланады (шағын модельдерде ~30–47 ток/с). [AI / LLM](docs/kk/12-ai-llm.md) бөлімін қараңыз.
+- **Қалай салқындату керек?** Жиынтықтағы серверлік радиатор үстелде қолдану кезінде тұншығып (throttle) қалады; қанаттарын жұқартып, 120 мм желдеткіш қосыңыз немесе сумен салқындатуға көшіңіз. [Салқындату](docs/kk/04-cooling.md) бөлімін қараңыз.
 
 ---
 
@@ -78,22 +78,22 @@ Governor мен андервольт GPU тұтынуын қысқартады, 
 
 | # | Бөлім | Не үшін |
 |---|---------|-----|
-| 01 | [BC-250 деген не](docs/en/01-what-is-bc250.md) | сипаттамалар, өлшемдер, пинаут, күтілетіні |
-| 02 | [Сатып алу нұсқаулығы](docs/en/02-buying.md) | қайдан, баға, тәуекелдер, бірлескен сатып алу |
-| 03 | [Қуат көзі](docs/en/03-power-supply.md) | LOP / Flex ATX, 8-пинді пинаут, сым тарту |
-| 04 | [Салқындату](docs/en/04-cooling.md) | радиатор, желдеткіш қаптамалары, сынау әдісі |
-| 05 | [Корпустар және 3D басып шығару](docs/en/05-case.md) | басып шығарылатын корпустар каталогы (STL) |
-| 06 | [Linux драйверлері және орнату](docs/en/06-linux.md) | дистрибутив таңдау, amdgpu, орнату |
-| 07 | [Windows драйверлері және орнату](docs/en/07-windows.md) | драйвер күйі, нұсқаулық |
-| 08 | [BIOS және «кірпіштен» қалпына келтіру](docs/en/08-bios.md) | мод BIOS, прошивка, «кірпіштен» шығару |
+| 01 | [BC-250 деген не](docs/kk/01-what-is-bc250.md) | сипаттамалар, өлшемдер, пинаут, күтілетіні |
+| 02 | [Сатып алу нұсқаулығы](docs/kk/02-buying.md) | қайдан, баға, тәуекелдер, бірлескен сатып алу |
+| 03 | [Қуат көзі](docs/kk/03-power-supply.md) | LOP / Flex ATX, 8-пинді пинаут, сым тарту |
+| 04 | [Салқындату](docs/kk/04-cooling.md) | радиатор, желдеткіш қаптамалары, сынау әдісі |
+| 05 | [Корпустар және 3D басып шығару](docs/kk/05-case.md) | басып шығарылатын корпустар каталогы (STL) |
+| 06 | [Linux драйверлері және орнату](docs/kk/06-linux.md) | дистрибутив таңдау, amdgpu, орнату |
+| 07 | [Windows драйверлері және орнату](docs/kk/07-windows.md) | драйвер күйі, нұсқаулық |
+| 08 | [BIOS және «кірпіштен» қалпына келтіру](docs/kk/08-bios.md) | мод BIOS, прошивка, «кірпіштен» шығару |
 | 09 | [Оверклок және андервольт](docs/en/09-overclock-undervolt.md) | governor, SMU, 40CU ашу |
-| 10 | [WiFi және Bluetooth донглдары](docs/en/10-wifi-bt.md) | шынымен жұмыс істейтін донглдар |
-| 11 | [Ойын нәтижелері және баптаулары](docs/en/11-gaming.md) | бенчмарктар, ойынға қарай баптау |
-| 12 | [BC-250-де AI / LLM](docs/en/12-ai-llm.md) | llama.cpp, ROCm |
-| 13 | [macOS / Hackintosh](docs/en/13-macos.md) | күйі |
-| 14 | [Дисплей және шығыс](docs/en/14-display.md) | DisplayPort, DP→HDMI адаптерлер, қос экран |
-| 15 | [Эмуляция](docs/en/15-emulation.md) | әрбір консоль/платформа, нақты күйі |
-| 16 | [USB, хабтар және сақтау](docs/en/16-usb-peripherals.md) | хабтар, 5V мод, M.2 / SATA адаптерлер |
+| 10 | [WiFi және Bluetooth донглдары](docs/kk/10-wifi-bt.md) | шынымен жұмыс істейтін донглдар |
+| 11 | [Ойын нәтижелері және баптаулары](docs/kk/11-gaming.md) | бенчмарктар, ойынға қарай баптау |
+| 12 | [BC-250-де AI / LLM](docs/kk/12-ai-llm.md) | llama.cpp, ROCm |
+| 13 | [macOS / Hackintosh](docs/kk/13-macos.md) | күйі |
+| 14 | [Дисплей және шығыс](docs/kk/14-display.md) | DisplayPort, DP→HDMI адаптерлер, қос экран |
+| 15 | [Эмуляция](docs/kk/15-emulation.md) | әрбір консоль/платформа, нақты күйі |
+| 16 | [USB, хабтар және сақтау](docs/kk/16-usb-peripherals.md) | хабтар, 5V мод, M.2 / SATA адаптерлер |
 | ❓ | [FAQ](docs/kk/faq.md) · [Ақаулықтарды жою](docs/kk/troubleshooting.md) | жиі кездесетін мәселелер |
 
 ---
@@ -134,7 +134,7 @@ Governor мен андервольт GPU тұтынуын қысқартады, 
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — ең жиі сілтенетін BIOS образдары және модтары
 - [TheRetroWeb — BC-250 BIOS дерекқоры](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — стандартты BIOS дамптары, нұсқасы бойынша қарау/жүктеу
 - [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — мәзірмен басқарылатын firmware сақтық көшірмесі және арнайы firmware прошивкалау
-- Прошивка және «кірпіштен» қалпына келтіру үшін [docs/en/08-bios.md](docs/en/08-bios.md) қараңыз
+- Прошивка және «кірпіштен» қалпына келтіру үшін [docs/kk/08-bios.md](docs/kk/08-bios.md) қараңыз
 
 ### WiFi / BT донглдары
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -144,7 +144,7 @@ Governor мен андервольт GPU тұтынуын қысқартады, 
 
 ### Корпустар / 3D
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables және MakerWorld — [docs/en/05-case.md](docs/en/05-case.md) қараңыз
+- Printables және MakerWorld — [docs/kk/05-case.md](docs/kk/05-case.md) қараңыз
 
 ---
 
