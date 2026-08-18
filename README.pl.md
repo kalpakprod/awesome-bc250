@@ -17,11 +17,11 @@ Wszystko, czego potrzebujesz, by przejść **od płyty w pudełku do uruchomione
 ## ❓ Szybkie odpowiedzi
 
 - **Czym jest ASRock AMD BC-250?** Płyta z APU wywodzącym się z PlayStation 5 — 6-rdzeniowy Zen 2 + 24/40 CU RDNA 2 („Cyan Skillfish”), 16 GB GDDR6 — sprzedawana tanio jako używana karta do kopania kryptowalut i przerabiana na linuksowy mini PC do gier i AI, budżetowa Steam Machine (DIY).
-- **Ile kosztuje?** Około **$60–130** za samą płytę; kompletna budowa (zasilacz, cooler, SSD) to **$150–250**. Zobacz [Poradnik zakupowy](docs/en/02-buying.md).
-- **Jak dobrze gra?** W większości tytułów mniej więcej **1080p 60 FPS** (klasa RX 6600) z FSR / Frame-Gen i podkręconym GPU+CPU. Zobacz [Wyniki i ustawienia w grach](docs/en/11-gaming.md).
-- **Jaki system?** **Tylko Linux** dla akceleracji GPU — Bazzite, Fedora, CachyOS lub Arch z Mesa 25.1+. Nie ma sterownika GPU dla Windows. Zobacz [Konfiguracja Linuksa](docs/en/06-linux.md).
-- **Czy uruchomi LLM-y?** Tak — llama.cpp / Ollama przez Vulkan wykorzystują 16 GB GDDR6 jako VRAM (ok. 30–47 tok/s na małych modelach). Zobacz [AI / LLM](docs/en/12-ai-llm.md).
-- **Jak to chłodzić?** Fabryczny radiator serwerowy dławi na biurku; przerzedź lamelki i dodaj wentylator 120 mm albo idź w wodę. Zobacz [Chłodzenie](docs/en/04-cooling.md).
+- **Ile kosztuje?** Około **$60–130** za samą płytę; kompletna budowa (zasilacz, cooler, SSD) to **$150–250**. Zobacz [Poradnik zakupowy](docs/pl/02-buying.md).
+- **Jak dobrze gra?** W większości tytułów mniej więcej **1080p 60 FPS** (klasa RX 6600) z FSR / Frame-Gen i podkręconym GPU+CPU. Zobacz [Wyniki i ustawienia w grach](docs/pl/11-gaming.md).
+- **Jaki system?** **Tylko Linux** dla akceleracji GPU — Bazzite, Fedora, CachyOS lub Arch z Mesa 25.1+. Nie ma sterownika GPU dla Windows. Zobacz [Konfiguracja Linuksa](docs/pl/06-linux.md).
+- **Czy uruchomi LLM-y?** Tak — llama.cpp / Ollama przez Vulkan wykorzystują 16 GB GDDR6 jako VRAM (ok. 30–47 tok/s na małych modelach). Zobacz [AI / LLM](docs/pl/12-ai-llm.md).
+- **Jak to chłodzić?** Fabryczny radiator serwerowy dławi na biurku; przerzedź lamelki i dodaj wentylator 120 mm albo idź w wodę. Zobacz [Chłodzenie](docs/pl/04-cooling.md).
 
 ---
 
@@ -78,22 +78,22 @@ Governor i undervolting obcinają GPU, ale CPU i GDDR6 i tak pobierają prąd. D
 
 | # | Sekcja | Dla |
 |---|---------|-----|
-| 01 | [Czym jest BC-250](docs/en/01-what-is-bc250.md) | specyfikacja, wymiary, pinout, oczekiwania |
-| 02 | [Poradnik zakupowy](docs/en/02-buying.md) | gdzie, cena, ryzyka, zakupy grupowe |
-| 03 | [Zasilacz](docs/en/03-power-supply.md) | LOP / Flex ATX, pinout 8-pin, okablowanie |
-| 04 | [Chłodzenie](docs/en/04-cooling.md) | radiator, osłony wentylatora, metoda testowania |
-| 05 | [Obudowy i druk 3D](docs/en/05-case.md) | katalog obudów do druku (STL) |
-| 06 | [Sterowniki i konfiguracja Linuksa](docs/en/06-linux.md) | wybór dystrybucji, amdgpu, instalacja |
-| 07 | [Sterowniki i konfiguracja Windows](docs/en/07-windows.md) | status sterowników, instrukcje |
-| 08 | [BIOS i ratowanie cegły](docs/en/08-bios.md) | modyfikacja BIOS, flashowanie, odzyskiwanie |
-| 09 | [Podkręcanie i undervolting](docs/en/09-overclock-undervolt.md) | governor, SMU, odblokowanie 40CU |
-| 10 | [Dongle WiFi i Bluetooth](docs/en/10-wifi-bt.md) | dongle, które faktycznie działają |
-| 11 | [Wyniki i ustawienia w grach](docs/en/11-gaming.md) | benchmarki, strojenie pod konkretne gry |
-| 12 | [AI / LLM na BC-250](docs/en/12-ai-llm.md) | llama.cpp, ROCm |
-| 13 | [macOS / Hackintosh](docs/en/13-macos.md) | status |
-| 14 | [Obraz i wyjście wideo](docs/en/14-display.md) | DisplayPort, adaptery DP→HDMI, dwa ekrany |
-| 15 | [Emulacja](docs/en/15-emulation.md) | każda konsola/platforma, realistyczny status |
-| 16 | [USB, huby i pamięć masowa](docs/en/16-usb-peripherals.md) | huby, modyfikacja 5V, adaptery M.2 / SATA |
+| 01 | [Czym jest BC-250](docs/pl/01-what-is-bc250.md) | specyfikacja, wymiary, pinout, oczekiwania |
+| 02 | [Poradnik zakupowy](docs/pl/02-buying.md) | gdzie, cena, ryzyka, zakupy grupowe |
+| 03 | [Zasilacz](docs/pl/03-power-supply.md) | LOP / Flex ATX, pinout 8-pin, okablowanie |
+| 04 | [Chłodzenie](docs/pl/04-cooling.md) | radiator, osłony wentylatora, metoda testowania |
+| 05 | [Obudowy i druk 3D](docs/pl/05-case.md) | katalog obudów do druku (STL) |
+| 06 | [Sterowniki i konfiguracja Linuksa](docs/pl/06-linux.md) | wybór dystrybucji, amdgpu, instalacja |
+| 07 | [Sterowniki i konfiguracja Windows](docs/pl/07-windows.md) | status sterowników, instrukcje |
+| 08 | [BIOS i ratowanie cegły](docs/pl/08-bios.md) | modyfikacja BIOS, flashowanie, odzyskiwanie |
+| 09 | [Podkręcanie i undervolting](docs/pl/09-overclock-undervolt.md) | governor, SMU, odblokowanie 40CU |
+| 10 | [Dongle WiFi i Bluetooth](docs/pl/10-wifi-bt.md) | dongle, które faktycznie działają |
+| 11 | [Wyniki i ustawienia w grach](docs/pl/11-gaming.md) | benchmarki, strojenie pod konkretne gry |
+| 12 | [AI / LLM na BC-250](docs/pl/12-ai-llm.md) | llama.cpp, ROCm |
+| 13 | [macOS / Hackintosh](docs/pl/13-macos.md) | status |
+| 14 | [Obraz i wyjście wideo](docs/pl/14-display.md) | DisplayPort, adaptery DP→HDMI, dwa ekrany |
+| 15 | [Emulacja](docs/pl/15-emulation.md) | każda konsola/platforma, realistyczny status |
+| 16 | [USB, huby i pamięć masowa](docs/pl/16-usb-peripherals.md) | huby, modyfikacja 5V, adaptery M.2 / SATA |
 | ❓ | [FAQ](docs/pl/faq.md) · [Rozwiązywanie problemów](docs/pl/troubleshooting.md) | typowe problemy |
 
 ---
@@ -134,7 +134,7 @@ Kanoniczne projekty społeczności, uszeregowane według tego, jak często społ
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — najczęściej przywoływane obrazy i mody BIOS
 - [TheRetroWeb — baza BIOS BC-250](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — oryginalne zrzuty BIOS, przeglądanie/pobieranie według wersji
 - [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — skrypt z menu do tworzenia kopii firmware i flashowania niestandardowego firmware
-- Flashowanie i odzyskiwanie cegły opisano w [docs/en/08-bios.md](docs/en/08-bios.md)
+- Flashowanie i odzyskiwanie cegły opisano w [docs/pl/08-bios.md](docs/pl/08-bios.md)
 
 ### Dongle WiFi / BT
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -144,7 +144,7 @@ Kanoniczne projekty społeczności, uszeregowane według tego, jak często społ
 
 ### Obudowy / Druk 3D
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables i MakerWorld — zobacz [docs/en/05-case.md](docs/en/05-case.md)
+- Printables i MakerWorld — zobacz [docs/pl/05-case.md](docs/pl/05-case.md)
 
 ---
 
