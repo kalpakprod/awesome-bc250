@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Gaming
 
-_713 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_720 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - The BC250's emulation performance as a Batocera machine was disappointing. — OkDebate6649 (re1244, 2026-04-16) · _r/Bazzite_ [[1]](https://www.reddit.com/r/Bazzite/comments/1sn3qt4/my_first_bazzite_pc_build_lego_bc250/)
   - src: My first Bazzite PC build (LEGO + BC250) I recently built a PC using LEGO and a BC250 mining board.  Originally, I planned to use it as a Batocera emulation machine, but the emulation performance was …
@@ -1323,6 +1323,20 @@ _713 verified facts. Each bullet links to the source message; reaction count (re
 - Battlefield 6 runs on ultra settings. — Volodymyr Spyrydonov (re0, 2025-08-11) [[713]](https://t.me/c/2424231195/66701)
   - src: Battlefield 6 идёт просто 🔥 || На ультрах!
 
+- Unlocking 40 CUs and 8 CPU cores on the BC-250 boosted Cyberpunk 2077 benchmark performance on medium-low ray-traced settings from 28 FPS with dips to 20 FPS up to 44 FPS. — Laird (re0, 2026-07-31) [[714]](https://t.me/c/2424231195/151555)
+  - src: Ура Добился 44фпс на средне низких С трассировкой лучей,но без освещения
+- The Linux port of DS5_Bridge for DualSense controller support is available at https://github.com/djanice1980/DS5_Bridge. — Vitaly Ermakov (@Dexik2517) (re0, 2026-08-01) [[715]](https://t.me/c/2424231195/151850)
+  - src: вот линукс порт
+- Running games such as Hogwarts Legacy from an SSD connected via USB 2.0 causes severe stuttering, which is resolved by switching to a USB 3.0 port. — Цуцик (re0, 2026-08-04) [[716]](https://t.me/c/2424231195/152631)
+  - src: 🤦 ..... Нашел дома ssd sata 128 Гб думаю Хогвартс должен поместится. Вытащил переходник с hdd 2.5 поставил в переходник ссд и смотрю на bc250 .... Как можно назвать человека запустившего Хогва
+- A community fix for running Final Fantasy VII Rebirth on the AMD BC-250 is published on GitHub at lonewolf0622/FF7BC250. — D (@DAngarsk) (re0, 2026-08-05) [[717]](https://t.me/c/2424231195/152767)
+  - src: https://github.com/lonewolf0622/FF7BC250?ysclid=msfgi3cid0836209646
+- Heroes of Might and Magic V from Steam launches on the AMD BC-250 only with Proton-CachyOS, failing to start on standard Steam Proton 7/10/11, Proton-GE, or Proton Experimental. — Jack Fisher (@Jacky_Fish) (re0, 2026-08-06) [[718]](https://t.me/c/2424231195/152974)
+  - src: У меня герои пятые из тима только с cachy протоном запустились
+- On an AMD BC-250 configured with 8 CPU cores at 3850 MHz, 40 CUs at 1900 MHz, zswap, and acpifix, S.T.A.L.K.E.R. 2 runs at 1080p high/epic settings at 120-140 FPS in regular areas and 60-70 FPS in heavy scenes. — Alex (@SadGofLC) (re0, 2026-08-06) [[719]](https://t.me/c/2424231195/153071)
+  - src: Какой то странный тот сталкер. На високих и епичных настройке текстур одна бц выдаст 120-130 вторая под 140, в помещении и большых локациях +- 60-70. Если включить все что возможно, и натив аа-то 55-6
+- An experimental FSR4 repository for AMD BC-250 is hosted at https://github.com/dmorazasanchez/bc250-fsr4. — Алесь (re0, 2026-08-17) [[720]](https://t.me/c/2424231195/155784)
+  - src: такое кто то трогал? https://github.com/dmorazasanchez/bc250-fsr4
 # Citations
 
 [1] https://www.reddit.com/r/Bazzite/comments/1sn3qt4/my_first_bazzite_pc_build_lego_bc250/
@@ -2038,3 +2052,10 @@ _713 verified facts. Each bullet links to the source message; reaction count (re
 [711] https://t.me/c/2424231195/144832
 [712] https://t.me/c/2424231195/63283
 [713] https://t.me/c/2424231195/66701
+[714] https://t.me/c/2424231195/151555
+[715] https://t.me/c/2424231195/151850
+[716] https://t.me/c/2424231195/152631
+[717] https://t.me/c/2424231195/152767
+[718] https://t.me/c/2424231195/152974
+[719] https://t.me/c/2424231195/153071
+[720] https://t.me/c/2424231195/155784
