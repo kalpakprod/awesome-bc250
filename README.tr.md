@@ -17,11 +17,11 @@
 ## ❓ Hızlı Cevaplar
 
 - **ASRock AMD BC-250 nedir?** PlayStation 5 türevi bir APU kartı — 6 çekirdekli Zen 2 + 24/40 RDNA 2 CU ("Cyan Skillfish"), 16 GB GDDR6 — eski bir madencilik kartı olarak ucuza satıldı ve bir Linux oyun ve yapay zeka mini PC'sine, DIY bütçe dostu bir Steam Machine'e dönüştürüldü.
-- **Fiyatı ne kadar?** Çıplak kart için yaklaşık **$60–130**; tam bir kurulum (PSU, soğutucu, SSD) **$150–250** civarına denk gelir. Bkz. [Satın Alma Rehberi](docs/en/02-buying.md).
-- **Oyun performansı nasıl?** Çoğu oyunda FSR / Frame-Gen ve GPU+CPU overclock ile kabaca **1080p 60 FPS** (RX 6600 sınıfı). Bkz. [Oyun Sonuçları ve Ayarları](docs/en/11-gaming.md).
-- **Hangi işletim sistemi?** GPU ivmelendirmesi için **yalnızca Linux** — Mesa 25.1+ ile Bazzite, Fedora, CachyOS veya Arch. Windows GPU sürücüsü yoktur. Bkz. [Linux Sürücüleri ve Kurulum](docs/en/06-linux.md).
-- **LLM çalıştırabilir mi?** Evet — Vulkan üzerinden llama.cpp / Ollama, 16 GB GDDR6'yı VRAM olarak kullanır (küçük modellerde ~30–47 tok/s). Bkz. [BC-250'de Yapay Zeka / LLM](docs/en/12-ai-llm.md).
-- **Nasıl soğutulur?** Stok sunucu soğutucusu masa üstünde kısıtlamaya (throttle) girer; kanatçıkları inceltin ve 120 mm fan ekleyin ya da sıvı soğutmaya geçin. Bkz. [Soğutma](docs/en/04-cooling.md).
+- **Fiyatı ne kadar?** Çıplak kart için yaklaşık **$60–130**; tam bir kurulum (PSU, soğutucu, SSD) **$150–250** civarına denk gelir. Bkz. [Satın Alma Rehberi](docs/tr/02-buying.md).
+- **Oyun performansı nasıl?** Çoğu oyunda FSR / Frame-Gen ve GPU+CPU overclock ile kabaca **1080p 60 FPS** (RX 6600 sınıfı). Bkz. [Oyun Sonuçları ve Ayarları](docs/tr/11-gaming.md).
+- **Hangi işletim sistemi?** GPU ivmelendirmesi için **yalnızca Linux** — Mesa 25.1+ ile Bazzite, Fedora, CachyOS veya Arch. Windows GPU sürücüsü yoktur. Bkz. [Linux Sürücüleri ve Kurulum](docs/tr/06-linux.md).
+- **LLM çalıştırabilir mi?** Evet — Vulkan üzerinden llama.cpp / Ollama, 16 GB GDDR6'yı VRAM olarak kullanır (küçük modellerde ~30–47 tok/s). Bkz. [BC-250'de Yapay Zeka / LLM](docs/tr/12-ai-llm.md).
+- **Nasıl soğutulur?** Stok sunucu soğutucusu masa üstünde kısıtlamaya (throttle) girer; kanatçıkları inceltin ve 120 mm fan ekleyin ya da sıvı soğutmaya geçin. Bkz. [Soğutma](docs/tr/04-cooling.md).
 
 ---
 
@@ -78,20 +78,20 @@ Governor ve undervolt GPU'yu keser, ancak CPU ve GDDR6 ne olursa olsun güç çe
 
 | # | Bölüm | Ne için |
 |---|---------|-----|
-| 01 | [BC-250 Nedir](docs/en/01-what-is-bc250.md) | teknik özellikler, boyutlar, pinout, beklentiler |
-| 02 | [Satın Alma Rehberi](docs/en/02-buying.md) | nereden, fiyat, riskler, toplu alımlar |
-| 03 | [Güç Kaynağı](docs/en/03-power-supply.md) | LOP / Flex ATX, 8 pinli pinout, kablolama |
-| 04 | [Soğutma](docs/en/04-cooling.md) | soğutucu blok, fan kanalları, test yöntemi |
-| 05 | [Kasalar ve 3D Baskı](docs/en/05-case.md) | yazdırılabilir kasa kataloğu (STL) |
-| 06 | [Linux Sürücüleri ve Kurulum](docs/en/06-linux.md) | dağıtım seçimi, amdgpu, kurulum |
-| 07 | [Windows Sürücüleri ve Kurulum](docs/en/07-windows.md) | sürücü durumu, nasıl yapılır |
+| 01 | [BC-250 Nedir](docs/tr/01-what-is-bc250.md) | teknik özellikler, boyutlar, pinout, beklentiler |
+| 02 | [Satın Alma Rehberi](docs/tr/02-buying.md) | nereden, fiyat, riskler, toplu alımlar |
+| 03 | [Güç Kaynağı](docs/tr/03-power-supply.md) | LOP / Flex ATX, 8 pinli pinout, kablolama |
+| 04 | [Soğutma](docs/tr/04-cooling.md) | soğutucu blok, fan kanalları, test yöntemi |
+| 05 | [Kasalar ve 3D Baskı](docs/tr/05-case.md) | yazdırılabilir kasa kataloğu (STL) |
+| 06 | [Linux Sürücüleri ve Kurulum](docs/tr/06-linux.md) | dağıtım seçimi, amdgpu, kurulum |
+| 07 | [Windows Sürücüleri ve Kurulum](docs/tr/07-windows.md) | sürücü durumu, nasıl yapılır |
 | 08 | [BIOS ve Tuğla Kurtarma](docs/en/08-bios.md) | mod BIOS, flashleme, tuğladan kurtarma |
-| 09 | [Overclock ve Undervolt](docs/en/09-overclock-undervolt.md) | governor, SMU, 40CU açma |
-| 10 | [WiFi ve Bluetooth Dongle'ları](docs/en/10-wifi-bt.md) | gerçekten çalışan dongle'lar |
-| 11 | [Oyun Sonuçları ve Ayarları](docs/en/11-gaming.md) | benchmark'lar, oyun başına ayar |
-| 12 | [BC-250'de Yapay Zeka / LLM](docs/en/12-ai-llm.md) | llama.cpp, ROCm |
-| 13 | [macOS / Hackintosh](docs/en/13-macos.md) | durum |
-| 14 | [Ekran ve Çıkış](docs/en/14-display.md) | DisplayPort, DP→HDMI adaptörleri, çift ekran |
+| 09 | [Overclock ve Undervolt](docs/tr/09-overclock-undervolt.md) | governor, SMU, 40CU açma |
+| 10 | [WiFi ve Bluetooth Dongle'ları](docs/tr/10-wifi-bt.md) | gerçekten çalışan dongle'lar |
+| 11 | [Oyun Sonuçları ve Ayarları](docs/tr/11-gaming.md) | benchmark'lar, oyun başına ayar |
+| 12 | [BC-250'de Yapay Zeka / LLM](docs/tr/12-ai-llm.md) | llama.cpp, ROCm |
+| 13 | [macOS / Hackintosh](docs/tr/13-macos.md) | durum |
+| 14 | [Ekran ve Çıkış](docs/tr/14-display.md) | DisplayPort, DP→HDMI adaptörleri, çift ekran |
 | 15 | [Emülasyon](docs/en/15-emulation.md) | her konsol/platform, gerçekçi durum |
 | 16 | [USB, Hub'lar ve Depolama](docs/en/16-usb-peripherals.md) | hub'lar, 5V mod, M.2 / SATA adaptörleri |
 | ❓ | [SSS](docs/tr/faq.md) · [Sorun Giderme](docs/tr/troubleshooting.md) | yaygın sorunlar |
@@ -144,7 +144,7 @@ Topluluğun ne sıklıkla atıfta bulunduğuna göre sıralanmış, asıl toplul
 
 ### Kasalar / 3D
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables ve MakerWorld — bkz. [docs/en/05-case.md](docs/en/05-case.md)
+- Printables ve MakerWorld — bkz. [docs/tr/05-case.md](docs/tr/05-case.md)
 
 ---
 

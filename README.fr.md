@@ -17,11 +17,11 @@ Tout ce qu'il faut pour passer **d'une carte dans un carton à des jeux qui tour
 ## ❓ Réponses rapides
 
 - **Qu'est-ce que l'ASRock AMD BC-250 ?** Une carte APU dérivée de la PlayStation 5 — 6 cœurs Zen 2 + 24/40 CU RDNA 2 (« Cyan Skillfish »), 16 GB GDDR6 — vendue à bas prix en tant que carte d'ex-minage et reconvertie en un mini PC Linux de jeu et d'IA, une Steam Machine DIY économique.
-- **Combien ça coûte ?** Environ **$60–130** pour la carte nue ; un build complet (alimentation, refroidisseur, SSD) revient à environ **$150–250**. Voir [Guide d'achat](docs/en/02-buying.md).
-- **Quelles performances en jeu ?** Environ **1080p 60 FPS** dans la plupart des titres (classe RX 6600) avec FSR / Frame-Gen et un overclock GPU+CPU. Voir [Résultats de jeu](docs/en/11-gaming.md).
-- **Quel OS ?** **Linux uniquement** pour l'accélération GPU — Bazzite, Fedora, CachyOS ou Arch avec Mesa 25.1+. Il n'y a pas de pilote GPU Windows. Voir [Configuration Linux](docs/en/06-linux.md).
-- **Peut-il faire tourner des LLM ?** Oui — llama.cpp / Ollama via Vulkan utilisent les 16 GB GDDR6 comme VRAM (~30–47 tok/s sur les petits modèles). Voir [IA / LLM](docs/en/12-ai-llm.md).
-- **Comment le refroidir ?** Le dissipateur serveur d'origine bride sur un bureau ; affinez les ailettes et ajoutez un ventilateur 120 mm, ou passez au watercooling. Voir [Refroidissement](docs/en/04-cooling.md).
+- **Combien ça coûte ?** Environ **$60–130** pour la carte nue ; un build complet (alimentation, refroidisseur, SSD) revient à environ **$150–250**. Voir [Guide d'achat](docs/fr/02-buying.md).
+- **Quelles performances en jeu ?** Environ **1080p 60 FPS** dans la plupart des titres (classe RX 6600) avec FSR / Frame-Gen et un overclock GPU+CPU. Voir [Résultats de jeu](docs/fr/11-gaming.md).
+- **Quel OS ?** **Linux uniquement** pour l'accélération GPU — Bazzite, Fedora, CachyOS ou Arch avec Mesa 25.1+. Il n'y a pas de pilote GPU Windows. Voir [Configuration Linux](docs/fr/06-linux.md).
+- **Peut-il faire tourner des LLM ?** Oui — llama.cpp / Ollama via Vulkan utilisent les 16 GB GDDR6 comme VRAM (~30–47 tok/s sur les petits modèles). Voir [IA / LLM](docs/fr/12-ai-llm.md).
+- **Comment le refroidir ?** Le dissipateur serveur d'origine bride sur un bureau ; affinez les ailettes et ajoutez un ventilateur 120 mm, ou passez au watercooling. Voir [Refroidissement](docs/fr/04-cooling.md).
 
 ---
 
@@ -78,22 +78,22 @@ Le governor et l'undervolt coupent le GPU, mais le CPU et la GDDR6 continuent de
 
 | # | Section | Pour |
 |---|---------|-----|
-| 01 | [Qu'est-ce que le BC-250](docs/en/01-what-is-bc250.md) | specs, dimensions, brochage, attentes |
-| 02 | [Guide d'achat](docs/en/02-buying.md) | où, prix, risques, achats groupés |
-| 03 | [Alimentation](docs/en/03-power-supply.md) | LOP / Flex ATX, brochage 8 broches, câblage |
-| 04 | [Refroidissement](docs/en/04-cooling.md) | dissipateur, carénages de ventilateur, méthode de test |
-| 05 | [Boîtiers et impression 3D](docs/en/05-case.md) | catalogue de boîtiers imprimables (STL) |
-| 06 | [Pilotes et configuration Linux](docs/en/06-linux.md) | choix de la distro, amdgpu, installation |
-| 07 | [Pilotes et configuration Windows](docs/en/07-windows.md) | état des pilotes, mode d'emploi |
-| 08 | [BIOS et récupération de brick](docs/en/08-bios.md) | BIOS moddé, flashage, débrickage |
-| 09 | [Overclocking et undervolting](docs/en/09-overclock-undervolt.md) | governor, SMU, déblocage 40CU |
-| 10 | [Dongles WiFi et Bluetooth](docs/en/10-wifi-bt.md) | dongles qui fonctionnent vraiment |
-| 11 | [Résultats et réglages de jeu](docs/en/11-gaming.md) | benchmarks, réglages par jeu |
-| 12 | [IA / LLM sur BC-250](docs/en/12-ai-llm.md) | llama.cpp, ROCm |
-| 13 | [macOS / Hackintosh](docs/en/13-macos.md) | état |
-| 14 | [Affichage et sortie vidéo](docs/en/14-display.md) | DisplayPort, adaptateurs DP→HDMI, double écran |
-| 15 | [Émulation](docs/en/15-emulation.md) | chaque console/plateforme, état réaliste |
-| 16 | [USB, hubs et stockage](docs/en/16-usb-peripherals.md) | hubs, mod 5V, adaptateurs M.2 / SATA |
+| 01 | [Qu'est-ce que le BC-250](docs/fr/01-what-is-bc250.md) | specs, dimensions, brochage, attentes |
+| 02 | [Guide d'achat](docs/fr/02-buying.md) | où, prix, risques, achats groupés |
+| 03 | [Alimentation](docs/fr/03-power-supply.md) | LOP / Flex ATX, brochage 8 broches, câblage |
+| 04 | [Refroidissement](docs/fr/04-cooling.md) | dissipateur, carénages de ventilateur, méthode de test |
+| 05 | [Boîtiers et impression 3D](docs/fr/05-case.md) | catalogue de boîtiers imprimables (STL) |
+| 06 | [Pilotes et configuration Linux](docs/fr/06-linux.md) | choix de la distro, amdgpu, installation |
+| 07 | [Pilotes et configuration Windows](docs/fr/07-windows.md) | état des pilotes, mode d'emploi |
+| 08 | [BIOS et récupération de brick](docs/fr/08-bios.md) | BIOS moddé, flashage, débrickage |
+| 09 | [Overclocking et undervolting](docs/fr/09-overclock-undervolt.md) | governor, SMU, déblocage 40CU |
+| 10 | [Dongles WiFi et Bluetooth](docs/fr/10-wifi-bt.md) | dongles qui fonctionnent vraiment |
+| 11 | [Résultats et réglages de jeu](docs/fr/11-gaming.md) | benchmarks, réglages par jeu |
+| 12 | [IA / LLM sur BC-250](docs/fr/12-ai-llm.md) | llama.cpp, ROCm |
+| 13 | [macOS / Hackintosh](docs/fr/13-macos.md) | état |
+| 14 | [Affichage et sortie vidéo](docs/fr/14-display.md) | DisplayPort, adaptateurs DP→HDMI, double écran |
+| 15 | [Émulation](docs/fr/15-emulation.md) | chaque console/plateforme, état réaliste |
+| 16 | [USB, hubs et stockage](docs/fr/16-usb-peripherals.md) | hubs, mod 5V, adaptateurs M.2 / SATA |
 | ❓ | [FAQ](docs/fr/faq.md) · [Dépannage](docs/fr/troubleshooting.md) | problèmes courants |
 
 ---
@@ -134,7 +134,7 @@ Projets communautaires canoniques, classés selon la fréquence à laquelle la c
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — images et mods de BIOS les plus référencés
 - [TheRetroWeb — base de BIOS BC-250](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — dumps de BIOS d'origine, parcourir/télécharger par version
 - [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — sauvegarde de firmware et flashage de firmware personnalisé pilotés par menu
-- Voir [docs/fr/08-bios.md](docs/en/08-bios.md) pour le flashage et la récupération de brick
+- Voir [docs/fr/08-bios.md](docs/fr/08-bios.md) pour le flashage et la récupération de brick
 
 ### Dongles WiFi / BT
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -144,7 +144,7 @@ Projets communautaires canoniques, classés selon la fréquence à laquelle la c
 
 ### Boîtiers / 3D
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables et MakerWorld — voir [docs/fr/05-case.md](docs/en/05-case.md)
+- Printables et MakerWorld — voir [docs/fr/05-case.md](docs/fr/05-case.md)
 
 ---
 

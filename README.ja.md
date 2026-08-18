@@ -17,11 +17,11 @@
 ## ❓ クイックアンサー
 
 - **ASRock AMD BC-250 とは何か？** PlayStation 5 派生の APU ボード — 6コア Zen 2 + 24/40 RDNA 2 CU（"Cyan Skillfish"）、16 GB GDDR6 — 元マイニングカードとして安価に販売され、Linux ゲーミング & AI ミニ PC、DIY の予算型 Steam Machine として転用されます。
-- **価格はいくらか？** ボード単体でおよそ **$60–130**。フル構成（PSU、クーラー、SSD）なら **$150–250** 前後。[購入ガイド](docs/en/02-buying.md) を参照。
-- **ゲーム性能は？** ほとんどのタイトルでおよそ **1080p 60 FPS**（RX 6600 クラス）。FSR / フレーム生成と GPU+CPU オーバークロックで達成します。[ゲーミングの結果](docs/en/11-gaming.md) を参照。
-- **どの OS？** GPU アクセラレーションに使えるのは **Linux のみ** — Bazzite、Fedora、CachyOS、または Mesa 25.1+ の Arch。Windows 用 GPU ドライバーはありません。[Linux セットアップ](docs/en/06-linux.md) を参照。
-- **LLM は動かせるか？** はい — Vulkan 経由の llama.cpp / Ollama が 16 GB GDDR6 を VRAM として使用します（小規模モデルで約 30–47 tok/s）。[AI / LLM](docs/en/12-ai-llm.md) を参照。
-- **冷却はどうするか？** 純正のサーバーヒートシンクは机の上ではサーマルスロットリングを起こします。フィンを薄くして 120 mm ファンを追加するか、水冷にしましょう。[冷却](docs/en/04-cooling.md) を参照。
+- **価格はいくらか？** ボード単体でおよそ **$60–130**。フル構成（PSU、クーラー、SSD）なら **$150–250** 前後。[購入ガイド](docs/ja/02-buying.md) を参照。
+- **ゲーム性能は？** ほとんどのタイトルでおよそ **1080p 60 FPS**（RX 6600 クラス）。FSR / フレーム生成と GPU+CPU オーバークロックで達成します。[ゲーミングの結果](docs/ja/11-gaming.md) を参照。
+- **どの OS？** GPU アクセラレーションに使えるのは **Linux のみ** — Bazzite、Fedora、CachyOS、または Mesa 25.1+ の Arch。Windows 用 GPU ドライバーはありません。[Linux セットアップ](docs/ja/06-linux.md) を参照。
+- **LLM は動かせるか？** はい — Vulkan 経由の llama.cpp / Ollama が 16 GB GDDR6 を VRAM として使用します（小規模モデルで約 30–47 tok/s）。[AI / LLM](docs/ja/12-ai-llm.md) を参照。
+- **冷却はどうするか？** 純正のサーバーヒートシンクは机の上ではサーマルスロットリングを起こします。フィンを薄くして 120 mm ファンを追加するか、水冷にしましょう。[冷却](docs/ja/04-cooling.md) を参照。
 
 ---
 
@@ -78,22 +78,22 @@ governor とアンダーボルトは GPU の消費を削りますが、CPU と G
 
 | # | セクション | 対象 |
 |---|---------|-----|
-| 01 | [BC-250 とは何か](docs/en/01-what-is-bc250.md) | スペック、サイズ、ピン配置、期待値 |
-| 02 | [購入ガイド](docs/en/02-buying.md) | 入手先、価格、リスク、共同購入 |
-| 03 | [電源](docs/en/03-power-supply.md) | LOP / Flex ATX、8-pin ピン配置、配線 |
-| 04 | [冷却](docs/en/04-cooling.md) | ヒートシンク、ファンシュラウド、テスト方法 |
-| 05 | [ケース & 3D プリント](docs/en/05-case.md) | プリント可能なケースのカタログ（STL） |
-| 06 | [Linux ドライバー & セットアップ](docs/en/06-linux.md) | ディストロ選択、amdgpu、インストール |
-| 07 | [Windows ドライバー & セットアップ](docs/en/07-windows.md) | ドライバー状況、手順 |
-| 08 | [BIOS & 文鎮復旧](docs/en/08-bios.md) | 改造 BIOS、書き込み、文鎮化からの復旧 |
-| 09 | [オーバークロック & アンダーボルト](docs/en/09-overclock-undervolt.md) | governor、SMU、40CU 解放 |
-| 10 | [WiFi & Bluetooth ドングル](docs/en/10-wifi-bt.md) | 実際に動くドングル |
-| 11 | [ゲーミングの結果 & 設定](docs/en/11-gaming.md) | ベンチマーク、ゲームごとのチューニング |
-| 12 | [BC-250 での AI / LLM](docs/en/12-ai-llm.md) | llama.cpp、ROCm |
-| 13 | [macOS / Hackintosh](docs/en/13-macos.md) | 状況 |
-| 14 | [ディスプレイ & 出力](docs/en/14-display.md) | DisplayPort、DP→HDMI 変換、デュアル画面 |
-| 15 | [エミュレーション](docs/en/15-emulation.md) | 各コンソール/プラットフォーム、現実的な状況 |
-| 16 | [USB、ハブ & ストレージ](docs/en/16-usb-peripherals.md) | ハブ、5V 改造、M.2 / SATA アダプター |
+| 01 | [BC-250 とは何か](docs/ja/01-what-is-bc250.md) | スペック、サイズ、ピン配置、期待値 |
+| 02 | [購入ガイド](docs/ja/02-buying.md) | 入手先、価格、リスク、共同購入 |
+| 03 | [電源](docs/ja/03-power-supply.md) | LOP / Flex ATX、8-pin ピン配置、配線 |
+| 04 | [冷却](docs/ja/04-cooling.md) | ヒートシンク、ファンシュラウド、テスト方法 |
+| 05 | [ケース & 3D プリント](docs/ja/05-case.md) | プリント可能なケースのカタログ（STL） |
+| 06 | [Linux ドライバー & セットアップ](docs/ja/06-linux.md) | ディストロ選択、amdgpu、インストール |
+| 07 | [Windows ドライバー & セットアップ](docs/ja/07-windows.md) | ドライバー状況、手順 |
+| 08 | [BIOS & 文鎮復旧](docs/ja/08-bios.md) | 改造 BIOS、書き込み、文鎮化からの復旧 |
+| 09 | [オーバークロック & アンダーボルト](docs/ja/09-overclock-undervolt.md) | governor、SMU、40CU 解放 |
+| 10 | [WiFi & Bluetooth ドングル](docs/ja/10-wifi-bt.md) | 実際に動くドングル |
+| 11 | [ゲーミングの結果 & 設定](docs/ja/11-gaming.md) | ベンチマーク、ゲームごとのチューニング |
+| 12 | [BC-250 での AI / LLM](docs/ja/12-ai-llm.md) | llama.cpp、ROCm |
+| 13 | [macOS / Hackintosh](docs/ja/13-macos.md) | 状況 |
+| 14 | [ディスプレイ & 出力](docs/ja/14-display.md) | DisplayPort、DP→HDMI 変換、デュアル画面 |
+| 15 | [エミュレーション](docs/ja/15-emulation.md) | 各コンソール/プラットフォーム、現実的な状況 |
+| 16 | [USB、ハブ & ストレージ](docs/ja/16-usb-peripherals.md) | ハブ、5V 改造、M.2 / SATA アダプター |
 | ❓ | [FAQ](docs/ja/faq.md) · [トラブルシューティング](docs/ja/troubleshooting.md) | よくある問題 |
 
 ---
@@ -134,7 +134,7 @@ governor とアンダーボルトは GPU の消費を削りますが、CPU と G
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — 最も参照される BIOS イメージ & 改造
 - [TheRetroWeb — BC-250 BIOS データベース](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — 純正 BIOS ダンプ、バージョン別に閲覧/ダウンロード可能
 - [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — メニュー駆動のファームウェアバックアップとカスタムファームウェア書き込み
-- 書き込みと文鎮復旧については [docs/en/08-bios.md](docs/en/08-bios.md) を参照
+- 書き込みと文鎮復旧については [docs/ja/08-bios.md](docs/ja/08-bios.md) を参照
 
 ### WiFi / BT ドングル
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -144,7 +144,7 @@ governor とアンダーボルトは GPU の消費を削りますが、CPU と G
 
 ### ケース / 3D
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables & MakerWorld — [docs/en/05-case.md](docs/en/05-case.md) を参照
+- Printables & MakerWorld — [docs/ja/05-case.md](docs/ja/05-case.md) を参照
 
 ---
 

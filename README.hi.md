@@ -17,11 +17,11 @@
 ## ❓ त्वरित उत्तर
 
 - **ASRock AMD BC-250 क्या है?** एक PlayStation 5-व्युत्पन्न APU board — 6-core Zen 2 + 24/40 RDNA 2 CUs ("Cyan Skillfish"), 16 GB GDDR6 — जो एक पूर्व mining कार्ड के रूप में सस्ते में बेचा जाता है और Linux gaming व AI mini PC, एक DIY बजट Steam Machine, के रूप में फिर से उपयोग में लाया जाता है।
-- **इसकी कीमत कितनी है?** केवल board के लिए लगभग **$60–130**; एक पूरा build (PSU, कूलर, SSD) लगभग **$150–250** में पहुँचता है। देखें [खरीदारी गाइड](docs/en/02-buying.md)।
+- **इसकी कीमत कितनी है?** केवल board के लिए लगभग **$60–130**; एक पूरा build (PSU, कूलर, SSD) लगभग **$150–250** में पहुँचता है। देखें [खरीदारी गाइड](docs/hi/02-buying.md)।
 - **यह gaming में कितना अच्छा है?** अधिकांश titles में लगभग **1080p 60 FPS** (RX 6600-class) FSR / Frame-Gen और GPU+CPU overclock के साथ। देखें [Gaming परिणाम](docs/en/11-gaming.md)।
-- **कौन सा OS?** GPU त्वरण के लिए **केवल Linux** — Bazzite, Fedora, CachyOS या Arch, Mesa 25.1+ के साथ। Windows GPU driver मौजूद नहीं है। देखें [Linux setup](docs/en/06-linux.md)।
+- **कौन सा OS?** GPU त्वरण के लिए **केवल Linux** — Bazzite, Fedora, CachyOS या Arch, Mesa 25.1+ के साथ। Windows GPU driver मौजूद नहीं है। देखें [Linux setup](docs/hi/06-linux.md)।
 - **क्या यह LLM चला सकता है?** हाँ — llama.cpp / Ollama over Vulkan 16 GB GDDR6 को VRAM के रूप में उपयोग करते हैं (छोटे models पर ~30–47 tok/s)। देखें [AI / LLM](docs/en/12-ai-llm.md)।
-- **मैं इसे कैसे ठंडा करूँ?** स्टॉक server heatsink डेस्क पर थ्रॉटल करता है; fins पतली करें और 120 mm fan लगाएँ, या water cooling अपनाएँ। देखें [Cooling](docs/en/04-cooling.md)।
+- **मैं इसे कैसे ठंडा करूँ?** स्टॉक server heatsink डेस्क पर थ्रॉटल करता है; fins पतली करें और 120 mm fan लगाएँ, या water cooling अपनाएँ। देखें [Cooling](docs/hi/04-cooling.md)।
 
 ---
 
@@ -78,19 +78,19 @@ Governor और undervolt GPU को काट देते हैं, लेक
 
 | # | अनुभाग | किसके लिए |
 |---|---------|-----|
-| 01 | [BC-250 क्या है](docs/en/01-what-is-bc250.md) | specs, आकार, pinout, अपेक्षाएँ |
-| 02 | [खरीदारी गाइड](docs/en/02-buying.md) | कहाँ, कीमत, जोखिम, group buys |
-| 03 | [Power Supply](docs/en/03-power-supply.md) | LOP / Flex ATX, 8-pin pinout, wiring |
-| 04 | [Cooling](docs/en/04-cooling.md) | heatsink, fan shrouds, परीक्षण विधि |
-| 05 | [Cases और 3D Printing](docs/en/05-case.md) | प्रिंट करने योग्य cases की सूची (STL) |
-| 06 | [Linux Drivers और Setup](docs/en/06-linux.md) | distro चुनाव, amdgpu, install |
-| 07 | [Windows Drivers और Setup](docs/en/07-windows.md) | driver स्थिति, कैसे करें |
-| 08 | [BIOS और Brick Recovery](docs/en/08-bios.md) | mod BIOS, flashing, un-brick |
-| 09 | [Overclocking और Undervolting](docs/en/09-overclock-undervolt.md) | governor, SMU, 40CU unlock |
-| 10 | [WiFi और Bluetooth Dongles](docs/en/10-wifi-bt.md) | dongles जो वास्तव में काम करते हैं |
+| 01 | [BC-250 क्या है](docs/hi/01-what-is-bc250.md) | specs, आकार, pinout, अपेक्षाएँ |
+| 02 | [खरीदारी गाइड](docs/hi/02-buying.md) | कहाँ, कीमत, जोखिम, group buys |
+| 03 | [Power Supply](docs/hi/03-power-supply.md) | LOP / Flex ATX, 8-pin pinout, wiring |
+| 04 | [Cooling](docs/hi/04-cooling.md) | heatsink, fan shrouds, परीक्षण विधि |
+| 05 | [Cases और 3D Printing](docs/hi/05-case.md) | प्रिंट करने योग्य cases की सूची (STL) |
+| 06 | [Linux Drivers और Setup](docs/hi/06-linux.md) | distro चुनाव, amdgpu, install |
+| 07 | [Windows Drivers और Setup](docs/hi/07-windows.md) | driver स्थिति, कैसे करें |
+| 08 | [BIOS और Brick Recovery](docs/hi/08-bios.md) | mod BIOS, flashing, un-brick |
+| 09 | [Overclocking और Undervolting](docs/hi/09-overclock-undervolt.md) | governor, SMU, 40CU unlock |
+| 10 | [WiFi और Bluetooth Dongles](docs/hi/10-wifi-bt.md) | dongles जो वास्तव में काम करते हैं |
 | 11 | [Gaming परिणाम और Settings](docs/en/11-gaming.md) | benchmarks, प्रति-game tuning |
 | 12 | [BC-250 पर AI / LLM](docs/en/12-ai-llm.md) | llama.cpp, ROCm |
-| 13 | [macOS / Hackintosh](docs/en/13-macos.md) | स्थिति |
+| 13 | [macOS / Hackintosh](docs/hi/13-macos.md) | स्थिति |
 | 14 | [Display और Output](docs/en/14-display.md) | DisplayPort, DP→HDMI adapters, dual screen |
 | 15 | [Emulation](docs/en/15-emulation.md) | हर console/platform, वास्तविक स्थिति |
 | 16 | [USB, Hubs और Storage](docs/en/16-usb-peripherals.md) | hubs, 5V mod, M.2 / SATA adapters |
@@ -134,7 +134,7 @@ Governor और undervolt GPU को काट देते हैं, लेक
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — सबसे अधिक उल्लेखित BIOS images और mods
 - [TheRetroWeb — BC-250 BIOS database](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — स्टॉक BIOS dumps, version के अनुसार ब्राउज़/डाउनलोड करें
 - [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — menu-driven firmware backup और custom-firmware flashing
-- flashing और brick recovery के लिए देखें [docs/en/08-bios.md](docs/en/08-bios.md)
+- flashing और brick recovery के लिए देखें [docs/hi/08-bios.md](docs/hi/08-bios.md)
 
 ### WiFi / BT dongles
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -144,7 +144,7 @@ Governor और undervolt GPU को काट देते हैं, लेक
 
 ### Cases / 3D
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables और MakerWorld — देखें [docs/en/05-case.md](docs/en/05-case.md)
+- Printables और MakerWorld — देखें [docs/hi/05-case.md](docs/hi/05-case.md)
 
 ---
 
