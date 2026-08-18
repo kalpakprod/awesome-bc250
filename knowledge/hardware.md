@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Hardware facts
 
-_940 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_965 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - The BC250 is a slightly cut-down PS5 APU used for mining that features 16GB of shared GDDR6 memory. — bsod2102 (re417, 2025-12-18) · _r/sffpc_ [[1]](https://www.reddit.com/r/sffpc/comments/1ppiskx/56l_ps5_apu_steam_machine/)
   - src: 5.6L PS5 apu steam machine Started life as BC250 which is a slightly cut down PS5 apu that was used for mining. These chips can now be had for dirt cheap, mine was only $140 cad.  Specs put it approx … || AMD BC-250 and the search for Cheap Compute I've been searching for disused/underappreciated compute vectors for a few months since the MI50 shot up in proce - in comes the salvaged PS5 APU on a stand…
@@ -1710,6 +1710,56 @@ _940 verified facts. Each bullet links to the source message; reaction count (re
 - The ASRock AMD BC-250 is available as a kit with a power supply but without a case. — ReLtiss (re0, 2025-07-25) [[940]](https://t.me/c/2424231195/63336)
   - src: Вон есть на лохе набор с БП но без корпуса https://www.olx.ua/d/obyavlenie/igrovaya-platforma-asrock-amd-bc-250-IDYryBv.html
 
+- The BC-250 board features an NXP CBTL04083B passive 2:1 PCIe x4 multiplexer without signal regeneration. — Daniel Lima (@daniellma) (re0, 2026-07-01) [[941]](https://t.me/c/2424231195/147354)
+  - src: Коллеги, кто-нибудь уже пробовал снять NXP CBTL04083B с платы BC250 и сделать прямой bypass всех 4 линий PCIe? Этот чип представляет собой пассивный мультиплексор PCIe x4 2:1 (без регенерации сигнала)
+- The onboard NXP multiplexer supports PCIe 3.0 speeds, but Gen3 operation on M.2 NVMe is constrained by the hub controller. — pan_Rijovich (@pan_Rijovich) (re0, 2026-07-01) [[942]](https://t.me/c/2424231195/147371)
+  - src: Ограничивает хаб именно, мультиплексор может в PCIe 3.0
+- Running Windows on the BC-250 leaves the GPU running at 1500 MHz on stock voltage without dynamic scaling due to lack of drivers. — Andrew V (@hexdumb) (re0, 2026-07-15) [[943]](https://t.me/c/2424231195/149148)
+  - src: Будет греться еще как будет питалово ж на гпу и память подаваться ж будет да еще и гавернер на гпу не поставишь и оно будет вхолостую шуршать на 1500 мгц на стоковом вольтаже для сравнения минипук на 
+- The hwmon PPT power sensor under amdgpu on BC-250 reports the combined package power consumption of the SoC, increasing from around 38W at idle to 64W under full CPU stress. — Blank (@wd2blank) (re0, 2026-07-21) [[944]](https://t.me/c/2424231195/149798)
+  - src: Так же с нагрузкой на CPU blank@fedora:~$ stress -c 12 stress: info: [19649] dispatching hogs: 12 cpu, 0 io, 0 vm, 0 hdd blank@fedora:~$ sensors k10temp-pci-00c3 Adapter: PCI adapter Tctl: +77.9
+- The SMU power register on the BC-250 reads a combined sum of GPU, CPU, and V_SOC rails, resulting in approximately 30-35W total consumption at idle. — Stas Zubenko🦄 (@dantistnfs) (re0, 2026-07-23) [[945]](https://t.me/c/2424231195/149951)
+  - src: там сумма как минимум с гпу, цпу и еще чего то (скорее всего V_SOC, по коду SMU не понятно, просто третье значение читается с регистра и суммируется) памп и контроллер памяти оно не включает но, оно о
+- Green screen system crashes on the BC-250 are most frequently caused by CPU instability. — Кирилл Павлов (@mrK0ks) (re0, 2026-07-25) [[946]](https://t.me/c/2424231195/150067)
+  - src: Зеленый экран это чаще всего процессор крашит систему
+- The unpopulated SPEAKER1 (J5) header on the BC-250 board is only for a system buzzer, as there is no onboard audio chip. — Andrew V (@hexdumb) (re0, 2026-07-25) [[947]](https://t.me/c/2424231195/150081)
+  - src: Єто тьі меня спрашиваешь? ) Вообще да Я ж говорю, спикер єто вроде всегда пищалка да и аудиочипа на плате ж нету вообще
+- In clpeak on Vulkan RADV GFX1013 with 24 CUs, the BC-250 achieves up to 400.44 GB/s global memory bandwidth (float4) and ~203 GB/s transfer bandwidth. — Andrew V (@hexdumb) (re0, 2026-07-26) [[948]](https://t.me/c/2424231195/150390)
+  - src: > clpeak Backend: Vulkan Device 0: AMD BC-250 (RADV GFX1013) Driver version : 26.1.5 API version : 1.4.354 VRAM : 5409 MB Compute units : 24 .... Global me
+- An ASM1166-based M.2 to SATA adapter not recognized initially in BIOS became fully functional after performing a CMOS reset. — Moreau (@skarahod) (re0, 2026-07-29) [[949]](https://t.me/c/2424231195/150592)
+  - src: Скинув батарейку, зробив clear CMOS і запрацювало.
+- When connected via USB cable, the DualSense controller is recognized natively, whereas over Bluetooth it identifies as a generic controller. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-01) [[950]](https://t.me/c/2424231195/151863)
+  - src: по проводу будет определяться как дуал сенс, по бт будет как дженерик контролер
+- The PCIe 2.0 x2 interface delivers a theoretical bandwidth limit of 1000 MB/s per direction, yielding approximately 800–850 MB/s of real-world effective throughput. — iSnechik🇺🇦 (@iSanechik) (re0, 2026-08-03) [[951]](https://t.me/c/2424231195/152337)
+  - src: Интерфейс PCIe 2.0 x2 (две линии) обеспечивает максимальную чистую скорость передачи данных 1000 МБ/с(1 ГБ/с) в одну сторону. С учетом потерь на кодирование информации, реальная скорость работы устрой
+- The Lekuo AMD B650 expansion card uses 4 PCIe 4.0 lanes and a 6-pin GPU power connector to provide 4 M.2 slots, 4 SATA 3 ports, and 4 USB ports. — Алесь (re0, 2026-08-04) [[952]](https://t.me/c/2424231195/152674)
+  - src: Lekuo представила необычную карту расширения с чипсетом AMD B650 Идея не нова, но в данном случае подкупает цена – такая карта стоит 599 юаней или около 7 тысяч рублей. При этом на ней есть 4 слота M.
+- Windows 10 installs successfully on the AMD BC-250 motherboard, but no functional display driver exists for the integrated GPU. — Василий Скрябин (@Vasya_karapuz) (re0, 2026-08-04) [[953]](https://t.me/c/2424231195/152695)
+  - src: Винда тоже встает 10-ка. Только драйвера видеоядра нет
+- The AMD BC-250 board has maximum dimensions of 310 mm length, 145 mm width, and 48 mm height with the stock heatsink. — ジャッカル 狼 (@Jakkarutoy) (re0, 2026-08-04) [[954]](https://t.me/c/2424231195/152733)
+  - src: Длинна платы (в самом широком)- 310 мм Ширина 145 м Высота с радиатором 48 мм
+- The integrated Ethernet port on the AMD BC-250 board is limited to 1 GbE, requiring USB 3.0 to 5 GbE adapters for higher-bandwidth networking in multi-board tensor parallelism setups. — Nicoló (@nicolodeva) (re0, 2026-08-06) [[955]](https://t.me/c/2424231195/153027)
+  - src: KAT, как правило, лучше справляется с кодированием: выполняет те же задачи за меньшее время (более краткие выводы) и более точно вносит исправления. Я жду, когда мне пришлют второй BC-250 для реализац
+- Documentation for BC-250 hardware, including J2000 and J2001 auxiliary power connector pinouts, is hosted at https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md#j2000-and-j2001. — Максим Калитюк (re0, 2026-08-08) [[956]](https://t.me/c/2424231195/153657)
+  - src: https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md#j2000-and-j2001
+- Molex Micro-Fit compatible crimp terminals (MFW-T) for custom BC-250 power wiring can be sourced at https://kosmodrom.ua/roz-39-yem-micro-fit/mfw-t.html. — Moreau (re0, 2026-08-09) [[957]](https://t.me/c/2424231195/153692)
+  - src: https://kosmodrom.ua/roz-39-yem-micro-fit/mfw-t.html
+- The M.2 NVMe slot on the AMD BC-250 motherboard operates at PCIe Gen 2 speeds. — Andrew V (@hexdumb) (re0, 2026-08-10) [[958]](https://t.me/c/2424231195/154114)
+  - src: Gen4? Кстати да там явно искусственно gen2 используется для nvme
+- The BC-250 M.2 slot is hybrid and supports both NVMe and SATA M.2 SSDs. — Jack Fisher (@Jacky_Fish) (re0, 2026-08-12) [[959]](https://t.me/c/2424231195/154206)
+  - src: У нас оба варианта подходят
+- External peripherals and GPUs connected via the BC-250 M.2 slot are bandwidth-limited by its PCIe 2.0 x2 interface. — Владислав (re0, 2026-08-12) [[960]](https://t.me/c/2424231195/154370)
+  - src: На сколько ей позволяет шина pci-e 2.0 2x.
+- The hardware video codec (VCN) on the BC-250 remains disabled because power activation through the SMU firmware is unimplemented. — pan_Rijovich (@pan_Rijovich) (re0, 2026-08-12) [[961]](https://t.me/c/2424231195/154377)
+  - src: А включать его должен smu, но у нас это не реализовано
+- The CPU on the AMD BC-250 has an L3 cache configuration of 4+4 MB for a total of 8 MB. — Blank (@wd2blank) (re0, 2026-08-13) [[962]](https://t.me/c/2424231195/154648)
+  - src: у проца есть L3 4+4 (8) но ет даже меньше чем у десктопа Zen 2
+- Disabling a defective CU pair (running 38 CUs instead of 40) resolved GPU crashes and video playback issues on a partially defective BC-250 die. — D (@nasonovdanila) (re0, 2026-08-14) [[963]](https://t.me/c/2424231195/155048)
+  - src: да да, у меня есть с завода дырка я включил 24 + ее и получил ошибки сразу потом включил 40 - дырка = 38 и ошибки пропали корчое у меня дырочка реально бракованная, о чем выше писалось завел меня в ту
+- Detailed pinouts for AMD BC-250 board connectors are documented at https://elektricm.github.io/amd-bc250-docs/hardware/pinouts/. — Алесь (re0, 2026-08-16) [[964]](https://t.me/c/2424231195/155639)
+  - src: https://elektricm.github.io/amd-bc250-docs/hardware/pinouts/ про разъемы на плате
+- The minimal operational setup for the AMD BC-250 requires an M.2 2280 SSD, high-pressure cooling fans (such as Arctic P12 Max), backplate cooling, and a 12V PSU delivering at least 300W. — Andrew V (@hexdumb) (re0, 2026-08-16) [[965]](https://t.me/c/2424231195/155723)
+  - src: Too broad question what kind of psu you want to use (atx, server, flex, lop, etc.)? What case? Connect to tv (resolution, freq, hdr), pc monitor? Minimum you'll need: a m2 sata or nvme ssd 2280 at l
 # Citations
 
 [1] https://www.reddit.com/r/sffpc/comments/1ppiskx/56l_ps5_apu_steam_machine/
@@ -2652,3 +2702,28 @@ _940 verified facts. Each bullet links to the source message; reaction count (re
 [938] https://t.me/c/2424231195/62720
 [939] https://t.me/c/2424231195/63096
 [940] https://t.me/c/2424231195/63336
+[941] https://t.me/c/2424231195/147354
+[942] https://t.me/c/2424231195/147371
+[943] https://t.me/c/2424231195/149148
+[944] https://t.me/c/2424231195/149798
+[945] https://t.me/c/2424231195/149951
+[946] https://t.me/c/2424231195/150067
+[947] https://t.me/c/2424231195/150081
+[948] https://t.me/c/2424231195/150390
+[949] https://t.me/c/2424231195/150592
+[950] https://t.me/c/2424231195/151863
+[951] https://t.me/c/2424231195/152337
+[952] https://t.me/c/2424231195/152674
+[953] https://t.me/c/2424231195/152695
+[954] https://t.me/c/2424231195/152733
+[955] https://t.me/c/2424231195/153027
+[956] https://t.me/c/2424231195/153657
+[957] https://t.me/c/2424231195/153692
+[958] https://t.me/c/2424231195/154114
+[959] https://t.me/c/2424231195/154206
+[960] https://t.me/c/2424231195/154370
+[961] https://t.me/c/2424231195/154377
+[962] https://t.me/c/2424231195/154648
+[963] https://t.me/c/2424231195/155048
+[964] https://t.me/c/2424231195/155639
+[965] https://t.me/c/2424231195/155723

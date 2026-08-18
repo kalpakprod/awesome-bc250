@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Linux drivers & setup
 
-_2493 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_2541 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - The user installed RetroDECK on Bazzite with overclocking and undervolting. — OkDebate6649 (re888, 2026-04-21) · _r/linux_gaming_ [[1]](https://www.reddit.com/r/linux_gaming/comments/1srownd/lego_linux_gaming_pc_bc250_build/)
   - src: LEGO Linux Gaming PC (BC250 Build) Recently, I built a Bazzite PC using a BC250 mining board and LEGO.  Originally, I built it as a Batocera emulation machine, but the performance wasn’t as good as I …
@@ -4110,6 +4110,102 @@ _2493 verified facts. Each bullet links to the source message; reaction count (r
 - Applications can be run under strace to identify where they fail. — Nekto (re0, 2025-08-08) [[2493]](https://t.me/c/2424231195/66331)
   - src: ещё можно запускать приложуху под strace и смотреть на чём конкретно валится, но это лучше доку изучить чтоб отсечь шум
 
+- Executing 'systemctl restart display-manager' restores the Steam overlay if it disappears during a session. — Дмитрий (@Dubaff) (re0, 2026-07-01) [[2494]](https://t.me/c/2424231195/147284)
+  - src: systemctl restart display-manager - вот это помогает вернуть оверлей
+- The AMD BC-250 APU utilizes cyan_skillfish2_*.bin.xz firmware files located in /usr/lib/firmware/amdgpu/ on Linux. — Unknown (re0, 2026-07-01) [[2495]](https://t.me/c/2424231195/147312)
+  - src: ну по крайней мере в /usr/lib/firmware/amdgpu/ как раз лежат: /usr/lib/firmware/amdgpu/cyan_skillfish2_ce.bin.xz /usr/lib/firmware/amdgpu/cyan_skillfish2_me.bin.xz /usr/lib/firmware/amdgpu/cyan_skillf
+- The AMD BC-250 platform operates exclusively on open-source Mesa drivers and does not support proprietary AMD drivers. — Unknown (re0, 2026-07-01) [[2496]](https://t.me/c/2424231195/147314)
+  - src: и по умолчанию только Mesa без Amd проитарного драйвера он тут точно не встает
+- An older Linux fix for black screens on kernel update involved symlinking navi10_gpu_info.bin.zst to cyan_skillfish_gpu_info.bin.zst. — M (@mirvsilv) (re0, 2026-07-02) [[2497]](https://t.me/c/2424231195/147414)
+  - src: #Arch #Ubuntu #Fedora #Text #Фикс Гений николай разобрался с тем, что не работает при обновлении ядра, Алесь проверил, фикс работает Если у вас чёрный экран после обновления, откатывать ядро больше не
+- Installing SteamOS 3.9 resolves onboard audio output issues on AMD BC-250 setups. — Alexander Korotkov (@freefelt) (re0, 2026-07-15) [[2498]](https://t.me/c/2424231195/149154)
+  - src: Разобрался. Поставил SteamOS 3.9 как в этом видео и звук заработал.
+- The repository bc250-steamos-real-toolkit provides HDMI-CEC, DisplayPort, and ACPI patches for running official SteamOS builds on AMD BC-250. — Andrew V (@hexdumb) (re0, 2026-07-15) [[2499]](https://t.me/c/2424231195/149192)
+  - src: https://github.com/rpf16rj/bc250-steamos-real-toolkit Тааак на стимОС есть патчи чтоб hdmi-cec работал фиксьі dp Походу даже сон сделали Буде час та натхнення прийдьотся ставить бо богомерзкий базайт 
+- The AMD BC-250 BIOS lacks CPU power tables, requiring an ACPI SSDT-CST/SSDT-PST early-initrd override to enable core idling and cpufreq scaling between 800 and 3200 MHz. — Andrew V (@hexdumb) (re0, 2026-07-15) [[2500]](https://t.me/c/2424231195/149198)
+  - src: Та меня тож терзают смутньіе сомнения 🤔 ... я неправильно понял полез в репку проекта которьій правит acpi: ACPI fix (SSDT-CST/SSDT-PST early-initrd override) — the BC-250 BIOS ships no CPU power tabl
+- The redbeard1083/bc250-toolkit repository contains configuration and tuning scripts for running CachyOS on AMD BC-250 boards. — Ave (re0, 2026-07-16) [[2501]](https://t.me/c/2424231195/149259)
+  - src: https://github.com/redbeard1083/bc250-toolkit
+- The bc250-control-center utility provides a graphical tool and AUR package to control CPU/GPU frequencies, toggle 24 to 40 compute units, and manage PWM fan speeds on AMD BC-250. — Fabian Beita (@movacx) (re0, 2026-07-20) [[2502]](https://t.me/c/2424231195/149657)
+  - src: Привет! Хочу поделиться небольшим обновлением по проекту, над которым я работаю. Я реализовал модуль в интерфейсе для управления скоростью вращения вентиляторов — для всех, кто заинтересован в управле
+- The bc250-steamos-real-toolkit repository provides an automated utility specifically tailored for unlocking 40 compute units on SteamOS. — kDn (@kDnZP) (re0, 2026-07-20) [[2503]](https://t.me/c/2424231195/149669)
+  - src: Вчера установил под SteamOS и вроде все относительно нормально работает. Из полезного, чего бы хотелось: вот этот проект https://github.com/rpf16rj/bc250-steamos-real-toolkit имеет собственный метод р
+- The bc250-control-center application installs its core dependencies, UMR tools, and scripts into the ~/.local/share/bc250controlcenter directory. — Fabian Beita (@movacx) (re0, 2026-07-20) [[2504]](https://t.me/c/2424231195/149683)
+  - src: Важно отметить: предоставленное мной приложение устанавливает всё необходимое и клонирует инструменты в определённую директорию: .local/share/bc250controlcenter. Сначала нажмите кнопку «Подготовить за
+- The standalone script for managing compute units in bc250-control-center is located at ~/.local/share/bc250-control-center/ResourceTools/bc250-cu-live-manager/bc250-cu-live-manager.sh. — Fabian Beita (@movacx) (re0, 2026-07-20) [[2505]](https://t.me/c/2424231195/149696)
+  - src: приложению не удается получить права администратора через Polkit/pkexec. Пожалуйста, выполните следующие команды в терминале: command -v pkexec pkexec id ps aux | grep -Ei 'polkit|policykit' | grep -v
+- Setting the kernel boot parameter mitigations=off improves gaming performance on the BC-250. — Andrew V (@hexdumb) (re0, 2026-07-26) [[2506]](https://t.me/c/2424231195/150308)
+  - src: mitigations=off прописал?
+- Running games via gamescope-session-cachyos saves approximately 1 GB of RAM and lowers CPU overhead compared to running under a full desktop session. — Andrew V (@hexdumb) (re0, 2026-07-27) [[2507]](https://t.me/c/2424231195/150418)
+  - src: - Доктор, мне больно когда я делаю вот так. - Не делайте так ... )))))) Ну и серьезно вьіведи полньій монторинг в стиме шоб показьівало нагрузку по ядрам тьі вроде на кеши? Стим запускается под плазмо
+- The BC250 Control Center update adds SteamOS Game Mode support, gamepad navigation, and a GUI table for configuring Compute Units (40CU/WGP), available on GitHub at https://github.com/movacx/bc250-control-center and via AUR. — Fabian Beita (@movacx) (re0, 2026-07-28) [[2508]](https://t.me/c/2424231195/150515)
+  - src: Привет, ребята! Хочу рассказать о новом обновлении BC250 Control Center. Во-первых, спасибо всем, кто писал об ошибках и делился проблемами. Некоторые из них уже удалось исправить, и ваши сообщения ре
+- The bc250-toolkit-decky project (https://github.com/Necrosiak/bc250-toolkit-decky) provides a Decky Loader plugin for controlling BC-250 settings in SteamOS and Bazzite. — Максим Калитюк (@shereant) (re0, 2026-07-28) [[2509]](https://t.me/c/2424231195/150517)
+  - src: https://github.com/Necrosiak/bc250-toolkit-decky Можна додати щось таке, або додати сумісність з ним?
+- An ACPI fix updated specifically for 8-core unlocked BC-250 systems is available at https://github.com/mendesrr/bc250-acpi-fix-updated-8c. — Максим Калитюк (@shereant) (re0, 2026-07-30) [[2510]](https://t.me/c/2424231195/150791)
+  - src: https://github.com/mendesrr/bc250-acpi-fix-updated-8c Не знаю чи допоможе
+- Hardware VCN video encoding cannot be loaded on the AMD BC-250 because the available Cyan Skillfish firmware originates from the PS5 and is unsigned, which the AMD PSP rejects. — Stas Zubenko🦄 (@dantistnfs) (re0, 2026-07-30) [[2511]](https://t.me/c/2424231195/150880)
+  - src: нужен не общий VCN амд, а конкретно для cyan skillfish у нас фирмвере есть, но он от ps5 и не подписанный, так что даже загрузить не можем
+- Reading VCN registers directly in Linux (vcn2_0.c) causes a permanent system hang on the AMD BC-250, likely due to PSP access restrictions, disabled clock/power gating, or non-matching register offsets. — pan_Rijovich (@pan_Rijovich) (re0, 2026-07-30) [[2512]](https://t.me/c/2424231195/150936)
+  - src: Также в коде драйвера линукс в vcn2_0.c есть условия что прошивка может быть загружена в режиме direct load, но не известно реально ли это рабочий путь. Я пытался читать регистры vcn, но все они вызыв
+- BC250 Control Center is available in the Arch User Repository (AUR) and can be updated using AUR helpers via yay -S bc250-control-center-git without resetting user settings. — Fabian Beita (@movacx) (re0, 2026-08-01) [[2513]](https://t.me/c/2424231195/151989)
+  - src: Привет спасибо за информацию Похоже что установщик зависимостей конфликтует с уже существующей установкой bc250-cu-live-manager вместо того чтобы использовать или обновить ее Я проверю этот случай и п
+- To resolve installation conflicts with bc250-cu-live-manager in BC250 Control Center, uninstall the background service using sudo /usr/local/bin/bc250-cu-live-manager uninstall-service before reinstalling dependencies. — Fabian Beita (@movacx) (re0, 2026-08-01) [[2514]](https://t.me/c/2424231195/152005)
+  - src: В качестве временного решения удалите сервис напрямую через оригинальный скрипт Live Manager. Сначала попробуйте выполнить: sudo /usr/local/bin/bc250-cu-live-manager uninstall-service Если эта команда
+- Unlocking CPU cores on the BC-250 breaks the GPU clock frequency readout in the amdgpu driver. — pan_Rijovich (@pan_Rijovich) (re0, 2026-08-02) [[2515]](https://t.me/c/2424231195/152029)
+  - src: С разблокировкой ядер ЦПУ ломается показание частоты ГПУ и это не возможно пофиксить на данный момент
+- Fixing GPU telemetry metrics on BC-250 requires applying bc250-cyan-skillfish-gfxclk.patch and bc250-cyan-skillfish-gpu-telemetry.patch from the bc250-steamos repository. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-02) [[2516]](https://t.me/c/2424231195/152085)
+  - src: Для фикса метрик ГПУ надо эти два патча установить
+- Overlay telemetry on 8-core BC-250 systems can be repaired using https://github.com/mendesrr/bc250-acpi-fix-updated-8c for CPU frequency and https://github.com/higorprado/bc250-8core-telemetry-report for GPU frequency. — Алесь (re0, 2026-08-02) [[2517]](https://t.me/c/2424231195/152189)
+  - src: из найденного сегодня под кашу: https://github.com/mendesrr/bc250-acpi-fix-updated-8c фиксит отображение частот цпу в оверлее https://github.com/higorprado/bc250-8core-telemetry-report фиксит отображе
+- A Radeon patch repository for the AMD BC-250 is hosted on GitHub at vogar345/Bc250-radeon-patch. — D (@DAngarsk) (re0, 2026-08-05) [[2518]](https://t.me/c/2424231195/152836)
+  - src: https://github.com/vogar345/Bc250-radeon-patch?ysclid=msg1atowlf38084474
+- The acpifix utility resolves an issue on the AMD BC-250 where CPU clock frequencies become stuck. — Alex (@SadGofLC) (re0, 2026-08-06) [[2519]](https://t.me/c/2424231195/153078)
+  - src: тот фикс что б не залипали частоты процессора
+- A custom build script can compile only the patched AMDGPU module for Cyan Skillfish on Fedora DNF, but it cannot write to immutable root filesystems like SteamOS or Bazzite. — Blank (@wd2blank) (re0, 2026-08-07) [[2520]](https://t.me/c/2424231195/153196)
+  - src: Ну могу весь мой скрипт кинуть, он банально качает сирці отсекая все кроме части AMDGPU и протом просто его патчит, так то скрипт для Fedora DNF но его можна и для других дистро зделать, момент что ту
+- A graphics fix for the BC-250 Cyan Skillfish GPU (gfx1013) is available in the GitHub repository DryhoppedIPA/bc250-gfx1013-fix. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-08) [[2521]](https://t.me/c/2424231195/153582)
+  - src: https://github.com/DryhoppedIPA/bc250-gfx1013-fix
+- Performance optimizations for the BC-250 APU require applying patches to both Mesa and the amdgpu kernel driver. — Blank (re0, 2026-08-09) [[2522]](https://t.me/c/2424231195/153723)
+  - src: Опять же, там патч как и Mesa так и в ядре AMDGPU
+- CachyOS provides working DisplayPort audio out of the box on AMD BC-250 without extra kernel patches. — Andrew V (re0, 2026-08-09) [[2523]](https://t.me/c/2424231195/153771)
+  - src: Базайт? Переползай на кеши там звук из коробки работает
+- A customized Linux CachyOS kernel repository for the AMD BC-250 is hosted at https://github.com/MastaG/linux-cachyos-bc250. — Andrew V (re0, 2026-08-10) [[2524]](https://t.me/c/2424231195/153940)
+  - src: Такое нашел для кеши Еще не пробовал https://github.com/MastaG/linux-cachyos-bc250
+- A collection of Linux Mesa and kernel fixes for the BC-250 gfx1013 graphics architecture is hosted at https://github.com/DryhoppedIPA/bc250-gfx1013-fix. — Blank (re0, 2026-08-10) [[2525]](https://t.me/c/2424231195/153971)
+  - src: https://github.com/DryhoppedIPA/bc250-gfx1013-fix
+- GPU frequency telemetry on the BC-250 is read via Mailbox SMU to ensure accurate reporting after unlocking 8 CPU cores. — Blank (re0, 2026-08-10) [[2526]](https://t.me/c/2424231195/153973)
+  - src: Просто скоро с BC будет исторія бесконечних форков, ну зато тут через Mail Box SMU реализовано читання частоти GPU чтоби не било каши после анлока 8 ядер
+- The mesh and task shader patches (0002 and 0003) for gfx1013 are disabled in bc250-gfx1013-fix v0.2.1-alpha because they cause GPU hangs. — Andrew V (re0, 2026-08-10) [[2527]](https://t.me/c/2424231195/153977)
+  - src: These two patches are already rebased and kept in the repository, but are not applied to the Mesa package yet: patches/mesa/0002-gfx1013-mesh-task-shaders.patch patches/mesa/0003-gfx1013-taskmesh-quer
+- Bazzite is built on Fedora Atomic with a read-only root filesystem to enhance system resilience against user modification errors. — Blank (@wd2blank) (re0, 2026-08-12) [[2528]](https://t.me/c/2424231195/154205)
+  - src: Ну Bazzite на базе Fedora Atomic, разница между обичной Fedora по факту в том что систему сложней убить но и системние файли менять нельзя (read-only)
+- Sending raw_send(0, 0x3D) attempts to enable the VCN block in the BC-250 SMU, but kernel support fails because cyan_skillfish2 lacks a VCN driver. — Pavel (@pacha416) (re0, 2026-08-13) [[2529]](https://t.me/c/2424231195/154589)
+  - src: т.е. если сделать патч на дискавери, прописать версию в amdgpu_ip_blocks, то оно пытается включить vcn но упирается в кернел драйвер. У cyan_skillfish2 нет vcn драйвера, я хз можно ли ему скормить лев
+- Under Linux, the AMD BC-250 GPU (amdgpu) discovers IP blocks nv_common (v1_0_0), gmc (v10_0_0), ih (v5_0_0), psp (v11_0_8), smu (v11_0_0), dm (v1_0_0), gfx (v10_0_0), and sdma (v5_0_0). — Blank (@wd2blank) (re0, 2026-08-13) [[2530]](https://t.me/c/2424231195/154592)
+  - src: blank@fedora:~$ sudo dmesg | grep -iE "ip discovery|VCN|amdgpu.*ip block" [sudo] пароль до blank: [ 5.205840] amdgpu 0000:01:00.0: detected ip block number 0 <common_v1_0_0> (nv_common) [ 5.205845
+- Enabling zswap with lz4 compression on an 8 GB swap partition significantly reduces memory usage spikes in demanding games on BC-250. — Владислав (re0, 2026-08-14) [[2531]](https://t.me/c/2424231195/154869)
+  - src: zswap или просто swap? zswap помимо прочего туда ещё накидывает сжатие. Как на уровне основной памяти, так и того что попадает на диск. Я после включения zswp в тех же сценариях увидел заметное снижен
+- The bc-250-toolkit setup script provides an option to disable ZRAM and enable ZSWAP with lz4 compression. — Владислав (re0, 2026-08-14) [[2532]](https://t.me/c/2424231195/154932)
+  - src: Initial Setup ────────────────────────────────────────────────────────────── Run these tasks to configure your BC-250 system. [ 1] CachyOS Kernel Replace Deckify kernel with standard C
+- Ubuntu 24.04 runs stably on the AMD BC-250 system. — Владислав (re0, 2026-08-14) [[2533]](https://t.me/c/2424231195/154982)
+  - src: У меня на BC-250 ubuntu 24.04 и нормально работает. Не то что ваши базиты, хуиды, кешиды.
+- Native AMD BC-250 audio fixes are integrated into Linux kernel 6.19 and newer, functioning out of the box in CachyOS kernel 7.x and Bazzite beta. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-15) [[2534]](https://t.me/c/2424231195/155300)
+  - src: Фикс звука включен в ядро 6.19 и выше. На стабильном баззайте пока еще ядро 6.17 потому и звук надо фиксить вручную. А Бета уже на более новом ядре, вот и работает. Тоже касается Кеши, у нее ядро уже 
+- Pre-patched Bazzite OS images for the AMD BC-250 are hosted at https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images. — Владислав (re0, 2026-08-15) [[2535]](https://t.me/c/2424231195/155463)
+  - src: https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images тут нет нужного?
+- Applying the adapted bc250-gfx1013-fix script on CachyOS provides Mesa 26.2.0-rc3 with async compute support (QUEUE_COMPUTE_BIT > 1), increasing framerates in Cyberpunk 2077 by around 10 FPS. — Alexander Korotkov (@freefelt) (re0, 2026-08-15) [[2536]](https://t.me/c/2424231195/155468)
+  - src: С Клодом адаптировали https://github.com/DryhoppedIPA/bc250-gfx1013-fix для CachyOS. По идее, ничего сломаться не должно, есть возможность отката на любом этапе, но используйте на свой страх и риск. У
+- Adding 'ttm.pages_limit=3959290 ttm.page_pool_size=3959290' to KERNEL_CMDLINE in /etc/default/limine on CachyOS prevents game crashes caused by exceeding the default 8GB VRAM limit. — Alexander Korotkov (@freefelt) (re0, 2026-08-16) [[2537]](https://t.me/c/2424231195/155534)
+  - src: Еще я заметил один неприятный момент с играми, которым надо больше 8гб видеопамяти. Тот же RE Requiem просто вылетает, если все на максимум выкрутить. Дело в том, что системно, даже когда указываешь в
+- On Bazzite OS, running 'rpm-ostree kargs --append-if-missing="ttm.pages_limit=3145728"' expands the VRAM allocation limit to 12GB to prevent crashes in heavy games. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-16) [[2538]](https://t.me/c/2424231195/155535)
+  - src: rpm-ostree kargs --append-if-missing="ttm.pages_limit=3145728" якщо баззайт
+- The bc250-cu-unlock tool fails to update active CU counts properly in BC250 Control Center on Artix Linux due to hardcoded systemd service dependencies. — Назар (@nazar_is) (re0, 2026-08-16) [[2539]](https://t.me/c/2424231195/155686)
+  - src: Bug: Artix Linux (openrc) - activating 40 CU's from bc250*cu-unlock cmd doesn't show them in control-center, only showing default 24 as active Obviously there is systemd-only support, but the rest of
+- A patch to restore GPU metrics when using 8 CPU cores on Cyan Skillfish (BC-250) is available at https://github.com/keyboardspecialist/bc250-steamos/blob/cracktro/bc250-audio-fix/bc250-cyan-skillfish-8core-metrics.patch. — Pavel (@pacha416) (re0, 2026-08-16) [[2540]](https://t.me/c/2424231195/155687)
+  - src: https://github.com/keyboardspecialist/bc250-steamos/blob/cracktro/bc250-audio-fix/bc250-cyan-skillfish-8core-metrics.patch
+- The BC250 Control Center application requires systemd and lacks native support for OpenRC init systems. — Fabian Beita (@movacx) (re0, 2026-08-16) [[2541]](https://t.me/c/2424231195/155699)
+  - src: Да, дело в том, что BC250 Control Center пока не рассчитан на OpenRC. В следующем обновлении я улучшу архитектуру, чтобы такие системы поддерживались лучше. Спасибо за отчёт!
 # Citations
 
 [1] https://www.reddit.com/r/linux_gaming/comments/1srownd/lego_linux_gaming_pc_bc250_build/
@@ -6605,3 +6701,51 @@ _2493 verified facts. Each bullet links to the source message; reaction count (r
 [2491] https://t.me/c/2424231195/66251
 [2492] https://t.me/c/2424231195/66330
 [2493] https://t.me/c/2424231195/66331
+[2494] https://t.me/c/2424231195/147284
+[2495] https://t.me/c/2424231195/147312
+[2496] https://t.me/c/2424231195/147314
+[2497] https://t.me/c/2424231195/147414
+[2498] https://t.me/c/2424231195/149154
+[2499] https://t.me/c/2424231195/149192
+[2500] https://t.me/c/2424231195/149198
+[2501] https://t.me/c/2424231195/149259
+[2502] https://t.me/c/2424231195/149657
+[2503] https://t.me/c/2424231195/149669
+[2504] https://t.me/c/2424231195/149683
+[2505] https://t.me/c/2424231195/149696
+[2506] https://t.me/c/2424231195/150308
+[2507] https://t.me/c/2424231195/150418
+[2508] https://t.me/c/2424231195/150515
+[2509] https://t.me/c/2424231195/150517
+[2510] https://t.me/c/2424231195/150791
+[2511] https://t.me/c/2424231195/150880
+[2512] https://t.me/c/2424231195/150936
+[2513] https://t.me/c/2424231195/151989
+[2514] https://t.me/c/2424231195/152005
+[2515] https://t.me/c/2424231195/152029
+[2516] https://t.me/c/2424231195/152085
+[2517] https://t.me/c/2424231195/152189
+[2518] https://t.me/c/2424231195/152836
+[2519] https://t.me/c/2424231195/153078
+[2520] https://t.me/c/2424231195/153196
+[2521] https://t.me/c/2424231195/153582
+[2522] https://t.me/c/2424231195/153723
+[2523] https://t.me/c/2424231195/153771
+[2524] https://t.me/c/2424231195/153940
+[2525] https://t.me/c/2424231195/153971
+[2526] https://t.me/c/2424231195/153973
+[2527] https://t.me/c/2424231195/153977
+[2528] https://t.me/c/2424231195/154205
+[2529] https://t.me/c/2424231195/154589
+[2530] https://t.me/c/2424231195/154592
+[2531] https://t.me/c/2424231195/154869
+[2532] https://t.me/c/2424231195/154932
+[2533] https://t.me/c/2424231195/154982
+[2534] https://t.me/c/2424231195/155300
+[2535] https://t.me/c/2424231195/155463
+[2536] https://t.me/c/2424231195/155468
+[2537] https://t.me/c/2424231195/155534
+[2538] https://t.me/c/2424231195/155535
+[2539] https://t.me/c/2424231195/155686
+[2540] https://t.me/c/2424231195/155687
+[2541] https://t.me/c/2424231195/155699

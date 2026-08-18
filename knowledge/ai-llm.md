@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # AI / LLM
 
-_167 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_178 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - The BC250 is being used for Hipfire local development and AMD architecture validation. — schuttdev (re147, 2026-04-29) · _r/LocalLLaMA_ [[1]](https://www.reddit.com/r/LocalLLaMA/comments/1syp3un/hipfire_dev_update_full_amd_arch_validation/)
   - src: Hipfire dev update: full AMD arch validation incoming (RDNA 1 thru 4, plus Strix Halo and bc250) Hipfire local dev lab coming together. MS-S1 MAX (Strix Halo, RDNA 3.5) + R9700 (RDNA 4 Pro) just lande…
@@ -307,6 +307,28 @@ _167 verified facts. Each bullet links to the source message; reaction count (re
 - The rife-ncnn-vulkan repository on GitHub is suggested for use. — pussy eater (re0, 2026-06-15) [[167]](https://t.me/c/2424231195/144611)
   - src: https://github.com/nihui/rife-ncnn-vulkan попробуй
 
+- The Bonsai-27B large language model runs at an average speed of approximately 17 tokens per second on the AMD BC-250. — Unknown (re0, 2026-07-16) [[168]](https://t.me/c/2424231195/149261)
+  - src: В среднем 17 токенов в секунду
+- Executing Ternary quantized LLM models on AMD BC-250 requires a dedicated custom fork of llama.cpp. — Игорь ториг (re0, 2026-07-16) [[169]](https://t.me/c/2424231195/149277)
+  - src: Для ternary нужен их форк llama.cpp
+- The QuarkStar C and Vulkan inference engine (https://github.com/Ninnix/q36) is optimized to run Qwen3.6-35B-A3B in unified memory on AMD BC-250, using roughly 10–11 GB of RAM with asymmetric quantization. — Nicoló (@nicolodeva) (re0, 2026-07-22) [[170]](https://t.me/c/2424231195/149867)
+  - src: Привет! Не уверен, разрешена ли здесь самореклама, поэтому модераторы могут удалить сообщение, если оно неуместно. Я разработал QuarkStar — open-source движок инференса на C и Vulkan, оптимизированный
+- Running QuarkStar LLM inference on AMD BC-250 requires kernel parameters ttm.pages_limit=3959290 and ttm.page_pool_size=3959290, with UMA/VRAM dynamic setting disabled in BIOS. — Nicoló (@nicolodeva) (re0, 2026-07-22) [[171]](https://t.me/c/2424231195/149891)
+  - src: What configuration do you have for the ram? did you have set kernel parameters ttm.pages limit=3959290 ttm.page_pool_size=3959290; UMA/VRAM in BIOS is not set to 512 MB dynamic; Try use: Close actual
+- In QuarkStar running Qwen3.6-35B-A3B Q2 on BC-250, generation speed delivers 51 tok/s at 2K context, 44.5 tok/s at 6K context, 32 tok/s at 16K context, and 23 tok/s at 32K context. — Pavel (@pacha416) (re0, 2026-07-22) [[172]](https://t.me/c/2424231195/149893)
+  - src: 2k ctx 51tks, 4k ctx 46tks, 6k ctx 44.5 tks. All on basic q2 model
+- A QuarkStar update achieved decode speedups of +40% at 2k context and +70% at 24k context. — Nicoló (@nicolodeva) (re0, 2026-07-26) [[173]](https://t.me/c/2424231195/150305)
+  - src: Hi, I have released a big speedup in decode on QuarkStar. +40% at 2k, +70% at 24k.
+- The native LLM agent context window was upgraded to 100k tokens with automatic compaction, leaving approximately 500-600 MB of free RAM on CachyOS. — Nicoló (@nicolodeva) (re0, 2026-07-28) [[174]](https://t.me/c/2424231195/150519)
+  - src: I also decreased the use of ram, now native agent context window has been upgraded to 100k, When it reaches them, compact. At 100k I have about 500-600 mb empty on cachy os.
+- SSD streaming mode on BC-250 supports running the Qwen3.6-35B-A3B-UD-Q4_K_M.gguf quantized model by Unsloth. — Nicoló (@nicolodeva) (re0, 2026-07-28) [[175]](https://t.me/c/2424231195/150529)
+  - src: In ssd streaming it is already compatible with Qwen3.6-35B-A3B-UD-Q4_K_M.gguf by unsloth
+- The Qwen3.6-35B-A3B model can be run on AMD BC-250 using SSD streaming through the q36 tool via the --ssd-streaming flag. — Nicoló (@nicolodeva) (re0, 2026-08-05) [[176]](https://t.me/c/2424231195/152791)
+  - src: ./download_model.sh q2-q4-imatrix ./q36 -m gguf/Qwen3.6-35B-A3B-Layers34-39Q4KExperts-OtherExpertLayersIQ2XXSGateUp-Q2KDown-Q8Rest-imatrix.gguf \ --ssd-streaming -p "Hello" Se vuoi usare il modello
+- Running a 27B LLM quantized to Q3 on the AMD BC-250 achieves approximately 20 tokens per second using the q36-27b branch of Ninnix/q36. — Nicoló (@nicolodeva) (re0, 2026-08-05) [[177]](https://t.me/c/2424231195/152840)
+  - src: Лучше 27b q3 mradermacher У меня включено 20 t/s Quarkstar branch https://github.com/Ninnix/q36/tree/q36-27b Это ещё экспериментально, решу, менять ли её, как только выйдет qwen 3.8 27b
+- Running 40 unlocked CUs at 2000 MHz with 18 AWG power wiring operates stably for LLM inference on BC-250 without needing 8 CPU cores unlocked. — D K (@cdk_black) (re0, 2026-08-15) [[178]](https://t.me/c/2424231195/155314)
+  - src: У меня так сделано, тоже 18awg, полет нормальный. Разлочено 40 CU на 2000мгц. 8 ядер не разблокировал, нет надобности для запуска моделей.
 # Citations
 
 [1] https://www.reddit.com/r/LocalLLaMA/comments/1syp3un/hipfire_dev_update_full_amd_arch_validation/
@@ -476,3 +498,14 @@ _167 verified facts. Each bullet links to the source message; reaction count (re
 [165] https://t.me/c/2424231195/138108
 [166] https://t.me/c/2424231195/143000
 [167] https://t.me/c/2424231195/144611
+[168] https://t.me/c/2424231195/149261
+[169] https://t.me/c/2424231195/149277
+[170] https://t.me/c/2424231195/149867
+[171] https://t.me/c/2424231195/149891
+[172] https://t.me/c/2424231195/149893
+[173] https://t.me/c/2424231195/150305
+[174] https://t.me/c/2424231195/150519
+[175] https://t.me/c/2424231195/150529
+[176] https://t.me/c/2424231195/152791
+[177] https://t.me/c/2424231195/152840
+[178] https://t.me/c/2424231195/155314

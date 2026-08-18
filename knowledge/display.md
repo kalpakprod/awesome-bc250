@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Display
 
-_277 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_285 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - A 16-inch laptop screen was connected to the BC-250 via an eDisplayPort interface. — sgauge (re222, 2026-06-06) · _r/BC250Gaming_ [[1]](https://www.reddit.com/r/BC250Gaming/comments/1tyg61i/portable_arcade_machine/)
   - src: Portable Arcade Machine Perhaps this could inspire some of the most daring makers out there 😄 What you're looking at is an arcade-style machine powered, naturally, by a BC-250.  For the display, I wen…
@@ -506,6 +506,22 @@ _277 verified facts. Each bullet links to the source message; reaction count (re
 - There is an HDMI output to connect to a large monitor. — Niko (re0, 2026-06-04) [[277]](https://t.me/c/2424231195/142300)
   - src: Так тут есть хдми выход так шо к большому монику можно подключить
 
+- Under SteamOS on AMD BC-250, HDMI-CEC basic power-off functionality works over a direct DisplayPort-to-HDMI cable without requiring an active converter. — iSnechik🇺🇦 (@iSanechik) (re0, 2026-07-20) [[278]](https://t.me/c/2424231195/149712)
+  - src: У меня кабель без переходник звук так сказать из коробки. HDMI-cec работает только на выключения иногда аля сон.
+- Standard passive DP-to-HDMI 4K adapters on BC-250 support 4K 60Hz video and audio output, but lack HDR and VRR passthrough support. — Andrew V (@hexdumb) (re0, 2026-07-21) [[279]](https://t.me/c/2424231195/149816)
+  - src: Звук та 4к@60 працює все інше ніт 😂
+- Audio playback over DisplayPort or active DP-to-HDMI adapters stutters severely on Bazzite Linux until updated with fixes from the testing branch kernel. — Andrew V (@hexdumb) (re0, 2026-07-21) [[280]](https://t.me/c/2424231195/149838)
+  - src: Звук через ДП походу только на базайте не работает народ говорит, что на кеши норм я на бубунте 26.04 проверял - тоже работает на базайте - заикается безбожно
+- An active DisplayPort to VGA converter adapter functions properly with the AMD BC-250 to output video to legacy VGA displays. — Santey-Zateynik (@Alexandr_Blumengofer) (re0, 2026-08-04) [[281]](https://t.me/c/2424231195/152735)
+  - src: Вот такого плана адаптер подошёл. Переходник DisplayPort на VGA / Адаптер конвертер DP на VGA для мониторов, компьютеров, ноутбуков, PC, телевизоров https://ozon.ru/t/oNApcKX
+- Disabling HDR resolves an issue in Bazzite OS on BC-250 where the display changes colors when the system is idle. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-05) [[282]](https://t.me/c/2424231195/152765)
+  - src: вимкни HDR
+- An active DisplayPort to HDMI 8K adapter supports HDR at 4K 60Hz and audio under CachyOS, but audio does not work out of the box on stable Bazzite. — Andrew V (@hexdumb) (re0, 2026-08-12) [[283]](https://t.me/c/2424231195/154250)
+  - src: What about this one? I have 8k version. hdr 4k@60 works fine. Sound works fine. it is an active adapter, so sound will not work in stable bazzite out of the box. sound works in cashyos. 8k option http
+- A passive DisplayPort to HDMI adapter forces the BC-250 to output native HDMI signals up to 4K 60Hz, bypassing the Linux DisplayPort audio bug across all distributions. — Andrew V (@hexdumb) (re0, 2026-08-12) [[284]](https://t.me/c/2424231195/154261)
+  - src: Currently, as far as I know, only passive adapters makes the sound work in bazzite. But you will get plain 4k@60 without fancy additional fetures. It is becuase of a DP sound bug. passive adapter forc
+- Using an 8K DisplayPort adapter on Bazzite caused audio distortion and stutters in non-native games running through Proton, whereas a 4K adapter worked properly. — Andrey Po (@And_ron_p) (re0, 2026-08-12) [[285]](https://t.me/c/2424231195/154273)
+  - src: аналогично. все игры запущенные не нативно, а через протон получали занижения звука и пердежи. точно такой же, но 4k завелся прекрасно. недавно перешел на cachy, надо бы попробовать протестить снова с
 # Citations
 
 [1] https://www.reddit.com/r/BC250Gaming/comments/1tyg61i/portable_arcade_machine/
@@ -785,3 +801,11 @@ _277 verified facts. Each bullet links to the source message; reaction count (re
 [275] https://t.me/c/2424231195/136254
 [276] https://t.me/c/2424231195/139827
 [277] https://t.me/c/2424231195/142300
+[278] https://t.me/c/2424231195/149712
+[279] https://t.me/c/2424231195/149816
+[280] https://t.me/c/2424231195/149838
+[281] https://t.me/c/2424231195/152735
+[282] https://t.me/c/2424231195/152765
+[283] https://t.me/c/2424231195/154250
+[284] https://t.me/c/2424231195/154261
+[285] https://t.me/c/2424231195/154273

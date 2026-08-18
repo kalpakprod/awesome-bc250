@@ -1,6 +1,6 @@
 # BC-250 Knowledge Bundle
 
-A machine-readable companion to the handbook: **9,961 community facts** about the
+A machine-readable companion to the handbook: **10,221 community facts** about the
 AMD BC-250, each one linked back to the message, post, or page it came from.
 
 The handbook in [`docs/`](../docs/) is the curated, human-written guide. This bundle
@@ -15,12 +15,17 @@ Twelve concept files, one per topic, in [Open Knowledge Format](https://github.c
 
 | Concept | Facts | | Concept | Facts |
 |---|--:|---|---|--:|
-| [Linux drivers & setup](linux.md) | 2493 | | [Cases](cases.md) | 427 |
-| [Cooling](cooling.md) | 1556 | | [Display](display.md) | 277 |
-| [Overclock & undervolt](overclock.md) | 1233 | | [WiFi & Bluetooth](wifi-bt.md) | 230 |
-| [Power supply & wiring](power-supply.md) | 1088 | | [AI / LLM](ai-llm.md) | 167 |
-| [Hardware facts](hardware.md) | 940 | | [USB & storage](usb.md) | 91 |
-| [BIOS & flashing](bios.md) | 746 | | [Gaming](gaming.md) | 713 |
+| [Linux drivers & setup](linux.md) | 2541 | | [Cases](cases.md) | 451 |
+| [Cooling](cooling.md) | 1602 | | [Display](display.md) | 285 |
+| [Overclock & undervolt](overclock.md) | 1268 | | [WiFi & Bluetooth](wifi-bt.md) | 234 |
+| [Power supply & wiring](power-supply.md) | 1120 | | [AI / LLM](ai-llm.md) | 178 |
+| [Hardware facts](hardware.md) | 965 | | [USB & storage](usb.md) | 92 |
+| [BIOS & flashing](bios.md) | 765 | | [Gaming](gaming.md) | 720 |
+
+Alongside them sits [`hands-on.md`](hands-on.md) — 18 findings measured directly on a
+working build rather than collected from chat. It deliberately breaks the citation rule
+above: there is no message to link, so each item quotes the command output or log line it
+rests on instead. One board, so treat it as a reproducible method, not a statistic.
 
 Each fact is one bullet:
 

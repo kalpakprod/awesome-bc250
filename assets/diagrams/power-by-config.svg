@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="t-power-by-config d-power-by-config" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, sans-serif">
+<title id="t-power-by-config">Measured wall draw by CU count and clock</title>
+<desc id="d-power-by-config">Community measurements, not modelled: the last 200 MHz of GPU clock costs about as much power as the previous 600. measured wall draw: 200, 260, 310, 350, 352. Voltages: 850, 860, n/a, 960, 1025 mV. At 350 W a 300 W PSU trips within 30 s; +12V reaches 26 A.</desc>
+<rect width="1200" height="640" rx="18" fill="#0d1117"/>
+<rect x="1" y="1" width="1198" height="638" rx="17" fill="none" stroke="#30363d" stroke-width="2"/>
+<text x="150" y="66" font-size="38" font-weight="700" fill="#e6edf3">Measured wall draw by CU count and clock</text>
+<text x="150" y="102" font-size="21" fill="#8b949e">Community measurements, not modelled: the last 200 MHz of GPU clock costs about as</text>
+<text x="150" y="132" font-size="21" fill="#8b949e">much power as the previous 600.</text>
+<rect x="298.5" y="150" width="198" height="320" fill="#1f6feb" opacity="0.14"/>
+<text x="397.5" y="448" text-anchor="middle" font-size="20" font-weight="600" fill="#58a6ff">best watts-per-frame: 40 CU at 1800 MHz, 860 mV</text>
+<line x1="150" y1="470" x2="1140" y2="470" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="478" text-anchor="end" font-size="20" fill="#8b949e">0</text>
+<line x1="150" y1="390" x2="1140" y2="390" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="398" text-anchor="end" font-size="20" fill="#8b949e">100</text>
+<line x1="150" y1="310" x2="1140" y2="310" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="318" text-anchor="end" font-size="20" fill="#8b949e">200</text>
+<line x1="150" y1="230" x2="1140" y2="230" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="238" text-anchor="end" font-size="20" fill="#8b949e">300</text>
+<line x1="150" y1="150" x2="1140" y2="150" stroke="#21262d" stroke-width="2"/>
+<text x="130" y="158" text-anchor="end" font-size="20" fill="#8b949e">400</text>
+<text transform="translate(46 310) rotate(-90)" text-anchor="middle" font-size="20" fill="#6e7681">watts at the wall</text>
+<polyline points="150,310 397.5,262 645,222 892.5,190 1140,188.39999999999998" fill="none" stroke="#f0883e" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="144" y="304" width="12" height="12" fill="#f0883e"/>
+<rect x="391.5" y="256" width="12" height="12" fill="#f0883e"/>
+<rect x="639" y="216" width="12" height="12" fill="#f0883e"/>
+<rect x="886.5" y="184" width="12" height="12" fill="#f0883e"/>
+<rect x="1134" y="182.39999999999998" width="12" height="12" fill="#f0883e"/>
+<line x1="150" y1="470" x2="1140" y2="470" stroke="#30363d" stroke-width="3"/>
+<text x="150" y="506" text-anchor="start" font-size="21" fill="#e6edf3">38CU / 1200</text>
+<text x="397.5" y="506" text-anchor="middle" font-size="21" fill="#e6edf3">40CU / 1800</text>
+<text x="645" y="506" text-anchor="middle" font-size="21" fill="#e6edf3">38CU / 1500</text>
+<text x="892.5" y="506" text-anchor="middle" font-size="21" fill="#e6edf3">40CU / 2000</text>
+<text x="1140" y="506" text-anchor="end" font-size="21" fill="#e6edf3">40CU / 2000+</text>
+<text x="645" y="538" text-anchor="middle" font-size="20" fill="#6e7681">configuration (active CUs / GPU clock, MHz)</text>
+<rect x="152" y="566" width="12" height="12" fill="#f0883e"/>
+<text x="176" y="578" font-size="21" fill="#e6edf3">measured wall draw</text>
+<text x="150" y="616" font-size="19" fill="#f0883e">Voltages: 850, 860, n/a, 960, 1025 mV. At 350 W a 300 W PSU trips within 30 s; +12V reaches 26 A.</text>
+</svg>
