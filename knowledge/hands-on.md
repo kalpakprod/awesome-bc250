@@ -35,7 +35,7 @@ _Measured on one BC-250 build (CachyOS, kernel 7.1.8, gamescope session, AIC8800
 - Connecting to a WPA2/WPA3-mixed 5 GHz AP fails **before** any password check, with `CTRL-EVENT-ASSOC-REJECT bssid=00:00:00:00:00:00 status_code=53`, followed by `CTRL-EVENT-SSID-TEMP-DISABLED ... reason=CONN_FAILED`.
 - NetworkManager surfaces this as a misleading "secrets were required, but not provided" error, which sends you hunting a password problem that does not exist.
 - Fix: disable protected management frames for that profile — `nmcli connection modify <name> wifi-sec.pmf 1` — after which association succeeds immediately. The setting is stored in the profile and survives reconnects, but is lost if the profile is deleted and recreated from the desktop applet.
-  - evidence: same credentials, same AP; connection came up with `192.168.1.34/24` right after the change.
+  - evidence: same credentials, same AP; the interface got a DHCP lease immediately after the change.
 - A 2.4 GHz WPA2-only SSID on the same router associated without the workaround.
 
 ## Gaming
