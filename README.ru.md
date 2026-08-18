@@ -6,11 +6,11 @@
 
 > Библия новичка для **ASRock AMD BC-250** — платы на базе APU от PlayStation 5 (Cyan Skillfish / Oberon, 6-ядерный Zen 2 + RDNA 2, 16 ГБ GDDR6), превращённой в дешёвый **Linux mini-PC для игр и AI** — самодельную бюджетную Steam Machine.
 
-Всё, чтобы пройти путь **от платы в коробке до запущенной игры** — выжато из 125k+ сообщений комьюнити BC-250, ранжировано по тому, что люди реально лайкали и закрепляли, и сверено с каноническими репозиториями проекта.
+Всё, чтобы пройти путь **от платы в коробке до запущенной игры** — выжато из 130k+ сообщений комьюнити BC-250, ранжировано по тому, что люди реально лайкали и закрепляли, и сверено с каноническими репозиториями проекта.
 
 🌍 [English](README.md) · **Русский** · [Українська](README.uk.md) · [Қазақша](README.kk.md) · [Кыргызча](README.ky.md) · [Español](README.es.md) · [Português (BR)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Polski](README.pl.md) · [Türkçe](README.tr.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
 
-<sub>_Поддерживается · обновлено **июнь 2026** · [llms.txt](llms.txt) для AI-агентов_</sub>
+<sub>_Поддерживается · обновлено **август 2026** · [llms.txt](llms.txt) для AI-агентов_</sub>
 
 ---
 
@@ -52,6 +52,12 @@
 <p align="center">
   <img src="assets/diagrams/memory-tradeoff.svg" width="100%" alt="Разгон памяти GDDR6: пропускная способность и FPS растут лишь с 30% до 52%, а риск окирпичивания растёт с 20% до 100%. На 1950 МГц платы возвращались мёртвыми.">
 </p>
+
+<p align="center">
+  <img src="assets/diagrams/power-by-config.svg" width="100%" alt="Замеренное потребление от розетки по конфигурациям: 200 Вт при 38 CU и 1200 МГц на 850 мВ, 260 Вт при 40 CU и 1800 МГц на 860 мВ, 310 Вт при 38 CU и 1500 МГц и 350 Вт при 40 CU и 2000 МГц на 960 мВ, при этом подъём до 1025 мВ добавляет лишь 2 Вт. Лучшая точка ватт-на-кадр по данным сообщества — 40 CU на 1800 МГц.">
+</p>
+
+Эти пять точек — замеры, а не модель: переход с 1800 до 2000 МГц стоит около 90 Вт — примерно столько, сколько стоили предыдущие 600 МГц, — а подъём с 960 мВ до 1025 мВ не даёт ничего, кроме 2 Вт тепла. При 350 Вт блок питания на 300 Вт отключается за 30 секунд, а по линии +12V идёт 26 А.
 
 <details>
 <summary>Потребление в простое — почему ваттметр почти не двигается</summary>
@@ -108,18 +114,26 @@ Governor и андервольт срезают GPU, но процессор и 
 - [bc250-collective/amd_smu_reverse_engineering](https://github.com/bc250-collective/amd_smu_reverse_engineering)
 - [bc250-collective/bc250_smu_oc](https://github.com/bc250-collective/bc250_smu_oc)
 - [filippor/cyan-skillfish-governor](https://github.com/filippor/cyan-skillfish-governor) · [форк bc250-collective](https://github.com/bc250-collective/cyan-skillfish-governor)
+- [rw-r-r-0644/bc250-core-unlock](https://github.com/rw-r-r-0644/bc250-core-unlock) — разблокировка 2 отключённых ядер CPU (стоковая маска 0x77; маска 0xB7 означает физически дефектные ядра — принудительное включение даёт артефакты и краши)
 - [duggasco/bc250-40cu-unlock](https://github.com/duggasco/bc250-40cu-unlock) — разблок всех 40 CU
 - [WinnieLV/bc250-cu-live-manager](https://github.com/WinnieLV/bc250-cu-live-manager)
 - [alexghow903/oberon-governor-atomic](https://github.com/alexghow903/oberon-governor-atomic)
 
+### Инструменты и готовые образы
+- [redbeard1083/bc250-toolkit](https://github.com/redbeard1083/bc250-toolkit) — меню-настройка для CachyOS: ядро, CPU/GPU governor, swap, ZRAM→ZSWAP, ACPI и твики загрузки
+- [62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images) — готовые образы Bazzite Deck/GNOME/KDE с применёнными BC-250 патчами
+
 ### Драйверы
 - [ZEROAESQUERDA/BC250-windowsDriverTest](https://github.com/ZEROAESQUERDA/BC250-windowsDriverTest) — Windows-драйвер GPU (экспериментальный, без полного ускорения на начало 2026)
 - [Keshas-dev/AMD-BC-250-PSP-Driver](https://github.com/Keshas-dev/AMD-BC-250-PSP-Driver) — работа над PSP/GPU-драйвером
+- [DryhoppedIPA/bc250-gfx1013-fix](https://github.com/DryhoppedIPA/bc250-gfx1013-fix) — патчи ядра и Mesa/RADV для сломанной вычислительной очереди GPU (async compute); также чинит путь INT8 для FSR 4 / XeSS 3
+- [MastaG/linux-cachyos-bc250](https://github.com/MastaG/linux-cachyos-bc250) — ядро CachyOS с черри-пиками BC-250
 - [AMD-BC-250/kernel.opensuse](https://github.com/AMD-BC-250/kernel.opensuse) — ядро Linux
 
 ### BIOS / прошивки
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — самые упоминаемые образы BIOS и моды
 - [TheRetroWeb — база BIOS BC-250](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — дампы стоковых BIOS, просмотр/скачивание по версиям
+- [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — меню-скрипт для бэкапа прошивки и установки кастомной прошивки
 - Прошивка и раскирпичивание — см. [docs/ru/08-bios.md](docs/ru/08-bios.md)
 
 ### WiFi / BT донглы

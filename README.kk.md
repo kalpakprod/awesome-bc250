@@ -1,16 +1,27 @@
-🌍 [English](README.md) · [Русский](README.ru.md) · [Українська](README.uk.md) · **Қазақша** · [Кыргызча](README.ky.md) · [Español](README.es.md) · [Português (BR)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Polski](README.pl.md) · [Türkçe](README.tr.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
-
 <p align="center">
   <img src="assets/img/hero.jpg" alt="awesome-bc250 — AMD BC-250 жаңадан келгендердің кітабы" width="100%">
 </p>
 
 # Awesome BC-250 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> **AMD BC-250** жаңадан келгендердің кітабы — PlayStation 5 негізіндегі APU тақтасы (Cyan Skillfish / Oberon, 16 GB GDDR6), арзан Linux ойын және AI машинасы ретінде қайта пайдаланылады.
+> **ASRock AMD BC-250** жаңадан келгендердің кітабы — PlayStation 5 негізіндегі APU тақтасы (Cyan Skillfish / Oberon, 6 ядролы Zen 2 + RDNA 2, 16 GB GDDR6) арзан **Linux ойын және AI мини-ПК** ретінде қайта пайдаланылған — DIY бюджеттік Steam Machine.
 
-Қораптағы тақтадан ойын қосуға дейінгі бәрі осында — BC-250 қауымдастығының 125 мыңнан астам хабарламасынан сұрыпталып, адамдар нақты лайк басып, бекіткені бойынша рейтингтелген әрі жобаның канондық репозиторийлерімен салыстырылған.
+Қораптағы тақтадан ойын қосуға дейінгі бәрі осында — BC-250 қауымдастығының 130 мыңнан астам хабарламасынан сұрыпталып, адамдар лайк басып, бекіткені бойынша рейтингтелген әрі жобаның канондық репозиторийлерімен салыстырылған.
 
-🌍 Languages: [English](README.md) (негізгі) · **Қазақша**
+🌍 [English](README.md) · [Русский](README.ru.md) · [Українська](README.uk.md) · **Қазақша** · [Кыргызча](README.ky.md) · [Español](README.es.md) · [Português (BR)](README.pt-BR.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Polski](README.pl.md) · [Türkçe](README.tr.md) · [中文](README.zh.md) · [日本語](README.ja.md) · [العربية](README.ar.md) · [हिन्दी](README.hi.md)
+
+<sub>_Жаңартылып тұрады · соңғы жаңарту **2026 ж. тамыз** · [llms.txt](llms.txt) AI агенттеріне арналған_</sub>
+
+---
+
+## ❓ Жылдам жауаптар
+
+- **ASRock AMD BC-250 деген не?** — PlayStation 5 негізіндегі APU тақтасы: 6 ядролы Zen 2 + 24/40 RDNA 2 CU («Cyan Skillfish»), 16 GB GDDR6 — бұрынғы майнинг картасы ретінде арзан сатылып, Linux ойын және AI мини-ПК-ға, DIY бюджеттік Steam Machine-ке айналдырылған.
+- **Қанша тұрады?** Жалаң тақта шамамен **$60–130**; толық құрастыру (қорек көзі, салқындатқыш, SSD) **$150–250** шамасында болады. [Сатып алу](docs/en/02-buying.md) бөлімін қараңыз.
+- **Ойында қалай көрсетеді?** FSR / Frame-Gen және GPU+CPU оверклокымен көптеген ойындарда шамамен **1080p 60 FPS** (RX 6600 деңгейі). [Ойын нәтижелері](docs/en/11-gaming.md) бөлімін қараңыз.
+- **Қандай ОЖ керек?** GPU үдеуі үшін **тек Linux** — Bazzite, Fedora, CachyOS немесе Mesa 25.1+ Arch. Windows GPU драйвері жоқ. [Linux орнату](docs/en/06-linux.md) бөлімін қараңыз.
+- **LLM жүгірте алады ма?** Иә — llama.cpp / Ollama Vulkan арқылы 16 GB GDDR6-ны VRAM ретінде пайдаланады (шағын модельдерде ~30–47 ток/с). [AI / LLM](docs/en/12-ai-llm.md) бөлімін қараңыз.
+- **Қалай салқындату керек?** Жиынтықтағы серверлік радиатор үстелде қолдану кезінде тұншығып (throttle) қалады; қанаттарын жұқартып, 120 мм желдеткіш қосыңыз немесе сумен салқындатуға көшіңіз. [Салқындату](docs/en/04-cooling.md) бөлімін қараңыз.
 
 ---
 
@@ -19,6 +30,47 @@
 Жаңа тақта, ештеңе білмейсіз бе? Алтын жолды ретімен жүріп өтіңіз:
 
 **[docs/kk/00-start-here.md](docs/kk/00-start-here.md)** — Сатып алу → Қуат → Салқындату → ОЖ орнату → Драйверлер → Оверклок → Ойнау.
+
+---
+
+## 📈 Баптау іс жүзінде не береді
+
+Бұл тақтадағы әрбір баптау тетігі бір нәрсенің есесіне бір нәрсе береді. Маңыздылары — мына төртеуі; олар қауымдастық өлшеген мәліметтерден алынған — бірдеңені прошивкаламас бұрын оқып шығыңыз.
+
+<p align="center">
+  <img src="assets/diagrams/gpu-clock-tradeoff.svg" width="100%" alt="GPU ядро жиілігі: FPS өсімі 2000 МГц-ке қарай шамамен 95%-ке дейін көтеріледі, содан кейін CPU шектегендіктен тегістеледі, ал қуат пен жылу 95%-ке дейін өсе береді. Оңтайлы нүкте — шамамен 2000 МГц, шамамен +30% FPS.">
+</p>
+
+<p align="center">
+  <img src="assets/diagrams/undervolt-tradeoff.svg" width="100%" alt="Андервольт: кернеу 1129 мВ-тан 700 мВ-қа түскенде тиімділік 20%-тен 95%-ке көтеріледі, ал тұрақсыздық тәуекелі 15%-тен 100%-ке өседі. Ойындарда тұрақты диапазон шамамен 905–955 мВ; 700 мВ-тан төменде GPU өзін 1500 МГц-ке бекітеді.">
+</p>
+
+<p align="center">
+  <img src="assets/diagrams/cu40-tradeoff.svg" width="100%" alt="40-CU ашу: есептеу қуаты 40%-тен 90%-ке көтеріледі, ал ойын FPS-і тек 40%-тен 47%-ке дейін өзгереді, қуат пен тұрақсыздық 25%-тен 100%-ке өседі. 38 CU — типтік тұрақты максимум; 40 CU — 300 Вт-тан астам қуат пен AIO қажет ететін лотерея.">
+</p>
+
+<p align="center">
+  <img src="assets/diagrams/memory-tradeoff.svg" width="100%" alt="GDDR6 жадын баптау: өткізу қабілеті мен FPS өсімі тек 30%-тен 52%-ке дейін өзгереді, ал «кірпішке» айналу тәуекелі 20%-тен 100%-ке өседі. 1950 МГц — тақталар «кірпіш» болып қайтқан деңгей.">
+</p>
+
+<p align="center">
+  <img src="assets/diagrams/power-by-config.svg" width="100%" alt="Конфигурация бойынша розеткадан өлшенген тұтыну: 38 CU және 1200 МГц кезінде 850 мВ-та 200 Вт, 40 CU және 1800 МГц кезінде 860 мВ-та 260 Вт, 38 CU және 1500 МГц кезінде 310 Вт, 40 CU және 2000 МГц кезінде 960 мВ-та 350 Вт; 1025 мВ тек 2 Вт қосады. Хабарланған ең жақсы ватт/кадр көрсеткіші — 40 CU, 1800 МГц.">
+</p>
+
+Бұл бес нүкте — модель емес, өлшеулер: 1800-ден 2000 МГц-ке көшу шамамен 90 Вт шығындайды — бұл алдыңғы 600 МГц-тің құнымен шамалас — ал кернеуді 960 мВ-тан 1025 мВ-қа көтеру 2 Вт жылудан басқа ештеңе бермейді. 350 Вт жүктемеде 300 Вт қорек көзі 30 секунд ішінде ажырап қалады, ал +12V шинасы 26 А ток өткізіп тұрады.
+
+<details>
+<summary>Бос тұру қуаты — розеткадағы есептегіш неге әрең қозғалады</summary>
+
+<p align="center">
+  <img src="assets/diagrams/idle-power-tradeoff.svg" width="100%" alt="Бос тұру қуаты: governor, андервольт және авто-суспенд арқылы GPU тұтынуы 80 Вт-тан 5 Вт-қа төмендейді, бірақ розеткадан жалпы тұтыну тек 125 Вт-тан 110 Вт-қа төмендейді — суспенд оны 10 Вт-қа түсіргенге дейін.">
+</p>
+
+Governor мен андервольт GPU тұтынуын қысқартады, бірақ CPU мен GDDR6 бәрібір тұтына береді. Авто-суспенд іске қосылғанға дейін розеткадағы есептегіш мұны әрең байқайды. Ағыны жоғары партиялар шамамен 70–80 Вт-тан төмен түспейді.
+
+</details>
+
+<sub>Деректер көзі: [`assets/diagrams/data.json`](assets/diagrams/data.json) · `node assets/diagrams/build.mjs` арқылы қайта жасалады</sub>
 
 ---
 
@@ -62,18 +114,27 @@
 - [bc250-collective/amd_smu_reverse_engineering](https://github.com/bc250-collective/amd_smu_reverse_engineering)
 - [bc250-collective/bc250_smu_oc](https://github.com/bc250-collective/bc250_smu_oc)
 - [filippor/cyan-skillfish-governor](https://github.com/filippor/cyan-skillfish-governor) · [bc250-collective форкы](https://github.com/bc250-collective/cyan-skillfish-governor)
+- [rw-r-r-0644/bc250-core-unlock](https://github.com/rw-r-r-0644/bc250-core-unlock) — өшірілген 2 CPU ядросын ашу (стандартты маска 0x77; 0xB7 маскасы физикалық ақаулы ядроларды білдіреді — мәжбүрлеп ашсаңыз, артефактілер мен құлаулар пайда болады)
 - [duggasco/bc250-40cu-unlock](https://github.com/duggasco/bc250-40cu-unlock) — барлық 40 CU-ды ашу
 - [WinnieLV/bc250-cu-live-manager](https://github.com/WinnieLV/bc250-cu-live-manager)
 - [alexghow903/oberon-governor-atomic](https://github.com/alexghow903/oberon-governor-atomic)
 
+### Toolkits және дайын образдар
+- [redbeard1083/bc250-toolkit](https://github.com/redbeard1083/bc250-toolkit) — CachyOS үшін мәзірмен басқарылатын баптау: ядро, CPU/GPU governor-лары, swap, ZRAM→ZSWAP, ACPI және жүктеу твиктері
+- [62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images) — BC-250 патчтері қолданылған дайын Bazzite Deck/GNOME/KDE образдары
+
 ### Драйверлер
 - [ZEROAESQUERDA/BC250-windowsDriverTest](https://github.com/ZEROAESQUERDA/BC250-windowsDriverTest) — Windows GPU драйвері (эксперименттік, 2026 басы бойынша толық акселерация жоқ)
 - [Keshas-dev/AMD-BC-250-PSP-Driver](https://github.com/Keshas-dev/AMD-BC-250-PSP-Driver) — PSP/GPU драйвер жұмысы
+- [DryhoppedIPA/bc250-gfx1013-fix](https://github.com/DryhoppedIPA/bc250-gfx1013-fix) — бұзылған GPU compute кезегіне (async compute) арналған ядро + Mesa/RADV патчтері; сондай-ақ FSR 4 / XeSS 3 INT8 жолын түзетеді
+- [MastaG/linux-cachyos-bc250](https://github.com/MastaG/linux-cachyos-bc250) — BC-250 cherry-pick-тері бар CachyOS ядросы
 - [AMD-BC-250/kernel.opensuse](https://github.com/AMD-BC-250/kernel.opensuse) — Linux ядросы
 
 ### BIOS / Firmware
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — ең жиі сілтенетін BIOS образдары және модтары
-- Прошивка және «кірпіштен» қалпына келтіру үшін [docs/kk/00-start-here.md](docs/kk/00-start-here.md) және [docs/en/08-bios.md](docs/en/08-bios.md) қараңыз
+- [TheRetroWeb — BC-250 BIOS дерекқоры](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — стандартты BIOS дамптары, нұсқасы бойынша қарау/жүктеу
+- [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — мәзірмен басқарылатын firmware сақтық көшірмесі және арнайы firmware прошивкалау
+- Прошивка және «кірпіштен» қалпына келтіру үшін [docs/en/08-bios.md](docs/en/08-bios.md) қараңыз
 
 ### WiFi / BT донглдары
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
