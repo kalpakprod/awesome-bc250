@@ -17,11 +17,11 @@
 ## ❓ إجابات سريعة
 
 - **ما هي لوحة ASRock AMD BC-250؟** لوحة APU مشتقة من PlayStation 5 — 6 أنوية Zen 2 + 24/40 وحدة حوسبة RDNA 2 («Cyan Skillfish»)، بذاكرة 16 GB GDDR6 — تُباع رخيصة كبطاقة تعدين سابقة وأُعيد توظيفها كمبيوتر Linux مصغّر للألعاب والذكاء الاصطناعي، أي آلة Steam منزلية اقتصادية للتركيب الذاتي.
-- **كم تكلف؟** حوالي **$60–130** للوحة المجردة؛ والتجميعة الكاملة (مصدر طاقة، مبرّد، SSD) تقترب من **$150–250**. انظر [الشراء](docs/en/02-buying.md).
-- **كيف أداؤها في الألعاب؟** تقريبًا **1080p بمعدل 60 FPS** في معظم الألعاب (بمستوى RX 6600) مع FSR / Frame-Gen وكسر سرعة GPU+CPU. انظر [نتائج الألعاب](docs/en/11-gaming.md).
-- **أي نظام تشغيل؟** **Linux فقط** لتسريع GPU — Bazzite أو Fedora أو CachyOS أو Arch مع Mesa 25.1+. لا يوجد تعريف GPU لنظام Windows. انظر [إعداد Linux](docs/en/06-linux.md).
-- **هل يمكنها تشغيل نماذج LLM؟** نعم — يستخدم llama.cpp / Ollama عبر Vulkan ذاكرة 16 GB GDDR6 كـ VRAM (~30–47 tok/s على النماذج الصغيرة). انظر [الذكاء الاصطناعي / LLM](docs/en/12-ai-llm.md).
-- **كيف أبرّدها؟** المبدد الحراري الخادمي الأصلي يخنق الأداء على المكتب؛ رقّق الزعانف وأضف مروحة 120 mm، أو انتقل إلى التبريد المائي. انظر [التبريد](docs/en/04-cooling.md).
+- **كم تكلف؟** حوالي **$60–130** للوحة المجردة؛ والتجميعة الكاملة (مصدر طاقة، مبرّد، SSD) تقترب من **$150–250**. انظر [الشراء](docs/ar/02-buying.md).
+- **كيف أداؤها في الألعاب؟** تقريبًا **1080p بمعدل 60 FPS** في معظم الألعاب (بمستوى RX 6600) مع FSR / Frame-Gen وكسر سرعة GPU+CPU. انظر [نتائج الألعاب](docs/ar/11-gaming.md).
+- **أي نظام تشغيل؟** **Linux فقط** لتسريع GPU — Bazzite أو Fedora أو CachyOS أو Arch مع Mesa 25.1+. لا يوجد تعريف GPU لنظام Windows. انظر [إعداد Linux](docs/ar/06-linux.md).
+- **هل يمكنها تشغيل نماذج LLM؟** نعم — يستخدم llama.cpp / Ollama عبر Vulkan ذاكرة 16 GB GDDR6 كـ VRAM (~30–47 tok/s على النماذج الصغيرة). انظر [الذكاء الاصطناعي / LLM](docs/ar/12-ai-llm.md).
+- **كيف أبرّدها؟** المبدد الحراري الخادمي الأصلي يخنق الأداء على المكتب؛ رقّق الزعانف وأضف مروحة 120 mm، أو انتقل إلى التبريد المائي. انظر [التبريد](docs/ar/04-cooling.md).
 
 ---
 
@@ -78,22 +78,22 @@
 
 | # | القسم | لأجل |
 |---|---------|-----|
-| 01 | [ما هي BC-250](docs/en/01-what-is-bc250.md) | المواصفات، الأبعاد، توزيع الأطراف، التوقعات |
-| 02 | [دليل الشراء](docs/en/02-buying.md) | أين، السعر، المخاطر، الشراء الجماعي |
-| 03 | [مصدر الطاقة](docs/en/03-power-supply.md) | LOP / Flex ATX، توزيع أطراف 8-pin، التوصيل |
-| 04 | [التبريد](docs/en/04-cooling.md) | المشتت الحراري، أغطية المروحة، طريقة الاختبار |
-| 05 | [العلب والطباعة ثلاثية الأبعاد](docs/en/05-case.md) | كتالوج العلب القابلة للطباعة (STL) |
-| 06 | [تعريفات Linux والإعداد](docs/en/06-linux.md) | اختيار التوزيعة، amdgpu، التثبيت |
-| 07 | [تعريفات Windows والإعداد](docs/en/07-windows.md) | حالة التعريف، طريقة العمل |
-| 08 | [BIOS واستعادة اللوحة المعطوبة](docs/en/08-bios.md) | تعديل BIOS، التحديث، إصلاح العطب |
-| 09 | [كسر السرعة وخفض الجهد](docs/en/09-overclock-undervolt.md) | المنظِّم، SMU، فتح 40CU |
-| 10 | [دونجلات WiFi وBluetooth](docs/en/10-wifi-bt.md) | الدونجلات التي تعمل فعلًا |
-| 11 | [نتائج الألعاب والإعدادات](docs/en/11-gaming.md) | القياسات المرجعية، الضبط لكل لعبة |
-| 12 | [الذكاء الاصطناعي / LLM على BC-250](docs/en/12-ai-llm.md) | llama.cpp، ROCm |
-| 13 | [macOS / Hackintosh](docs/en/13-macos.md) | الحالة |
-| 14 | [العرض والإخراج](docs/en/14-display.md) | DisplayPort، محوّلات DP→HDMI، شاشة مزدوجة |
-| 15 | [المحاكاة](docs/en/15-emulation.md) | كل منصة/جهاز، الحالة الواقعية |
-| 16 | [USB والموزِّعات والتخزين](docs/en/16-usb-peripherals.md) | الموزِّعات، تعديل 5V، محوّلات M.2 / SATA |
+| 01 | [ما هي BC-250](docs/ar/01-what-is-bc250.md) | المواصفات، الأبعاد، توزيع الأطراف، التوقعات |
+| 02 | [دليل الشراء](docs/ar/02-buying.md) | أين، السعر، المخاطر، الشراء الجماعي |
+| 03 | [مصدر الطاقة](docs/ar/03-power-supply.md) | LOP / Flex ATX، توزيع أطراف 8-pin، التوصيل |
+| 04 | [التبريد](docs/ar/04-cooling.md) | المشتت الحراري، أغطية المروحة، طريقة الاختبار |
+| 05 | [العلب والطباعة ثلاثية الأبعاد](docs/ar/05-case.md) | كتالوج العلب القابلة للطباعة (STL) |
+| 06 | [تعريفات Linux والإعداد](docs/ar/06-linux.md) | اختيار التوزيعة، amdgpu، التثبيت |
+| 07 | [تعريفات Windows والإعداد](docs/ar/07-windows.md) | حالة التعريف، طريقة العمل |
+| 08 | [BIOS واستعادة اللوحة المعطوبة](docs/ar/08-bios.md) | تعديل BIOS، التحديث، إصلاح العطب |
+| 09 | [كسر السرعة وخفض الجهد](docs/ar/09-overclock-undervolt.md) | المنظِّم، SMU، فتح 40CU |
+| 10 | [دونجلات WiFi وBluetooth](docs/ar/10-wifi-bt.md) | الدونجلات التي تعمل فعلًا |
+| 11 | [نتائج الألعاب والإعدادات](docs/ar/11-gaming.md) | القياسات المرجعية، الضبط لكل لعبة |
+| 12 | [الذكاء الاصطناعي / LLM على BC-250](docs/ar/12-ai-llm.md) | llama.cpp، ROCm |
+| 13 | [macOS / Hackintosh](docs/ar/13-macos.md) | الحالة |
+| 14 | [العرض والإخراج](docs/ar/14-display.md) | DisplayPort، محوّلات DP→HDMI، شاشة مزدوجة |
+| 15 | [المحاكاة](docs/ar/15-emulation.md) | كل منصة/جهاز، الحالة الواقعية |
+| 16 | [USB والموزِّعات والتخزين](docs/ar/16-usb-peripherals.md) | الموزِّعات، تعديل 5V، محوّلات M.2 / SATA |
 | ❓ | [الأسئلة الشائعة](docs/ar/faq.md) · [استكشاف الأخطاء](docs/ar/troubleshooting.md) | المشكلات الشائعة |
 
 ---
@@ -134,7 +134,7 @@
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — صور وتعديلات BIOS الأكثر إشارةً إليها
 - [TheRetroWeb — قاعدة بيانات BIOS الخاصة بـ BC-250](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — نسخ BIOS أصلية، تصفّح/نزّل حسب الإصدار
 - [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — نسخ احتياطي للبرامج الثابتة وتوميض برامج ثابتة مخصصة عبر قوائم
-- راجع [docs/en/08-bios.md](docs/en/08-bios.md) للتوميض واستعادة اللوحة المعطوبة
+- راجع [docs/ar/08-bios.md](docs/ar/08-bios.md) للتوميض واستعادة اللوحة المعطوبة
 
 ### دونجلات WiFi / BT
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -144,7 +144,7 @@
 
 ### العلب / الطباعة ثلاثية الأبعاد
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables وMakerWorld — راجع [docs/en/05-case.md](docs/en/05-case.md)
+- Printables وMakerWorld — راجع [docs/ar/05-case.md](docs/ar/05-case.md)
 
 ---
 

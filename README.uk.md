@@ -17,11 +17,11 @@
 ## ❓ Швидкі відповіді
 
 - **Що таке ASRock AMD BC-250?** APU-плата на базі PlayStation 5 — 6-ядерний Zen 2 + 24/40 CU RDNA 2 («Cyan Skillfish»), 16 ГБ GDDR6 — продається дешево як колишня майнінг-карта і переробляється на ігровий Linux-міні-ПК та платформу для ШІ, саморобну бюджетну Steam Machine.
-- **Скільки це коштує?** Приблизно **$60–130** за саму плату; повна збірка (БЖ, охолодження, SSD) виходить близько **$150–250**. Див. [Гайд із купівлі](docs/en/02-buying.md).
-- **Наскільки добре він грає?** Приблизно **1080p 60 FPS** у більшості ігор (клас RX 6600) із FSR / Frame-Gen та розгоном GPU+CPU. Див. [Результати в іграх](docs/en/11-gaming.md).
-- **Яка ОС?** **Тільки Linux** для апаратного прискорення GPU — Bazzite, Fedora, CachyOS або Arch із Mesa 25.1+. Драйвера GPU для Windows немає. Див. [Налаштування Linux](docs/en/06-linux.md).
-- **Чи може він запускати LLM?** Так — llama.cpp / Ollama через Vulkan використовують 16 ГБ GDDR6 як VRAM (~30–47 tok/s на малих моделях). Див. [ШІ / LLM](docs/en/12-ai-llm.md).
-- **Як його охолоджувати?** Штатний серверний радіатор на столі троттлить; стоншіть ребра та додайте вентилятор 120 мм або переходьте на воду. Див. [Охолодження](docs/en/04-cooling.md).
+- **Скільки це коштує?** Приблизно **$60–130** за саму плату; повна збірка (БЖ, охолодження, SSD) виходить близько **$150–250**. Див. [Гайд із купівлі](docs/uk/02-buying.md).
+- **Наскільки добре він грає?** Приблизно **1080p 60 FPS** у більшості ігор (клас RX 6600) із FSR / Frame-Gen та розгоном GPU+CPU. Див. [Результати в іграх](docs/uk/11-gaming.md).
+- **Яка ОС?** **Тільки Linux** для апаратного прискорення GPU — Bazzite, Fedora, CachyOS або Arch із Mesa 25.1+. Драйвера GPU для Windows немає. Див. [Налаштування Linux](docs/uk/06-linux.md).
+- **Чи може він запускати LLM?** Так — llama.cpp / Ollama через Vulkan використовують 16 ГБ GDDR6 як VRAM (~30–47 tok/s на малих моделях). Див. [ШІ / LLM](docs/uk/12-ai-llm.md).
+- **Як його охолоджувати?** Штатний серверний радіатор на столі троттлить; стоншіть ребра та додайте вентилятор 120 мм або переходьте на воду. Див. [Охолодження](docs/uk/04-cooling.md).
 
 ---
 
@@ -78,22 +78,22 @@ Governor та андервольтинг знижують споживання G
 
 | # | Розділ | Для чого |
 |---|---------|-----|
-| 01 | [Що таке BC-250](docs/en/01-what-is-bc250.md) | характеристики, розміри, розпіновка, очікування |
-| 02 | [Гайд із купівлі](docs/en/02-buying.md) | де, ціна, ризики, групові закупівлі |
-| 03 | [Блок живлення](docs/en/03-power-supply.md) | LOP / Flex ATX, розпіновка 8-pin, монтаж проводки |
-| 04 | [Охолодження](docs/en/04-cooling.md) | радіатор, кожухи для вентиляторів, методика тесту |
-| 05 | [Корпуси та 3D-друк](docs/en/05-case.md) | каталог друкованих корпусів (STL) |
-| 06 | [Драйвери та налаштування Linux](docs/en/06-linux.md) | вибір дистрибутива, amdgpu, встановлення |
-| 07 | [Драйвери та налаштування Windows](docs/en/07-windows.md) | стан драйверів, інструкція |
-| 08 | [BIOS та відновлення з «цеглини»](docs/en/08-bios.md) | модифікований BIOS, прошивка, оживлення |
-| 09 | [Розгін та андервольтинг](docs/en/09-overclock-undervolt.md) | governor, SMU, розблокування 40CU |
-| 10 | [WiFi- та Bluetooth-донгли](docs/en/10-wifi-bt.md) | донгли, які реально працюють |
-| 11 | [Результати в іграх та налаштування](docs/en/11-gaming.md) | бенчмарки, тюнінг для кожної гри |
-| 12 | [ШІ / LLM на BC-250](docs/en/12-ai-llm.md) | llama.cpp, ROCm |
-| 13 | [macOS / Hackintosh](docs/en/13-macos.md) | стан |
-| 14 | [Дисплей та вивід](docs/en/14-display.md) | DisplayPort, адаптери DP→HDMI, два екрани |
-| 15 | [Емуляція](docs/en/15-emulation.md) | кожна консоль/платформа, реалістичний стан |
-| 16 | [USB, хаби та накопичувачі](docs/en/16-usb-peripherals.md) | хаби, мод 5 В, адаптери M.2 / SATA |
+| 01 | [Що таке BC-250](docs/uk/01-what-is-bc250.md) | характеристики, розміри, розпіновка, очікування |
+| 02 | [Гайд із купівлі](docs/uk/02-buying.md) | де, ціна, ризики, групові закупівлі |
+| 03 | [Блок живлення](docs/uk/03-power-supply.md) | LOP / Flex ATX, розпіновка 8-pin, монтаж проводки |
+| 04 | [Охолодження](docs/uk/04-cooling.md) | радіатор, кожухи для вентиляторів, методика тесту |
+| 05 | [Корпуси та 3D-друк](docs/uk/05-case.md) | каталог друкованих корпусів (STL) |
+| 06 | [Драйвери та налаштування Linux](docs/uk/06-linux.md) | вибір дистрибутива, amdgpu, встановлення |
+| 07 | [Драйвери та налаштування Windows](docs/uk/07-windows.md) | стан драйверів, інструкція |
+| 08 | [BIOS та відновлення з «цеглини»](docs/uk/08-bios.md) | модифікований BIOS, прошивка, оживлення |
+| 09 | [Розгін та андервольтинг](docs/uk/09-overclock-undervolt.md) | governor, SMU, розблокування 40CU |
+| 10 | [WiFi- та Bluetooth-донгли](docs/uk/10-wifi-bt.md) | донгли, які реально працюють |
+| 11 | [Результати в іграх та налаштування](docs/uk/11-gaming.md) | бенчмарки, тюнінг для кожної гри |
+| 12 | [ШІ / LLM на BC-250](docs/uk/12-ai-llm.md) | llama.cpp, ROCm |
+| 13 | [macOS / Hackintosh](docs/uk/13-macos.md) | стан |
+| 14 | [Дисплей та вивід](docs/uk/14-display.md) | DisplayPort, адаптери DP→HDMI, два екрани |
+| 15 | [Емуляція](docs/uk/15-emulation.md) | кожна консоль/платформа, реалістичний стан |
+| 16 | [USB, хаби та накопичувачі](docs/uk/16-usb-peripherals.md) | хаби, мод 5 В, адаптери M.2 / SATA |
 | ❓ | [FAQ](docs/uk/faq.md) · [Усунення проблем](docs/uk/troubleshooting.md) | поширені проблеми |
 
 ---
@@ -134,7 +134,7 @@ Governor та андервольтинг знижують споживання G
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — найчастіше згадувані образи BIOS та моди
 - [TheRetroWeb — база даних BIOS BC-250](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — стокові дампи BIOS, перегляд/завантаження за версією
 - [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — керований через меню скрипт резервного копіювання прошивки та прошивки кастомної прошивки
-- Прошивку та відновлення з «цеглини» див. у [docs/uk/08-bios.md](docs/en/08-bios.md)
+- Прошивку та відновлення з «цеглини» див. у [docs/uk/08-bios.md](docs/uk/08-bios.md)
 
 ### WiFi- / BT-донгли
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -144,7 +144,7 @@ Governor та андервольтинг знижують споживання G
 
 ### Корпуси / 3D
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables та MakerWorld — див. [docs/en/05-case.md](docs/en/05-case.md)
+- Printables та MakerWorld — див. [docs/uk/05-case.md](docs/uk/05-case.md)
 
 ---
 

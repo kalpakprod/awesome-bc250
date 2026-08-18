@@ -17,11 +17,11 @@
 ## ❓ Тез жооптор
 
 - **ASRock AMD BC-250 деген эмне?** PlayStation 5'тин негизинде жасалган APU-такта — 6 ядролуу Zen 2 + 24/40 RDNA 2 CU ("Cyan Skillfish"), 16 GB GDDR6 — мурунку майнинг картасы катары арзан сатылып, Linux оюн жана AI кутусуна, өз колуң менен жасалган бюджеттик Steam Machine'ге айландырылган.
-- **Канча турат?** Жалаң такта болжол менен **$60–130**; толук курулма (Кубат булагы, сууткуч, SSD) **$150–250** тегерегинде. [Сатып алуу](docs/en/02-buying.md) кара.
-- **Оюндарда кандай?** FSR / Frame-Gen жана GPU+CPU овершклогу менен көпчүлүк оюндарда болжол менен **1080p 60 FPS** (RX 6600 классындай). [Оюн натыйжалары](docs/en/11-gaming.md) кара.
-- **Кайсы ОС?** GPU ылдамдатуусу үчүн **тек Linux** — Mesa 25.1+ менен Bazzite, Fedora, CachyOS же Arch. Windows GPU драйвери жок. [Linux орнотуу](docs/en/06-linux.md) кара.
+- **Канча турат?** Жалаң такта болжол менен **$60–130**; толук курулма (Кубат булагы, сууткуч, SSD) **$150–250** тегерегинде. [Сатып алуу](docs/ky/02-buying.md) кара.
+- **Оюндарда кандай?** FSR / Frame-Gen жана GPU+CPU овершклогу менен көпчүлүк оюндарда болжол менен **1080p 60 FPS** (RX 6600 классындай). [Оюн натыйжалары](docs/ky/11-gaming.md) кара.
+- **Кайсы ОС?** GPU ылдамдатуусу үчүн **тек Linux** — Mesa 25.1+ менен Bazzite, Fedora, CachyOS же Arch. Windows GPU драйвери жок. [Linux орнотуу](docs/ky/06-linux.md) кара.
 - **LLM'дерди иштете алабы?** Ооба — Vulkan аркылуу llama.cpp / Ollama 16 GB GDDR6'ны VRAM катары колдонот (чакан моделдерде ~30–47 tok/s). [AI / LLM](docs/en/12-ai-llm.md) кара.
-- **Кантип суутам?** Заводдук сервер радиатору столдо троттлинг кылат; канаттарды ичкерип, 120 мм желдеткич кошуңуз, же суу муздатууга өтүңүз. [Сууткуч](docs/en/04-cooling.md) кара.
+- **Кантип суутам?** Заводдук сервер радиатору столдо троттлинг кылат; канаттарды ичкерип, 120 мм желдеткич кошуңуз, же суу муздатууга өтүңүз. [Сууткуч](docs/ky/04-cooling.md) кара.
 
 ---
 
@@ -78,20 +78,20 @@ Governor жана андервольт GPU'ну кыскартат, бирок C
 
 | # | Бөлүм | Эмне үчүн |
 |---|---------|-----|
-| 01 | [BC-250 деген эмне](docs/en/01-what-is-bc250.md) | мүнөздөмөлөр, өлчөмдөр, пиноут, күтүүлөр |
-| 02 | [Сатып алуу боюнча колдонмо](docs/en/02-buying.md) | кайдан, баасы, тобокелдиктер, биргелешип сатып алуу |
-| 03 | [Кубат булагы](docs/en/03-power-supply.md) | LOP / Flex ATX, 8-pin пиноут, зымдоо |
-| 04 | [Сууткуч](docs/en/04-cooling.md) | радиатор, желдеткич кожуху, тест ыкмасы |
-| 05 | [Корпустар жана 3D басып чыгаруу](docs/en/05-case.md) | басып чыгаруучу корпустардын каталогу (STL) |
-| 06 | [Linux драйверлери жана орнотуу](docs/en/06-linux.md) | дистрибутив тандоо, amdgpu, орнотуу |
-| 07 | [Windows драйверлери жана орнотуу](docs/en/07-windows.md) | драйвердин абалы, кантип жасоо |
-| 08 | [BIOS жана «кирпич»ти калыбына келтирүү](docs/en/08-bios.md) | мод BIOS, прошивкалоо, «кирпич»тен чыгаруу |
-| 09 | [Овершклоктоо жана андервольттоо](docs/en/09-overclock-undervolt.md) | governor, SMU, 40CU ачуу |
-| 10 | [WiFi жана Bluetooth донглдары](docs/en/10-wifi-bt.md) | чындап иштеген донглдар |
-| 11 | [Оюн натыйжалары жана жөндөөлөр](docs/en/11-gaming.md) | бенчмарктар, ар бир оюн боюнча жөндөө |
+| 01 | [BC-250 деген эмне](docs/ky/01-what-is-bc250.md) | мүнөздөмөлөр, өлчөмдөр, пиноут, күтүүлөр |
+| 02 | [Сатып алуу боюнча колдонмо](docs/ky/02-buying.md) | кайдан, баасы, тобокелдиктер, биргелешип сатып алуу |
+| 03 | [Кубат булагы](docs/ky/03-power-supply.md) | LOP / Flex ATX, 8-pin пиноут, зымдоо |
+| 04 | [Сууткуч](docs/ky/04-cooling.md) | радиатор, желдеткич кожуху, тест ыкмасы |
+| 05 | [Корпустар жана 3D басып чыгаруу](docs/ky/05-case.md) | басып чыгаруучу корпустардын каталогу (STL) |
+| 06 | [Linux драйверлери жана орнотуу](docs/ky/06-linux.md) | дистрибутив тандоо, amdgpu, орнотуу |
+| 07 | [Windows драйверлери жана орнотуу](docs/ky/07-windows.md) | драйвердин абалы, кантип жасоо |
+| 08 | [BIOS жана «кирпич»ти калыбына келтирүү](docs/ky/08-bios.md) | мод BIOS, прошивкалоо, «кирпич»тен чыгаруу |
+| 09 | [Овершклоктоо жана андервольттоо](docs/ky/09-overclock-undervolt.md) | governor, SMU, 40CU ачуу |
+| 10 | [WiFi жана Bluetooth донглдары](docs/ky/10-wifi-bt.md) | чындап иштеген донглдар |
+| 11 | [Оюн натыйжалары жана жөндөөлөр](docs/ky/11-gaming.md) | бенчмарктар, ар бир оюн боюнча жөндөө |
 | 12 | [BC-250'де AI / LLM](docs/en/12-ai-llm.md) | llama.cpp, ROCm |
-| 13 | [macOS / Hackintosh](docs/en/13-macos.md) | абалы |
-| 14 | [Дисплей жана чыгаруу](docs/en/14-display.md) | DisplayPort, DP→HDMI адаптерлери, кош экран |
+| 13 | [macOS / Hackintosh](docs/ky/13-macos.md) | абалы |
+| 14 | [Дисплей жана чыгаруу](docs/ky/14-display.md) | DisplayPort, DP→HDMI адаптерлери, кош экран |
 | 15 | [Эмуляция](docs/en/15-emulation.md) | ар бир консоль/платформа, реалдуу абалы |
 | 16 | [USB, хабдар жана сактагыч](docs/en/16-usb-peripherals.md) | хабдар, 5V мод, M.2 / SATA адаптерлери |
 | ❓ | [FAQ](docs/ky/faq.md) · [Ката издөө](docs/ky/troubleshooting.md) | кеңири таралган маселелер |
@@ -134,7 +134,7 @@ Governor жана андервольт GPU'ну кыскартат, бирок C
 - [TuxThePenguin0/bc250-bios](https://gitlab.com/TuxThePenguin0/bc250-bios) — эң көп шилтеме кылынган BIOS образдары жана моддору
 - [TheRetroWeb — BC-250 BIOS базасы](https://theretroweb.com/bios?itemsPerPage=24&chipsetIds%5B%5D=1990) — заводдук BIOS дамптары, версия боюнча карап/жүктөө
 - [Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script](https://github.com/Forbidden-Darkness/AMD-BC-250-UEFI-v2.2-Firmware-Menu-Script) — меню менен башкарылуучу firmware резервдик көчүрмөсү жана ыңгайлаштырылган firmware прошивкалоо
-- Прошивкалоо жана «кирпич»тен калыбына келтирүү үчүн [docs/ky/08-bios.md](docs/en/08-bios.md) кара
+- Прошивкалоо жана «кирпич»тен калыбына келтирүү үчүн [docs/ky/08-bios.md](docs/ky/08-bios.md) кара
 
 ### WiFi / BT донглдары
 - [shenmintao/aic8800d80](https://github.com/shenmintao/aic8800d80) · [lwfinger/rtw88](https://github.com/lwfinger/rtw88) · [biglinux/rtl8831](https://github.com/biglinux/rtl8831)
@@ -144,7 +144,7 @@ Governor жана андервольт GPU'ну кыскартат, бирок C
 
 ### Корпустар / 3D
 - [onemorecap/bc-250-sleeve-adapter](https://github.com/onemorecap/bc-250-sleeve-adapter) · [bc-250-shell-case](https://github.com/onemorecap/bc-250-shell-case)
-- Printables жана MakerWorld — [docs/ky/05-case.md](docs/en/05-case.md) кара
+- Printables жана MakerWorld — [docs/ky/05-case.md](docs/ky/05-case.md) кара
 
 ---
 
