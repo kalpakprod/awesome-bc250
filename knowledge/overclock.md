@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Overclock & undervolt
 
-_1233 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_1268 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - A toolset for overclocking the AMD BC-250 CPU is available at https://github.com/bc250-collective/bc250_smu_oc and achieved 4 GHz at 1275 mV on all cores. — mrfrakes (re57, 2025-12-30) · _CPU Overclocking & Undervolting Tools_ [[1]](https://discord.com/channels/1315924807128449065/1455661502886576224/1455661502886576224)
   - src: Me and @dantistnfs have created a toolset for overclocking the CPU on AMD BC-250 boards. This is the result of our efforts to reverse engineer the BC-250's SMU (System Management Unit)  You can find t…
@@ -2322,6 +2322,76 @@ _1233 verified facts. Each bullet links to the source message; reaction count (r
 - Overclocking works at 1800 on 970, but 2000 was not seen. — Admin (re0, 2025-08-07) [[1233]](https://t.me/c/2424231195/66147)
   - src: И разгон работает 1800 на 970. 2000 вообще не видел.
 
+- Operating the GPU at 1800 MHz requires a minimum voltage of 980 mV for system stability on AMD BC-250. — Дмитрий (@Dubaff) (re0, 2026-07-01) [[1234]](https://t.me/c/2424231195/147264)
+  - src: у меня 980 на 1800Мгц иначе нестабильно
+- A stable configuration was achieved with the GPU set to 1800 MHz at 980 mV and CPU at 3600 MHz at 1000 mV. — Дмитрий (@Dubaff) (re0, 2026-07-01) [[1235]](https://t.me/c/2424231195/147267)
+  - src: ну вот я в итоге сейчас сделал 1800 980мв 3600 1000мв
+- Insufficient CPU core voltage can cause the Steam overlay in Linux to report incorrect clock speeds or disappear entirely. — Vitaly Ermakov (@Dexik2517) (re0, 2026-07-01) [[1236]](https://t.me/c/2424231195/147278)
+  - src: Я хз как связано но когда процу не хватает напряжения пропадает оверлей
+- The AMD BC-250 board was successfully run with the CPU overclocked to 4050 MHz and the GPU overclocked to 2200 MHz. — Григорий Озеров (@RockStar8597) (re0, 2026-07-01) [[1237]](https://t.me/c/2424231195/147334)
+  - src: 4050 ЦПУ 2200 ГПУ
+- The bc250-cu-live-manager utility manages active Compute Units via UMR by querying cyan_skillfish.gfx1013.mmSPI_PG_ENABLE_STATIC_WGP_MASK. — Osnovatel (@AlekseyStoyanovskiy) (re0, 2026-07-15) [[1238]](https://t.me/c/2424231195/149189)
+  - src: Народ, помогите. Может кто сталкивался. Пытаюсь разблокировать CU через https://github.com/WinnieLV/bc250-cu-live-manager пишет ошибку Failed to read cyan_skillfish.gfx1013.mmSPI_PG_ENABLE_STATIC_WGP_
+- A user reported CPU undervolting settings of 3500 MHz at scale -38 (970 mV) and 3800 MHz at 1070 mV on BC-250. — Pavlo Buznik (re0, 2026-07-24) [[1239]](https://t.me/c/2424231195/150042)
+  - src: Поделитесь своими результатами в андерволтинге . Например у меня 3500 MHz scale -38 (970 mV) и 3800 1070mV . Я понимаю что кремниевая лотерея, но статистка тоже интересна.
+- A user reported running the BC-250 CPU at 3800 MHz with 1050 mV. — Youcef (re0, 2026-07-24) [[1240]](https://t.me/c/2424231195/150046)
+  - src: 3800mhz 1050mv
+- A user reported running the BC-250 CPU at 3900 MHz with 1075 mV. — Alex (@SadGofLC) (re0, 2026-07-24) [[1241]](https://t.me/c/2424231195/150048)
+  - src: 3900 1075
+- A user reported running the BC-250 CPU at 3850 MHz with 1160 mV. — Владислав (re0, 2026-07-24) [[1242]](https://t.me/c/2424231195/150049)
+  - src: 3850 1160.
+- The BC-250 VID prediction approximation formula is calculated as 0.0003 * clock^2 + (-1.519 + scale * 0.004325) * clock + (2800.0 - scale * 10.0) for clocks of 3000 MHz and above. — Stas Zubenko🦄 (@dantistnfs) (re0, 2026-07-25) [[1243]](https://t.me/c/2424231195/150222)
+  - src: Есть вот функция def vid_predict(clock, scale): if clock < 3000: raise ValueError("cannot predict vid for clocks below 3 GHz") p = -1.519 + scale * 0.004325 q = 2800.0 - (scale *
+- Recommended voltage baselines for BC-250 CPU frequencies are 4000 MHz at 1275 mV, 3800 MHz at 1150 mV, and 3500 MHz at 1000–1050 mV. — Владислав (re0, 2026-07-25) [[1244]](https://t.me/c/2424231195/150234)
+  - src: Рекомендую поставить 4000 на 1275, посмотреть насколько стало горячо и при необходимости сделать шаг назад к 3800 1150 и если все ещё горячо, то 3500 и 1000-1050.
+- A BC-250 GPU runs stably at 2000 MHz and 900 mV reaching ~70 °C in FurMark, but experiences thermal throttling at 2250 MHz and 1000 mV. — Alexander Korotkov (@freefelt) (re0, 2026-07-27) [[1245]](https://t.me/c/2424231195/150427)
+  - src: Какую графику не выставляешь, все равно местами ниже 60 падает. Пробовал вернуть zram - никакой разницы. Разогнал проц до 4000, стало лучше там, где и так было хорошо, а в "специальных" местах все рав
+- The oberon-governor utility is available at https://gitlab.com/mothenjoyer69/oberon-governor for GPU clock and voltage management via driver interfaces. — Blank (@wd2blank) (re0, 2026-07-28) [[1246]](https://t.me/c/2424231195/150559)
+  - src: https://gitlab.com/mothenjoyer69/oberon-governor
+- The bc250-core-unlock utility hosted at https://github.com/rw-r-r-0644/bc250-core-unlock enables unlocking two additional CPU cores on the AMD BC-250. — Stas Zubenko🦄 (@dantistnfs) (re0, 2026-07-29) [[1247]](https://t.me/c/2424231195/150645)
+  - src: Там пишут что смогли разблочить дополнительные два ядра https://github.com/rw-r-r-0644/bc250-core-unlock Бенчмарков пока нет, так что take with grain of salt
+- Unlocking all 8 cores (16 threads) on the BC-250 increased its 7-Zip benchmark rating from 48,794 MIPS to 65,846 MIPS. — Stas Zubenko🦄 (@dantistnfs) (re0, 2026-07-29) [[1248]](https://t.me/c/2424231195/150658)
+  - src: До: 1T CPU Freq (MHz): 3448 3448 3449 3449 3445 3457 3463 6T CPU Freq (MHz): 580% 3339 589% 3397 12T CPU Freq (MHz): 872% 2515 943% 2709 RAM size: 9389 MB, # CPU hardware threads: 12 RAM usag
+- Applying the ACPI fix prevents CPU core frequencies from locking and maintains a stable 3.5 GHz across all cores in games. — Максим Калитюк (@shereant) (re0, 2026-07-29) [[1249]](https://t.me/c/2424231195/150701)
+  - src: Встановив і в мене гарні 3.5ггц стабільних в іграх
+- An 8-core, 16-thread unlocked BC-250 running Fedora 44 with kernel 7.1.3-cachyos and BIOS P3.00 achieved Geekbench 6 benchmark results available at https://browser.geekbench.com/v6/cpu/18863740. — Blank (@wd2blank) (re0, 2026-07-29) [[1250]](https://t.me/c/2424231195/150715)
+  - src: blank@fedora:~$ lscpu | grep -E "CPU\(s\)|Core|Thread" CPU(s): 16 On-line CPU(s) list: 0-15 Thread(s) per core: 2 Core(s) per
+- After unlocking, GPU monitoring may display inaccurate clock speeds below 100 MHz while actual gaming performance corresponds to 1800 MHz. — Admin (@gadgetsUS) (re0, 2026-07-31) [[1251]](https://t.me/c/2424231195/151475)
+  - src: частоты показывает до 100Мгц, но ФПС как для 1800 - ничего не поменялось )
+- A tool for unlocking CPU cores on the AMD BC-250 is available at GitHub repository rw-r-r-0644/bc250-core-unlock. — Blank (@wd2blank) (re0, 2026-08-05) [[1252]](https://t.me/c/2424231195/152789)
+  - src: https://github.com/rw-r-r-0644/bc250-core-unlock
+- A working undervolt and clock configuration for the AMD BC-250 is 4.0 GHz at 1250 mV on the CPU and 1850 MHz at 860 mV on the GPU. — Кирилл Павлов (@mrK0ks) (re0, 2026-08-07) [[1253]](https://t.me/c/2424231195/153212)
+  - src: ЦПУ 4 ггц - 1250мВ, ГПУ 1850 - 860мВ. У меня так
+- OCCT is better suited than FurMark for testing GPU stability on the BC-250 because FurMark only tests cooling capacity and loads a single CPU core. — Andrew V (@hexdumb) (re0, 2026-08-07) [[1254]](https://t.me/c/2424231195/153220)
+  - src: І для гпу фурмарк не дуже підходить для тестів краще occt
+- Stock voltages on the AMD BC-250 motherboard are 900 mV for the GPU and 1200 mV for the CPU. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-07) [[1255]](https://t.me/c/2424231195/153234)
+  - src: По андервольту - сток на ГПУ 900мВ, а на ЦПУ 1200мВ
+- Recommended undervolting targets for the AMD BC-250 are 1850 MHz at 860-880 mV for the GPU and 3850 MHz at 1155 mV for the CPU. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-07) [[1256]](https://t.me/c/2424231195/153238)
+  - src: Тобто для ГПУ андервольт це по типу 1850 @ 860-880mV, CPU 3850 @ 1155
+- Overclocking the BC-250 to 4.0 GHz CPU at 1275 mV and 2.0 GHz GPU at 960 mV results in over 350 W power draw in stress tests and 200-220 W in games. — Volodymyr Spyrydonov (re0, 2026-08-09) [[1257]](https://t.me/c/2424231195/153744)
+  - src: В разгоне 4Ггц 1275 / 2Ггц 960 - плата в стрессе может брать 350+ ватт Потому дополнительные разъёмы это вежливая рекомендация В играх даже в разгоне потребление ~200-220вт, и качественный кабель и ко
+- Raising CPU voltage to 1285 mV fixed system crash issues on BC-250 after BIOS flashing, stabilizing a 4025 MHz overclock. — Григорий Озеров (re0, 2026-08-09) [[1258]](https://t.me/c/2424231195/153823)
+  - src: Было такое после прошивки бивиса, поднял немного напряжение на CPU, проблема ушла. Сейчас 4025Мгц на 1285мВ, полёт нормальный
+- The BC-250 GPU can achieve an overclock of 2100 MHz at a voltage of 980 mV. — Dead Line (re0, 2026-08-09) [[1259]](https://t.me/c/2424231195/153869)
+  - src: Может то что графику на 2100 при 980 оставил повлияло
+- Unlocking two additional CPU cores on the BC-250 increased Counter-Strike 2 performance from 150-155 FPS to 175-180 FPS. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-10) [[1260]](https://t.me/c/2424231195/154108)
+  - src: Если не оштбаюсь было 150-155, стало 175-180
+- Unlocking additional CPU cores causes MangoHud GPU frequency monitoring to break and display a static 100 MHz value. — Andrew V (@hexdumb) (re0, 2026-08-11) [[1261]](https://t.me/c/2424231195/154157)
+  - src: ломается мониторинг частотьі гпу
+- A solid green screen crash under load on the BC-250 is caused by insufficient CPU core voltage and can be stabilized by adding +30 to +50 mV. — Максим Калитюк (@shereant) (re0, 2026-08-12) [[1262]](https://t.me/c/2424231195/154395)
+  - src: Як мінімум потрібно для того і того напругу на +30-50мв зробити
+- FurMark, Vulkan memtest, and llama-bench ran without errors for 20 minutes on 40 unlocked CUs at stock 1500 MHz. — D (@nasonovdanila) (re0, 2026-08-14) [[1263]](https://t.me/c/2424231195/154841)
+  - src: К слову, после 20 минут фурмарка + мемтест вулкан + ллама бенч все 40 ку работали без ошибок на стоковой 1500
+- Active VRM cooling allowed the BC-250 GPU to reach 2200 MHz at 1000 mV, scoring 155 FPS in FurMark. — D (@nasonovdanila) (re0, 2026-08-14) [[1264]](https://t.me/c/2424231195/154847)
+  - src: причем настолько, что я дошел до 2200 и 1000, что дало в бублике 155 кадров
+- Setting the GPU governor starting frequency to 1000 MHz instead of 350 MHz helps prevent idle crashes on BC-250. — Владислав (re0, 2026-08-14) [[1265]](https://t.me/c/2424231195/154858)
+  - src: Ты не просто плохо искал, а вообще не искал. 1. Самое главное. Используемый тобой говернор это фантазия на тему от разработчика. Нет гарантии, что конкретно твоя карта будет работать на том диапазоне 
+- Increasing CPU voltage by +10 mV resolved black screen game crashes on BC-250. — Григорий Озеров (@RockStar8597) (re0, 2026-08-14) [[1266]](https://t.me/c/2424231195/154861)
+  - src: Привет, было с обычной версией Бэтмена (не Wine), вылет на чёрный экран, скорректировал напряжение ЦПУ, прибавил 10мВ и всё теперь работает стабильно, за исключением открытого мира, там просадки но эт
+- BC-250 GPU typically runs at approximately 860-875 mV when clocked at 1800 MHz. — Кирилл Павлов (@mrK0ks) (re0, 2026-08-14) [[1267]](https://t.me/c/2424231195/154875)
+  - src: На 1800 должно быть 860 мВ
+- AMD BC-250 8 CPU cores passed OCCT stability testing at 4.0 GHz with a voltage of 1250 mV. — D (@nasonovdanila) (re0, 2026-08-14) [[1268]](https://t.me/c/2424231195/155002)
+  - src: через occt протестил все, судя по результатам: цпу 8 работатет стабильно на 4Гц (1250 mV) , тест стабильности прошел нормально а вот с КУ... при любом варианте, от 24 и до 40, при любой частоте, при л
 # Citations
 
 [1] https://discord.com/channels/1315924807128449065/1455661502886576224/1455661502886576224
@@ -3557,3 +3627,38 @@ _1233 verified facts. Each bullet links to the source message; reaction count (r
 [1231] https://t.me/c/2424231195/144701
 [1232] https://t.me/c/2424231195/63224
 [1233] https://t.me/c/2424231195/66147
+[1234] https://t.me/c/2424231195/147264
+[1235] https://t.me/c/2424231195/147267
+[1236] https://t.me/c/2424231195/147278
+[1237] https://t.me/c/2424231195/147334
+[1238] https://t.me/c/2424231195/149189
+[1239] https://t.me/c/2424231195/150042
+[1240] https://t.me/c/2424231195/150046
+[1241] https://t.me/c/2424231195/150048
+[1242] https://t.me/c/2424231195/150049
+[1243] https://t.me/c/2424231195/150222
+[1244] https://t.me/c/2424231195/150234
+[1245] https://t.me/c/2424231195/150427
+[1246] https://t.me/c/2424231195/150559
+[1247] https://t.me/c/2424231195/150645
+[1248] https://t.me/c/2424231195/150658
+[1249] https://t.me/c/2424231195/150701
+[1250] https://t.me/c/2424231195/150715
+[1251] https://t.me/c/2424231195/151475
+[1252] https://t.me/c/2424231195/152789
+[1253] https://t.me/c/2424231195/153212
+[1254] https://t.me/c/2424231195/153220
+[1255] https://t.me/c/2424231195/153234
+[1256] https://t.me/c/2424231195/153238
+[1257] https://t.me/c/2424231195/153744
+[1258] https://t.me/c/2424231195/153823
+[1259] https://t.me/c/2424231195/153869
+[1260] https://t.me/c/2424231195/154108
+[1261] https://t.me/c/2424231195/154157
+[1262] https://t.me/c/2424231195/154395
+[1263] https://t.me/c/2424231195/154841
+[1264] https://t.me/c/2424231195/154847
+[1265] https://t.me/c/2424231195/154858
+[1266] https://t.me/c/2424231195/154861
+[1267] https://t.me/c/2424231195/154875
+[1268] https://t.me/c/2424231195/155002

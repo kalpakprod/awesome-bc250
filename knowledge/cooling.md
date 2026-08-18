@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Cooling
 
-_1556 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_1602 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - The BC250 tends to run hot, so PTM was applied to improve cooling. — OkDebate6649 (re4425, 2026-04-13) · _r/pcmasterrace_ [[1]](https://www.reddit.com/r/pcmasterrace/comments/1skbkp6/lego_pc_build_with_bc250/)
   - src: LEGO PC build with BC250 Recently, I built this by combining a BC250 with LEGO.  It’s designed in a modular way, so it can be used with monitors I made before.  Since the BC250 tends to run hot (I app…
@@ -2969,6 +2969,98 @@ _1556 verified facts. Each bullet links to the source message; reaction count (r
 - The RTX 4090 radiator fan has an 8-pin connection and cannot be started by supplying voltage only to the plus and minus contacts or by standard 4-pin connection schemes. — Гослинг (re0, 2025-08-11) [[1556]](https://t.me/c/2424231195/66707)
   - src: Вот так мне ответили. У вентилятора 8 пин (4 пин мама + 4 пин папа) подключение, подача напряжения только на плюсовой и минусовой контакт, как и подключение одного или обоих 4 пин по стандартной схеме…
 
+- A single 120mm cooling fan keeps temperatures below 60°C under a 60 FPS cap at 1850 MHz and 960–980 mV. — Ave (re0, 2026-07-01) [[1557]](https://t.me/c/2424231195/147266)
+  - src: Понять, что оно даст + 5-7 фпс относительно 1850 и забить. Один кулек справится легко с 1850/960-980. Блин да у меня с локом 60фпс температуры до 60* :))
+- With the GPU at 2000 MHz, CPU at 4000 MHz, and 38 CUs active, temperatures reach up to 70°C in games and 80°C in FurMark using a single fan cooler. — John Bercow (@flyzet3) (re0, 2026-07-01) [[1558]](https://t.me/c/2424231195/147271)
+  - src: Gpu 2000mhz cpu 4000mhz 38 Cu, температура з одним кулером в іграх максимум до 70, часто 65. Фурмарк 80. Здається дуже сильно залежить від якості термрокладок(та їх встановлення), а також якості самог
+- Bending or disconnecting the PWM pin on the AIO pump connector forces the pump to continuously run at 100% full speed. — Григорий Озеров (@RockStar8597) (re0, 2026-07-02) [[1559]](https://t.me/c/2424231195/147434)
+  - src: На помпу один пин отогнул чтоб хреначила на полную
+- ID-Cooling 120x15mm slim fans operate up to 2000 RPM and generate significant noise unless unlinked from the motherboard fan curve. — Алесь (re0, 2026-07-02) [[1560]](https://t.me/c/2424231195/147451)
+  - src: у меня на радики 120*15 слимы с оборотами до 2000 айдикулинг, они шумные я их отвязал
+- Installing large tower air coolers on the BC-250 risks bending the PCB and crushing the direct-die APU silicon. — Jack Fisher (@Jacky_Fish) (re0, 2026-07-15) [[1561]](https://t.me/c/2424231195/149127)
+  - src: Больше стока - изгиб платы + можно раздавить чип. Да и если уж переделывать вообще весь охлад как будто проще сразу ультимативное решение сделать
+- On a dual-fan air cooling setup on BC-250, running FurMark triggers thermal throttling at 85°C if the GPU clock speed is raised above 1750 MHz. — Alex (@SadGofLC) (re0, 2026-07-22) [[1562]](https://t.me/c/2424231195/149857)
+  - src: У тебя на 2 кулерах на каких частотах GPU работает? У меня на таком обдуве 36cpu , 3800, и GPU 1750 , если выше в фурмарке 85 и тротл.
+- The Jiushark JF13K top-down horizontal dual-fan cooler can be mounted on the AMD BC-250 to simultaneously cool the SoC and direct airflow over the VRM components. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-07-24) [[1563]](https://t.me/c/2424231195/149999)
+  - src: JF13K интересен с позиции одновременного обдува ВРМ...
+- Applying thick Arctic MX-7 thermal paste to the BC-250 bare die reduced temperatures by 10 °C compared to runnier paste prone to pump-out. — A M (@Dryadal1s) (re0, 2026-07-25) [[1564]](https://t.me/c/2424231195/150213)
+  - src: Ребята! Намазал MX7, так как фазового перехода пока нет на руках, температура упала на 10 градусов! Если у вас нет возможности использовать премиальную пасту, наносите любую, но смотрите чтобы была гу
+- Standard thermal paste gets squeezed out on bare-die chips within weeks due to the pump-out effect caused by high thermal flux and temperature deltas. — Anton (@gluk1470) (re0, 2026-07-26) [[1565]](https://t.me/c/2424231195/150278)
+  - src: Про эффект "помпажа" почитай. Между голым кристаллом и охладом выдавливает любую термопасту, это стало актуально для современных чипов, т.к. тепловой поток огромный и кристал имеет большую рабочую дел
+- The JiuShark JF13K top-down air cooler can be mounted directly on the AMD BC-250 motherboard. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-07-29) [[1566]](https://t.me/c/2424231195/150611)
+  - src: JiuShark JF13K
+- The JiuShark JF13K cooler maintained the unlocked BC-250 CPU temperature at 54°C during an all-core multi-threaded stress test. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-07-29) [[1567]](https://t.me/c/2424231195/150729)
+  - src: 54 градуса в стрессе😁😎
+- A 240mm liquid cooling radiator is required to adequately cool an unlocked and overclocked BC-250 board compared to a 120mm unit. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-07-30) [[1568]](https://t.me/c/2424231195/150837)
+  - src: тока 240
+- Cutting insulation on the backplate and placing a thermal pad between the rear CPU area and an auxiliary heatsink reduced FurMark temperatures from 82-83°C at 3000 RPM to 77-78°C at 2600 RPM with 40 CUs unlocked at 1850 MHz. — Andrew V (@hexdumb) (re0, 2026-07-30) [[1569]](https://t.me/c/2424231195/150863)
+  - src: Немного заморочился На бекплейте срезал изоляцию и всунул терможвачку между жопой проца и бекплейтом у меня большой радиатор прилеплен на бекплейт и бекплейт паразитно обдувается так вот температура и
+- A 3 mm thermal pad fits properly between the rear CPU capacitors and the backplate after cutting out a square of insulation on the backplate. — Andrew V (@hexdumb) (re0, 2026-07-30) [[1570]](https://t.me/c/2424231195/150871)
+  - src: Уже собрал еще раз буду перебирать, когда с китая посьілка приедет - ожидаемо на вьіходньіх Там всьо просто напротив кондьоров под процом срезаешь квадрат изоляции с бекплейта по размеру области с єти
+- Unlocking all 8 CPU cores resulted in slightly lower operating temperatures and reduced CPU load in games compared to running with 6 cores. — John Bercow (@flyzet3) (re0, 2026-07-30) [[1571]](https://t.me/c/2424231195/150956)
+  - src: Замітив з 8 ядрами проц почав менше грітись на декілька градусів ніж з 6 в іграх ну і відпрвідно трошки менше загрузка його
+- The AMD BC-250 APU die area measures 308 mm². — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-01) [[1572]](https://t.me/c/2424231195/151867)
+  - src: 308 mm² 😊
+- Placing plastic washers under the stock cooler mounting screws increases the mounting pressure required for Honeywell PTM7950 to function effectively. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-01) [[1573]](https://t.me/c/2424231195/151879)
+  - src: под винты родные положи по пластиковой шайбе. ПТМ нужен очень плотный прижим для работы
+- Stock heatsinks from RTX 5090 graphics cards do not directly fit the BC-250 motherboard without custom mounting and shroud trimming. — Кирилл Павлов (@mrK0ks) (re0, 2026-08-02) [[1574]](https://t.me/c/2424231195/152126)
+  - src: Радиатор с 5090 точно никак не подойдет, можешь не надеяться
+- Switching from Arctic MX-4 paste to Honeywell PTM7950 phase-change material reduced full-load temperatures on the BC-250 from 85°C down to 79°C. — Victor L. (@victorlesov) (re0, 2026-08-03) [[1575]](https://t.me/c/2424231195/152265)
+  - src: Признаю товарищи, Honeywell и правда тема, на mx-4 было 85 градусов с выкрученными кулерами, а тут 79 градусов, и то в районе 90%
+- Bending the BC-250 heatsink fins using a 3D-printed tool provides better cooling performance than cutting them when fitting the motherboard into the NexGen dual-fan case. — Alex (@SadGofLC) (re0, 2026-08-03) [[1576]](https://t.me/c/2424231195/152363)
+  - src: Первую резал ножницами как на видео, как упор использовал металическую внешнюю часть там где usb открученную. Получилось ровнее всего. Вторую пробовал фрезерный, круг на болгарке, ножницы по металу ку
+- Installing a 120x120x20mm heatsink with an Arctic Slim 120mm fan on the backplate and a Noctua 120mm fan on the front keeps BC-250 temperatures under 72°C. — Cyril Zolotarev (@Cyril) (re0, 2026-08-04) [[1577]](https://t.me/c/2424231195/152721)
+  - src: Я на бек приклеил радиатор 120x120x 20мм и на него arctic slim 120. А на фронт noktua 120. Терможвачки и паста поменял. Выше 72 градусов вроде не ходит. Но бекплейт грелся довольно прилично до вентиля
+- A 3D printable BC-250 OC VRAM fan kit remix model is hosted on MakerWorld under model ID 2250341. — Pavlo Buznik (re0, 2026-08-04) [[1578]](https://t.me/c/2424231195/152763)
+  - src: https://makerworld.com/uk/models/2250341-bc-250-oc-vram-fan-kit-remix?from=search#profileId-2450612
+- Thermal pad replacement on the AMD BC-250 uses 1.5mm Arctic TP-3 pads for power phases, MOSFETs, and chipset, and 2.0mm pads on the backplate. — Victor L. (@victorlesov) (re0, 2026-08-05) [[1579]](https://t.me/c/2424231195/152844)
+  - src: Привет, да вроде всем известно, со стороны чипа использовал arctic tp-3 давно лежала, толщина 1.5 мм полностью всё закрывал, фазы, мосфеты, чипсет С задней стороны использовал по сути no name, с типо 
+- The bc250-control-center tool for fan PWM control is available on GitHub at movacx/bc250-control-center. — ▪︎_▪︎ (@Panconqueso03) (re0, 2026-08-06) [[1580]](https://t.me/c/2424231195/152929)
+  - src: https://github.com/movacx/bc250-control-center
+- Honeywell PTM7950 phase-change pad should be cut with a 1-2 mm margin, chilled in a refrigerator for 10 minutes, applied to the crystal, and pressed along the die edges with a cotton swab so the crystal cuts away the excess material cleanly. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-06) [[1581]](https://t.me/c/2424231195/153037)
+  - src: Вирізаєш із запасом по 1–2 міліметри з кожного краю та кладеш її в холодильник на 10 хвилин. Потім знімаєш захисну плівку з одного боку, обережно прикладаєш до кристала й ретельно розгладжуєш по всій 
+- Placing ~1 mm plastic washers under the original spring-loaded cooler screws increases mounting pressure for Honeywell PTM7950, and thermal putty is recommended instead of thick thermal pads on the BC-250. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-06) [[1582]](https://t.me/c/2424231195/153038)
+  - src: Також дуже важливо забезпечити хороший і рівномірний притиск радіатора. Тому я раджу використовувати термопуті замість термопрокладок або принаймні переконатися, що нові термопрокладки точно не товсті
+- Fehonda LTP081 is recommended as an effective thermal putty for cooling components. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-06) [[1583]](https://t.me/c/2424231195/153072)
+  - src: Мені дуже подобається Fehonda LTP081
+- When installing large heatsinks on the BC-250, thermal glue should be applied only around the perimeter or corners with regular thermal paste placed in the center. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-07) [[1584]](https://t.me/c/2424231195/153230)
+  - src: да, клей по углам, в середине жидкая термопаста дешевая
+- Mini aluminum heatsink kits from AliExpress items 4000599812221 and 1005003083830470 provide sufficient coverage to cool all VRM power delivery components on the BC-250. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-07) [[1585]](https://t.me/c/2424231195/153259)
+  - src: В принципе - достаточно этих двух вариантов, для всей платы
+- Individual miniature VRM heatsinks on the BC-250 require continuous active airflow to maintain safe operating temperatures. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-07) [[1586]](https://t.me/c/2424231195/153279)
+  - src: Вони працюють само за умовами постійного обдуву, інакше ніяк
+- Active direct fan airflow over the back of the BC-250 board effectively cools the memory without requiring an additional heatsink on the metal backplate. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-07) [[1587]](https://t.me/c/2424231195/153295)
+  - src: Надо на обдув. Тогда даже радиатор на пластине не нужен
+- A 3D dimensional reference model for the ASRock BC-250 PCB is available at https://www.printables.com/model/1677793-asrock-bc250-dimension-model. — Stas Zubenko🦄 (re0, 2026-08-09) [[1588]](https://t.me/c/2424231195/153838)
+  - src: https://www.printables.com/model/1677793-asrock-bc250-dimension-model
+- In the BC-250 3D dimension model, the intersection of the cross marks the exact physical location of the APU silicon die. — Stas Zubenko🦄 (re0, 2026-08-09) [[1589]](https://t.me/c/2424231195/153844)
+  - src: чтобы было понятно где кристал, пересечение креста это как раз кристал
+- The required thermal phase change pad size to cover the bare BC-250 APU die is 15x25 mm. — Andrew V (re0, 2026-08-10) [[1590]](https://t.me/c/2424231195/153961)
+  - src: 15х25мм
+- An Ice Hammer IH900B cooler with an Arctic P12 Pro fan and custom ABS-GF bracket keeps the BC-250 at approximately 70°C under separate CPU/GPU workloads. — Deshkin (re0, 2026-08-10) [[1591]](https://t.me/c/2424231195/153991)
+  - src: Спасибо всем кто отписался ) помогла прошивка, которую скинул @Cpt_Spiridonoff. Все 8 взяли 4ггц, по cpu-x вольтаж под нагрузкой 1050. Охлад у меня ice hammer ih900b + arctic p12 pro, крепление сам пе
+- Adapting a Palit GameRock cooler to the BC-250 APU resulted in 66°C after 40 minutes sitting passively in the BIOS. — Aleksey Burnyshev (re0, 2026-08-10) [[1592]](https://t.me/c/2424231195/154036)
+  - src: Оставил на 40 минут в биос без обдува. Вентилятор охлаждал только чип рядом с разъемом м2. 66 градусов. Но длина всей системы вышла не маленькая)))
+- Uncovered VRM power inductors on the BC-250 reach roughly 85°C during FurMark testing under light indirect airflow. — Deshkin (re0, 2026-08-10) [[1593]](https://t.me/c/2424231195/154042)
+  - src: Laird В смысле радиаторов? Есть по идее step, которые я по фотке обводил, но они кривоватые, по месту точно что-то доделывал, отверстия точно какие-то не попал. Но как шаблон для черновой пойдет. Поищ
+- Adapting an RTX 5090 cooler to the BC-250 requires the original stock plate and a 5 mm thick spacer. — Aleksey Burnyshev (re0, 2026-08-11) [[1594]](https://t.me/c/2424231195/154122)
+  - src: Так все через родную пластину. Проставка толщиной 5мм нужна. Буду снимать для примерки охлаждения мосфетов, сфотографирую
+- A custom metal spacer plate fabricated for mounting an RTX 5090 heatsink onto the BC-250 measures 5x60x70 mm. — Aleksey Burnyshev (re0, 2026-08-11) [[1595]](https://t.me/c/2424231195/154165)
+  - src: Шина 6х60х200 в районе 2000 и молиться чтобы 1мм запаса хватило на вывод плоскостей. Сама проставка 5х60х70
+- The BC-250 BIOS only provides unified fan curve control for all fan headers together, though the OS can control each fan individually. — Максим Калитюк (@shereant) (re0, 2026-08-11) [[1596]](https://t.me/c/2424231195/154180)
+  - src: Да тільки загальна для всіх вентеляторів
+- Using a liquid cooler alongside a stock VRM fan and a custom BIOS profile keeps BC-250 temperatures below 71°C under Ollama AI workloads. — S Kontyreff (@kontyreff) (re0, 2026-08-12) [[1597]](https://t.me/c/2424231195/154217)
+  - src: Система водяного охлаждения + штатный на зоне vrm. В bios профиль custom, при использование в ollama температура не выше 71 градуса.
+- Gluing U-shaped aluminum profile across the entire backplate using thermal adhesive provides effective cooling while leaving screw holes accessible. — КриптоЦИПСО (@NiktonigdeV) (re0, 2026-08-15) [[1598]](https://t.me/c/2424231195/155327)
+  - src: Нарезал П-образный алюминиевый профиль из ЛеманаПро и наклеил на термоклей. Клеить можно по всей поверхности бэкплэйта. Винты в полном доступе. Получилось очень хорошо.
+- BC-250 backplate cooling was improved by gluing 1.2 mm copper plates opposite the CPU and memory and filling the 0.8 mm gap with thermal putty and pad spacers. — Andrew V (@hexdumb) (re0, 2026-08-15) [[1599]](https://t.me/c/2424231195/155329)
+  - src: Я психанул - на клей на бекплейт приклеил медньіе пластинки 1.2мм клеил напротив памяти и проца 0.8мм заполнил термошпаклевкой Возле проца с двух краев только сделал проставки из термопрокладок, чтоб 
+- The Arctic P12 Max fan runs up to 3300 RPM at 100% duty cycle, and operating it at at least 50% (1500–1800 RPM) under load is recommended for cooling the BC-250 heatsink. — Владислав (re0, 2026-08-15) [[1600]](https://t.me/c/2424231195/155496)
+  - src: Исходи из того, что 100% вертушки это 3300 оборотов. Под нагрузкой должно быть как минимум 1500, т.е. 50%.
+- Testing an AMD BC-250 with unlocked CPU/GPU cores, CPU clocked at 3.7 GHz, two heatsink fans, and a memory backplate plate maintained temperatures under 62°C in Hogwarts Legacy. — whiteflower (@trzygubki) (re0, 2026-08-16) [[1601]](https://t.me/c/2424231195/155559)
+  - src: Да я пока без корпуса, хочу сразу определить куда и сколько вентиляторов цеплять чтобы под них уже корпус сделать Пока склоняюсь один на перед и второй назад на память поставить По сути если нагружать
+- Converting the AMD BC-250 to liquid cooling requires installing auxiliary 80 mm and 92 mm fans to cool the motherboard power delivery components. — Кирилл Павлов (@mrK0ks) (re0, 2026-08-16) [[1602]](https://t.me/c/2424231195/155571)
+  - src: Стало очень тихо, правда пришлось ставить 80 и 92 вентиляторы на элементы питания
 # Citations
 
 [1] https://www.reddit.com/r/pcmasterrace/comments/1skbkp6/lego_pc_build_with_bc250/
@@ -4527,3 +4619,49 @@ _1556 verified facts. Each bullet links to the source message; reaction count (r
 [1554] https://t.me/c/2424231195/66055
 [1555] https://t.me/c/2424231195/66641
 [1556] https://t.me/c/2424231195/66707
+[1557] https://t.me/c/2424231195/147266
+[1558] https://t.me/c/2424231195/147271
+[1559] https://t.me/c/2424231195/147434
+[1560] https://t.me/c/2424231195/147451
+[1561] https://t.me/c/2424231195/149127
+[1562] https://t.me/c/2424231195/149857
+[1563] https://t.me/c/2424231195/149999
+[1564] https://t.me/c/2424231195/150213
+[1565] https://t.me/c/2424231195/150278
+[1566] https://t.me/c/2424231195/150611
+[1567] https://t.me/c/2424231195/150729
+[1568] https://t.me/c/2424231195/150837
+[1569] https://t.me/c/2424231195/150863
+[1570] https://t.me/c/2424231195/150871
+[1571] https://t.me/c/2424231195/150956
+[1572] https://t.me/c/2424231195/151867
+[1573] https://t.me/c/2424231195/151879
+[1574] https://t.me/c/2424231195/152126
+[1575] https://t.me/c/2424231195/152265
+[1576] https://t.me/c/2424231195/152363
+[1577] https://t.me/c/2424231195/152721
+[1578] https://t.me/c/2424231195/152763
+[1579] https://t.me/c/2424231195/152844
+[1580] https://t.me/c/2424231195/152929
+[1581] https://t.me/c/2424231195/153037
+[1582] https://t.me/c/2424231195/153038
+[1583] https://t.me/c/2424231195/153072
+[1584] https://t.me/c/2424231195/153230
+[1585] https://t.me/c/2424231195/153259
+[1586] https://t.me/c/2424231195/153279
+[1587] https://t.me/c/2424231195/153295
+[1588] https://t.me/c/2424231195/153838
+[1589] https://t.me/c/2424231195/153844
+[1590] https://t.me/c/2424231195/153961
+[1591] https://t.me/c/2424231195/153991
+[1592] https://t.me/c/2424231195/154036
+[1593] https://t.me/c/2424231195/154042
+[1594] https://t.me/c/2424231195/154122
+[1595] https://t.me/c/2424231195/154165
+[1596] https://t.me/c/2424231195/154180
+[1597] https://t.me/c/2424231195/154217
+[1598] https://t.me/c/2424231195/155327
+[1599] https://t.me/c/2424231195/155329
+[1600] https://t.me/c/2424231195/155496
+[1601] https://t.me/c/2424231195/155559
+[1602] https://t.me/c/2424231195/155571

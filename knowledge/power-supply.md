@@ -8,7 +8,7 @@ timestamp: 2026-06-18T00:00:00Z
 
 # Power supply & wiring
 
-_1088 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_1120 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
 
 - The case is designed to be used with an internal Mean Well LOP 12V DC converter. — penzoiders (re67, 2026-03-10) · _r/BC250Gaming_ [[1]](https://www.reddit.com/r/BC250Gaming/comments/1rq7skj/push_pull_internal_12v_psu_case_no_finvandalism/)
   - src: Push Pull internal 12V PSU case, no fin-vandalism I’ve designed  and wanted to share a case that is meant to be used with an internal meanwell LOP 12V DC converter, to be quiet and efficient and to av…
@@ -2066,6 +2066,70 @@ _1088 verified facts. Each bullet links to the source message; reaction count (r
 - A 12V 400W power supply works with the board, but it outputs 11.8V. — Admin (re0, 2025-08-07) [[1088]](https://t.me/c/2424231195/66145)
   - src: Все работает, но у него на выходе 11,8 вольт || А что скажете про использование такого блока. Модель 12v 400w
 
+- Display blackouts during heavy gaming loads can occur if the power supply rail drops significantly below 12V or if CPU voltage is insufficient. — Admin (@MATDERATOR) (re0, 2026-07-01) [[1089]](https://t.me/c/2424231195/147286)
+  - src: так тухнет изза проца вроде, еще как вариант проверьте блок питания - какое напряжение он выдает, если сильно меньше 12В - может не хватать
+- Custom 12V power wiring for AMD BC-250 requires a minimum 2.5 mm² wire cross-section (or dual 14 AWG / single 10 AWG) with lengths under 30 cm and dual 15A fuses. — Andrew V (@hexdumb) (re0, 2026-07-22) [[1090]](https://t.me/c/2424231195/149879)
+  - src: Тонкі 2х 14awg Товсті 10awg
+- The Delta DPS-700GP server power supply can be repurposed and wired to deliver dedicated 12V power to the AMD BC-250. — Aleksey Burnyshev (re0, 2026-07-23) [[1091]](https://t.me/c/2424231195/149942)
+  - src: DPS-700gp
+- Power adapter boards for connecting power supplies to the BC-250 are available at mosfet.party/products/adapter-3. — iSnechik🇺🇦 (@iSanechik) (re0, 2026-07-25) [[1092]](https://t.me/c/2424231195/150170)
+  - src: https://mosfet.party/products/adapter-3
+- Molex Micro-Fit 3.0 (MX3.0 43025 / 43020) dual-row connectors with 20 AWG wiring can be used for BC-250 power connections. — Pavlo Buznik (re0, 2026-07-25) [[1093]](https://t.me/c/2424231195/150178)
+  - src: 5 шт. Micro-fit Molex MX3.0 43025 43020 20AWG дворядний малий 5557 5559 чоловічий жіночий повітряна док-станція електронний термінал джгут кабелю https://a.aliexpress.com/_EI83o2a
+- The BC-250 can draw up to 26 A on the 12V line under load, requiring additional power lines and adequate silicone wire. — kDn (@kDnZP) (re0, 2026-07-25) [[1094]](https://t.me/c/2424231195/150247)
+  - src: Оскільки я бачив 26А під навантаженням, то схоже теж буду робити додаткові лінії живлення. Тем більше що якраз брав окремо піни та роз'єми, ну а дріт силіконовий вже є.
+- When running the BC-250 with 40 unlocked CUs on a 312 W power supply, the maximum safe operating frequencies are 3850 MHz CPU and 1850 MHz GPU. — Кирилл Павлов (@mrK0ks) (re0, 2026-07-26) [[1095]](https://t.me/c/2424231195/150271)
+  - src: With this PSU you shouldn’t overclock too much your bc-250🙂 with unlocked CU your CPU Should be 3850 mhz and 1850 gpu - it is max value for your psu
+- Lowering the perf-profile setting in cyan-skillfish-governor (https://github.com/bc250-collective/cyan-skillfish-governor) reduces memory power draw by 25-30 W on BIOS version 3.00. — Stas Zubenko🦄 (@dantistnfs) (re0, 2026-07-28) [[1096]](https://t.me/c/2424231195/150538)
+  - src: https://github.com/bc250-collective/cyan-skillfish-governor только perf-profile нужно будет понизить в конфиге до нужного
+- An HP 460W server power supply can be used to power the AMD BC-250 motherboard. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-07-29) [[1097]](https://t.me/c/2424231195/150678)
+  - src: серверник HP 460w
+- Unlike standard ATX units, a server power supply in standby mode disables the 12V rail while keeping the cooling fan spinning and generating slight heat. — Andrew V (@hexdumb) (re0, 2026-07-31) [[1098]](https://t.me/c/2424231195/151419)
+  - src: сервреньій бп не тухнет как атх кулер всьо равно продолжает крутиться, а бп греться он просто отрубает вьіход 12 вольт
+- Bridging pins 1 and 4 on server power supplies turns on the main 12V power rail, while opening the connection switches the PSU into standby mode. — John Bercow (@flyzet3) (re0, 2026-07-31) [[1099]](https://t.me/c/2424231195/151426)
+  - src: 1-4 пін замикати потрібно. Можна і з двома опорами теж працює. Але просто перемичка проще набагато
+- On the HP PL29 server power supply, power-on control can be implemented using an inline 1 kOhm resistor on the control wire. — D K (@cdk_black) (re0, 2026-08-01) [[1100]](https://t.me/c/2424231195/151932)
+  - src: У меня на pl29 так запуск организован. В разрыве этого провода припаян резистор 1к
+- FurMark stress testing on a BC-250 running 40 CUs at 1025 mV drew 352 W from the wall using an 800 W 80+ Bronze ATX PSU connected through a single PCIe 8-pin cable. — Makk (@makkkmr) (re0, 2026-08-03) [[1101]](https://t.me/c/2424231195/152228)
+  - src: У меня только один фурмарк из розетки ел 352 Вт. При 40cu 1025мВ. На АТХ блоке 800Вт бронза. При подключении только одного PCIe 8pin. Эффективность блока питания тоже должна вносить коррективы, по пот
+- A 350 W power supply is sufficient to run the BC-250 with CPU cores at 3800 MHz (1160 mV) and GPU at 1800 MHz (860 mV), operating near its maximum capacity. — Владислав (re0, 2026-08-03) [[1102]](https://t.me/c/2424231195/152233)
+  - src: Получается 350вт блока питания хватит на 3800мгц 1160мв по ядру и 1800мгц на 860мв по гпу, но впритирку.
+- A MetalFish 300 W PSU stably runs the BC-250 with an 8C/16T CPU configuration at 3700 MHz (1130 mV) and 40 CUs GPU at 1850 MHz (930 mV). — Bogdan (@bgdngrnv) (re0, 2026-08-03) [[1103]](https://t.me/c/2424231195/152235)
+  - src: Стоит металфиш на 300 вт, спокойно тянет цпу 8/16 на 3700/1130 и 40 ку 1850/930. Тянет и 3900/1220 с 2000/960, но было уже прям очень тепло, а шум кулера прям перекрикивал игру, убавил.
+- The PL18 server power supply has an 80+ Gold efficiency rating, while the PL29 model features an 80+ Platinum rating for reduced heat dissipation and fan noise. — Andrew V (@hexdumb) (re0, 2026-08-03) [[1104]](https://t.me/c/2424231195/152354)
+  - src: PL29 есть де-то в наличии? у pl18 gold сертификат у pl29 - платина меньше греться будет и крутилятором меньше крутить будет
+- The HP HSTNS-PL29 server power supply can be activated by bridging pins 1 and 4 from left to right, or by using a two-resistor configuration. — John Bercow (@flyzet3) (re0, 2026-08-04) [[1105]](https://t.me/c/2424231195/152615)
+  - src: В мене без ad, 1-4 пін замикаю з ліва на право, щоб активувати. Є ще варіант з двома опорами, теж працює
+- The HP HSTNS-PL29 AD server power supply has a standard pinout and is fully compatible with the HP HSTNS-PL29 in paired operation mode. — Santey-Zateynik (@Alexandr_Blumengofer) (re0, 2026-08-04) [[1106]](https://t.me/c/2424231195/152616)
+  - src: Посмотрел. Распиновка стандартная к него. Полностью совместим с HP HSTNS-PL29 в спаренном режиме работы.
+- The HP HSTNS-PL41 server power supply is 20 mm narrower and 15 mm longer than standard server power supplies. — Vitaly Ermakov (@Dexik2517) (re0, 2026-08-04) [[1107]](https://t.me/c/2424231195/152641)
+  - src: Он уже на 2см и длиннее на полтора . В принципе не сильно критично кмк
+- A 3D printable case for the LOP-300-12 power supply requiring side fan airflow is hosted on Printables at model ID 1545280. — Andrew V (@hexdumb) (re0, 2026-08-05) [[1108]](https://t.me/c/2424231195/152878)
+  - src: Не перегревается? Там по мануалу к лопу вентилятор должен дуть сбоку на бп Типа как тут сделано https://www.printables.com/model/1545280-lop-300-12-case
+- The retaining barbs on Molex Micro-Fit connector pins may need to be bent outward manually so that they latch securely into the plastic housing. — Volodymyr Spyrydonov (@Cpt_Spiridonoff) (re0, 2026-08-08) [[1109]](https://t.me/c/2424231195/153600)
+  - src: А це да, повинно, я їх разігнув вручну
+- A 3D-printable retainer for Nexgen3D Micro-Fit BMI power connectors on the AMD BC-250 is available on Printables with model ID 1785063. — Alex (@SadGofLC) (re0, 2026-08-08) [[1110]](https://t.me/c/2424231195/153606)
+  - src: https://www.printables.com/model/1785063-nexgen3d-micro-fit-bmi-retainer-for-the-bc-250
+- Molex Micro-Fit 3.0 contacts with 20 AWG wire are rated for 7A (gold-plated) up to 8.5A (tin-plated), while Mini-Fit Jr. PCIe power contacts support up to 9A per terminal. — Volodymyr Spyrydonov (re0, 2026-08-08) [[1111]](https://t.me/c/2424231195/153630)
+  - src: Да, тогда твой первоначальный расчёт 9 проводов +12 V + 9 проводов GND корректен именно с точки зрения силовой цепи: Micro-Fit #1: 3× +12 V + 3× GND Micro-Fit #2: 3× +12 V + 3× GND PCIe 8-pin: фактиче
+- Under heavy overclocking, the AMD BC-250 can draw over 370 W, which exceeds the continuous power rating of a single 8-pin PCIe connector. — Максим Калитюк (re0, 2026-08-08) [[1112]](https://t.me/c/2424231195/153659)
+  - src: В сильному розгоні бц може 370+ вт брати
+- A standard PCIe 8-pin power connector is officially rated by PCI-SIG for a maximum sustained power draw of 150 watts. — Andrew V (@hexdumb) (re0, 2026-08-10) [[1113]](https://t.me/c/2424231195/154083)
+  - src: Зануда снова тут ))) The official PCI-SIG specification rates a standard PCIe 8-pin power connector for a maximum of 150 watts of sustained power draw. практически может больше, но пьіхнет, если хоть 
+- An XT60 connector can sustain up to 40A continuously (nearly 500W) and 60A burst, making it a reliable direct-solder power option for high load. — Andrew V (@hexdumb) (re0, 2026-08-10) [[1114]](https://t.me/c/2424231195/154088)
+  - src: если не превьішать макс ток, то гарантированно всьо будет ок а если перегружать, то никто ничего уже не гарантирует и может пьіхнуть А может и не пьіхнуть ... как повезет я за то, чтоб не полагаться н
+- A single standard PCIe power connector failed and burned out under a 340-watt load on the BC-250. — Vitaly Ermakov (@Dexik2517) (re0, 2026-08-10) [[1115]](https://t.me/c/2424231195/154090)
+  - src: У меня пыхнуло на 340
+- Custom auxiliary power wiring harnesses for the BC-250 utilize Micro-Fit 3.0 connectors and standard Molex 8-pin GPU connectors with corresponding crimp pins. — ✧ ℘₂℘ⱥcꪑⱥᶯ ✧ (@P2PacMan) (re0, 2026-08-12) [[1116]](https://t.me/c/2424231195/154347)
+  - src: Соберу всі конектори в одному місці, кому лінь шукати(дешеві і якісні) брав собі: 1) Micro-fit 3.0 - ТУТ 2) Піни до Micro-Fit 3.0 - ТУТ 3) MOLEX GPU - ТУТ 4) Піни до Molex GPU - ТУТ Відправляють швидк
+- The AMD BC-250 board does not perform sense pin detection on the PCIe power connector. — Владислав (re0, 2026-08-13) [[1117]](https://t.me/c/2424231195/154683)
+  - src: BC-250 не проводит контроля что ты туда воткнул.
+- Mini PCIe 6-Pin to 8-Pin cables designed for Mac Pro Tower can be used for BC-250 power delivery after repinning. — Григорий Озеров (@RockStar8597) (re0, 2026-08-13) [[1118]](https://t.me/c/2424231195/154788)
+  - src: Есть! Только перепиновку понадобится сделать. Кабель Mini PCIe PCI-E 6-Pin to 8-Pin для Mac Pro Tower (комплект из 2 шт.) https://ozon.ru/t/7GIYPua
+- Moddiy manufactures a dedicated Standard 8-Pin EPS12V to 2 x MicroFit 8-Pin power cable for ASRock BC-250. — Victor L. (@victorlesov) (re0, 2026-08-15) [[1119]](https://t.me/c/2424231195/155292)
+  - src: Не совсем, такой https://www.moddiy.com/products/6837/Standard-8-Pin-EPS12V-to-2-x-MicroFit-8-Pin-Cable-for-ASRock-BC250.html
+- Standard 18 AWG wires are too thick for proper retention in Micro-Fit connector pins unless crimped carefully to fit the housing latching tabs. — Назар (@nazar_is) (re0, 2026-08-16) [[1120]](https://t.me/c/2424231195/155668)
+  - src: 18 авг заширокий для micro fit. Неякісний обжим привів до того що пара проводів відпадають з вилки
 # Citations
 
 [1] https://www.reddit.com/r/BC250Gaming/comments/1rq7skj/push_pull_internal_12v_psu_case_no_finvandalism/
@@ -3156,3 +3220,35 @@ _1088 verified facts. Each bullet links to the source message; reaction count (r
 [1086] https://t.me/c/2424231195/63801
 [1087] https://t.me/c/2424231195/65556
 [1088] https://t.me/c/2424231195/66145
+[1089] https://t.me/c/2424231195/147286
+[1090] https://t.me/c/2424231195/149879
+[1091] https://t.me/c/2424231195/149942
+[1092] https://t.me/c/2424231195/150170
+[1093] https://t.me/c/2424231195/150178
+[1094] https://t.me/c/2424231195/150247
+[1095] https://t.me/c/2424231195/150271
+[1096] https://t.me/c/2424231195/150538
+[1097] https://t.me/c/2424231195/150678
+[1098] https://t.me/c/2424231195/151419
+[1099] https://t.me/c/2424231195/151426
+[1100] https://t.me/c/2424231195/151932
+[1101] https://t.me/c/2424231195/152228
+[1102] https://t.me/c/2424231195/152233
+[1103] https://t.me/c/2424231195/152235
+[1104] https://t.me/c/2424231195/152354
+[1105] https://t.me/c/2424231195/152615
+[1106] https://t.me/c/2424231195/152616
+[1107] https://t.me/c/2424231195/152641
+[1108] https://t.me/c/2424231195/152878
+[1109] https://t.me/c/2424231195/153600
+[1110] https://t.me/c/2424231195/153606
+[1111] https://t.me/c/2424231195/153630
+[1112] https://t.me/c/2424231195/153659
+[1113] https://t.me/c/2424231195/154083
+[1114] https://t.me/c/2424231195/154088
+[1115] https://t.me/c/2424231195/154090
+[1116] https://t.me/c/2424231195/154347
+[1117] https://t.me/c/2424231195/154683
+[1118] https://t.me/c/2424231195/154788
+[1119] https://t.me/c/2424231195/155292
+[1120] https://t.me/c/2424231195/155668
