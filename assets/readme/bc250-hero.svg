@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="320" viewBox="0 0 1200 320" role="img" aria-labelledby="bc250-hero-title bc250-hero-desc">
+<title id="bc250-hero-title">BC-250 — source-linked Linux board guide</title>
+<desc id="bc250-hero-desc">An ASRock BC-250 guide with Zen 2, RDNA 2 and 16 GB GDDR6 as board context, not a performance claim.</desc>
+<rect width="1200" height="320" fill="#F8FAFC"/>
+<path d="M64 48H1136" stroke="#CBD5E1" stroke-width="2"/>
+<text x="64" y="194" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="132" font-weight="700" letter-spacing="-5" fill="#172033">BC-250</text>
+<text x="70" y="246" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="32" fill="#475569">Zen 2 · RDNA 2 · Linux</text>
+<rect x="844" y="76" width="292" height="184" rx="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+<path d="M844 76H1136" stroke="#C2410C" stroke-width="4"/>
+<text x="990" y="182" text-anchor="middle" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="88" font-weight="600" fill="#172033">16</text>
+<text x="990" y="226" text-anchor="middle" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="30" fill="#475569">GB GDDR6</text>
+<path d="M64 280H1136" stroke="#CBD5E1" stroke-width="2"/>
+</svg>

@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="bc250-evidence-uk" name="Від джерела до посібника">
+    <mxGraphModel dx="720" dy="640" grid="1" gridSize="8" page="1" pageWidth="720" pageHeight="640" background="#F8FAFC">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="step-1" value="Джерела&#10;Код і повідомлення спільноти" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Noto Sans;fontSize=24;fontColor=#172033;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=2;arcSize=20;">
+          <mxGeometry x="80" y="128" width="560" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="step-2" value="Перевірка&#10;Ревізії та зіставлення" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Noto Sans;fontSize=24;fontColor=#172033;fillColor=#FFF7ED;strokeColor=#C2410C;strokeWidth=2;arcSize=8;">
+          <mxGeometry x="80" y="272" width="560" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="step-3" value="Посібник&#10;Факти та відкриті питання" vertex="1" parent="1" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fontFamily=Noto Sans;fontSize=24;fontColor=#172033;fillColor=#FFFFFF;strokeColor=#CBD5E1;strokeWidth=2;arcSize=20;">
+          <mxGeometry x="80" y="416" width="560" height="96" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-1" value="" edge="1" parent="1" source="step-1" target="step-2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;strokeColor=#475569;strokeWidth=2;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-2" value="" edge="1" parent="1" source="step-2" target="step-3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;strokeColor=#475569;strokeWidth=2;endArrow=block;endFill=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

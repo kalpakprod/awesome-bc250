@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="640" viewBox="0 0 720 640" role="img" aria-labelledby="evidence-flow.ru-title evidence-flow.ru-desc">
+<title id="evidence-flow.ru-title">От источника к руководству</title>
+<desc id="evidence-flow.ru-desc">Сообщение не заменяет испытание платы.</desc>
+<defs><marker id="evidence-flow.ru-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#475569"/></marker></defs>
+<rect width="720" height="640" fill="#F8FAFC"/>
+<text x="360" y="76" text-anchor="middle" font-family="Georgia, Liberation Serif, serif" font-size="36" fill="#172033">От источника к руководству</text>
+<path d="M360 224V270" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#evidence-flow.ru-arrow)"/>
+<path d="M360 368V414" stroke="#475569" stroke-width="2" fill="none" marker-end="url(#evidence-flow.ru-arrow)"/>
+<rect x="80" y="128" width="560" height="96" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+<text x="360" y="170" text-anchor="middle" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="34" font-weight="600" fill="#172033">Источники</text>
+<text x="360" y="204" text-anchor="middle" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="24" fill="#475569">Код и сообщения сообщества</text>
+<rect x="80" y="272" width="560" height="96" rx="8" fill="#FFF7ED" stroke="#C2410C" stroke-width="2"/>
+<text x="360" y="314" text-anchor="middle" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="34" font-weight="600" fill="#172033">Проверка</text>
+<text x="360" y="348" text-anchor="middle" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="24" fill="#475569">Ревизии и сопоставление</text>
+<rect x="80" y="416" width="560" height="96" rx="20" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+<text x="360" y="458" text-anchor="middle" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="34" font-weight="600" fill="#172033">Руководство</text>
+<text x="360" y="492" text-anchor="middle" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="24" fill="#475569">Факты и открытые вопросы</text>
+<path d="M80 556H640" stroke="#CBD5E1"/>
+<text x="360" y="588" text-anchor="middle" font-family="'Noto Sans', 'Segoe UI', 'Liberation Sans', sans-serif" font-size="18" fill="#475569">Сообщение не заменяет испытание платы.</text>
+</svg>

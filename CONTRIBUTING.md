@@ -20,6 +20,13 @@
 - **New dongle / case / setting** — add it with a source link and, if a command, the repo you verified it against.
 - **New chat export** — re-run the pipeline; open a PR with regenerated evidence + any new resources.
 
+## Translation status
+
+- **`docs/en/` is the source of truth and `docs/ru/` is kept in sync** — mirror every change there.
+- Supported languages are English (`en`), Russian (`ru`) and Ukrainian (`uk`). The other language versions have been removed.
+- Ukrainian remains an older snapshot until its factual content is checked against EN/RU; do not treat the language selector as a claim that all three versions are synchronized.
+- When you correct a factual claim in EN, note that this also invalidates any translated copy of that sentence; refresh the translation or leave the lag documented here.
+
 ## Style rules
 
 - Write for someone who unboxed the board yesterday. Define jargon on first use.
