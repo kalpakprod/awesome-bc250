@@ -71,7 +71,7 @@ _965 verified facts. Each bullet links to the source message; reaction count (re
 - The BC-250 has a default of 24 CUs. — GreatApo (re9, 2026-06-09) · _r/BC250Gaming_ [[30]](https://www.reddit.com/comments/1u0uec4/_/oqlj63x/)
   - src: "disable 2 nore CUS?"  It's not a matter of disabling any CU, it's a matter of disabling CUs that cause an issue. First try to play the game with your default 24 CUs. If you have no crashes, test the …
 - The BC-250 CPU has fragmented 2x4MB L3 caches. — tiga_94 (re9, 2026-06-07) · _r/BC250Gaming_ [[31]](https://www.reddit.com/comments/1tzp2j5/_/oqcfim1/)
-  - src: if someone would find a solution you wouldn't have to ask. so for now no, not possible.  you can invest into claude code/codex subscription, run it on your bc-250 and keep bothering it with asking to …
+  - Source summary: the commenter knew no solution at that time and suggested further investigation with coding tools; not evidence that the hardware feature is permanently impossible.
 - The BC-250 M.2 slot is limited to PCIe 2.0 x2 speeds. — Thanatos- (re9, 2026-05-31) · _r/BC250Gaming_ [[32]](https://www.reddit.com/comments/1tskn4h/_/oovz9j7/)
   - src: M.2 slot is only PCIe 2.0 x2 so a Gen 3 x2 NVMe is good enough, anything more is the speed is going to be wasted by the limitation of the M.2 slot.
 - The BC-250 board requires additional components like an SSD, fan, power supply, wifi adapter, and HDMI adapter to function. — cubehacker (re9, 2026-05-21) · _r/BC250Gaming_ [[33]](https://www.reddit.com/comments/1tjx5ev/_/on4w4j5/)

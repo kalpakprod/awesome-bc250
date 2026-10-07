@@ -164,7 +164,7 @@ Prices and sources move fast and are region-specific (eBay, AliExpress, Ozon/Avi
 It's used mining/server hardware: boards can arrive needing a BIOS reset, slightly bent, or occasionally faulty, and there's no vendor support — the community is your support. Budget time, not just money. See [01-what-is-bc250.md](01-what-is-bc250.md) and [02-buying.md](02-buying.md).
 
 **Can I run macOS on it?**
-Don't. The CPU may boot, but the **GPU will never accelerate** (no supported twin to spoof, and no AMD APU iGPU has ever worked in macOS). Use Linux. See [13-macos.md](13-macos.md).
+There is now a BC250-specific **MetalCyan** project reporting Metal acceleration, targeting macOS Tahoe 26.7.1/MacPro7,1. It has video/audio, shutdown/recovery and untested-sleep limitations. Linux remains the primary gaming choice. [Requirements, installation and rollback](13-macos.md).
 
 ---
 

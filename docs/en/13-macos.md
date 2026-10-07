@@ -1,53 +1,69 @@
 # macOS / Hackintosh
 
-> **TL;DR** — **Don't.** You can probably boot macOS on the BC-250's CPU (it's a Zen 2 AMD chip, and generic AMD-OSX hackintosh tricks apply), but the **GPU will not accelerate** and there is no realistic path to make it. macOS supports GPUs by hard-coded device ID; the BC-250's GPU (Cyan Skillfish / Oberon, a cut-down PS5 part) has **no natively-supported desktop twin to spoof against**, and Apple's stack has *never* been made to drive any AMD APU's integrated graphics. So you'd get a slow, software-rendered Mac with no Metal. As of 2026, nobody in the community has reported a working accelerated result. Use Linux instead — see [06-linux.md](06-linux.md).
+**Status on 7 October 2026:** **MetalCyan** is a BC250-specific project reporting Metal acceleration. This handbook's former claim that acceleration has no realistic path is obsolete. [Linux](06-linux.md) remains the primary gaming-console path; macOS is a separate experimental setup tied to a particular OS version.
 
-This is a **niche curiosity**, not a real use case. The honest answer is the whole section.
+## Projects and responsibilities
 
----
+- [amethyst8118/MetalCyan](https://github.com/amethyst8118/MetalCyan): a Lilu plugin adapting Apple AMDRadeonX6000 drivers to Cyan Skillfish. Not simply PCI-ID spoofing; it started as a NootedRed fork.
+- [amethyst8118/BC-250-Hackintosh-OpenCore](https://github.com/amethyst8118/BC-250-Hackintosh-OpenCore): the separate complete EFI configuration project.
+- [Lilu](https://github.com/acidanthera/Lilu): required dependency, loaded before MetalCyan.
 
-## Why GPU acceleration is the wall
+## Requirements
 
-The two most-reacted technical posts in the topic both come to the same conclusion, and they explain the mechanism clearly.
+According to the MetalCyan README observed on 7 October 2026:
 
-macOS doesn't have an open driver model like Linux. It ships closed drivers that bind to specific GPUs **by device ID**, and the only place you can intervene is the **OpenCore** bootloader *before* the OS loads — OpenCore hands macOS pre-cooked data, it can't patch the closed system from inside ([src](https://t.me/c/2424231195/103173)).
+| Setting | Requirement |
+|---|---|
+| macOS | **Tahoe 26.7.1**; other releases are unsupported |
+| SMBIOS | **MacPro7,1** |
+| OpenCore | **1.0.8** in the described configuration |
+| UMA framebuffer | **4 GB** in BIOS; the author reports GPU-memory exhaustion/hangs at 512 MB |
+| Lilu | **1.7 or newer**, before MetalCyan |
+| Other GPU kexts | Do not combine with WhateverGreen, NootedRed or NootRX |
 
-OpenCore *can* spoof a GPU's device ID, but only **within one architectural family** — e.g. present an unsupported RX 6950 XT as a supported RX 6900 XT, because they are the *same* silicon. That trick took the OpenCore devs **over a year** and worked only because those Navi cards are architecturally identical to ones Apple already supported ([src](https://t.me/c/2424231195/53321)).
+These are driver-specific requirements, not a universal recommendation to use the same memory split on Linux.
 
-The BC-250 breaks that in two ways:
+## Installation
 
-1. **No twin to spoof.** Its GPU is a cut-down, PS5-derived part (`gfx1013`). There is **no desktop AMD card with the same architecture that macOS supports natively**, so there's nothing to masquerade as. For the BC-250 to work, Apple's stack would need to learn this device ID from scratch — which only happens if OpenCore developers take the chip on, and there's no commercial reason to ([src](https://t.me/c/2424231195/53321)).
-2. **It's an APU, and APUs have never worked.** Even desktop-architecture Ryzen integrated graphics (Vega / Navi iGPUs) have **never** been brought up in macOS, despite sharing a microarchitecture with supported discrete cards. The author has "not seen a single working case" of a Ryzen iGPU in macOS ([src](https://t.me/c/2424231195/103173)). The BC-250 is in that same APU bucket.
+1. Back up the complete working EFI and original BIOS settings, especially UMA. Keep a separate bootable recovery device.
+2. Prepare the OpenCore/AMD configuration for the specified macOS version using the EFI project above. MetalCyan does not replace the loader or required AMD CPU patches.
+3. Set BIOS UMA to **4 GB**; other values are outside the author's described configuration.
+4. Download `MetalCyan-1.0.1-RELEASE.zip` from the [MetalCyan release](https://github.com/amethyst8118/MetalCyan/releases/tag/v1.0.1), and copy `MetalCyan.kext` into `EFI/OC/Kexts`.
+5. Add it to `Kernel > Add` after Lilu and disable other GPU kexts. The developer also specifies `npci=0x3000` in this EFI's boot-args.
+6. Boot without experimental clocks/unlocking, check the desktop and a Metal application, then change one setting at a time.
 
-The blunt summary from the same contributor: *if even the Windows drivers for this chip aren't sorted, macOS isn't worth dreaming about* ([src](https://t.me/c/2424231195/53321)). (For the Windows driver situation, see [07-windows.md](07-windows.md).)
+## Verification and remaining limitations
 
----
+The developer reports Metal 3, accelerated WindowServer/Safari/Firefox, 4K60, usable 4 GB VRAM and GPU telemetry. This documents the project's configuration, not our own physical-board test.
 
-## What people actually tried
+- **VCN decode/encode is unavailable in this driver**; decoding is software-based.
+- **DP/HDMI audio is not configured.** Safari/TV can refuse video without an output device; use separate audio or a virtual output.
+- **GPU-hang recovery is absent**; reboot is required.
+- **Shutdown/restart:** the README documents a WindowServer panic during shutdown, distinct from the next boot.
+- **Sleep is untested.**
 
-- Someone prepped and shared a **macOS Monterey recovery + OpenCore** package early on (`Monterey recovery + OpenCore.zip`, plus an earlier `Архив.zip`), so at least one person set out to install it ([src](https://t.me/c/2424231195/53590)). No accelerated-GPU success was ever reported back.
-- The relevant tooling people pointed at is the standard AMD-hackintosh kit: device-ID faking via [RehabMan/OS-X-Fake-PCI-ID](https://github.com/RehabMan/OS-X-Fake-PCI-ID), the [Dortania AMD GPU buyers guide](https://dortania.github.io/GPU-Buyers-Guide/modern-gpus/amd-gpu.html#navi-10-series) for what's actually supported, and — the closest thing to APU graphics support — **[ChefKissInc/NootedRed](https://github.com/ChefKissInc/NootedRed)**, a kext for AMD APU iGPUs. NootedRed targets Vega/Renoir-class APUs and does **not** cover the BC-250's die, so it doesn't rescue this board.
-- A later forum link about [running macOS on AMD Ryzen via VMware/OpenCore](https://forum.amd-osx.com/threads/mac-os-install-on-amd-ryzen-intel-vmware-opencore-improved-performance-works-with-tahoe-sequoia-sonoma-etc.4696/) ([src](https://t.me/c/2424231195/107779)) is **generic AMD hackintosh**, not BC-250-specific — and a VM means no GPU passthrough/Metal anyway.
+Changing macOS, SMBIOS or kext version requires checking compatibility again. A version-check bypass flag does not establish support.
 
-> ⚠ **Don't mistake jokes for results.** The topic has light "great, the mighty hackintosh rules here" banter ([src](https://t.me/c/2424231195/85166)) and praise reactions that are *not* reports of a working macOS build. Nothing in the evidence shows accelerated macOS on a BC-250.
+## Rollback
 
----
+`-MCOff` disables MetalCyan and uses the unaccelerated firmware framebuffer. For full rollback restore your EFI and original BIOS settings. If the desktop is inaccessible, use the recovery boot device. Removing a kext does not undo BIOS or SMU changes.
 
-## So is it worth it?
+## Research history
 
-**No, for any practical purpose.** Best realistic outcome is a CPU-only macOS that software-renders the UI — no Metal, no GPU compute, unusable for the gaming/AI workloads this board is bought for. The community consensus, dated and unchanged from **2025-06** through **2026-03**, is that GPU support is effectively impossible without OpenCore developers specifically adopting this chip, which hasn't happened and isn't expected.
+Earlier Monterey/OpenCore and PCI-ID discussions did not establish a BC250 Metal path. They remain historical sources, not current prohibitions. NootedRed support for other AMD APUs also contradicts the former blanket claim that AMD APUs never worked in macOS; that support alone is not BC250 support.
 
-If you want this board to *do* something, install Linux ([06-linux.md](06-linux.md)) where the GPU is genuinely supported via Mesa/RADV. Windows is a distant second ([07-windows.md](07-windows.md)). macOS is last and, in practice, a dead end.
-
----
+[Driver and OS project catalog](../../catalog/en/README.md#drivers) · [Practical tools and integrations](17-projects-and-tools.md).
 
 ## Sources
 
-- GPU-by-device-ID + the one-year Navi spoof story — https://t.me/c/2424231195/53321
-- OpenCore's limits & "no Ryzen iGPU has ever worked" — https://t.me/c/2424231195/103173
-- Monterey + OpenCore package someone prepped — https://t.me/c/2424231195/53590
-- Generic AMD-Ryzen hackintosh forum thread (not BC-250-specific) — https://t.me/c/2424231195/107779 · [amd-osx.com thread](https://forum.amd-osx.com/threads/mac-os-install-on-amd-ryzen-intel-vmware-opencore-improved-performance-works-with-tahoe-sequoia-sonoma-etc.4696/)
-- Tooling referenced — [RehabMan/OS-X-Fake-PCI-ID](https://github.com/RehabMan/OS-X-Fake-PCI-ID) · [ChefKissInc/NootedRed](https://github.com/ChefKissInc/NootedRed) (AMD APU iGPU kext; doesn't cover this die) · [Dortania AMD GPU guide](https://dortania.github.io/GPU-Buyers-Guide/modern-gpus/amd-gpu.html#navi-10-series)
-- Chip identity (Cyan Skillfish / Oberon, `gfx1013`) — see [01-what-is-bc250.md](01-what-is-bc250.md)
+- https://t.me/c/2424231195/103173
+- https://t.me/c/2424231195/53321
+- https://t.me/c/2424231195/53590
+- https://github.com/RehabMan/OS-X-Fake-PCI-ID
+- https://dortania.github.io/GPU-Buyers-Guide/modern-gpus/amd-gpu.html#navi-10-series
+- https://github.com/ChefKissInc/NootedRed
+- https://forum.amd-osx.com/threads/mac-os-install-on-amd-ryzen-intel-vmware-opencore-improved-performance-works-with-tahoe-sequoia-sonoma-etc.4696/
+- https://t.me/c/2424231195/107779
+- https://t.me/c/2424231195/85166
 
-> **Bottom line:** macOS on the BC-250 is a tech-trivia footnote, not a build target. Go to [06-linux.md](06-linux.md).
+- [MetalCyan README](https://github.com/amethyst8118/MetalCyan#readme).

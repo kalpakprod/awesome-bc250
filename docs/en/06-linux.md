@@ -1,5 +1,16 @@
 # Linux Drivers & Setup
 
+## Choose the OS workflow and one setup interface
+
+- **Bazzite Deck:** Steam console interface and deployment-based updates; package changes differ from ordinary Fedora.
+- **CachyOS/Arch:** mutable system, AUR and direct package control; suitable for managing drivers/tools yourself.
+- **Fedora:** workstation Linux with an ordinary package manager; board enablement is separate from desktop choice.
+- **SteamOS:** separate toolkit path; OS updates can remove extra system packages.
+
+**[BC250 Control Center installation, first launch, external tools and rollback](17-projects-and-tools.md)** puts board settings in one interface. FSR4 DLL and HelixSR do not require blindly replacing system Mesa. Establish a stable base before adding a patch for a specific need. Neither a distribution nor toolkit guarantees healthy unlocked cores/CUs.
+
+[All Linux image projects](../../catalog/en/README.md#linux) · [Other control panels and toolkits](../../catalog/en/README.md#control).
+
 > **TL;DR** — Most people run the BC-250 on Linux, and it works well *once the GPU is fixed*. Out of the box `amdgpu` doesn't recognize the chip and you get CPU-rendered, single-digit FPS. Two things make it real: a **modern kernel + fresh Mesa (25.1+)**, and the **`amdgpu` fix** — a firmware symlink so the driver can load (`navi10_gpu_info.bin` → `cyan_skillfish_gpu_info.bin`) plus kernel params (`amdgpu.sg_display=0`, `mitigations=off`, and on new kernels `amdgpu.bc250_cc_write_mode=3`). Easiest path for a newcomer: flash **[Bazzite](https://bazzite.gg/)** and rebase to the dedicated **`bazzite-bc250`** image — the fixes are baked in. Want to learn the machine: **Fedora** or **CachyOS/EndeavourOS (Arch)** with a one-time setup script.
 
 This is the section that turns "a board in a box" into a working desktop. Do [cooling](04-cooling.md) and [power](03-power-supply.md) first — then this.

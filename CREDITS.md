@@ -1,6 +1,6 @@
 # Credits & Thanks
 
-**awesome-bc250** is distilled from the **AMD BC-250 community chat** — 125 000+ messages over 17 months. This handbook exists because of the people who bought the boards, broke things, figured them out, and shared what they learned.
+**awesome-bc250** is a unified handbook and project collection built from community findings and developers' documentation across multiple platforms. It exists because people bought the boards, investigated them and shared projects, measurements and designs.
 
 ## 🙏 Top contributors
 
@@ -33,7 +33,7 @@ Ranked by the community's own reactions to their messages — the *useful, upvot
 
 ## Project authors
 
-The handbook stands on the canonical open-source projects — see the **Awesome Resources** list in the [README](README.md): `mothenjoyer69`, `bc250-collective`, `duggasco`, `ZEROAESQUERDA`, `Keshas-dev`, `shenmintao`, `lwfinger`, `filippor`, `TuxThePenguin0`, `onemorecap`, `NexGen-3D-Printing`, and others. Credited by their repo handle.
+Projects retain their original authorship and licenses. See the [unified catalog](catalog/en/README.md) and [external tools and installation guide](docs/en/17-projects-and-tools.md). Earlier source projects include: `mothenjoyer69`, `bc250-collective`, `duggasco`, `ZEROAESQUERDA`, `Keshas-dev`, `shenmintao`, `lwfinger`, `filippor`, `TuxThePenguin0`, `onemorecap`, `NexGen-3D-Printing`, and others. Credited by their repo handle.
 
 ## Photos
 
@@ -43,4 +43,4 @@ Hardware and build photos in the docs are **community-contributed**, credited to
 
 Helped on the BC-250 and not listed, or want your credit adjusted? **PRs and issues welcome** — see [CONTRIBUTING](CONTRIBUTING.md).
 
-> Rankings are computed from a public chat export by the reproducible pipeline in CONTRIBUTING; they reflect reactions at export time, not a judgment of anyone's total contribution.
+> The reaction figures above are historical observations from the original chat export. They are retained as thanks, not an installation recommendation, a correctness score or a dependency on the old extraction infrastructure.

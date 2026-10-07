@@ -13,23 +13,21 @@
 - Keep EN/RU/UK catalog identities and links in sync, update the public records with the descriptions, and preserve meaningful non-English resources. The external resource's language need not match the catalog language.
 - For articles, videos, models and discussions, use the [topic bibliography](catalog/en/topics.md). Preserve attribution; do not copy raw private messages, attachments, credentials, signed URLs or local cache paths into a contribution.
 
-## How handbook knowledge gets in
+## Integrating knowledge into the handbook
 
-1. **Export** the community chat (Telegram → JSON).
-2. **ETL** → `build_db.py` loads it into a queryable SQLite DB (`bc250.db`), forum-topic aware.
-3. **Mine** → `mine.py` ranks messages by an objective importance score and writes per-topic *evidence packs*:
-   ```
-   score = pinned*100 + reactions*3 + repost_count*5 + useful_file*4 + length*1
-   ```
-   Pinned posts and reaction counts are the community's own vote on what matters.
-4. **Write** → each handbook page is distilled from its evidence pack.
-5. **Verify** → every command is cross-checked against the canonical repo it came from (the chat spans 17+ months; some advice is outdated and is flagged, not copied blindly).
+1. Identify the actual project, release or hardware finding. Any source platform can lead to it; popularity and reaction counts do not establish correctness.
+2. Read the primary documentation and record its observation date or revision. Compare significant forks and keep platform/version requirements explicit.
+3. Write a self-contained explanation in the relevant handbook chapter: purpose, prerequisites, selection, installation, expected verification, limitations and rollback when the source provides it. Do not invent missing procedures; identify the gap.
+4. Add the canonical project/model link to the shared thematic catalog. Keep public message references as evidence metadata, not as a separate platform-specific collection the owner must search.
+5. Reconcile the updated finding with previous advice in that chapter and navigation. Translate the changed section into EN/RU/UK and check links. Preserve historical sources with dates rather than maintaining obsolete recommendations.
+
+This repository does not depend on the original chat-export scoring/ETL infrastructure. Reproducible source observations are useful, but the public guide must remain usable without a private database, export or cache.
 
 ## How to contribute
 
 - **Fix / add handbook knowledge** — edit `docs/en/<section>.md`. Keep the newcomer able to follow it with zero prior context. Mirror the change into `docs/ru/` and `docs/uk/`, or explicitly document any translation lag.
 - **New dongle / case / setting** — add it with a source link and, if a command, the repo you verified it against.
-- **New chat export** — re-run the pipeline; open a PR with regenerated evidence + any new resources.
+- **New source findings** — submit edited handbook guidance and canonical project records, with public evidence. Do not publish raw chat exports or require readers to run a private extraction pipeline.
 
 ## Translation status
 

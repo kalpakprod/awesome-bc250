@@ -4,7 +4,9 @@
 
 # Awesome BC-250 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> Projects, documentation, hardware modifications and research for the **ASRock AMD BC-250**, with a full build-and-use handbook. The BC-250 is a PlayStation 5-derived APU board (Cyan Skillfish / Oberon; Zen 2, RDNA 2 and 16 GB GDDR6).
+> **Everything for BC250 in one place:** buying and assembly, power and cooling, OS choice, applications, upscalers, cases and research. This handbook explains the steps here; primary links credit developers and provide downloads. Community messages are evidence, not a substitute for instructions.
+
+**[New board: start here](docs/en/00-start-here.md)** · **[Choose and install Linux](docs/en/06-linux.md)** · **[Control Center, FSR4, HelixSR and streaming](docs/en/17-projects-and-tools.md)** · **[macOS / MetalCyan](docs/en/13-macos.md)** · **[Cases and printable models](docs/en/05-case.md)**
 
 <sub>_Catalog expanded **October 2026** · project snapshot **September 2026** · [llms.txt](llms.txt) for AI agents_</sub>
 
@@ -24,7 +26,7 @@
 <a id="catalog"></a>
 ## Project catalog
 
-- **[Browse the catalog](catalog/en/README.md)** — 316 individually named resources, including experimental and historical work; each entry explains its purpose and links to its source and available documentation.
+- **[Browse the catalog](catalog/en/README.md)** — 429 named entries from all sources in one thematic catalog: applications, firmware, cases, models, experiments and history. Each project has a purpose and primary source; sections link to practical handbook chapters.
 - **Documentation and firmware:** [Guides & build notes](catalog/en/README.md#documentation) · [BIOS, UEFI & recovery](catalog/en/README.md#firmware) · [CPU cores, SMU & ACPI](catalog/en/README.md#cpu).
 - **Graphics and systems:** [GPU governors, CU/WGP & memory](catalog/en/README.md#gpu) · [Linux images & setup](catalog/en/README.md#linux) · [Graphics drivers & other OS experiments](catalog/en/README.md#drivers).
 - **Control and hardware:** [Toolkits & game mode](catalog/en/README.md#control) · [Telemetry, fans & displays](catalog/en/README.md#monitoring) · [Power adapters & controllers](catalog/en/README.md#power) · [Cases, CAD & cooling](catalog/en/README.md#cases).
@@ -47,7 +49,7 @@
 
 - **Board.** An ex-mining APU board from the PlayStation 5 family: a 6-core Zen 2 CPU, 24 or 40 RDNA 2 **compute units** (CUs, the GPU's basic execution blocks), and 16 GB GDDR6 memory.
 - **Price.** Community reports put a bare board near **$60–130**, and a full build with power supply, cooler, and SSD near **$150–250**. These are reports, not quotes.
-- **Operating system.** Linux only for GPU acceleration: Bazzite, Fedora, CachyOS, or Arch with Mesa 25.1 or newer. The Windows GPU driver is experimental and is not a supported path.
+- **Operating system.** Linux is the primary gaming path: Bazzite, Fedora, CachyOS/Arch or SteamOS with board-specific setup. macOS has a separate [MetalCyan](docs/en/13-macos.md) path with version/driver limitations. Windows drivers remain experimental.
 - **Display, network, storage.** Display output is DisplayPort. WiFi and Bluetooth need a tested USB dongle. Storage uses an M.2 or SATA adapter.
 - **Cooling and power.** Community guides describe added airflow for the stock heatsink and several power-connector configurations. Check the exact connector pinout and size the power supply for the measured build; see [Cooling](docs/en/04-cooling.md) and [Power supply](docs/en/03-power-supply.md).
 - **Tuning evidence.** Community measurements compare GPU clocks, voltage, GDDR6 speed and CU counts; outcomes vary by board. The [source data](assets/diagrams/data.json) is not a universal safe setting or a board test.
@@ -59,6 +61,7 @@
 
 - **[Start here](docs/en/00-start-here.md)** — the full path from a bare board to a running game.
 - **Build basics:** [What is the BC-250](docs/en/01-what-is-bc250.md) · [Buying](docs/en/02-buying.md) · [Power supply](docs/en/03-power-supply.md) · [Cooling](docs/en/04-cooling.md) · [Cases & 3D printing](docs/en/05-case.md).
+- **Applications and installation:** [Control Center, FSR4, HelixSR, frame generation and streaming](docs/en/17-projects-and-tools.md).
 - **Software:** [Linux drivers & setup](docs/en/06-linux.md) · [Windows drivers & setup](docs/en/07-windows.md) · [macOS / Hackintosh](docs/en/13-macos.md).
 - **Tuning & firmware:** [Overclocking & undervolting](docs/en/09-overclock-undervolt.md) · [BIOS & brick recovery](docs/en/08-bios.md).
 - **Peripherals & output:** [WiFi & Bluetooth dongles](docs/en/10-wifi-bt.md) · [Display & output](docs/en/14-display.md) · [USB, hubs & peripherals](docs/en/16-usb-peripherals.md).

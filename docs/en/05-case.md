@@ -1,5 +1,21 @@
 # Cases & 3D Printing
 
+## Choose the layout before printing
+
+The **[unified case, mount and CAD catalog](../../catalog/en/README.md#cases)** brings all sources together. Primary model links provide the files without hunting for an STL message. Descriptions retain historical versions and unfinished designs.
+
+| Build | Starting model | Check before printing |
+|---|---|---|
+| Stock heatsink + Flex-ATX | [MKUU](https://makerworld.com/en/models/3021754-bc250-case-mkuu-fsp-apevia-metalfish-psu) | Correct PSU profile, rear airflow, required heatsink modification |
+| SFX with removable panels | [Minimalistic SFX](https://makerworld.com/en/models/3112334-bc-250-minimalistic-case-sfx-psu) | PSU dimensions, cabling and fan layout |
+| HP server PSU | [Hrumque v4.2](https://makerworld.com/pl/models/3010895-bc-250-case-v4-2-for-hpserverpsu-dual-12cm-fans) | Common Slot versus Flex Slot and actual PSU length |
+| AIO in a printed case | [NexGen3D Pro v2](https://www.printables.com/model/1793043-nexgen3d-diy-steam-machine-pro-v2-liquid-cooled-bc) | Separate pump mount, radiator and VRM/VRAM airflow |
+| Off-the-shelf ATX/ITX case | [Board adapter](https://www.printables.com/model/1743485-bc250-to-atx-case-adapter) | Board positioning, clearance and airflow direction |
+| Arctic Liquid Freezer III | [Pump mount](https://www.printables.com/model/1763936-artic-liquid-freezer-mount-for-bc250) | Model-specific inserts/screws; source specifies ABS/ASA |
+| Your own design | [Board CAD](https://www.printables.com/model/1828755-asrock-bc250-complete-ish-cad-model) | Not claimed to be an exact 1:1 copy; measure the physical board |
+
+These are layout choices, not a cooling ranking. Check PSU dimensions, cable lengths, mount hardware and printer volume. Fit-test supports before printing a large case. Monitor memory/VRM as well as the APU. A render or promised STL is not a released, verified model.
+
 > **TL;DR** — The BC-250 ships as a bare board, so almost everyone prints an enclosure. There is no single "right" case — the community has produced **dozens** of designs, from a minimal **cooling sleeve** that just clips two halves around the board, to full **console-style boxes** with a carry handle, a front screen and RGB. Whatever you print, the case has to do one job the stock board can't: **seal a 120 mm fan against the heatsink fins** so air goes *through* them (see [Cooling](04-cooling.md)). This page is the catalog: name → STL → fans → where to download. **Mind the PSU**: most cases are designed around a specific power supply (LOP, Flex/SFX ATX, or an HP server brick) — pick the case that matches the [PSU](03-power-supply.md) you have.
 
 A "case" here ranges from a 200 g print that takes 20 minutes of work to a multi-part console that took its author weeks. Start simple; you can always reprint.
