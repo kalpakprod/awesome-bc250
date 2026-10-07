@@ -74,7 +74,7 @@ The chat repeatedly comes back to four. There's no single "right" answer — it'
 | **Batocera** | Linux (emulation distro) | Low–Medium | bundled Mesa + setup | A console-style **emulation** box ([15-emulation.md](15-emulation.md)) |
 
 Notes from the chat and [elektricM](https://elektricm.github.io/amd-bc250-docs/linux/distributions/):
-- **Bazzite is the easiest** and has a **dedicated BC-250 image** with the firmware fix, kernel params, GPU governor and the 40-CU/frequency patch already applied. Find it on artifacthub: [`bazzite-bc250`](https://artifacthub.io/packages/container/bazzite-bc250/bazzite_bc250). Several users moved to it precisely to stop hand-patching ([src](https://t.me/c/2424231195/121246)).
+- **Bazzite:** use stock Bazzite plus the SMU governor, or a normal [62fixolab image](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images) based on official stable. Normal images do not imply a custom kernel or automatic 40-CU unlock; `-40cu` images are separate experimental variants. The old [artifacthub listing](https://artifacthub.io/packages/container/bazzite-bc250/bazzite_bc250) and [chat setup](https://t.me/c/2424231195/121246) are historical references, not the current installation target.
 - **As of Fedora 43, Mesa 25.x is in the mainline repos** — the `mixaill/amd-bc-250` COPR is no longer needed just for Mesa. Fedora 42 is **end-of-life**; upgrade to 43. During install, if you get a black screen, use *Troubleshooting → Install in Basic Graphics Mode* ([elektricM: Fedora](https://elektricm.github.io/amd-bc250-docs/linux/fedora/)).
 - **Don't blindly grab the "gamer" distros.** One detailed take argues that a plain **Fedora (Workstation/KDE)** or **vanilla Arch with LTS kernel + fresh Mesa** is the painless middle ground, and that heavy tuned forks can sometimes *break* Steam/FSR/vsync rather than help ([src](https://t.me/c/2424231195/102834)). Treat this as "as of late 2025" advice — the Bazzite image has matured since.
 - **CachyOS over Bazzite, if you're chasing maximum smoothness.** A detailed r/BC250Gaming (Reddit) community report switched from Bazzite to **CachyOS** and found games noticeably smoother regardless of source, with fewer stutters/micro-freezes (e.g. *Mortal Kombat 1*), fewer random crashes and Steam-mode restarts, and a very responsive feel on the **default Btrfs** layout. It also got **HDR + VRR working properly** where Bazzite couldn't (HDR glitched, VRR never worked) — see [14-display.md](14-display.md). Treat it as one well-documented experience, not a universal verdict, but it's a strong option if Bazzite leaves you with stutter or instability. Setup is automated by the **[`redbeard1083/bc250-toolkit`](https://github.com/redbeard1083/bc250-toolkit)** script (BC-250 on CachyOS). ⚠ A separate community datapoint adds a thermal/FPS angle: at an *identical* overclock, CachyOS reportedly runs **~10 °C cooler than Bazzite** and gives higher FPS in CPU-bound titles (e.g. *Elden Ring* ~60–75 on CachyOS vs ~45–60 on Bazzite) ([+14], r/BC250Gaming — community-reported, varies; not independently confirmed).
@@ -88,7 +88,7 @@ Notes from the chat and [elektricM](https://elektricm.github.io/amd-bc250-docs/l
 
 ## Path A — Bazzite (recommended for newcomers)
 
-Bazzite is an immutable Fedora-based gaming OS (SteamOS-like). The community maintains a **BC-250-specific image** so you don't touch firmware or kernel params yourself.
+Bazzite is an immutable Fedora-based gaming OS. First get the board working on stock Bazzite; the community image below adds software setup but does not replace checking BIOS, cooling and power.
 
 ### A1. Install regular Bazzite first
 1. Download from **[bazzite.gg](https://bazzite.gg/#image-picker)** (pick the desktop or "Deck"/Gaming-Mode variant).
@@ -106,31 +106,36 @@ Bazzite is an immutable Fedora-based gaming OS (SteamOS-like). The community mai
 > Reboot and you're in Bazzite.
 
 ### A2. Install the GPU governor (simplest current path)
-As of early 2026 the **stock Bazzite kernel already includes the GPU frequency-range patch** — so you usually **don't need a custom image at all**. Just install the governor on top of regular Bazzite ([elektricM: Bazzite](https://elektricm.github.io/amd-bc250-docs/linux/bazzite/)):
+The SMU governor works on stock Bazzite **without** a kernel frequency-range patch. The [dated upstream correction](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/linux/bazzite.md) reports that OGC kernels shipped since stable `44.20260429` keep the stock 1000–2000 MHz sysfs limits, checked at `v7.2.4-ogc3` and `v7.2.7-ogc1`. Do not assume the TT governor has an extended range on ordinary Bazzite ([setup guide](https://elektricm.github.io/amd-bc250-docs/linux/bazzite/)):
 ```bash
 sudo dnf copr enable filippor/bazzite
 rpm-ostree install cyan-skillfish-governor-smu   # SMU variant — no kernel patch needed
 systemctl reboot
 sudo systemctl enable --now cyan-skillfish-governor-smu.service
 # Pin the known-good deployment so an update can't silently break you:
-rpm-ostree pin 0
+sudo ostree admin pin booted
 ```
-The **`cyan-skillfish-governor-smu`** drives clocks through SMU firmware calls and supersedes the older `oberon-governor` (see *[Power governor](#b3-power-governor-cyan-skillfish-governor)*). A `cyan-skillfish-governor-tt` variant also exists but needs the kernel frequency patch (already in Bazzite). ⚠ The governor may target the wrong card (card0 vs card1) — verify if scaling doesn't kick in.
+The **`cyan-skillfish-governor-smu`** drives clocks through SMU firmware calls and supersedes the older `oberon-governor` (see *[Power governor](#b3-power-governor-cyan-skillfish-governor)*). A `cyan-skillfish-governor-tt` variant also exists but needs the kernel frequency patch; ordinary current Bazzite does not include that patch. ⚠ The governor may target the wrong card (card0 vs card1) — verify if scaling doesn't kick in.
 
 ### A2-alt. (Optional) Rebase to the BC-250 image
-Only if you want the extra pre-baked optimizations: switch to a maintained BC-250 image — the **`vietsman` "Bazzite on Steroids"** builds (firmware fix, kernel params, governor, extended 350–2230 MHz frequency patch baked in). Pick the desktop you installed — **GNOME is the recommended default** — and run:
-```bash
-# GNOME (recommended):
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/vietsman/bazzite-gnome-patched:latest
-# KDE:
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/vietsman/bazzite-kde-patched:latest
-# Deck / Gaming-Mode (SteamOS-like):
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/vietsman/bazzite-deck-patched:latest
-systemctl reboot
-```
-⚠ verify the current image/tag before running — image paths change. The up-to-date commands live on the [BC-250 docs Bazzite page](https://elektricm.github.io/amd-bc250-docs/linux/bazzite/) (also listed on artifacthub as [`bazzite-bc250`](https://artifacthub.io/packages/container/bazzite-bc250/bazzite_bc250)).
+Optional: [62fixolab](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images) supplies official stable Bazzite plus BC250 setup and the SMU governor. It is a community project, not an official Bazzite fork. Select **one** command matching your existing desktop. `latest` on these normal packages is the stable channel; testing/unstable and `-40cu` packages are separate.
 
-> ⚠ **Rebasing to a patched image can kill your USB WiFi (elektricM Issue #10).** The custom kernel may not include your USB WiFi/Bluetooth dongle's driver (the BC-250 has no built-in wireless). Have Ethernet ready, check `lsmod | grep <your_driver>` after rebase, `rpm-ostree install <driver-package>` if missing, or `rpm-ostree rollback && systemctl reboot`.
+```bash
+# Preserve the deployment currently booted before rebasing:
+sudo ostree admin pin booted
+# GNOME:
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/62fixolab/bazzite-bc250-patched-gnome:latest
+# OR KDE:
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/62fixolab/bazzite-bc250-patched-kde:latest
+# OR Deck / Gaming Mode:
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/62fixolab/bazzite-bc250-patched-deck:latest
+systemctl reboot
+systemctl status cyan-skillfish-governor-smu
+```
+
+Check graphics, network and governor operation after reboot. If the new deployment fails, use `rpm-ostree rollback` and reboot, or boot the pinned deployment. Pinning is an [OSTree operation](https://github.com/ostreedev/ostree/blob/main/man/ostree-admin-pin.xml), not `rpm-ostree pin`.
+
+**Migrating from old vietsman images:** those Fedora/Bazzite 42 builds are historical, not the recommended target. Before rebasing, inspect `/etc/yum.repos.d` and move only the old patched-kernel COPR file into a backup directory; it can otherwise cause a 404. Do not delete all COPR files or all governor configs. Preserve the old deployment and its config; avoid running Oberon and SMU governors simultaneously. [Migration instructions](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images#install-rebase). The old USB-WiFi reports concerned that earlier custom-kernel setup, not every current normal image.
 
 > **If the 40-CU unlock breaks fan control or your Xbox gamepad, swap in a custom kernel image.** Bazzite's built-in 40-CU unlock (the "Old-Lamer" method) is community-reported to break **fan control and Xbox controller support** on some setups ([+ r/BC250Gaming — community-reported, varies]). The **[`hafriedlander/kernel-bazzite`](https://github.com/hafriedlander/kernel-bazzite)** image is a custom kernel that fixes that — verified to be *"the (legacy) Bazzite kernel with the 40CU unlock patch for BC250 boards,"* built straight from Fedora's kernel-ark with the usual handheld/performance patch set (also packaged on the AUR as `linux-bazzite-bin`). ⚠ Whether it resolves your specific fan/gamepad regression is a community datapoint, not a guarantee — keep a known-good deployment pinned so you can `rpm-ostree rollback`.
 
@@ -145,7 +150,7 @@ rpm-ostree rollback   # if an update breaks something, roll back and reboot
 > ⚠ **Bazzite's immutability blocks low-level network tools.** The read-only `/usr` means traffic-shaping / anti-throttling tools that install system services or kernel pieces (e.g. `zapret`-style tools) don't install cleanly. If you depend on one — common for some ISPs that throttle Steam — a mutable distro (Fedora/Arch) is the easier host (RU-specific details in the Russian edition).
 
 ### A3. Done — verify
-Skip to **[Verifying GPU acceleration](#verifying-gpu-acceleration)** below. On the BC-250 image (or after A2) the firmware symlink, kernel params and governor are already in place.
+Skip to **[Verifying GPU acceleration](#verifying-gpu-acceleration)** below. Check the actual firmware, kernel parameters and active governor on your deployment; installing a governor alone does not prove all three are correct.
 
 ---
 
@@ -551,8 +556,8 @@ The driver story changed a lot across the chat's 17 months. The elektricM kernel
     ```
 - **When stuck, use LTS.** Several newcomers hit a wall building dev libs / drivers on a bleeding-edge kernel and were unblocked by switching to an **LTS kernel** ([src](https://t.me/c/2424231195/56529)).
 - **On Arch, snapshot before every update.** Because a kernel/Mesa bump can break the GPU, put the root on **Btrfs** and take a **snapper** or **timeshift** snapshot before `pacman -Syu` — then a bad update is a one-command rollback instead of a reinstall ([4pda](https://4pda.to/forum/index.php?showtopic=1104980)). (Atomic distros like Bazzite get this for free via `rpm-ostree rollback`.)
-- **Unpatched kernels cap GPU clocks at 1000–2000 MHz.** The extended **350–2230 MHz** range needs either the kernel frequency patch (pre-applied in Bazzite/PikaOS) **or** the SMU governor, which unlocks it without patching ([elektricM: kernel](https://elektricm.github.io/amd-bc250-docs/linux/kernel/)).
-- **HDMI audio on kernel 6.17+** needed a workaround (rebuild with `CONFIG_SND_HDA_CODEC_HDMI_ATI=m` / `snd-hda-codec-atihdmi.ko`) — DisplayPort is the safer output ([src](https://t.me/c/2424231195/68051)). DisplayPort audio on the BC-250 can also come out **pitched-down/slowed** — a passive DP→HDMI or USB audio adapter is the fix ([elektricM: Arch](https://elektricm.github.io/amd-bc250-docs/linux/arch/)).
+- **Unpatched kernels cap GPU clocks at 1000–2000 MHz.** The extended **350–2230 MHz** range needs either a verified frequency-patched kernel (not assumed on current stock Bazzite) **or** the SMU governor, which unlocks it without patching ([elektricM: kernel](https://elektricm.github.io/amd-bc250-docs/linux/kernel/)).
+- **DP/HDMI audio:** check the kernel's display-clock fixes before blaming the adapter or rebuilding audio codecs. The upstream report lists both fixes in **7.2 / 7.1.10+**, with the large error backported to **6.12.78 / 6.18.20 / 6.19.10+**; vendor backports may differ. [Mechanism and kernel matrix](https://elektricm.github.io/amd-bc250-docs/troubleshooting/audio/). The older ATI codec-module report is a separate configuration issue ([historical source](https://t.me/c/2424231195/68051)); USB audio remains an alternative.
 - **CPU frequency scaling needs the ACPI fix.** Out of the box the BC-250 has **no working `cpufreq`** — the CPU is stuck. Installing the [`bc250-acpi-fix`](https://github.com/bc250-collective/bc250-acpi-fix) SSDT-PST/CST tables (drop the `.aml` files via dracut/initramfs) enables 8 P-states (800–3200 MHz); then `schedutil` is the recommended governor ([elektricM: Fedora](https://elektricm.github.io/amd-bc250-docs/linux/fedora/), [elektricM: CoreOS](https://elektricm.github.io/amd-bc250-docs/linux/fedora-coreos/)).
 - **`amdgpu.sg_display=0` is for old kernels (< 6.10).** It's still in most guides because it's harmless, but it isn't doing anything on a current kernel.
 - **Mesa milestones:** 25.0.1 fixed an Avowed hang ([src](https://t.me/c/2424231195/22019)); 25.1 brought upstream BC-250 support with ACO + Rusticl by default ([src](https://t.me/c/2424231195/48588)); **25.3.x is the current recommended stable** (e.g. 25.3.6 on Fedora 43) and **Mesa 26** is out on Debian sid / Ubuntu 26.04. If you're on Mesa older than 25.1, update before debugging anything else.

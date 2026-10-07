@@ -76,7 +76,7 @@ flowchart TD
 | **Batocera** | Linux (дистрибутив для емуляції) | Низькі–Середні | вбудована Mesa + налаштування | Консольний **емуляційний** бокс ([15-emulation.md](../en/15-emulation.md)) |
 
 Нотатки з чату та [elektricM](https://elektricm.github.io/amd-bc250-docs/linux/distributions/):
-- **Bazzite найлегший** і має **спеціальний образ для BC-250** з фіксом firmware, параметрами ядра, GPU governor і вже застосованим патчем 40-CU/частоти. Знайдіть його на artifacthub: [`bazzite-bc250`](https://artifacthub.io/packages/container/bazzite-bc250/bazzite_bc250). Кілька користувачів перейшли на нього саме для того, щоб перестати патчити вручну ([src](https://t.me/c/2424231195/121246)).
+- **Bazzite найлегший** і має **спеціальний образ для BC-250** з фіксом firmware, параметрами ядра, GPU governor ; normal-образи та експериментальні `-40cu` різні. Історичний artifacthub: [`bazzite-bc250`](https://artifacthub.io/packages/container/bazzite-bc250/bazzite_bc250). Кілька користувачів перейшли на нього саме для того, щоб перестати патчити вручну ([src](https://t.me/c/2424231195/121246)).
 - **Станом на Fedora 43, Mesa 25.x є в mainline-репозиторіях** — COPR `mixaill/amd-bc-250` більше не потрібен лише заради Mesa. Fedora 42 **знята з підтримки (end-of-life)**; оновіться до 43. Під час встановлення, якщо отримаєте чорний екран, скористайтеся *Troubleshooting → Install in Basic Graphics Mode* ([elektricM: Fedora](https://elektricm.github.io/amd-bc250-docs/linux/fedora/)).
 - **Не хапайте наосліп «геймерські» дистрибутиви.** Один докладний розбір доводить, що звичайна **Fedora (Workstation/KDE)** або **vanilla Arch з LTS-ядром + свіжою Mesa** — безболісна золота середина, і що важкі тюнінговані форки інколи можуть *ламати* Steam/FSR/vsync, а не допомагати ([src](https://t.me/c/2424231195/102834)). Сприймайте це як пораду «станом на кінець 2025» — образ Bazzite відтоді дозрів.
 - **CachyOS замість Bazzite, якщо ви женетеся за максимальною плавністю.** Докладний звіт спільноти r/BC250Gaming (Reddit) перейшов з Bazzite на **CachyOS** і виявив, що ігри помітно плавніші незалежно від джерела, з меншою кількістю підвисань/мікрофризів (напр. *Mortal Kombat 1*), меншою кількістю випадкових вильотів і перезапусків Steam-mode, і дуже чуйним відчуттям на **типовому розкладі Btrfs**. Він також змусив **HDR + VRR працювати належно** там, де Bazzite не міг (HDR глючив, VRR ніколи не працював) — див. [14-display.md](../en/14-display.md). Сприймайте це як один добре задокументований досвід, а не універсальний вердикт, але це сильний варіант, якщо Bazzite залишає вас із підвисаннями чи нестабільністю. Налаштування автоматизує скрипт **[`redbeard1083/bc250-toolkit`](https://github.com/redbeard1083/bc250-toolkit)** (BC-250 на CachyOS). ⚠ Окремий датапоінт спільноти додає термальний/FPS-аспект: за *ідентичного* розгону CachyOS, за повідомленнями, працює **на ~10 °C прохолодніше за Bazzite** і дає вищі FPS у CPU-залежних тайтлах (напр. *Elden Ring* ~60–75 на CachyOS проти ~45–60 на Bazzite) ([+14], r/BC250Gaming — за повідомленнями спільноти, варіюється; незалежно не підтверджено).
@@ -108,31 +108,34 @@ Bazzite — це незмінна (immutable) ігрова ОС на базі Fe
 > Перезавантажтеся — і ви в Bazzite.
 
 ### A2. Встановіть GPU governor (найпростіший поточний шлях)
-Станом на початок 2026 **стандартне ядро Bazzite вже містить патч діапазону частот GPU** — тож зазвичай **кастомний образ взагалі не потрібен**. Просто встановіть governor поверх звичайної Bazzite ([elektricM: Bazzite](https://elektricm.github.io/amd-bc250-docs/linux/bazzite/)):
+За актуальною перевіркою upstream **звичайне ядро Bazzite не слід вважати частотно-пропатченим**. SMU-governor працює через firmware без kernel frequency patch; встанови саме його поверх звичайної Bazzite ([elektricM: Bazzite](https://elektricm.github.io/amd-bc250-docs/linux/bazzite/)):
 ```bash
 sudo dnf copr enable filippor/bazzite
 rpm-ostree install cyan-skillfish-governor-smu   # SMU variant — no kernel patch needed
 systemctl reboot
 sudo systemctl enable --now cyan-skillfish-governor-smu.service
 # Pin the known-good deployment so an update can't silently break you:
-rpm-ostree pin 0
+sudo ostree admin pin booted
 ```
-**`cyan-skillfish-governor-smu`** керує частотами через виклики firmware SMU й заміщує старіший `oberon-governor` (див. *[Power governor](#b3-power-governor-cyan-skillfish-governor)*). Існує також варіант `cyan-skillfish-governor-tt`, але він потребує патча частоти ядра (уже в Bazzite). ⚠ Governor може націлюватися на не ту карту (card0 проти card1) — перевірте, якщо масштабування не вмикається.
+**`cyan-skillfish-governor-smu`** керує частотами через виклики firmware SMU й заміщує старіший `oberon-governor` (див. *[Power governor](#b3-power-governor-cyan-skillfish-governor)*). Існує також варіант `cyan-skillfish-governor-tt`, але він потребує патча частоти ядра; у звичайній актуальній Bazzite його не припускай. ⚠ Governor може націлюватися на не ту карту (card0 проти card1) — перевірте, якщо масштабування не вмикається.
 
 ### A2-alt. (Опційно) Перейдіть (rebase) на образ BC-250
-Лише якщо ви хочете додаткові заздалегідь вбудовані оптимізації: переключіться на підтримуваний образ BC-250 — збірки **`vietsman` «Bazzite on Steroids»** (фікс firmware, параметри ядра, governor, розширений патч частоти 350–2230 MHz уже вбудовані). Виберіть desktop, який ви встановили — **GNOME — рекомендований типовий вибір** — і запустіть:
+Опційно: [62fixolab](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images) випускає офіційний stable із SMU-governor та налаштуванням BC250. Це проєкт спільноти, не форк Bazzite. Вибери **одну** команду під свій desktop. Normal-образ не означає 40 CU; `-40cu`, testing та unstable окремі.
 ```bash
-# GNOME (recommended):
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/vietsman/bazzite-gnome-patched:latest
-# KDE:
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/vietsman/bazzite-kde-patched:latest
-# Deck / Gaming-Mode (SteamOS-like):
-rpm-ostree rebase ostree-image-signed:docker://ghcr.io/vietsman/bazzite-deck-patched:latest
+# Збережи поточний deployment перед rebase:
+sudo ostree admin pin booted
+# GNOME:
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/62fixolab/bazzite-bc250-patched-gnome:latest
+# АБО KDE:
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/62fixolab/bazzite-bc250-patched-kde:latest
+# АБО Deck / Gaming Mode:
+rpm-ostree rebase ostree-image-signed:docker://ghcr.io/62fixolab/bazzite-bc250-patched-deck:latest
 systemctl reboot
+systemctl status cyan-skillfish-governor-smu
 ```
 ⚠ перевірте поточний образ/тег перед запуском — шляхи образів змінюються. Актуальні команди живуть на [сторінці Bazzite у документації BC-250](https://elektricm.github.io/amd-bc250-docs/linux/bazzite/) (також у списку на artifacthub як [`bazzite-bc250`](https://artifacthub.io/packages/container/bazzite-bc250/bazzite_bc250)).
 
-> ⚠ **Перехід (rebase) на патчений образ може вбити ваш USB WiFi (elektricM Issue #10).** Кастомне ядро може не містити драйвера вашого USB WiFi/Bluetooth-донгла (BC-250 не має вбудованого бездротового зв'язку). Тримайте напоготові Ethernet, перевірте `lsmod | grep <your_driver>` після rebase, `rpm-ostree install <driver-package>`, якщо відсутній, або `rpm-ostree rollback && systemctl reboot`.
+> **Перехід зі старих vietsman-образів.** За [датованим виправленням upstream](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/linux/bazzite.md), старі Fedora/Bazzite 42 — історична гілка, не рекомендована ціль встановлення. Перевір `/etc/yum.repos.d` та перенеси лише старий patched-kernel COPR-файл у резервну директорію: він може викликати 404. Не видаляй усі репозиторії та конфіги. Не запускай Oberon і SMU-governor одночасно. [Перехід](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images#install-rebase). Після rebase перевір графіку, мережу та governor; відкат — `rpm-ostree rollback` із перезавантаженням або закріплений deployment. Pin — операція [OSTree](https://github.com/ostreedev/ostree/blob/main/man/ostree-admin-pin.xml), не `rpm-ostree pin`.
 
 > **Якщо розблокування 40-CU ламає керування вентилятором чи ваш геймпад Xbox, замініть на кастомний образ ядра.** Вбудоване розблокування 40-CU у Bazzite (метод «Old-Lamer») за повідомленнями спільноти ламає **керування вентилятором і підтримку контролера Xbox** на деяких налаштуваннях ([+ r/BC250Gaming — за повідомленнями спільноти, варіюється]). Образ **[`hafriedlander/kernel-bazzite`](https://github.com/hafriedlander/kernel-bazzite)** — це кастомне ядро, що це виправляє — перевірено, що це *«(legacy) ядро Bazzite з патчем розблокування 40CU для плат BC250»*, зібране прямо з kernel-ark від Fedora зі звичайним набором патчів handheld/performance (також запаковане в AUR як `linux-bazzite-bin`). ⚠ Чи вирішить воно вашу конкретну регресію вентилятора/геймпада — це датапоінт спільноти, а не гарантія — тримайте відомо робочий deployment закріпленим, щоб можна було `rpm-ostree rollback`.
 
@@ -147,7 +150,7 @@ rpm-ostree rollback   # if an update breaks something, roll back and reboot
 > ⚠ **Незмінність (immutability) Bazzite блокує низькорівневі мережеві інструменти.** Read-only `/usr` означає, що інструменти формування трафіку / обходу тротлінгу, які встановлюють системні служби чи частини ядра (напр. інструменти типу `zapret`), не встановлюються чисто. Якщо ви залежите від такого — поширене для деяких провайдерів, що тротлять Steam — мутабельний дистрибутив (Fedora/Arch) — простіший хост (RU-специфічні деталі в російському виданні).
 
 ### A3. Готово — перевірте
-Перейдіть до **[Перевірка прискорення GPU](#перевірка-прискорення-gpu)** нижче. На образі BC-250 (або після A2) символьне посилання firmware, параметри ядра й governor уже на місці.
+Перейдіть до **[Перевірка прискорення GPU](#перевірка-прискорення-gpu)** нижче. Перевір фактичні firmware, параметри ядра та активний governor у своєму deployment; лише встановлення governor не доводить налаштування всіх компонентів.
 
 ---
 
@@ -553,8 +556,8 @@ font_size=24
     ```
 - **Коли застрягли, використовуйте LTS.** Кілька новачків натрапили на стіну, збираючи dev-бібліотеки / драйвери на найсвіжішому ядрі, і були розблоковані переходом на **LTS-ядро** ([src](https://t.me/c/2424231195/56529)).
 - **На Arch робіть знімок перед кожним оновленням.** Оскільки стрибок ядра/Mesa може зламати GPU, поставте корінь на **Btrfs** і робіть знімок **snapper** чи **timeshift** перед `pacman -Syu` — тоді погане оновлення це відкат однією командою замість перевстановлення ([4pda](https://4pda.to/forum/index.php?showtopic=1104980)). (Атомарні дистрибутиви типу Bazzite отримують це безкоштовно через `rpm-ostree rollback`.)
-- **Непатчені ядра обмежують частоти GPU на 1000–2000 MHz.** Розширений діапазон **350–2230 MHz** потребує або патча частоти ядра (заздалегідь застосованого в Bazzite/PikaOS), **або** SMU-governor, який розблоковує його без патчингу ([elektricM: kernel](https://elektricm.github.io/amd-bc250-docs/linux/kernel/)).
-- **HDMI-аудіо на ядрі 6.17+** потребувало обхідного шляху (перезбірка з `CONFIG_SND_HDA_CODEC_HDMI_ATI=m` / `snd-hda-codec-atihdmi.ko`) — DisplayPort безпечніший вихід ([src](https://t.me/c/2424231195/68051)). Аудіо DisplayPort на BC-250 також може виходити **зниженим за тоном/уповільненим** — пасивний адаптер DP→HDMI чи USB-аудіо є фіксом ([elektricM: Arch](https://elektricm.github.io/amd-bc250-docs/linux/arch/)).
+- **Непатчені ядра обмежують частоти GPU на 1000–2000 MHz.** Розширений діапазон **350–2230 MHz** потребує або патча частоти ядра (перевіряй конкретну збірку, не припускай наявності у звичайній Bazzite), **або** SMU-governor, який розблоковує його без патчингу ([elektricM: kernel](https://elektricm.github.io/amd-bc250-docs/linux/kernel/)).
+- **Звук DP/HDMI:** спершу перевір kernel display-clock fixes, не звинувачуй адаптер. Upstream зазначає обидва виправлення в **7.2 / 7.1.10+**, велику помилку backport у **6.12.78 / 6.18.20 / 6.19.10+**; vendor-backport може відрізнятися. [Механізм і таблиця ядер](https://elektricm.github.io/amd-bc250-docs/troubleshooting/audio/). Старий звіт про ATI codec module — окрема конфігураційна проблема ([джерело](https://t.me/c/2424231195/68051)); USB-звук лишається альтернативою.
 - **Масштабування частоти CPU потребує фіксу ACPI.** З коробки BC-250 не має робочого `cpufreq` — CPU застряг. Встановлення таблиць SSDT-PST/CST [`bc250-acpi-fix`](https://github.com/bc250-collective/bc250-acpi-fix) (киньте файли `.aml` через dracut/initramfs) вмикає 8 P-станів (800–3200 MHz); тоді `schedutil` — рекомендований governor ([elektricM: Fedora](https://elektricm.github.io/amd-bc250-docs/linux/fedora/), [elektricM: CoreOS](https://elektricm.github.io/amd-bc250-docs/linux/fedora-coreos/)).
 - **`amdgpu.sg_display=0` — для старих ядер (< 6.10).** Воно досі в більшості гайдів, бо нешкідливе, але на сучасному ядрі нічого не робить.
 - **Віхи Mesa:** 25.0.1 виправила зависання в Avowed ([src](https://t.me/c/2424231195/22019)); 25.1 принесла upstream-підтримку BC-250 з ACO + Rusticl за замовчуванням ([src](https://t.me/c/2424231195/48588)); **25.3.x — поточна рекомендована стабільна** (напр. 25.3.6 на Fedora 43), а **Mesa 26** вийшла на Debian sid / Ubuntu 26.04. Якщо ви на Mesa старішій за 25.1, оновіться, перш ніж дебажити будь-що інше.
