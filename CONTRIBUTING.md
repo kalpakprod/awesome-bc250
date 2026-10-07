@@ -1,8 +1,19 @@
 # Contributing
 
-`awesome-bc250` is a **living** knowledge base. Content is mined from the community chat by a reproducible pipeline, then written into the handbook and verified against canonical project repos.
+`awesome-bc250` is a **project/resource catalog and a full handbook** for the ASRock AMD BC-250. The catalog maps the ecosystem; the handbook explains assembly, setup and use. Community reports and originating project documentation provide sources for both.
 
-## How knowledge gets in
+## Adding projects and resources
+
+- Start with the [catalog](catalog/README.md), its [project records](catalog/resources.json), and the [discovery inventory](catalog/discovery.md). Search for an existing entry before adding a resource.
+- Include every distinct resource whose relationship to BC-250 is established: code, firmware research, drivers, images, hardware mods, CAD, documentation, experiments, useful discussions and historical work. Stars, popularity and local installation success are not admission requirements.
+- Describe **what the project does and how it differs**, link its canonical source and available documentation, and choose the relevant topic. Record a source revision/date when available; do not invent a pin or a compatibility result.
+- Keep significant forks, continuations and alternative approaches discoverable. Explain an origin or replacement relationship only when the source supports it; an identical README is not proof of identical code or independent evidence.
+- Retain archived, superseded and unsuccessful work with its status. Listing an experiment does not recommend running it. Keep unclassified search hits in the discovery inventory rather than presenting all search matches as board projects.
+- Separate **existence/relevance** from **tested behavior**. A source-backed catalog entry does not require our board test; stability, electrical safety, performance and hardware-enablement claims do require evidence appropriate to that claim.
+- Keep EN/RU/UK catalog identities and links in sync, update the public records with the descriptions, and preserve meaningful non-English resources. The external resource's language need not match the catalog language.
+- For articles, videos, models and discussions, use the [topic bibliography](catalog/en/topics.md). Preserve attribution; do not copy raw private messages, attachments, credentials, signed URLs or local cache paths into a contribution.
+
+## How handbook knowledge gets in
 
 1. **Export** the community chat (Telegram → JSON).
 2. **ETL** → `build_db.py` loads it into a queryable SQLite DB (`bc250.db`), forum-topic aware.
@@ -16,7 +27,7 @@
 
 ## How to contribute
 
-- **Fix / add knowledge** — edit `docs/en/<section>.md`. Keep the newcomer able to follow it with zero prior context. Mirror the change into `docs/ru/` (or open an issue if you can't).
+- **Fix / add handbook knowledge** — edit `docs/en/<section>.md`. Keep the newcomer able to follow it with zero prior context. Mirror the change into `docs/ru/` and `docs/uk/`, or explicitly document any translation lag.
 - **New dongle / case / setting** — add it with a source link and, if a command, the repo you verified it against.
 - **New chat export** — re-run the pipeline; open a PR with regenerated evidence + any new resources.
 

@@ -4,11 +4,34 @@
 
 # Awesome BC-250 [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
-> A curated guide to the **ASRock AMD BC-250**: a PlayStation 5-derived APU board (Cyan Skillfish / Oberon; 6-core Zen 2 plus RDNA 2 graphics, 16 GB GDDR6) repurposed as a low-cost Linux gaming and AI mini PC.
+> Projects, documentation, hardware modifications and research for the **ASRock AMD BC-250**, with a full build-and-use handbook. The BC-250 is a PlayStation 5-derived APU board (Cyan Skillfish / Oberon; Zen 2, RDNA 2 and 16 GB GDDR6).
 
-<sub>_Maintained · last updated **September 2026** · [llms.txt](llms.txt) for AI agents_</sub>
+<sub>_Catalog expanded **October 2026** · project snapshot **September 2026** · [llms.txt](llms.txt) for AI agents_</sub>
 
 **English** · [Русский](README.ru.md) · [Українська](README.uk.md)
+
+---
+
+## Contents
+
+- [Project catalog](#catalog).
+- [Quick start](#quick-start).
+- [Board overview](#what-the-board-is).
+- [Full handbook](#guide).
+- [Selected resource entry points](#selected-resource-entry-points).
+- [Research scope and status](#research-scope-and-status).
+
+<a id="catalog"></a>
+## Project catalog
+
+- **[Browse the catalog](catalog/en/README.md)** — 316 individually named resources, including experimental and historical work; each entry explains its purpose and links to its source and available documentation.
+- **Documentation and firmware:** [Guides & build notes](catalog/en/README.md#documentation) · [BIOS, UEFI & recovery](catalog/en/README.md#firmware) · [CPU cores, SMU & ACPI](catalog/en/README.md#cpu).
+- **Graphics and systems:** [GPU governors, CU/WGP & memory](catalog/en/README.md#gpu) · [Linux images & setup](catalog/en/README.md#linux) · [Graphics drivers & other OS experiments](catalog/en/README.md#drivers).
+- **Control and hardware:** [Toolkits & game mode](catalog/en/README.md#control) · [Telemetry, fans & displays](catalog/en/README.md#monitoring) · [Power adapters & controllers](catalog/en/README.md#power) · [Cases, CAD & cooling](catalog/en/README.md#cases).
+- **Workloads and peripherals:** [Video codecs, VCN & audio](catalog/en/README.md#video) · [AI, compute & clusters](catalog/en/README.md#ai) · [Games, tests & emulation](catalog/en/README.md#gaming) · [WiFi & Bluetooth](catalog/en/README.md#peripherals).
+- **[Topic bibliography](catalog/en/topics.md)** — 702 distinct external links from the 19 handbook chapters: documentation, models, videos, discussions and message-level references; [community entry points](catalog/en/topics.md#communities) are listed separately.
+- **[Discovery inventory](catalog/discovery.md)** — all 971 repository hits from the dated search, including forks and zero-star projects. Unresolved and unrelated matches remain identifiable rather than being presented as BC-250 recommendations.
+- **Catalog versus handbook.** Listing a project preserves its place in the ecosystem; it does not recommend installation. The handbook below explains procedures, while the catalog also keeps alternative approaches and historical attempts.
 
 ---
 
@@ -16,7 +39,7 @@
 
 - **New owner.** Follow [docs/en/00-start-here.md](docs/en/00-start-here.md) in order: buy, power, cool, install an operating system, tune, play. The guide index below explains each step.
 - **Gamer.** Start with [Gaming results & settings](docs/en/11-gaming.md) and [Emulation](docs/en/15-emulation.md). Read [Overclocking & undervolting](docs/en/09-overclock-undervolt.md) before you change clocks or voltage.
-- **Researcher.** Start with [SOURCE_STATUS](SOURCE_STATUS.md), the dated source audit. Then read [BIOS & brick recovery](docs/en/08-bios.md) and [AI / LLM](docs/en/12-ai-llm.md).
+- **Researcher.** Start with the [project catalog](catalog/en/README.md) and [topic bibliography](catalog/en/topics.md). [SOURCE_STATUS](SOURCE_STATUS.md) explains the dated source coverage; [BIOS & brick recovery](docs/en/08-bios.md) and [AI / LLM](docs/en/12-ai-llm.md) explain the practical topics.
 
 ---
 
@@ -44,7 +67,9 @@
 
 ---
 
-## Community resources
+## Selected resource entry points
+
+- **Full list:** the [project catalog](catalog/en/README.md) covers the alternatives and research projects beyond these entry points.
 
 
 ### Documentation
