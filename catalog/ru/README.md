@@ -20,6 +20,7 @@
 - [AI, инференс, вычисления и кластеры](#ai).
 - [Исправления игр, тесты и эмуляция](#gaming).
 - [WiFi, Bluetooth и драйверы периферии](#peripherals).
+- [Находки Reddit: проекты и модели для печати](reddit.md).
 - [Тематическая библиография](topics.md).
 - [Поисковый индекс](../discovery.md).
 
@@ -28,7 +29,7 @@
 - Снимок проектов датирован 2026-09-29. У каждой записи есть название, назначение и, когда доступно, закреплённая версия источника. Архивные проекты и неудачные исследования сохранены.
 - Метка «форк» взята из GitHub и не означает независимый код или одинаковое поведение.
 - Ссылка подтверждает ресурс, а не результат испытания платы. Эксперименты с ядрами, прошивкой, питанием и драйверами входят в каталог, даже если не подходят для обычной установки. Процедуры смотри в руководстве.
-- 316 отдельно названных ресурсов в 14 категориях.
+- 316 отдельно названных ресурсов исходного каталога в 14 категориях. [Дополнение Reddit от 2026-10-07](reddit.md) содержит 141 отобранную запись, включая 28 уже известных основных проектов; остальные — проекты, модели и отдельные сборки, не выделенные здесь ранее.
 
 <a id="documentation"></a>
 ## Документация и заметки о сборках
@@ -68,6 +69,8 @@
 <a id="firmware"></a>
 ## BIOS, UEFI и восстановление
 
+- **Reddit:** [Новые обсуждения прошивок и исследований CPU](reddit.md#drivers).
+
 - **Руководство:** [08-bios](../../docs/ru/08-bios.md).
 
 - [cachenetics/recon](https://github.com/cachenetics/recon) - CLI анализа прошивок и справочные данные микросхем для исследования железа. [Закреплённый источник](https://github.com/cachenetics/recon/tree/803cde4a3f2ffa7e1471822e6a1321fc0d30549c) · [Документация проекта](https://github.com/cachenetics/recon/tree/803cde4a3f2ffa7e1471822e6a1321fc0d30549c#readme).
@@ -90,6 +93,8 @@
 
 <a id="cpu"></a>
 ## Ядра CPU, SMU и ACPI
+
+- **Reddit:** [Адаптации масок CPU и восьмиядерных таблиц ACPI](reddit.md#drivers).
 
 - **Руководство:** [08-bios](../../docs/ru/08-bios.md) · [09-overclock-undervolt](../../docs/ru/09-overclock-undervolt.md).
 
@@ -154,6 +159,8 @@
 <a id="linux"></a>
 ## Дистрибутивы Linux, образы и установка
 
+- **Reddit:** [Дистрибутивы и утилиты](reddit.md#software).
+
 - **Руководство:** [06-linux](../../docs/ru/06-linux.md).
 
 - [62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images) - Проект готовых образов Bazzite Deck/GNOME/KDE с интеграцией патчей BC-250. [Закреплённый источник](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images/tree/b0366d9fb8ac296a71edcc9d48faad633e89c8d9) · [Документация проекта](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images/tree/b0366d9fb8ac296a71edcc9d48faad633e89c8d9#readme).
@@ -209,6 +216,8 @@
 <a id="drivers"></a>
 ## Графические драйверы и другие ОС
 
+- **Reddit:** [MetalCyan, патчи драйверов и исследования](reddit.md#drivers).
+
 - **Руководство:** [06-linux](../../docs/ru/06-linux.md) · [07-windows](../../docs/ru/07-windows.md) · [13-macos](../../docs/ru/13-macos.md).
 
 - [amethyst8118/BC-250-Hackintosh-OpenCore](https://github.com/amethyst8118/BC-250-Hackintosh-OpenCore) - Эксперимент с macOS/Hackintosh на BC-250. [Закреплённый источник](https://github.com/amethyst8118/BC-250-Hackintosh-OpenCore/tree/9464c02ff6e8b76639cc3d343c697292a81f7743) · [Документация проекта](https://github.com/amethyst8118/BC-250-Hackintosh-OpenCore/tree/9464c02ff6e8b76639cc3d343c697292a81f7743#readme).
@@ -230,6 +239,8 @@
 
 <a id="control"></a>
 ## Панели управления, утилиты и игровой режим
+
+- **Reddit:** [Панели управления и утилиты настройки](reddit.md#software).
 
 - **Руководство:** [06-linux](../../docs/ru/06-linux.md) · [09-overclock-undervolt](../../docs/ru/09-overclock-undervolt.md) · [11-gaming](../../docs/ru/11-gaming.md) · [15-emulation](../../docs/ru/15-emulation.md).
 
@@ -269,6 +280,8 @@
 <a id="monitoring"></a>
 ## Телеметрия, вентиляторы и экраны
 
+- **Reddit:** [LED-панели и экраны состояния](reddit.md#monitoring).
+
 - **Руководство:** [04-cooling](../../docs/ru/04-cooling.md) · [09-overclock-undervolt](../../docs/ru/09-overclock-undervolt.md) · [16-usb-peripherals](../../docs/ru/16-usb-peripherals.md).
 
 - [AkPuLk0/BC250---Led-Progress](https://github.com/AkPuLk0/BC250---Led-Progress) - Светодиодный индикатор загрузок и передачи файлов через контроллер Corsair Commander. [Закреплённый источник](https://github.com/AkPuLk0/BC250---Led-Progress/tree/b07b60214fa0cb4fde6ec0adb5a10f5ad38edb6d) · [Документация проекта](https://github.com/AkPuLk0/BC250---Led-Progress/tree/b07b60214fa0cb4fde6ec0adb5a10f5ad38edb6d#readme).
@@ -301,6 +314,8 @@
 <a id="power"></a>
 ## Адаптеры питания, контроллеры и включение
 
+- **Reddit:** [Контроллеры БП и включение от геймпада](reddit.md#power).
+
 - **Руководство:** [03-power-supply](../../docs/ru/03-power-supply.md) · [16-usb-peripherals](../../docs/ru/16-usb-peripherals.md).
 
 - [aleksejspopovs/bc250-power](https://github.com/aleksejspopovs/bc250-power) - Распределение питания, управление БП или включение с контроллера и пульта. [Закреплённый источник](https://github.com/aleksejspopovs/bc250-power/tree/3e163b135eb8b6f06a1d3ac794a3c77536c956df) · [Документация проекта](https://github.com/aleksejspopovs/bc250-power/tree/3e163b135eb8b6f06a1d3ac794a3c77536c956df#readme).
@@ -330,6 +345,8 @@
 <a id="cases"></a>
 ## Корпуса, CAD и модификации охлаждения
 
+- **Reddit:** [Корпуса и страницы моделей для печати](reddit.md#cases) · [Крепления, воздуховоды и CAD платы](reddit.md#parts) · [Отдельные сборки и незавершённые проекты](reddit.md#builds).
+
 - **Руководство:** [04-cooling](../../docs/ru/04-cooling.md) · [05-case](../../docs/ru/05-case.md).
 
 - [captmicr0/BC-250-Case-For-LED-PSU](https://github.com/captmicr0/BC-250-Case-For-LED-PSU) - Корпус, модель платы, крепления или сборка с изменённым охлаждением. [Закреплённый источник](https://github.com/captmicr0/BC-250-Case-For-LED-PSU/tree/04c539b8982dd0d75b0e5de10de81b87bb35a2ba) · [Документация проекта](https://github.com/captmicr0/BC-250-Case-For-LED-PSU/tree/04c539b8982dd0d75b0e5de10de81b87bb35a2ba#readme).
@@ -353,6 +370,8 @@
 <a id="video"></a>
 ## Видеокодеки, VCN и звук
 
+- **Reddit:** [Moonlight, PyroWave и кодирование на Vulkan compute](reddit.md#streaming).
+
 - **Руководство:** [14-display](../../docs/ru/14-display.md).
 
 - [daveconde/bc250-vcn-enable](https://github.com/daveconde/bc250-vcn-enable) - Исследование включения и устройства VCN, а не установленный рабочий путь кодеков. [Закреплённый источник](https://github.com/daveconde/bc250-vcn-enable/tree/7c511b725b135766c52a3e13776c1cd187e5015d) · [Документация проекта](https://github.com/daveconde/bc250-vcn-enable/tree/7c511b725b135766c52a3e13776c1cd187e5015d#readme).
@@ -368,6 +387,8 @@
 
 <a id="ai"></a>
 ## AI, инференс, вычисления и кластеры
+
+- **Reddit:** [Кластеры LLM и стойки](reddit.md#compute).
 
 - **Руководство:** [12-ai-llm](../../docs/ru/12-ai-llm.md).
 
@@ -405,6 +426,8 @@
 <a id="gaming"></a>
 ## Исправления игр, тесты и эмуляция
 
+- **Reddit:** [FSR4, HelixSR на основе DLSS, OptiScaler и генерация кадров](reddit.md#upscaling).
+
 - **Руководство:** [11-gaming](../../docs/ru/11-gaming.md) · [15-emulation](../../docs/ru/15-emulation.md).
 
 - [bangstk/Vulkan_NullVRS](https://github.com/bangstk/Vulkan_NullVRS) - Универсальный инструмент масштабирования, генерации кадров или обхода графических проблем из игрового руководства. [Закреплённый источник](https://github.com/bangstk/Vulkan_NullVRS/tree/d550ce71212f447ab25559603da163d861e608f7) · Метаданные проверены 2026-10-07.
@@ -420,6 +443,8 @@
 
 <a id="peripherals"></a>
 ## WiFi, Bluetooth и драйверы периферии
+
+- **Reddit:** [DualSense, USB-звук, сеть и накопители](reddit.md#peripherals).
 
 - **Руководство:** [10-wifi-bt](../../docs/ru/10-wifi-bt.md) · [16-usb-peripherals](../../docs/ru/16-usb-peripherals.md).
 

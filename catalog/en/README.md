@@ -20,6 +20,7 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 - [AI, inference, compute and clusters](#ai).
 - [Game fixes, benchmarks and emulation](#gaming).
 - [WiFi, Bluetooth and peripheral drivers](#peripherals).
+- [Reddit discoveries: projects and printable models](reddit.md).
 - [Topic bibliography](topics.md).
 - [Discovery inventory](../discovery.md).
 
@@ -28,7 +29,7 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 - The project snapshot is dated 2026-09-29. Each entry keeps the project identity, a purpose description and, when available, its pinned source version. Archived projects and unsuccessful research are retained.
 - Fork is GitHub metadata, not evidence of independent code or identical behavior.
 - A link establishes a resource, not a tested board outcome. Experimental core, firmware, power and driver work belongs here even when it is unsuitable for a normal setup. Use the handbook for procedures.
-- 316 individually named resources in 14 categories.
+- 316 individually named resources in the original catalog's 14 categories. The [2026-10-07 Reddit supplement](reddit.md) contains 141 curated entries, including 28 primary projects already listed here; the remainder covers projects, models and individual builds not previously named here.
 
 <a id="documentation"></a>
 ## Documentation and build notes
@@ -68,6 +69,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 <a id="firmware"></a>
 ## BIOS, UEFI and recovery
 
+- **Reddit:** [Firmware discussions and CPU research](reddit.md#drivers).
+
 - **Handbook:** [08-bios](../../docs/en/08-bios.md).
 
 - [cachenetics/recon](https://github.com/cachenetics/recon) - Firmware-analysis CLI and chip-reference data for hardware research. [Pinned source](https://github.com/cachenetics/recon/tree/803cde4a3f2ffa7e1471822e6a1321fc0d30549c) · [Project documentation](https://github.com/cachenetics/recon/tree/803cde4a3f2ffa7e1471822e6a1321fc0d30549c#readme).
@@ -90,6 +93,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 
 <a id="cpu"></a>
 ## CPU cores, SMU and ACPI
+
+- **Reddit:** [CPU-mask adaptations and eight-core ACPI tables](reddit.md#drivers).
 
 - **Handbook:** [08-bios](../../docs/en/08-bios.md) · [09-overclock-undervolt](../../docs/en/09-overclock-undervolt.md).
 
@@ -154,6 +159,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 <a id="linux"></a>
 ## Linux distributions, images and setup
 
+- **Reddit:** [Distribution and toolkit projects](reddit.md#software).
+
 - **Handbook:** [06-linux](../../docs/en/06-linux.md).
 
 - [62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images) - Prebuilt Bazzite Deck/GNOME/KDE image project integrating BC-250 patches. [Pinned source](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images/tree/b0366d9fb8ac296a71edcc9d48faad633e89c8d9) · [Project documentation](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images/tree/b0366d9fb8ac296a71edcc9d48faad633e89c8d9#readme).
@@ -209,6 +216,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 <a id="drivers"></a>
 ## Graphics drivers and alternative operating systems
 
+- **Reddit:** [MetalCyan, driver patches and research](reddit.md#drivers).
+
 - **Handbook:** [06-linux](../../docs/en/06-linux.md) · [07-windows](../../docs/en/07-windows.md) · [13-macos](../../docs/en/13-macos.md).
 
 - [amethyst8118/BC-250-Hackintosh-OpenCore](https://github.com/amethyst8118/BC-250-Hackintosh-OpenCore) - macOS/Hackintosh enablement experiment for the BC-250. [Pinned source](https://github.com/amethyst8118/BC-250-Hackintosh-OpenCore/tree/9464c02ff6e8b76639cc3d343c697292a81f7743) · [Project documentation](https://github.com/amethyst8118/BC-250-Hackintosh-OpenCore/tree/9464c02ff6e8b76639cc3d343c697292a81f7743#readme).
@@ -230,6 +239,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 
 <a id="control"></a>
 ## Control panels, toolkits and game mode
+
+- **Reddit:** [Control panels and setup tools](reddit.md#software).
 
 - **Handbook:** [06-linux](../../docs/en/06-linux.md) · [09-overclock-undervolt](../../docs/en/09-overclock-undervolt.md) · [11-gaming](../../docs/en/11-gaming.md) · [15-emulation](../../docs/en/15-emulation.md).
 
@@ -269,6 +280,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 <a id="monitoring"></a>
 ## Telemetry, fan control and displays
 
+- **Reddit:** [LED bars and status screens](reddit.md#monitoring).
+
 - **Handbook:** [04-cooling](../../docs/en/04-cooling.md) · [09-overclock-undervolt](../../docs/en/09-overclock-undervolt.md) · [16-usb-peripherals](../../docs/en/16-usb-peripherals.md).
 
 - [AkPuLk0/BC250---Led-Progress](https://github.com/AkPuLk0/BC250---Led-Progress) - LED download/file-transfer progress integration with Corsair Commander hardware. [Pinned source](https://github.com/AkPuLk0/BC250---Led-Progress/tree/b07b60214fa0cb4fde6ec0adb5a10f5ad38edb6d) · [Project documentation](https://github.com/AkPuLk0/BC250---Led-Progress/tree/b07b60214fa0cb4fde6ec0adb5a10f5ad38edb6d#readme).
@@ -301,6 +314,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 <a id="power"></a>
 ## Power adapters, controllers and wake-up
 
+- **Reddit:** [PSU controllers and controller wake](reddit.md#power).
+
 - **Handbook:** [03-power-supply](../../docs/en/03-power-supply.md) · [16-usb-peripherals](../../docs/en/16-usb-peripherals.md).
 
 - [aleksejspopovs/bc250-power](https://github.com/aleksejspopovs/bc250-power) - Power-distribution hardware, PSU switching or controller/remote wake-up integration. [Pinned source](https://github.com/aleksejspopovs/bc250-power/tree/3e163b135eb8b6f06a1d3ac794a3c77536c956df) · [Project documentation](https://github.com/aleksejspopovs/bc250-power/tree/3e163b135eb8b6f06a1d3ac794a3c77536c956df#readme).
@@ -330,6 +345,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 <a id="cases"></a>
 ## Cases, CAD and cooling modifications
 
+- **Reddit:** [Cases and printable model pages](reddit.md#cases) · [Mounts, fan ducts and board CAD](reddit.md#parts) · [Individual builds and unfinished designs](reddit.md#builds).
+
 - **Handbook:** [04-cooling](../../docs/en/04-cooling.md) · [05-case](../../docs/en/05-case.md).
 
 - [captmicr0/BC-250-Case-For-LED-PSU](https://github.com/captmicr0/BC-250-Case-For-LED-PSU) - Enclosure, board model, mounting parts or a custom cooling build. [Pinned source](https://github.com/captmicr0/BC-250-Case-For-LED-PSU/tree/04c539b8982dd0d75b0e5de10de81b87bb35a2ba) · [Project documentation](https://github.com/captmicr0/BC-250-Case-For-LED-PSU/tree/04c539b8982dd0d75b0e5de10de81b87bb35a2ba#readme).
@@ -353,6 +370,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 <a id="video"></a>
 ## Video codecs, VCN and audio
 
+- **Reddit:** [Moonlight, PyroWave and Vulkan-compute encoding](reddit.md#streaming).
+
 - **Handbook:** [14-display](../../docs/en/14-display.md).
 
 - [daveconde/bc250-vcn-enable](https://github.com/daveconde/bc250-vcn-enable) - VCN enablement/reverse-engineering investigation, not an established working codec path. [Pinned source](https://github.com/daveconde/bc250-vcn-enable/tree/7c511b725b135766c52a3e13776c1cd187e5015d) · [Project documentation](https://github.com/daveconde/bc250-vcn-enable/tree/7c511b725b135766c52a3e13776c1cd187e5015d#readme).
@@ -368,6 +387,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 
 <a id="ai"></a>
 ## AI, inference, compute and clusters
+
+- **Reddit:** [LLM clusters and rack builds](reddit.md#compute).
 
 - **Handbook:** [12-ai-llm](../../docs/en/12-ai-llm.md).
 
@@ -405,6 +426,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 <a id="gaming"></a>
 ## Game fixes, benchmarks and emulation
 
+- **Reddit:** [FSR4, DLSS-derived HelixSR, OptiScaler and frame generation](reddit.md#upscaling).
+
 - **Handbook:** [11-gaming](../../docs/en/11-gaming.md) · [15-emulation](../../docs/en/15-emulation.md).
 
 - [bangstk/Vulkan_NullVRS](https://github.com/bangstk/Vulkan_NullVRS) - General upscaling/frame-generation/graphics workaround referenced by the gaming guide. [Pinned source](https://github.com/bangstk/Vulkan_NullVRS/tree/d550ce71212f447ab25559603da163d861e608f7) · Metadata checked 2026-10-07.
@@ -420,6 +443,8 @@ Projects, documentation, experiments and historical work for the ASRock AMD BC-2
 
 <a id="peripherals"></a>
 ## WiFi, Bluetooth and peripheral drivers
+
+- **Reddit:** [DualSense, USB audio, networking and storage](reddit.md#peripherals).
 
 - **Handbook:** [10-wifi-bt](../../docs/en/10-wifi-bt.md) · [16-usb-peripherals](../../docs/en/16-usb-peripherals.md).
 
