@@ -15,7 +15,7 @@ Two reasons people reflash:
 1. **To install a modded BIOS** that unlocks hidden menus (overclock, undervolt, memory, iGPU VRAM).
 2. **To recover a brick** — restore a known-good image after a bad setting or a failed flash.
 
-> 💡 **You may not need to flash at all.** If your *only* goal is changing the VRAM/UMA split, you can do that from a running Linux on the **stock** P3.00 / P5.00 BIOS with **[fanoush/bc250_memcfg](https://github.com/fanoush/bc250_memcfg)** — no flashing, no programmer, no brick risk ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/), [elektricM: VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)). Flashing a modded BIOS is only needed for the *unlocked chipset menus* and features beyond VRAM sizing (see [09-overclock-undervolt.md](09-overclock-undervolt.md) for the `bc250_memcfg` command).
+> 💡 **You may not need to flash at all.** If your *only* goal is changing the VRAM/UMA split, you can do that from a running Linux on the **stock** P3.00 / P5.00 BIOS with **[fanoush/bc250_memcfg](https://github.com/fanoush/bc250_memcfg)** — no BIOS-image flashing or programmer; still back up settings and keep a recovery path ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/), [elektricM: VRAM](https://elektricm.github.io/amd-bc250-docs/bios/vram/)). Flashing a modded BIOS is only needed for the *unlocked chipset menus* and features beyond VRAM sizing (see [09-overclock-undervolt.md](09-overclock-undervolt.md) for the `bc250_memcfg` command).
 
 ---
 
@@ -33,14 +33,14 @@ What you can actually tune with it (from the first-release notes, [src](https://
 
 - **GDDR6 frequency** — reported working at **1800** for one user (`@Haswellb`), but the *same kind of change bricked another board* — values are board-specific, not universal.
 - **GDDR6 timings** — they apply, but **too-low/tight timings brick** the board.
-- **iGPU memory (UMA) size** — works and gives a real uplift. If your change doesn't take effect, set **IGC: Forces** and **UMA Mode: UMA_SPECIFIED** ([src](https://t.me/c/2424231195/54971); same combo confirmed by the community docs).
+- **iGPU memory (UMA) size** — reported working; performance depends on the workload and driver. If your change doesn't take effect, set **IGC: Forced** and **UMA Mode: UMA_SPECIFIED** ([src](https://t.me/c/2424231195/54971); same combo confirmed by the community docs).
 - **Core frequency / voltages** — exposed but **"not tested"** by the author.
 
 > ❗ **Two author warnings, still current:** (1) **Do not disable Integrated Graphics** — it is the only display output. (2) On any of these mods, **a wrong setting can brick the board and a CMOS reset may not recover it** — that is exactly why you need a programmer. (See the "which version?" ladder below for picking a base.)
 
 > ### Which version? (decision ladder)
 >
-> 1. **Modded P3.00 (chipset-menu ROM) — the safe default.** This is the established **"community standard… most stable and tested,"** verified-public with a known SHA-256, and it already covers **VRAM-unlock + chipset settings**. Start here unless you have a specific reason not to ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)).
+> 1. **Modded P3.00 (chipset-menu ROM) — the conservative community starting point, not a safety guarantee.** This is the established **"community standard… most stable and tested,"** verified-public with a known SHA-256, and it already covers **VRAM-unlock + chipset settings**. Start here unless you have a specific reason not to ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)).
 > 2. **Modded 5.00 — current; pick it if you want memory tuning.** It's the newest base and is the one where **RAM/GDDR6 timing settings actually apply** on this board ([src](https://t.me/c/2424231195/78922)). Choose it over P3.00 specifically when you want to tune memory timings.
 > 3. **`P5.00_clv` — expert-only.** It "unlocks **Everything**" (every hidden menu, including experimental **ReBAR / Resizable BAR** and debug/chipset settings), which makes it *"very easy to brick the board if you change the wrong thing… Stick to P3.00 unless you are an advanced user."* Worse, **`P5.00_clv` is not in any public repo** the guide could find — it circulates only as a Discord attachment, so **there is no canonical hash**; if you must use it, get copies from **two** people running it independently and confirm both have the **same SHA-256** before flashing ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)).
 
@@ -149,9 +149,9 @@ After flashing **and** clearing CMOS (next section), enter Setup (spam **Del**) 
 
 | Setting | Path | Value |
 |---|---|---|
-| Integrated Graphics Controller | Chipset → GFX Configuration | **Forces** |
+| Integrated Graphics Controller | Chipset → GFX Configuration | **Forced** |
 | UMA Mode | Chipset → GFX Configuration | **UMA_SPECIFIED** |
-| UMA Frame Buffer Size | Chipset → GFX Configuration | **512MB** (recommended) or a fixed size |
+| UMA Frame Buffer Size | Chipset → GFX Configuration | **512MB** as a Linux starting point, or workload/driver-specific; MetalCyan requires **4 GB** — see [macOS](13-macos.md) |
 | IOMMU | Advanced → CPU Configuration | **Disabled** |
 | Boot Mode | Boot → Boot Mode | **UEFI** |
 
@@ -294,7 +294,7 @@ Beyond the J4004 flash header above, the board carries several other headers and
 
 > TEST18, TEST19 and DBRDY0 are left floating. This is the **only** hardware reset/debug interface on the board.
 
-**I2C_HEADER1 (3-pin):** `SCL · SDA · GND`. SCL is the pin **closer to the power connectors**. This bus carries **PMBUS to the Intersil PMICs** — a power-telemetry access point.
+**I2C_HEADER1 (3-pin):** the signals are `SCL`, `SDA` and `GND`, but **do not infer their physical order from this sentence**. The sources disagree about which signal is closer to the power connectors: the community pinout calls it SCL, while the Telemetry guide calls it SDA. The [community pinout guide](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/hardware/pinouts.md) describes it as a PMBus access point. In contrast, the [BC250 Telemetry hardware guide](https://github.com/onlinermm/BC250-Telemetry/blob/52d9e1c92c5867489c320354eab826387ec6e888/hardware.md) reports that it is **not connected to the live `TPMS1` SMBus signals** without a separate bridge. The topology has not been verified on every board revision: with power fully disconnected, check continuity on your exact board before assuming this header is live or attaching an adapter. Do not bridge pins based only on this handbook.
 
 **CPU_FAN1 (4-pin):** `PWM · Tach · 12V · GND`.
 
