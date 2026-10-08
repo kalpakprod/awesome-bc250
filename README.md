@@ -57,7 +57,7 @@
 <a id="catalog"></a>
 ## Project catalog
 
-- **[Browse the catalog](catalog/en/README.md)** — 429 named entries from all sources in one thematic catalog: applications, firmware, cases, models, experiments and history. Each project has a purpose and primary source; sections link to practical handbook chapters.
+- **[Browse the catalog](catalog/en/README.md)** — 440 named entries from all sources in one thematic catalog: applications, firmware, cases, models, experiments and history. Each project has a purpose and primary source; sections link to practical handbook chapters.
 - **Documentation and firmware:** [Guides & build notes](catalog/en/README.md#documentation) · [BIOS, UEFI & recovery](catalog/en/README.md#firmware) · [CPU cores, SMU & ACPI](catalog/en/README.md#cpu).
 - **Graphics and systems:** [GPU governors, CU/WGP & memory](catalog/en/README.md#gpu) · [Linux images & setup](catalog/en/README.md#linux) · [Graphics drivers & other OS experiments](catalog/en/README.md#drivers).
 - **Control and hardware:** [Toolkits & game mode](catalog/en/README.md#control) · [Telemetry, fans & displays](catalog/en/README.md#monitoring) · [Power adapters & controllers](catalog/en/README.md#power) · [Cases, CAD & cooling](catalog/en/README.md#cases).
@@ -151,7 +151,7 @@ All chapters **00–17** are in the [step-by-step route above](#quick-start). Yo
 - **Scope.** [SOURCE_STATUS](SOURCE_STATUS.md) reports a dated source audit as of 2026-09-29, not all information about the BC-250. Coverage is bounded to the source set stated there.
 - **What was inventoried.** A repository-name search found 971 public GitHub repositories; known Discord sources hold 338,589 message IDs; three Reddit listings exposed 1,441 post IDs. These are counts of identifiers.
 - **What remains open.** Archived forum threads, deleted or private messages, attachment contents, and many repositories outside the name set are not covered. Disputes such as whether `I2C_HEADER1` reaches a live PMBus stay unresolved.
-- **Translation note.** Detailed Ukrainian guide pages may lag the English and Russian factual updates. This README itself is translated in all three languages.
+- **Translation note.** Changed procedures and navigation are synchronized in EN/RU/UK for this pass. Historical source excerpts remain dated reports, not a whole-handbook or hardware certification; see [source review](SOURCE_REVIEW.md).
 - **Reading the numbers.** An identifier count shows coverage of a source list; it does not confirm that any listed project works on the board.
 
 ---

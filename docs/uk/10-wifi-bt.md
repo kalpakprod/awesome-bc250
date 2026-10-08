@@ -1,4 +1,4 @@
-> 🌐 Переклад спільноти. Англійська версія є джерелом істини й може бути новішою. Знайшли помилку? Відкрийте issue: [English](../en/10-wifi-bt.md) · [issues](https://github.com/lildebil0/awesome-bc250/issues)
+> 🌐 Переклад спільноти. Англійська версія є джерелом істини й може бути новішою. Знайшли помилку? Відкрийте issue: [English](../en/10-wifi-bt.md) · [issues](https://github.com/kalpakprod/awesome-bc250/issues)
 
 # WiFi та Bluetooth донгли
 

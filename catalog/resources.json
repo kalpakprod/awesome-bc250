@@ -3,6 +3,157 @@
   "description": "Unified BC250 ecosystem catalog organized by purpose. Source platforms are provenance, not separate user catalogs.",
   "resources": [
     {
+      "name": "F5GO/bc250-cu-live-manager-SteamOS",
+      "url": "https://github.com/F5GO/bc250-cu-live-manager-SteamOS",
+      "category": "gpu",
+      "description": {
+        "en": "SteamOS fork provisioning a persistent UMR database and boot-table restore. Diverged from WinnieLV; live WGP controls are mutating and do not prove CU health.",
+        "ru": "Форк для SteamOS с постоянной базой UMR и восстановлением таблицы при загрузке. Разошёлся с WinnieLV; управление WGP меняет железо и не доказывает исправность CU.",
+        "uk": "Форк для SteamOS із постійною базою UMR та відновленням таблиці при завантаженні. Розійшовся з WinnieLV; керування WGP змінює залізо й не доводить справність CU."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "c4e91184e4cd194b9c7be0862b34e317faca6393",
+      "fork": true,
+      "parent": "https://github.com/WinnieLV/bc250-cu-live-manager"
+    },
+    {
+      "name": "raygan/bc250-esp32-switch",
+      "url": "https://github.com/raygan/bc250-esp32-switch",
+      "category": "power",
+      "description": {
+        "en": "ESP32-C3 fork adding optional WiFi, MQTT and Home Assistant. Remote OFF cuts the PSU rail rather than asking the OS to shut down; wiring needs separate electrical review.",
+        "ru": "Форк ESP32-C3 с необязательными WiFi, MQTT и Home Assistant. Удалённый OFF обрывает питание БП, не запрашивает выключение ОС; схема требует отдельной электрической проверки.",
+        "uk": "Форк ESP32-C3 із необовʼязковими WiFi, MQTT та Home Assistant. Віддалений OFF обриває живлення БЖ, не запитує вимкнення ОС; схема потребує окремої електричної перевірки."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "d8a0e760f1922a8e31c2e9b4770a672e6edd32a1",
+      "fork": true,
+      "parent": "https://github.com/Thunkar/bc250-esp32-switch"
+    },
+    {
+      "name": "Jakdaw/bc250-esp32-switch",
+      "url": "https://github.com/Jakdaw/bc250-esp32-switch",
+      "category": "power",
+      "description": {
+        "en": "Distinct ESP32 fork with an always-on web dashboard, MQTT and multiple BLE controllers; documents J4003 sensing. Remote OFF is a hard rail cut, not graceful shutdown.",
+        "ru": "Отдельный форк ESP32 с постоянно доступной веб-панелью, MQTT и несколькими BLE-геймпадами; описывает sense через J4003. Удалённый OFF жёстко обрывает питание, не завершает ОС.",
+        "uk": "Окремий форк ESP32 із постійно доступною веб-панеллю, MQTT та кількома BLE-геймпадами; описує sense через J4003. Віддалений OFF жорстко обриває живлення, не завершує ОС."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "a248986faf31212a23cb7b2488eaba24b0d6cfb5",
+      "fork": true,
+      "parent": "https://github.com/Thunkar/bc250-esp32-switch"
+    },
+    {
+      "name": "cachenetics/project-ariel",
+      "url": "https://github.com/cachenetics/project-ariel",
+      "category": "control",
+      "description": {
+        "en": "Arieltune BIOS/APU/memory suite and kernel research, with linked llmtune serving. Writes SMU, CMOS and flash; hardware and performance claims remain attributed to its authors.",
+        "ru": "Набор Arieltune для BIOS/APU/памяти и исследования ядра, связанный с сервером llmtune. Пишет SMU, CMOS и flash; аппаратные результаты и скорость — сообщения авторов.",
+        "uk": "Набір Arieltune для BIOS/APU/памʼяті та дослідження ядра, повʼязаний із сервером llmtune. Пише SMU, CMOS і flash; апаратні результати та швидкість — повідомлення авторів."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "97b8692f16a00c0d2e25c813639cec38479078b0",
+      "related": [{"name": "llmtune", "url": "https://github.com/cachenetics/llmtune"}]
+    },
+    {
+      "name": "cachenetics/PSPEmu",
+      "url": "https://github.com/cachenetics/PSPEmu",
+      "category": "firmware",
+      "description": {
+        "en": "PSP emulator fork with BC250 extensions for FIQ, doorbells, SMN and memory inspection. Research tooling, not evidence that a modified firmware is accepted by hardware.",
+        "ru": "Форк эмулятора PSP с расширениями BC250 для FIQ, doorbell, SMN и исследования памяти. Инструмент исследований, не доказательство принятия мод-прошивки железом.",
+        "uk": "Форк емулятора PSP із розширеннями BC250 для FIQ, doorbell, SMN та дослідження памʼяті. Дослідницький інструмент, не доказ прийняття мод-прошивки залізом."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "02ec67b95cec401104cec513e569e36da7bb2d48",
+      "fork": true,
+      "parent": "https://github.com/PSPReverse/PSPEmu"
+    },
+    {
+      "name": "the3rdparty1917/fsr4xyz",
+      "url": "https://github.com/the3rdparty1917/fsr4xyz",
+      "category": "gaming",
+      "description": {
+        "en": "Community FSR4 INT8 fixes for RDNA2 Windows. The short README establishes its purpose, not BC250 compatibility, performance or a redistribution license.",
+        "ru": "Исправления FSR4 INT8 для RDNA2 под Windows. Короткий README подтверждает назначение, не совместимость с BC250, скорость или лицензию распространения.",
+        "uk": "Виправлення FSR4 INT8 для RDNA2 під Windows. Короткий README підтверджує призначення, не сумісність із BC250, швидкість чи ліцензію поширення."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "f77c0b5abc3c498107ebf874e9a45ee5b4bc394f"
+    },
+    {
+      "name": "bc250-collective/SomnacinDumper-CPUCoreMod",
+      "url": "https://github.com/bc250-collective/SomnacinDumper-CPUCoreMod",
+      "category": "cpu",
+      "description": {
+        "en": "Pico-based core-configuration experiment derived from SomnacinDumper. The README reports a BC250 BIOS 5.0 unit failing at x86 core initialization; keep it as an unsuccessful route, not a working unlock.",
+        "ru": "Эксперимент изменения ядер через Pico на основе SomnacinDumper. README сообщает о зависании платы BC250 с BIOS 5.0 на инициализации x86; это неудачный путь, не рабочий разлок.",
+        "uk": "Експеримент зміни ядер через Pico на основі SomnacinDumper. README повідомляє про зависання плати BC250 з BIOS 5.0 на ініціалізації x86; це невдалий шлях, не робочий розлок."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "cb01b8fae59b352c80364147d4b1a55a805afac5",
+      "related": [{"name": "Original SomnacinDumper", "url": "https://github.com/ProjectSomnacin/SomnacinDumper"}]
+    },
+    {
+      "name": "ProjectSomnacin/SomnacinDumper",
+      "url": "https://github.com/ProjectSomnacin/SomnacinDumper",
+      "category": "firmware",
+      "description": {
+        "en": "Firmware-payload and Pico SPI/modchip source credited by CPUCoreMod. Inspected tree contains payloads and Pico code; no README, license or successful BC250 outcome is inferred.",
+        "ru": "Исходники firmware-payload и Pico SPI/modchip, на которые ссылается CPUCoreMod. В дереве есть payload и Pico-код; README, лицензия и успешный результат BC250 не предполагаются.",
+        "uk": "Вихідні коди firmware-payload та Pico SPI/modchip, на які посилається CPUCoreMod. У дереві є payload і Pico-код; README, ліцензія та успішний результат BC250 не припускаються."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "6b3ff856d10c6bd68ab67d71b61b88d45802b161"
+    },
+    {
+      "name": "hexdumb/turing-smart-screen-python-bc250",
+      "url": "https://github.com/hexdumb/turing-smart-screen-python-bc250",
+      "category": "monitoring",
+      "description": {
+        "en": "Turing-screen fork adding BC250 sensor/config files. Its tree diverges from the upstream display library; sensor accuracy and installation are not tested here.",
+        "ru": "Форк Turing-screen с файлами датчиков и конфигурации BC250. Дерево отличается от основной библиотеки дисплеев; точность датчиков и установку здесь не проверяли.",
+        "uk": "Форк Turing-screen із файлами датчиків та конфігурації BC250. Дерево відрізняється від основної бібліотеки дисплеїв; точність датчиків і встановлення тут не перевіряли."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "dbe7d2408e4fce1fe45524e145d7f9ef69549f3e",
+      "fork": true,
+      "parent": "https://github.com/mathoudebine/turing-smart-screen-python"
+    },
+    {
+      "name": "D-Ogi/amdgpu-wddm",
+      "url": "https://github.com/D-Ogi/amdgpu-wddm",
+      "category": "drivers",
+      "description": {
+        "en": "Test-signed BC250 Windows WDDM stack with author-reported one-unit GPU desktop, Vulkan and D3D11/D3D12 trials. TDR recovery/conformance remain open; not an end-user driver.",
+        "ru": "Test-signed Windows WDDM-стек BC250 с отчётами автора о GPU-десктопе, Vulkan и D3D11/D3D12 на одной плате. TDR recovery/conformance не завершены; не драйвер для конечного пользователя.",
+        "uk": "Test-signed Windows WDDM-стек BC250 зі звітами автора про GPU-десктоп, Vulkan і D3D11/D3D12 на одній платі. TDR recovery/conformance не завершені; не драйвер для кінцевого користувача."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "head_sha": "450ac5332bd2998cdc7ed9cce77da27c94b6c3fe",
+      "related": [
+        {"name": "Mesa WDDM components", "url": "https://github.com/D-Ogi/mesa-amdgpu-wddm"},
+        {"name": "DXVK engine", "url": "https://github.com/D-Ogi/dxvk"},
+        {"name": "vkd3d-proton engine", "url": "https://github.com/D-Ogi/vkd3d-proton"},
+        {"name": "dxil-spirv fork", "url": "https://github.com/D-Ogi/dxil-spirv"},
+        {"name": "dxbc-spirv fork", "url": "https://github.com/D-Ogi/dxbc-spirv"}
+      ]
+    },
+    {
+      "name": "BC-250 MK-ULTRA Duo case by morph91",
+      "url": "https://makerworld.com/en/models/2916696-bc-250-gaming-pc-case-mk-ultra-duo",
+      "category": "cases",
+      "description": {
+        "en": "Dual-fan continuation of morph91's MK-ULTRA Uno for a Metalfish FlexATX PSU, listed in the pinned case dataset. Check dimensions/license; not printed or thermally tested here.",
+        "ru": "Двухвентиляторное продолжение MK-ULTRA Uno автора morph91 под Metalfish FlexATX, включённое в закреплённый список корпусов. Проверь размеры/лицензию; здесь не печатали и не испытывали охлаждение.",
+        "uk": "Двовентиляторне продовження MK-ULTRA Uno автора morph91 під Metalfish FlexATX, включене до закріпленого списку корпусів. Перевір розміри/ліцензію; тут не друкували й не випробовували охолодження."
+      },
+      "source": "primary-source-review-2026-10-08",
+      "evidence": ["https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/community/cases-data.json"]
+    },
+    {
       "name": "AMD-BC-250/documentation",
       "url": "https://github.com/AMD-BC-250/documentation",
       "category": "documentation",
@@ -46,7 +197,8 @@
       "archived": false,
       "fork": false,
       "audit_status": "inspected",
-      "website": "https://elektricm.github.io/amd-bc250-docs/"
+      "website": "https://elektricm.github.io/amd-bc250-docs/",
+      "related": [{"name": "infinitevalence mirror — same inspected commit", "url": "https://github.com/infinitevalence/amd-bc250-docs"}]
     },
     {
       "name": "katzzero/bc250-unofficial-community-guide",
@@ -1112,9 +1264,9 @@
       "url": "https://github.com/bc250-collective/cyan-skillfish-governor",
       "category": "gpu",
       "description": {
-        "en": "Cyan Skillfish GPU clock/voltage governor; compare the branch, configuration and fork differences.",
-        "ru": "Говернор частоты и напряжения GPU Cyan Skillfish; сравни ветку, конфигурацию и отличия форка.",
-        "uk": "Говернор частоти й напруги GPU Cyan Skillfish; порівняй гілку, конфігурацію та відмінності форку."
+        "en": "SMU-plus memory/CPU-load profile variant, with a different config path. Its inspected README requires Robin 3.00 and warns about Robin 5.00; not the standard filippor package.",
+        "ru": "Вариант SMU-plus с профилями памяти/CPU и другим путём конфига. Просмотренный README требует Robin 3.00 и предупреждает о Robin 5.00; не стандартный пакет filippor.",
+        "uk": "Варіант SMU-plus із профілями памʼяті/CPU та іншим шляхом конфіга. Переглянутий README вимагає Robin 3.00 і попереджає про Robin 5.00; не стандартний пакет filippor."
       },
       "source": "snapshot-2026-09-29",
       "head_sha": "e9201068ff620743ca514264e6ca357eb40aed3e",
@@ -1261,6 +1413,7 @@
       "name": "duggasco/bc250-40cu-unlock",
       "url": "https://github.com/duggasco/bc250-40cu-unlock",
       "category": "gpu",
+      "related": [{"name": "infinitevalence mirror — same inspected commit", "url": "https://github.com/infinitevalence/bc250-40cu-unlock"}],
       "description": {
         "en": "GPU CU-unlock kernel patch, build scripts and per-WGP health-test resources.",
         "ru": "Патч ядра для разблокировки CU GPU, скрипты сборки и тестирования WGP.",
@@ -3964,6 +4117,7 @@
       "name": "simpmix/bc250-encoding-decoding-fix",
       "url": "https://github.com/simpmix/bc250-encoding-decoding-fix",
       "category": "video",
+      "related": [{"name": "Former project URL, redirects to the same repository", "url": "https://github.com/simpmix/bc250-vcn-driver"}],
       "description": {
         "en": "Software/compute VA-API codec work; shared files mean these are not independent proof of VCN status.",
         "ru": "Работа над VA-API кодеками на CPU/compute; общие файлы не дают независимого подтверждения состояния VCN.",
@@ -6845,7 +6999,7 @@
       "availability": "discussion-only"
     }
   ],
-  "updated_at": "2026-10-07",
+  "updated_at": "2026-10-08",
   "supplement_coverage": {
     "distinct_posts": 1275,
     "selected_threads": 209,

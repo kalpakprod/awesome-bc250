@@ -207,6 +207,8 @@ echo 'options nct6687 force=true' | sudo tee /etc/modprobe.d/nct6687.conf
 
 ## Thermal interface (paste, pads, phase-change, liquid metal)
 
+**Power cuts a few seconds after heatsink work?** Stop repeated hot starts and let the board cool. With power disconnected, check the die-contact imprint, evenly tightened screws, fan operation and conductive debris. Preserve the original pad/putty height: a thicker pad can hold the heatsink off the die. The [pinned contact diagnosis](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/troubleshooting/stability.md) is a source report, not a universal pad dimension; do not disable thermal protection to hide the symptom.
+
 Whatever fan/heatsink you run, the **thermal interface material (TIM)** between the die and the heatsink — and between the back of the board and any backplate radiator — is worth getting right. The BC-250 die has a **high heat density**, so a good TIM is a free few degrees.
 
 > **Just changing the stock paste helps.** One owner swapped the factory paste after a year and load temps dropped **~4–5 °C**, with everything else unchanged. ([src](https://t.me/c/2424231195/88565))

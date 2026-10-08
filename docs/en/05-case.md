@@ -2,6 +2,8 @@
 
 ## Choose the layout before printing
 
+**Another distinct FlexATX option:** [morph91's MK-ULTRA Duo](https://makerworld.com/en/models/2916696-bc-250-gaming-pc-case-mk-ultra-duo) is the dual-fan continuation of Uno, listed for Metalfish in the [146-row pinned upstream dataset](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/community/cases-data.json). Check your PSU revision, cooler clearances and model license before printing; no fit or thermal test was performed here.
+
 The **[unified case, mount and CAD catalog](../../catalog/en/README.md#cases)** brings all sources together. Primary model links provide the files without hunting for an STL message. Descriptions retain historical versions and unfinished designs.
 
 | Build | Starting model | Check before printing |
@@ -22,7 +24,7 @@ A "case" here ranges from a 200 g print that takes 20 minutes of work to a multi
 
 > **New and unsure? Print the [onemorecap sleeve/shell](#tier-1--minimal-cooling-sleeve-start-here) case — minimal, nothing to cut, fits a single 120 mm fan — and stop there.** The catalog below is deep; you do not need to read it to get going.
 
-> **Want the full list?** elektricM maintains a **searchable, filterable catalog of ~143 designs** (filter by PSU family, availability, platform) — far more than the curated set below, including many Discord-only and WIP builds. Browse it at **[elektricM — Cases & Enclosures](https://elektricm.github.io/amd-bc250-docs/community/cases/)**. The picks below are the named, publicly-downloadable ones worth starting from.
+> **Want the full list?** elektricM maintains a **searchable, filterable catalog (146 dataset rows at the pinned revision; not 146 tested builds)** (filter by PSU family, availability, platform) — far more than the curated set below, including many Discord-only and WIP builds. Browse it at **[elektricM — Cases & Enclosures](https://elektricm.github.io/amd-bc250-docs/community/cases/)**. The picks below are the named, publicly-downloadable ones worth starting from.
 
 ---
 

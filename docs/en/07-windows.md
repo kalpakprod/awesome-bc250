@@ -1,10 +1,18 @@
 # Windows Drivers & Setup
 
+## Current distinction — development is not impossibility
+
+As inspected on **2026-10-08**, [D-Ogi/amdgpu-wddm at `450ac53`](https://github.com/D-Ogi/amdgpu-wddm/blob/450ac5332bd2998cdc7ed9cce77da27c94b6c3fe/README.md) describes a test-signed WDDM stack for BC250. Its author reports GPU desktop composition, Vulkan compute and native D3D11/D3D12/game trials on one lab unit. This supersedes the blanket claim that nobody can render on Windows; it does **not** establish an end-user driver, full compatibility or conformance. The documented gaps include TDR recovery and lifecycle/stability; a GPU hang can bugcheck.
+
+For a first working machine, use [Linux](06-linux.md). If researching Windows, read that revision's build, provenance and recovery documents before changing boot-signing policy or installing a driver. Use a separate test installation, preserve data and the old driver/boot settings, and have recovery media. We did not install or run this stack. Its Mesa/DXVK/vkd3d-proton component forks are dependencies, not independent hardware confirmations.
+
+The following early-2026 material is **historical context for the earlier projects**, not the current status of every Windows effort.
+
 > **TL;DR** — As of **early 2026 there is no working Windows GPU driver for the BC-250.** Windows installs and boots, but the GPU sits with **Code 43** and zero 3D acceleration — every off-the-shelf AMD driver (Adrenalin, Pro, the W5700 `.inf` trick) is rejected by the hardware. The community is **reverse-engineering one from scratch**, and the honest state is "early plumbing works, nothing renders games yet." If you want to actually *use* this board today, **install Linux** ([06-linux.md](06-linux.md)) — that's where the working driver lives. Treat everything on this page with skepticism and check the repo commit dates before trusting it.
 
 The long-standing community verdict, pinned for newcomers since 2025: *"Abandon all hope, ye who enter here. Windows drivers will not happen with 99.5% probability. Without a driver this board is almost completely useless. The Linux driver exists — if you're not ready for that OS, you don't need this board."* ([src](https://t.me/c/2424231195/28109))
 
-That was the consensus for over a year. It is **finally being challenged** in 2026 — but slowly, and the honest answer is still: not yet.
+That historical consensus is superseded by the development reports above; keep the old quote as history, not a prediction.
 
 ---
 
@@ -16,13 +24,13 @@ The BC-250 APU ("Cyan Skillfish" / Oberon, GFX10.1.3) presents itself to the OS 
 - **Editing the `.inf` / swapping device IDs** (gfx1013, 1014, Navi 21/22/23 "Dragonball", legacy entries), disabling driver signature enforcement, even booting Windows 10 from USB and trying a Steam Deck driver — **all dead ends**. The legacy entries show up without an error only because of a display bug, not because they work. ([src](https://t.me/c/2424231195/94029))
 - **Modding the BIOS** to change the device ID didn't help either — the iGPU still reports `1002:13FE`. The Dev ID appears to be **welded to the APU**, not just the BIOS, so patching one location isn't enough. ([src](https://t.me/c/2424231195/57123))
 
-Why does Linux work and Windows doesn't? On Linux the open-source **amdgpu/Mesa** stack was patched by the community (and partly upstreamed) to recognize this exact chip; on Windows there is no open driver to patch — AMD never shipped a Windows driver for this mining/server part, and the closed Adrenalin/Pro stack refuses the unknown ID. ([src](https://t.me/c/2424231195/13210)) AMD's own forum thread on "BC-250 drivers" went nowhere. ([community.amd.com](https://community.amd.com/t5/pc-drivers-software/bc-250-drivers/td-p/671692))
+Why does Linux work and Windows doesn't? On Linux the open-source **amdgpu/Mesa** stack was patched by the community (and partly upstreamed) to recognize this exact chip; those earlier Windows attempts had no corresponding open driver stack to patch — AMD never shipped a Windows driver for this mining/server part, and the closed Adrenalin/Pro stack refuses the unknown ID. ([src](https://t.me/c/2424231195/13210)) AMD's own forum thread on "BC-250 drivers" went nowhere. ([community.amd.com](https://community.amd.com/t5/pc-drivers-software/bc-250-drivers/td-p/671692))
 
 > **There is no GPU passthrough escape hatch either.** Running Windows in a VM with the BC-250 passed through doesn't work: the IOMMU passthrough path is broken on this board, and it's an *APU* (not a discrete card the host can cleanly hand off), and the chip is mis-detected as an unknown device to begin with. ([src](https://t.me/c/2424231195/64772))
 
 ---
 
-## Current driver status — what actually exists (as of early 2026)
+## Historical driver status — earlier projects (early 2026)
 
 In late 2025 the community stopped waiting for AMD and started **building a Windows driver from scratch** by reverse-engineering the hardware. Two efforts matter; both are **experimental, WIP, and do not render games yet.**
 
@@ -57,7 +65,7 @@ See the project's own **[Known Limitations](https://github.com/ZEROAESQUERDA/BC2
 | ZEROAESQUERDA/BC250-windowsDriverTest | WDDM 2.0 reference | Driver model scaffolding, D3D9 DDI present | Shader compile, D3D11/12, Vulkan, VCN | No — educational |
 | Adrenalin / Pro / W5700 `.inf` | Official AMD | — | **Code 43**, nothing | No |
 
-**Bottom line:** nobody is playing games on Windows on a BC-250 today. The work is real and accelerating, but it is at the "can we make the GPU initialize at all" stage, not the "what's my Cyberpunk FPS" stage.
+**Historical bottom line:** these early projects did not establish usable gaming. The separate D-Ogi reports above move beyond that stage on one unit, without proving general compatibility.
 
 ---
 
@@ -101,8 +109,8 @@ Windows-driver hype on the BC-250 has a long history of **pranks and wishful thi
 
 | You want… | Do this |
 |---|---|
-| To play games / actually use the board now | **Install Linux.** See [06-linux.md](06-linux.md). The working GPU driver only exists there. |
-| To follow / contribute to the Windows effort | Watch **Keshas-dev** (PSP + GPU driver) and **ZEROAESQUERDA/BC250-windowsDriverTest**; expect kernel/WDK work, not gaming. |
+| To play games / actually use the board now | **Install Linux.** See [06-linux.md](06-linux.md). It is the established first-build path; the Windows development stack is not a general replacement. |
+| To follow / contribute to the Windows effort | Read **D-Ogi/amdgpu-wddm** and retain **Keshas-dev** / **ZEROAESQUERDA** as predecessor references; expect kernel/WDK work, not gaming. |
 | A magic `.inf` or "similar card" driver | There isn't one. Stop here — you'll only hit Code 43. |
 
 Windows support is a **moving target**: re-check the repo commit dates and this section's date (this reflects **early 2026**) before acting. The 2025 verdict was "never"; 2026 downgraded that to "not yet" — real progress, but progress at the firmware-init layer, not the playable-desktop layer.

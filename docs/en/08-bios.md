@@ -239,6 +239,12 @@ sudo flashrom -p ch347_spi -v BC250_3.00_CHIPSETMENU.ROM
 
 > **Detection tells you which chip you're on.** If `flashrom -p …` reports **`Winbond W25Q128…`** or **`Macronix MX25L128…`**, you're on the right 16 MB BIOS chip. If it reports **`Macronix MX25L4005…` (512 KB)**, **STOP — you're attached to the SuperIO chip** (`SIO1_R`); flashing it bricks fan control/sensors. Move to the other chip ([elektricM: BIOS flashing](https://elektricm.github.io/amd-bc250-docs/bios/flashing/)). Flash with the **PSU unplugged from the wall** and capacitors discharged (tap the power button a few times) — powering the board during a clip flash is *not* recommended ([elektricM: BIOS recovery](https://elektricm.github.io/amd-bc250-docs/bios/recovery/)).
 
+### Ambiguous detection or programmer overcurrent
+
+If flashrom stops with **"Multiple flash chip definitions match"**, the first detection/read did not complete. Read the actual part marking and use the matching `-c "<chip definition>"` in **both backup reads, the write and verification**; do not pick the first name from a forum example. Stop if identification/size points to the 512 KB SuperIO rather than the 16 MB BIOS.
+
+For **overcurrent**, stop and recheck pinout, 3.3 V, power isolation and the in-circuit load before retrying. Upstream [#62](https://github.com/elektricM/amd-bc250-docs/issues/62) reports one T76 programmer succeeding after 120→250 mA, not a safe current prescription for your programmer/board. Do not disable its protection or raise limits blindly. The [pinned flashing guide](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/bios/flashing.md) also describes advanced internal flashing: unchanged blocks are skipped, but staged writes do not prove crisis recovery works. Its region addresses came from one ROM pair, not every BIOS; this handbook's programmer route is not permission to copy that layout.
+
 ### The CH341A 3.3 V trap (read this or you'll cook the chip)
 
 Many cheap **black-PCB CH341A** programmers drive their **data lines at 5 V even though VCC is 3.3 V** — the BC-250's BIOS chip is a **3.3 V** part, so 5 V on the data lines can damage it. This is a known, measured fault on some boards (Fabian's board, and an identical one in the chat, were confirmed by voltage measurement) ([src](https://t.me/c/2424231195/100285)). Fixes:

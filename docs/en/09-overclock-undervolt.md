@@ -1,6 +1,6 @@
 # Overclocking & Undervolting
 
-> **TL;DR** — Out of the box the BC-250's GPU runs slow (often pinned to **1500 MHz**, ~weak). The community fix is a **governor** that overrides the clocks/voltage: the recommended one today is **[cyan-skillfish-governor-smu](https://github.com/filippor/cyan-skillfish-governor)** (needs no kernel patch, packaged on Arch/CachyOS/Bazzite/Fedora); **[oberon-governor](https://gitlab.com/mothenjoyer69/oberon-governor)** is the original and still works. Either one you edit to push the GPU to **2000 MHz (~+30 % FPS)**. The newer **[bc250_smu_oc](https://github.com/bc250-collective/bc250_smu_oc)** toolkit also overclocks the **CPU** (recommended **4 GHz @ 1275 mV**). Separately, the **[40-CU unlock](https://github.com/duggasco/bc250-40cu-unlock)** re-enables the **24 → 40 compute units** AMD disabled in firmware — a bigger GPU win than clocks alone (one Superposition run went **4647 → 6863** points, ([src](https://t.me/c/2424231195/137035))). **All of this is heat. Cool the board first** — see [04-cooling.md](04-cooling.md) — because OC without adequate cooling crashes and resets the board above ~90 °C.
+> **TL;DR** — Out of the box the BC-250's GPU runs slow (often pinned to **1500 MHz**, ~weak). The community fix is a **governor** that overrides the clocks/voltage: the recommended one today is **[cyan-skillfish-governor-smu](https://github.com/filippor/cyan-skillfish-governor)** (needs no kernel patch, packaged on Arch/CachyOS/Bazzite/Fedora); **[oberon-governor](https://gitlab.com/mothenjoyer69/oberon-governor)** is the original and still works. Either one you edit to push the GPU to **2000 MHz (~+30 % FPS)**. The newer **[bc250_smu_oc](https://github.com/bc250-collective/bc250_smu_oc)** toolkit also overclocks the **CPU** (**4 GHz @ 1275 mV** is one reported setting, not a recommendation). Separately, the **[40-CU unlock](https://github.com/duggasco/bc250-40cu-unlock)** re-enables the **24 → 40 compute units** AMD disabled in firmware — a bigger GPU win than clocks alone (one Superposition run went **4647 → 6863** points, ([src](https://t.me/c/2424231195/137035))). **All of this is heat. Cool the board first** — see [04-cooling.md](04-cooling.md) — because OC without adequate cooling crashes and resets the board above ~90 °C.
 
 This is the **last** step of the golden path, not the first. Get a stable, cool board running ([06-linux.md](06-linux.md), [04-cooling.md](04-cooling.md)) before you touch any of this. Everything here is "do it at your own risk" — the community says so repeatedly ([src](https://t.me/c/2424231195/106844)).
 
@@ -49,7 +49,7 @@ The BC-250's amdgpu driver does not expose normal sysfs overclocking. The commun
 
 [filippor/cyan-skillfish-governor](https://github.com/filippor/cyan-skillfish-governor), SMU branch — drives clock/voltage through **SMU firmware calls**, so it needs **no kernel frequency patch on any distro**, is actively maintained, and is packaged on every major distro. It also adds **memory-controller power-profile** control, which lowers idle TDP to **~30–35 W** (cooler and quieter at idle) ([src](https://t.me/c/2424231195/125821)).
 
-**Install (packaged on every major distro)** — COPR `filippor/bazzite` (Fedora/Bazzite) or AUR `cyan-skillfish-governor-smu` (Arch/CachyOS); Debian/Ubuntu use the release tarball + `sudo ./scripts/install.sh`:
+**Install (packaged on every major distro)** — COPR `filippor/bazzite` (Fedora/Bazzite) or AUR `cyan-skillfish-governor-smu` (Arch/CachyOS); Debian/Ubuntu can install the `.deb` that every release has shipped since v0.4.10 (`sudo apt install ./cyan-skillfish-governor-smu_*_amd64.deb`, which also enables and starts the service), or fall back to the release tarball + `sudo ./scripts/install.sh`:
 
 ```bash
 # Fedora / Bazzite (COPR):
@@ -120,58 +120,76 @@ The `smu` branch uses a **section-based** schema, **not** the older `safe-points
 ```toml
 # /etc/cyan-skillfish-governor-smu/config.toml
 [timing.intervals]
-sample = 500          # µs; raise (e.g. 1000) to cut CPU overhead, keep adjust = sample*400
-adjust = 200_000
+sample = 250
+adjust = 100_000
 [gpu-usage]
-fix-metrics = true    # fixes the MangoHud "655 %" GPU-usage bug on BC-250
-method  = "busy-flag"
+fix-metrics = true
+fix-freq = false
+method = "busy-flag"
+temp-read = "drm"
+flush-every = 10
 [gpu]
-set-method = "smu"    # "smu" or "kernel"
+set-method = "smu"
+[dbus]
+enabled = true
+[frequency-range]
+min = 1000
+max = 1850
+[timing.ramp-rates]
+normal = 1
+burst = 50
+[timing]
+burst-samples = 60
+down-events = 5
+[frequency-thresholds]
+adjust = 10
 [load-target]
-upper = 0.80          # fractions, not percents
-lower = 0.65
+upper = 0.65
+lower = 0.50
 [temperature]
-throttling = 85       # °C
+throttling = 85
 throttling_recovery = 75
-
+[[safe-points]]
+frequency = 500
+voltage = 700
 [[safe-points]]
 frequency = 1000
-voltage   = 800
+voltage = 800
+[[safe-points]]
+frequency = 1175
+voltage = 850
+[[safe-points]]
+frequency = 1500
+voltage = 900
+[[safe-points]]
+frequency = 1600
+voltage = 910
+[[safe-points]]
+frequency = 1700
+voltage = 920
+[[safe-points]]
+frequency = 1850
+voltage = 930
 [[safe-points]]
 frequency = 2000
-voltage   = 1000      # gaming
-[[safe-points]]
-frequency = 2200
-voltage   = 1000      # many boards hold a flat 1000 mV here; bump per-board only if it crashes
+voltage = 960
 ```
+
+> **Dated package profile, not a certified curve:** this block matches [`default-config.toml` at `7b08fdc`](https://github.com/filippor/cyan-skillfish-governor/blob/7b08fdcf542d1edd82f3a9077c902038019c9842/default-config.toml), inspected 2026-10-08. The curve ends at 2000 MHz, but the initial range caps it at **1850 MHz**. RPM preserves an existing file with `%config(noreplace)`; the source installer instead backs it up to `.bak` and copies **`config.toml`**, whose backend is `kernel` and whose curve differs. Preserve your config and compare it with your package/version — do not overwrite it blindly or treat it as proof of board stability. `fix-freq` is optional frequency-report correction, not an overclock. Config is read at service start, not hot-reloaded; after an edit restart the service and read its logs. With D-Bus enabled, read the running limit with `busctl --system get-property com.cyanskillfish.Governor /com/cyanskillfish/Governor/Range/Current com.cyanskillfish.Governor.Range Max`.
 
 > **Tuning order when unstable: cooling → frequency → *then* voltage.** On stock cooling the real cause is almost always heat (95 °C+). Drop the top `[[safe-points]]` blocks to cap frequency before adding voltage; only if temps are fine and it still crashes at 2150–2200 MHz, bump the **top point only** by +15–25 mV. Past ~1075 mV at 2200 MHz you're just adding heat — drop the frequency instead ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
 
 > **GPU-reset black-screen, governor-specific.** If the GPU crashes *while the governor is actively writing sysfs*, the reset can't complete and you get a permanent black screen (system still alive over SSH) needing a hard reboot. Workaround: `systemctl stop` the governor before known crash-prone games; real fix is a stable curve ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)).
 
-> **`perf_profile` — the memory-controller / Infinity Fabric tier (separate from the GPU curve).** The SMU exposes a performance-profile index `0–3`: **3** is the highest memory-controller / Infinity-Fabric performance, while **1** is the recommended low-power profile for the lowest idle point. The governor forces it to **3** automatically whenever CPU load crosses `cpu-load-target.upper`. ([bc250-collective/cyan-skillfish-governor](https://github.com/bc250-collective/cyan-skillfish-governor))
+> **Separate SMU-plus fork, not the standard package schema.** The [collective README at `e920106`](https://github.com/bc250-collective/cyan-skillfish-governor/blob/e9201068ff620743ca514264e6ca357eb40aed3e/README.md) requires Robin 3.00 and warns that Robin 5.00 does not work correctly. Its config is `/etc/cyan-skillfish-governor-smu-plus/config.toml`; do not copy its fields into filippor's config or run both governors. **`perf_profile` — the memory-controller / Infinity Fabric tier (separate from the GPU curve).** The SMU exposes a performance-profile index `0–3`: **3** is the highest memory-controller / Infinity-Fabric performance, while **1** is the recommended low-power profile for the lowest idle point. The linked SMU-plus fork forces it to **3** automatically whenever CPU load crosses `cpu-load-target.upper`. ([bc250-collective/cyan-skillfish-governor](https://github.com/bc250-collective/cyan-skillfish-governor))
 
-##### How the SMU governor pushes past 2230 MHz — and why it ships disabled
+##### Higher clocks and package-specific startup
 
-Because the SMU branch talks to the SMU firmware directly rather than through the amdgpu `OD_RANGE`, it can **exceed Oberon's 2230 MHz hard cap** — one walkthrough drove it to **≈2700 MHz** on a single board ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)). That headroom is exactly why filippor ships it carefully:
+Because the SMU branch talks to the SMU firmware directly rather than through the amdgpu `OD_RANGE`, it can **exceed Oberon's 2230 MHz hard cap** — one walkthrough drove it to **≈2700 MHz** on a single board ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)). That report is not a target for your board. Startup behavior depends on packaging:
 
-> 🔴 **The SMU governor's default config can black-screen on boot — so it is shipped NOT auto-starting.** filippor deliberately leaves the service disabled after install so a bad default curve can't lock you out at boot; you get a chance to **tune and test the curve first, then `systemctl enable` it** once it's stable on your board. Enable it *before* you've validated a curve and a black screen on next boot is on you ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)). *(⚠ figures auto-captioned — treat the exact MHz as approximate.)*
+> **Do not assume installation leaves the service stopped.** The pinned [Debian package definition](https://github.com/filippor/cyan-skillfish-governor/blob/7b08fdcf542d1edd82f3a9077c902038019c9842/Cargo.toml) enables the unit through cargo-deb; normal 62fixolab images also enable it. The source installer does not start/enable it, and RPM behavior depends on system presets. Check `systemctl is-active cyan-skillfish-governor-smu` and `systemctl is-enabled cyan-skillfish-governor-smu`. The earlier video described one installation, not every package. Back up the config, keep a recovery login and validate one manual start before enabling a previously disabled unit at boot.
 
-Unlike Oberon's hard frequency drop on overheat, the SMU governor **ramps gradually toward a temperature target**. The walkthrough also exposes extra `config.toml` fields beyond the schema above ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)):
-
-```toml
-# extra tuning knobs shown in the Part XII walkthrough
-[ramp-rates]
-normal = 1
-burst  = 50
-[gpu-usage]
-burst-samples = 60
-down-events   = 5
-[frequency-thresholds]
-adjust = 10
-[temperature]
-throttling_recovery = 80
-```
+Unlike Oberon's hard frequency drop on overheat, the SMU governor **ramps gradually toward a temperature target**. The current fields are `[timing.ramp-rates]` and `[timing]` as shown above; older walkthrough key placement is not a config template for the pinned release ([Old Lamer — Part XII](https://youtu.be/Chzxaryjncs)).
 
 > ⚠️ **Author-experimental 16-point air curve — NOT recommended, exceeds this guide's air ceiling.** The Part XII author ran this curve on air, but its top points (2333–2400 MHz at 1120–1150 mV) sit **above the conservative air-cooled limits documented in Step 3** (≈2230 MHz / 1060 mV on air; 1125 mV is a *liquid-only* tier). It is shown for reference, not as a target — on air, stop where Step 3's cooling-class table says to:
 >
@@ -285,6 +303,8 @@ In that run, **4 GHz @ 1225 mV passed the short quick-test but crashed in-game**
 
 #### CPU frequency scaling needs the ACPI fix (else there's no cpufreq at all)
 
+**Choose the initramfs method for your OS.** Plain Fedora BLS/GRUB examples below are not the Bazzite/ostree procedure: ostree regenerates its boot entries. The [pinned ostree variant](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/system/governor.md) uses a dracut ACPI override and `rpm-ostree initramfs --enable`, which persists across deployments. Back up the existing config/tables outside the directory scanned for `.aml`; preserve the working deployment before changing them. At eight cores use the 16-thread tables, not the old 12-thread set alongside them. On mkinitcpio, `acpi_override` must be present in `HOOKS`; edit that line manually, do not copy a `sed -i` command ending in `q` that truncates the rest of the file. After reboot, `cpupower --cpu all idle-info --silent` should cover every CPU. To roll back, restore the recorded tables/config and regenerate using the same OS method, or boot the preserved deployment.
+
 > ❗ **Out of the box the BC-250 exposes no CPU frequency scaling** — there is *no* cpufreq interface, so `cpupower`/`schedutil` do nothing and the CPU sits at a fixed clock. The **[bc250-collective/bc250-acpi-fix](https://github.com/bc250-collective/bc250-acpi-fix)** ships two SSDT tables (loaded via an initrd override) that fix this ([elektricM: governor](https://elektricm.github.io/amd-bc250-docs/system/governor/)):
 > - **SSDT-PST** → enables standard Linux cpufreq with **8 P-states, 800 MHz → 3200 MHz** (governors: `schedutil`, `powersave`, `performance`, …).
 > - **SSDT-CST** → enables **C1/C2/C3 idle states** so cores actually sleep at idle (lower idle power).
@@ -368,6 +388,8 @@ People are running **40 CU @ 1850 MHz** (RE4 Remake native 1440p high, 60 fps) a
 > 🎯 **The recommended operating point is 1500 MHz, not 2 GHz.** duggasco's A/B puts **1500 MHz / ~900 mV** as the sweet spot — it captures most of the ~1.67× theoretical scaling without thermal trouble (1500 MHz/874 mV: 372 tok/s, 125 W, 83 °C). At 2 GHz the same test bursts to 466 tok/s but power/temps climb hard and the package thermal-throttles after a few minutes ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/)).
 
 > ⚠️ **Read the harvest map, then test the CUs — the pattern alone decides nothing.** The 16 fused-off CUs are not guaranteed silicon-healthy. Run **`./scripts/cu_map.sh`** from the repo first: it only reads the driver's CU bitmap through libdrm, so it runs on any distro (Bazzite included) without building or installing anything. A **contiguous** map (e.g. CU 0–5 active, 6–9 fused, same on all 4 shader arrays) was the common case in duggasco's n=58 survey; a **scattered** map suggests CUs were switched off selectively during binning. Neither predicts your board — community reports include a "good" map with bad CUs and a "bad" map with all 40 usable — so treat the map as context, run the per-WGP health test, and expect to land somewhere **between 24 and 40 stable CUs** ([elektricM: 40-CU unlock](https://elektricm.github.io/amd-bc250-docs/system/40cu-unlock/), [#57](https://github.com/elektricM/amd-bc250-docs/issues/57)). Also: **Secure Boot must be off** (or sign the rebuilt module yourself).
+>
+> 📦 **`duggasco/bc250-40cu-unlock` was archived on 17 Sep 2026.** It still clones and its scripts, patch and reports are intact, but nothing in it will be updated if a later kernel breaks the patch or the build scripts. The runtime-UMR route below does not depend on it.
 
 > 🎰 **40 CUs is a lottery, not a guarantee — many boards top out at 38.** r/BC250Gaming community reports converge on this: while the die has 40, a lot of chips are only stable at **38 CUs**, and the last one or two commonly cause **graphics artifacts (a tell-tale "line" across the frame) or hard crashes**. Reported stable counts vary by chip — **36, 38, or 40**. Worse, "stable at 40" can be *deceptive*: a board may crash on the first game launch yet run fine on a later attempt, so a single clean benchmark proves nothing. **Recommended method — unlock CUs one at a time and test after each.** Use **[WinnieLV/bc250-cu-live-manager](https://github.com/WinnieLV/bc250-cu-live-manager)** to enable a single CU at a time and validate before adding the next (e.g. FurMark 20+ min plus a couple of game benchmarks per step). A bad CU **instantly locks the system**, so each test tells you exactly which CU to leave masked — far safer than flipping all 16 on at once and hoping. Treat "24 → 40" as the best case; plan for **38** ([r/BC250Gaming community reports](https://www.reddit.com/r/BC250Gaming/)).
 
@@ -495,7 +517,7 @@ Sustained throughput **drops ~10 %** over 10 min as the package throttles; the b
 
 ## GDDR6 memory: VRAM allocation, overclock & timings
 
-> 🔴 **Read this before anything else in this section. Memory tuning is the one place on the BC-250 that can permanently brick the board.** Unlike the clock/undervolt above — which lives in a governor and clears on reboot — GDDR6 **clock and timings are written into the BIOS/CMOS**, and a bad value can leave the board unable to POST. The community has bricked boards exactly this way: a member set the VRAM clock to **1950 MHz** and killed the board ([src](https://t.me/c/2424231195/55317)); the modded-BIOS author's own release note records a GDDR6 frequency that **booted on one board (1800 MHz) but bricked another** ([src](https://t.me/c/2424231195/54971)), and "too-low timings brick the board, a CMOS reset doesn't help" ([src](https://t.me/c/2424231195/54971), [src](https://t.me/c/2424231195/54851)). Recovery is the BIOS chapter — sometimes a programmer is the only way back. **Do not touch clock/timings unless you have read [08-bios.md](08-bios.md) and accept the brick risk.**
+> 🔴 **Read this before anything else in this section. Persistent memory settings can prevent POST; this does not make other tuning or wiring harmless.** Unlike the clock/undervolt above — which lives in a governor and clears on reboot — GDDR6 **clock and timings are written into the BIOS/CMOS**, and a bad value can leave the board unable to POST. The community has bricked boards exactly this way: a member set the VRAM clock to **1950 MHz** and killed the board ([src](https://t.me/c/2424231195/55317)); the modded-BIOS author's own release note records a GDDR6 frequency that **booted on one board (1800 MHz) but bricked another** ([src](https://t.me/c/2424231195/54971)), and "too-low timings brick the board, a CMOS reset doesn't help" ([src](https://t.me/c/2424231195/54971), [src](https://t.me/c/2424231195/54851)). Recovery is the BIOS chapter — sometimes a programmer is the only way back. **Do not touch clock/timings unless you have read [08-bios.md](08-bios.md) and accept the brick risk.**
 
 The 16 GB of GDDR6 on the BC-250 is **unified memory (UMA)** — one pool shared between the GPU and the CPU. There are two very different things you can do with it, at two very different risk levels:
 
@@ -505,6 +527,8 @@ The 16 GB of GDDR6 on the BC-250 is **unified memory (UMA)** — one pool shared
 | **GDDR6 clock & timings** | **modded** BIOS only | **brick-level** — see warning above | experts only |
 
 ### VRAM / UMA allocation — reversible, but workload-dependent
+
+**Distinguish scanout exhaustion from ZRAM/OOM.** A session can die with `amdgpu ... pin failed`, `Failed to pin framebuffer with error -12` (or `-ENOMEM`) and `gamescope ... fatal flip`, even while system RAM is free. The [pinned report](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/bios/vram.md) describes the real 512 MB VRAM carve filling; borrowed GTT pages cannot substitute for that scanout allocation. `ttm.pages_limit` raises a different dynamic ceiling and does not fix this failure. A 6 GB minimum split resolved the reported one-board case; preserve your original split and verify the exact workload instead of prescribing 512 MB or 6 GB to every user.
 
 How much of the 16 GB is handed to the GPU vs left for the CPU is an ordinary BIOS setting (no mod needed; even the stripped-down modded BIOS exposes "nothing but the buffer-size setting" ([src](https://t.me/c/2424231195/94419))). The relevant options behave like this ([src](https://t.me/c/2424231195/81203)):
 
@@ -517,7 +541,7 @@ How much of the 16 GB is handed to the GPU vs left for the CPU is an ordinary BI
 
 > 🔴 **Don't use automatic (`UMA_AUTO`).** It hands the GPU only ~256 MB, which is not enough — at that size only ~2 GB ends up usable and the GPU can fall back to **llvmpipe (software rendering — no GPU acceleration, everything runs on the CPU)** ([src](https://t.me/c/2424231195/81203)). Set a **fixed** buffer instead.
 
-**What to pick — set a small FIXED 512 MB buffer.** The community consensus is blunt: APUs perform best with the videobuffer at the **minimum (512 MB)**, because the driver then **dynamically shares the full 16 GB GDDR6** pool and pulls exactly what the GPU needs on demand ([src](https://t.me/c/2424231195/38599), [src](https://t.me/c/2424231195/17948)). A bigger fixed split is *not* automatically faster — in one member's game benchmarks the VRAM size barely moved average FPS; it mostly affected **minimum / 1%-low** frames and whether a title would even launch (a couple hung at 256 MB / 512 MB / 1 GB and only ran from 4 GB up) ([src](https://t.me/c/2424231195/81203)). The real win of 512 MB is the *split it produces*: at 512 MB a healthy run lands ~**5.8 GB to video / 11.5 GB to RAM / ~1.6 GB swap**, versus a stuck-at-8 GB split that starves the OS ([src](https://t.me/c/2424231195/138294)).
+**What to pick — choose for the driver and workload; 512 MB is a Linux starting point, not a universal answer.** The community consensus is blunt: APUs perform best with the videobuffer at the **minimum (512 MB)**, because the driver then **dynamically shares the full 16 GB GDDR6** pool and pulls exactly what the GPU needs on demand ([src](https://t.me/c/2424231195/38599), [src](https://t.me/c/2424231195/17948)). A bigger fixed split is *not* automatically faster — in one member's game benchmarks the VRAM size barely moved average FPS; it mostly affected **minimum / 1%-low** frames and whether a title would even launch (a couple hung at 256 MB / 512 MB / 1 GB and only ran from 4 GB up) ([src](https://t.me/c/2424231195/81203)). The real win of 512 MB is the *split it produces*: at 512 MB a healthy run lands ~**5.8 GB to video / 11.5 GB to RAM / ~1.6 GB swap**, versus a stuck-at-8 GB split that starves the OS ([src](https://t.me/c/2424231195/138294)).
 
 > **It's workload-dependent.** Some games behave differently and a few **hang outright if misconfigured** ([src](https://t.me/c/2424231195/131105), [src](https://t.me/c/2424231195/94993), [src](https://t.me/c/2424231195/139016)). The clearest example: Cyberpunk 2077, if you give it a fixed **4 GB**, stops treating memory above 8 GB as available RAM and **swaps aggressively** even with headroom to spare; at **512 MB** it still grabs ~4–5 GB for the GPU but correctly leaves 12 GB+ for the OS and only swaps once that's exhausted — so one member's standing advice is *"512 and let it sort itself out"* ([src](https://t.me/c/2424231195/94993), [src](https://t.me/c/2424231195/131105)). For most people: **512 MB fixed, avoid auto.** Raise it to **4 GB** only for a specific title that's documented to prefer it (a handful do), or for memory-hungry GPU workloads (see AI/LLM below). One caveat: a fixed VRAM allocation larger than 512 MB can make **Vulkan large-buffer allocations** misbehave (e.g. `llama.cpp`), which a community kernel patch addresses so dynamic allocation still works above 512 MB ([src](https://t.me/c/2424231195/20001), [src](https://t.me/c/2424231195/20002)).
 
@@ -637,7 +661,7 @@ The Telegram chat and the **BC-250 Discord** are where the bleeding-edge work ha
 - Silicon lottery & safe limits — https://t.me/c/2424231195/50568 · https://t.me/c/2424231195/115726
 - Quiet/efficient sweet-spot (~1600 MHz GPU / ~3500 MHz CPU for best perf-per-noise-per-watt) — r/BC250Gaming (Reddit) community report
 - Superposition 24-vs-40-CU result — https://t.me/c/2424231195/137035
-- **Old Lamer YouTube series (⚠ auto-captioned / ASR — exact figures approximate)** — CPU+GPU end-to-end scaling, Horizon Zero Dawn, 3.85 GHz @1155 sweet spot, 4 GHz needs ~1270 mV, mitigations≈+3 fps, 1440p@60 / 4K+FSR — [Part X](https://youtu.be/1hgSQxf6RXE) · `bc250-detect` 100 MHz/25 mV steps, 300 s stress test, 1300 mV ceiling (vs repo 1.325 V), 4 GHz@1225 crashed → 3.85 GHz@1150 — [Part VIII](https://youtu.be/ciDpPhoioKM) · FurMark stock 4085 pts/67 fps, 1500→2000 = +30 %, 2229 minimal >90 °C, Vulkan hotter than GL — [Part IV](https://youtu.be/YuBmGF536II) · SMU governor exceeds Oberon 2230 cap (≈2700), ships not-auto-starting, ramp fields, experimental 16-pt air curve (NOT recommended), 2.4 GHz ≈30 A/360 W, Superposition 2.2 GHz≈4200 / 2.4≈4500 — [Part XII](https://youtu.be/Chzxaryjncs) · FurMark 24/40-CU scaling (91→110→+60 %), Wukong +30 %, crash at 2.4 GHz+40CU, prebuilt unlock kernel `6.17.7-ba29.fc43.bc250cu`, disable governor before unlock — [40CU Part I](https://youtu.be/Zvo4UsNocDQ) · selective masking by pair-id, rebase tag 20260406, pairs→36/38, ~210-combo chart, 24-CU ASRock spec — [40CU Part II](https://youtu.be/iUVLXmoMyqM) · live FurMark via bc250-cu-live-manager @1500 MHz (70→100→127–128), TUI hotkeys E/F/W/I/Q, default pwd `bazzite`, no custom kernel — [40CU Part III](https://youtu.be/lAxY2RZcvg0) · Limine bootloader path for CachyOS unlock — [RU CU-unlock video](https://youtu.be/M7PsojWr4KA) + [psenyukov.ru guide](https://psenyukov.ru/topics/5564)
+- **Old Lamer YouTube series (⚠ auto-captioned / ASR — exact figures approximate)** — CPU+GPU end-to-end scaling, Horizon Zero Dawn, 3.85 GHz @1155 sweet spot, 4 GHz needs ~1270 mV, mitigations≈+3 fps, 1440p@60 / 4K+FSR — [Part X](https://youtu.be/1hgSQxf6RXE) · `bc250-detect` 100 MHz/25 mV steps, 300 s stress test, 1300 mV ceiling (vs repo 1.325 V), 4 GHz@1225 crashed → 3.85 GHz@1150 — [Part VIII](https://youtu.be/ciDpPhoioKM) · FurMark stock 4085 pts/67 fps, 1500→2000 = +30 %, 2229 minimal >90 °C, Vulkan hotter than GL — [Part IV](https://youtu.be/YuBmGF536II) · SMU governor exceeds Oberon 2230 cap (≈2700), historical startup behavior, ramp fields, experimental 16-pt air curve (NOT recommended), 2.4 GHz ≈30 A/360 W, Superposition 2.2 GHz≈4200 / 2.4≈4500 — [Part XII](https://youtu.be/Chzxaryjncs) · FurMark 24/40-CU scaling (91→110→+60 %), Wukong +30 %, crash at 2.4 GHz+40CU, prebuilt unlock kernel `6.17.7-ba29.fc43.bc250cu`, disable governor before unlock — [40CU Part I](https://youtu.be/Zvo4UsNocDQ) · selective masking by pair-id, rebase tag 20260406, pairs→36/38, ~210-combo chart, 24-CU ASRock spec — [40CU Part II](https://youtu.be/iUVLXmoMyqM) · live FurMark via bc250-cu-live-manager @1500 MHz (70→100→127–128), TUI hotkeys E/F/W/I/Q, default pwd `bazzite`, no custom kernel — [40CU Part III](https://youtu.be/lAxY2RZcvg0) · Limine bootloader path for CachyOS unlock — [RU CU-unlock video](https://youtu.be/M7PsojWr4KA) + [psenyukov.ru guide](https://psenyukov.ru/topics/5564)
 - Community undervolt setpoints (4pda) — 24-CU Oberon `1000@0.8V + 1700@0.85V` / 40-CU `1500@900mV` / start `500 MHz/900 mV` for high-leakage chips — [4pda — dreamerok / Lakan](https://4pda.to/forum/index.php?showtopic=1104980); perf-per-watt: undervolted 40-CU ~100 W less than 24-CU at equal FurMark score (community framing)
 - **[r/BC250Gaming (Reddit) community reports](https://www.reddit.com/r/BC250Gaming/)** — 40-CU unlock is a lottery (many boards stable only at 38, "line" artifact / crashes on the last CUs, test incrementally with `bc250-cu-live-manager`); full 40 CU needs AIO/large air cooler + extra power on J2000/J2001; the older claim that an 8-core unlock is impossible is superseded by the [current board-specific report](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/system/8core-unlock.md)
 - **Dig deeper on Reddit** — [r/BC250Gaming](https://www.reddit.com/r/BC250Gaming/) (main hub) · [r/linux_gaming](https://www.reddit.com/r/linux_gaming/) (cons / context); search `BC-250 40CU unlock`, `BC-250 overclock`, `BC-250 undervolt governor`, `BC-250 GDDR6 memory timings`, `BC-250 2575mhz limit`; threads "GPU CU cores unlock", "BC-250 8-Core Unlock possible?", "My BC250 Journey: From Bazzite to CachyOS", "What are the main downsides of the BC-250 board?" — most active OC/CU dev happens on the **BC-250 Discord** linked from these

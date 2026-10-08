@@ -91,7 +91,7 @@ The system keeps the last few kernels. On Fedora, list them with `grubby` and `g
 ## Windows
 
 **Is there a Windows driver yet?**
-No — as of early 2026 there is **no working Windows GPU driver**. Windows boots but the GPU sits at **Code 43** with no 3D. Two from-scratch reverse-engineering efforts exist (Keshas-dev, ZEROAESQUERDA) but they're at the "can the GPU initialize at all" stage, not gaming. See [07-windows.md](07-windows.md).
+Windows boots, but official-driver `.inf` workarounds are not a supported BC250 graphics path. The October-2026 D-Ogi development stack reports GPU rendering and games on one lab unit; it is test-signed, has open recovery/conformance work and is not an end-user replacement. Use Linux for the first build; see the current/historical distinction in [07-windows.md](07-windows.md).
 
 **Can't I just force-install an RX 6700 / W5700 driver?**
 No. Every official `.inf` (including the W5700 that Windows offers as "compatible") installs then hangs on Code 43 — the device ID `1002:13FE` is welded to the APU. This is every newcomer's first idea and it can't work. See [07-windows.md](07-windows.md).

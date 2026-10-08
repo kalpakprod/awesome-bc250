@@ -137,7 +137,9 @@ J2000 and J2001 are **not identical**. They are compatible with **Molex Micro-Fi
 | `12V` | +12 V power in (three per connector) |
 | `GND` | Ground |
 | `PGD` | **PGOOD** — reads 5 V when a second PSU is present in a rack backplane; a signal pin, **not** a power output |
-| `LED1` / `LED2` | Active-low LED outputs that mirror the green / red backplane LEDs |
+| `LED1` / `LED2` | Logic-level **status outputs, not LED drivers**: `LED1` sits at ≈3 V while the backplane LED is red, and `LED2` reads ≈0 V while red and goes high when it turns green. Red-state voltages measured on one board; green inferred from the working circuit ([elektricM: pinouts](https://elektricm.github.io/amd-bc250-docs/hardware/pinouts/), [#42](https://github.com/elektricM/amd-bc250-docs/issues/42)) |
+
+> ⚠️ **Never hang a bare LED on `LED1` / `LED2`.** Their driver circuit and current limit are undocumented, and a bare LED on `LED1` visibly dimmed the red backplane LED — the external LED loads the same output ([#42](https://github.com/elektricM/amd-bc250-docs/issues/42)). Use a buffered circuit, not an assumed output-current rating. [tfabris's worked LED controller](https://github.com/tfabris/BC-250/tree/master/LED%20Controller) uses a BC548 with a 10 kΩ base resistor and LEDs powered separately from 5 V through their series resistors. That is one builder's circuit, not certification for every board revision.
 
 **For redundancy, the documentation says to use both J2000 and J2001** ([hardware.md](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md#j2000-and-j2001)). Note the **column layout differs** between the two — on J2000 the LED pins sit in the first column and all three 12 V pins are on the top row; on J2001 the PGD pin sits in the top-right and the bottom row is all ground. **Meter every pin before connecting** — do not assume a Micro-Fit housing seats the same way on both. ⚠ verify the exact pin-1 orientation against your own board with a multimeter; the LED/PGD pins must **never** receive 12 V.
 
@@ -160,7 +162,6 @@ Only populate the **12 V and GND** positions (match the pinout table above); lea
 > - **The two connectors are NOT interchangeable** — once wired, **mark them** so you never swap J2000's and J2001's plugs.
 > - **No crimper? Solder is a valid alternative** — solder the wire into the terminal instead of crimping.
 > - The quoted **>400 W** is a community build claim, not a certified limit. The two Micro-Fit connectors contain six 12 V positions; counting nine includes J1000's three as well. More board-side contacts do not remove a bottleneck in a shared upstream wire, crimp or PSU socket.
-
 
 
 ### Feeding a 40-CU board — the triple-output cable mod
@@ -316,6 +317,7 @@ These are the exact units people in the chat actually built with — **community
 
 ---
 
+<a id="the-one-psu-spec-that-catches-everyone-single-vs-multi-rail-12-v"></a>
 ## ⚠️ The one PSU spec that catches everyone: single vs. multi-rail 12 V
 
 An old branded PSU can have a high total wattage and **still fail**, because it **splits 12 V into several weak rails** that each cap out below what the board needs:

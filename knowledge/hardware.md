@@ -1,14 +1,14 @@
 ---
 type: Reference
 title: BC-250 — Hardware facts
-description: Community-verified BC-250 hardware facts facts extracted from chat, with source citations.
+description: Source-linked BC-250 hardware claims extracted from community and documentation, with citations.
 tags: [bc250, hardware]
 timestamp: 2026-06-18T00:00:00Z
 ---
 
 # Hardware facts
 
-_965 verified facts. Each bullet links to the source message; reaction count (re) reflects community upvotes at export._
+_965 source-linked claims. Each bullet links to its source; reaction count (re) reflects community upvotes at export, not hardware verification._
 
 - The BC250 is a slightly cut-down PS5 APU used for mining that features 16GB of shared GDDR6 memory. — bsod2102 (re417, 2025-12-18) · _r/sffpc_ [[1]](https://www.reddit.com/r/sffpc/comments/1ppiskx/56l_ps5_apu_steam_machine/)
   - src: 5.6L PS5 apu steam machine Started life as BC250 which is a slightly cut down PS5 apu that was used for mining. These chips can now be had for dirt cheap, mine was only $140 cad.  Specs put it approx … || AMD BC-250 and the search for Cheap Compute I've been searching for disused/underappreciated compute vectors for a few months since the MI50 shot up in proce - in comes the salvaged PS5 APU on a stand…
@@ -874,6 +874,9 @@ _965 verified facts. Each bullet links to the source message; reaction count (re
 - The M2_1 M-keyed M.2 slot supports two lanes of PCIe 2.0 and a SATA III connection. — elektricM (re0, 2026-06-16) · _canonical_ [[451]](https://elektricM.github.io/amd-bc250-docs/hardware/pinouts/)
 - Setting the AUTO_PWRON1 jumper to pins 1-2 enables auto power-on when 12V is applied, while pins 2-3 wait for a power button press. — elektricM (re0, 2026-06-16) · _canonical_ [[452]](https://elektricM.github.io/amd-bc250-docs/hardware/pinouts/)
 - The I2C_HEADER1 exposes an I2C interface hosting PMBUS communications to the Intersil PMICs. — elektricM (re0, 2026-06-16) · _canonical_ [[453]](https://elektricM.github.io/amd-bc250-docs/hardware/pinouts/)
+
+> **Source conflict noted 2026-09-29 for [453]:** the later [BC250 Telemetry hardware guide](https://github.com/onlinermm/BC250-Telemetry/blob/52d9e1c92c5867489c320354eab826387ec6e888/hardware.md) reports that `I2C_HEADER1` is not connected to `TPMS1` without a bridge. Neither topology was verified on every board revision here; see the EN/RU/UK BIOS handbook caveat and check continuity with power disconnected before attaching hardware. The original attributed claim remains above as historical evidence.
+
 - The LPC interface on TPMS1 is clocked relative to PCICLK at 33MHz. — elektricM (re0, 2026-06-16) · _canonical_ [[454]](https://elektricM.github.io/amd-bc250-docs/hardware/pinouts/)
 - The unpopulated J2 footprint is an AMD HDT+ debug connector for JTAG debugging. — elektricM (re0, 2026-06-16) · _canonical_ [[455]](https://elektricM.github.io/amd-bc250-docs/hardware/pinouts/)
 - The UIO1 chip is a Nuvoton NCT6686D SuperIO controller. — elektricM (re0, 2026-06-16) · _canonical_ [[456]](https://elektricM.github.io/amd-bc250-docs/hardware/pinouts/)
@@ -1305,6 +1308,7 @@ _965 verified facts. Each bullet links to the source message; reaction count (re
   - src: 1. m.2 slot on the BC250 is only PCIe2 - you cannot utilise those write/read speeds, going for an older m.2 ist totally fine 2. ordering batteries via aliexpress can cause issues due to them not being…
 - On the J2000 header, LED1 measures 3.04V above GND and 0V between it and the 12V rail, while LED2 measures basically 0V and 11.95V between it and the 12V rail. — pops1cl (re0, 2026-03-10) · _I/O voltages_ [[698]](https://discord.com/channels/1315924807128449065/1480882175233626213/1480922196124766280)
   - src: LED1: 3.04V above GND on my board || LED2 is basically 0V || LED1 measures 0V between it and the 12V rail, LED2 measures 11.95V
+> **Correction noted 2026-09-29 for [698]:** the handbook wording "active-low LED outputs that mirror the green / red backplane LEDs" was replaced. [elektricM: pinouts](https://elektricm.github.io/amd-bc250-docs/hardware/pinouts/) now describes the pins by measured level (LED1 about 3 V while the backplane LED is red; LED2 about 0 V while red and high while green) and warns against driving a bare LED from either pin, because a bare LED on `LED1` dimmed the red backplane LED ([#42](https://github.com/elektricM/amd-bc250-docs/issues/42)). The red-state level is supported by that later source; the quoted differential readings above are not independently validated or reconciled here. Green is inferred from the working circuit, not a separate meter reading. Source is one board; no independent re-measurement in this repository.
 - Accidentally bending the CMOS clear pins can cause the board to bootloop. — renatocartesio (re0, 2026-03-08) · _Is my BIOS dead? I'm confused_ [[699]](https://discord.com/channels/1315924807128449065/1479788565461471302/1480105406213914685)
   - src: i think i even tried that before, but could'nt boot for an unrelated reason, i think at a certain point when trying to fit the board to a 3d printed case i accidentally bent the CMOS clear pins causin…
 - An M.2 to SATA adapter works but the SATA SSD still requires external power. — ossini (re0, 2026-06-09) · _M.2 sata adapter._ [[700]](https://discord.com/channels/1315924807128449065/1513965946715373842/1513981855970623590)

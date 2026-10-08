@@ -85,7 +85,7 @@ flowchart TD
 
 | Symptom | Likely cause | Fix |
 |---------|--------------|-----|
-| GPU = Code 43 / no acceleration | No working Windows GPU driver (as of early 2026) | Expected. Use Linux. Windows drivers are experimental WIP → [07 — Windows](07-windows.md) |
+| Windows GPU = Code 43 / no acceleration | Unsupported official-driver workaround or a failure in the chosen development stack | Identify the exact driver/version; do not infer every Windows effort is impossible. D-Ogi reports one-unit GPU trials, not an end-user driver. Linux is the first-build path → [07 — Windows](07-windows.md) |
 
 ## BIOS / brick
 

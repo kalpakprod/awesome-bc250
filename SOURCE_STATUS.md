@@ -7,6 +7,14 @@
 - A **fixed revision** is a recorded version of a repository. It prevents later edits from changing the audited file list.
 - Raw community messages and access credentials are not published here. Counts and source links are public; individual reports remain unverified until tested at the level claimed.
 
+## Update — 2026-10-08
+
+- The [source-review record](SOURCE_REVIEW.md) gives explicit decisions for all **32 changed files / 55 commits** in the fixed upstream delta. It is a patch review, not a full audit of every upstream paragraph or a hardware run.
+- Recent accessible snapshots were scanned for project links: **62,986 Discord / 15,925 Telegram** records since 2026-08-18; **64 leads** outside the catalog URL set received GitHub metadata readback. Eleven purpose-backed entries joined the thematic catalog, now **440**. Redirects, mirrors and shared code are not independent evidence.
+- Regenerated Discord candidate metadata contains **2,694** rows; the Telegram selection remains **1,067**. Those queues are not declared semantically reviewed or accepted in full. See the record for significant fork comparisons and rejected compatibility assumptions.
+- Fresh authenticated reads of the two previously inaccessible Discord channels returned **50001 — missing access**. Unknown archived threads cannot be comprehensively enumerated through the available tools; attachment contents and uncorroborated chat-only claims stay open. No raw archive or access-bearing URL is published.
+- The older counts below retain their original cutoff; they are not a new whole-platform census.
+
 ## GitHub Sources
 
 - Ten repository-name searches yielded 971 distinct public repositories, including 720 with zero stars and 445 forks (copies of other repositories). Independent pagination agreed for those searches; the result does not cover every repository whose code mentions BC-250.

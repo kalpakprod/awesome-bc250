@@ -2,7 +2,7 @@
 
 **[English](en/README.md) · [Русский](ru/README.md) · [Українська](uk/README.md)**
 
-One thematic catalog for the whole BC250 ecosystem: **429 named entries in 14 sections**. GitHub, developer sites, Telegram, Discord, Reddit and articles provide evidence; they are not separate user-facing catalogs.
+One thematic catalog for the whole BC250 ecosystem: **440 named entries in 14 sections**. GitHub, developer sites, Telegram, Discord, Reddit and articles provide evidence; they are not separate user-facing catalogs.
 
 ## Read and use
 
@@ -24,6 +24,7 @@ Original observations date from September 2026; additional project/model evidenc
 - **Topic references:** [EN](en/topics.md) · [RU](ru/topics.md) · [UK](uk/topics.md). The original 19-chapter bibliography remains a dated reference set, not the full current handbook index.
 - **[Discovery inventory](discovery.md):** the original 971 repository search matches, including unresolved or unrelated matches; not 971 confirmed BC250 projects.
 - Known gaps include unknown archived Discord threads, uninspected attachments and sources outside the search index. The October acquisition obtained 1275 distinct post records, 187 selected discussions and 3613 comments; 22 selected discussions were unavailable. Those limitations are retained in record metadata, not used as source-specific catalog sections.
+- [2026-10-08 source review](../SOURCE_REVIEW.md): decisions for the 32-file upstream delta, newly identified projects and significant fork relationships. Queue selection and code/README matches are not hardware tests.
 - Old supplement URLs remain navigation aliases only; their project records have been merged into `resources.json`.
 
 No raw community archives, credentials, signed URLs or private cache paths belong in this catalog. See [CONTRIBUTING.md](../CONTRIBUTING.md).

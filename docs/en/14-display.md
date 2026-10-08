@@ -1,163 +1,133 @@
 # Display & Output
 
-> **TL;DR** — The BC-250 drives your monitor over **DisplayPort**. That's the connector to plug into. If your board also has an HDMI port, it **frequently shows nothing** — so a black screen there is *not* a dead board, you're just on the wrong output. Need HDMI? Use a **DP→HDMI adapter** — **video always passes, no lag**; some adapters carry **audio** too (a tested one did, [src](https://t.me/c/2424231195/9148)) but audio depends on the specific adapter, so don't count on it (see the audio section). One real quirk: **DisplayPort audio comes out distorted/slowed on Linux**; the same DP→HDMI adapter sidesteps it, and a proper kernel-side fix lands around **kernel 6.17** ([src](https://t.me/c/2424231195/17953), [src](https://t.me/c/2424231195/68051)).
-
-"No picture on first boot" is the **#1 newcomer panic**. Read the box below before you decide anything is broken.
-
----
+> **Start with native DisplayPort and a PC monitor.** A DP→HDMI adapter is a separate component with its own mode limits. For silent, slowed or drifting DP audio, check the kernel before buying an adapter or building a codec module.
 
 ## No picture? Do this
 
-1. **Plug into DisplayPort, not HDMI.** The BC-250's working video output is DisplayPort ([src](https://t.me/c/2424231195/104784)). The HDMI port (where present) is the one that's usually blank — don't judge the board by it.
-2. **Reseat the card and try again.** Boards routinely don't initialize on the first try — power-cycle (full off/on), and physically reseat. One owner: *"when mine arrived it didn't power up on the first try either … sometimes it doesn't fully initialize on a button reboot — off/on fixes it"* ([src](https://t.me/c/2424231195/15701)).
-3. **Suspect the cable/adapter before the board.** With a single card, a bad cable or adapter is the prime suspect ([src](https://t.me/c/2424231195/15699)). Some adapters work in firmware but go black once the OS loads — *"image was fine before GRUB, black screen in the system"* ([src](https://t.me/c/2424231195/38184)).
-4. **Reset the BIOS / reflash a known-good image** if several cards in a batch give no image — that points at firmware, not your monitor ([src](https://t.me/c/2424231195/15697), [src](https://t.me/c/2424231195/15705)).
-
-If you cross all four off and still have nothing, head to [troubleshooting.md](troubleshooting.md).
+1. Use the board's documented **DisplayPort** output. The stock I/O reference lists one DP connector, not a second native HDMI output.
+2. With the PSU disconnected, check the power cable, monitor cable and mounting. Try a known-working DP cable and PC monitor; do not reseat connectors while powered.
+3. **No BIOS on a TV/projector:** the sink may not accept the firmware's display mode. Try a PC monitor for initial setup. Responsive keyboard LEDs are a clue, not a complete POST test ([upstream prerequisites](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/getting-started/prerequisites.md)).
+4. **BIOS works, desktop does not:** check the renderer, firmware logs and `nomodeset` using [06 — Linux](06-linux.md). A black screen only after login may instead be the desktop/session; try another supported session before changing firmware.
+5. Still no picture? Use [Troubleshooting](troubleshooting.md). A dark screen is not a reason to erase the SSD or flash BIOS without diagnosis and a recovery path ([08 — BIOS](08-bios.md)).
 
 ```mermaid
 flowchart TD
-    A["First boot"] --> B{"Picture on HDMI?"}
-    B -->|"No - common"| C["Plug into DisplayPort - the working output"]
-    B -->|"Yes"| Z["Done"]
-    C --> D["Need HDMI? DP to HDMI adapter - video always; audio depends on the adapter"]
-    D --> E{"DP audio distorted on Linux?"}
-    C --> E
-    E -->|"Yes"| F["Use the DP to HDMI adapter, or build kernel 6.17 ATI HDMI codec"]
-    E -->|"No"| Z
-    F --> Z
+    A[Connect DisplayPort and PC monitor] --> B{BIOS visible?}
+    B -->|No| C[Check power, cable and monitor]
+    B -->|Yes| D{Desktop visible?}
+    D -->|No| E[Check driver and desktop session]
+    D -->|Yes| F{Audio correct?}
+    F -->|No| G[Check kernel and selected sound output]
+    F -->|Yes| H[Ready]
 ```
-
----
 
 ## Outputs at a glance
 
-| Output | Works? | Notes |
-|--------|--------|-------|
-| **DisplayPort** | **Yes — this is the output** | Primary/only display connector; carries audio. Repo I/O spec lists `1x DisplayPort` ([repo](https://github.com/mothenjoyer69/bc250-documentation)). It's **DisplayPort 1.4**, ceiling **4K@120 Hz**, with HDR10 ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). |
-| **HDMI port** (if fitted) | **Often blank** | Newcomers think the board is dead; it usually isn't — switch to DP. ([src](https://t.me/c/2424231195/104784)) |
-| **DP → HDMI via adapter** | **Video: yes. Audio: depends on the adapter** | Video passes with no lag ([src](https://t.me/c/2424231195/9148)); audio is chipset-dependent — test it (see audio section). Also the standard fix for DP audio distortion (below). |
-| **Second video output** | **Not out of the box** | Electrically present but **not populated**; forcing a 2nd monitor needs hacks, and others say the chip has no real 2nd head — treat single-output as the safe assumption. ([src](https://t.me/c/2424231195/92978), [src](https://t.me/c/2424231195/104682)) |
-| **Second screen over the network** | **Yes** | Stream the BC-250's output to another machine over LAN (Steam/Sunshine). ([src](https://t.me/c/2424231195/23660)) |
+| Route | What to expect |
+|---|---|
+| Native DisplayPort | Main physical output. Audio needs a suitable kernel and the correct selected sink. |
+| DP→HDMI | Match the adapter, cable and display's resolution/refresh/HDR capabilities. Neither video nor audio is guaranteed by connector shape alone. |
+| DP MST hub | Upstream reports two independent screens with StarTech MST14DP122DP; some cheaper hubs only mirror or fail. Shared bandwidth remains a limit. |
+| USB DisplayLink | Separate compressed desktop-display route; not a native second GPU connector or a gaming-performance promise. |
+| Steam/Sunshine stream | Remote picture over the network, not another physical display head. Sunshine is the host; Moonlight is the client. See [17](17-projects-and-tools.md). |
 
----
+The [I/O reference](https://github.com/mothenjoyer69/bc250-documentation) and [pinned display guide](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/hardware/display.md) distinguish board outputs from adapter features and single-build reports.
 
 ## Resolutions, refresh & cable
 
-elektricM's reference pins down what the single DP link actually does — useful when picking a monitor or adapter ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)):
+Use a suitable DP cable and check the **entire link**, not just an "8K" badge. Native DP and DP→HDMI adapters have different constraints; higher resolutions/refresh over HDMI generally need an active converter. A passive adapter's exact limit is model-specific, not a universal 1440p60 specification.
 
-| Resolution | Refresh | Path |
-|------------|---------|------|
-| 1920×1080 (1080p) | 144 Hz+ | Native DP, or any adapter |
-| 2560×1440 (1440p) | 144 Hz+ | Native DP (passive adapters often cap at 1440p@60 / DP 1.2) |
-| 3840×2160 (4K) | 60 Hz | Native DP, or **active** DP→HDMI 2.0 adapter |
-| 3840×2160 (4K) | 120 Hz | **Native DP only** — an active DP 1.4→HDMI 2.1 adapter is needed for 4K@120 over HDMI, and is flaky |
+| Goal | Choose and verify |
+|---|---|
+| 1080p/1440p | Native DP, or an adapter explicitly supporting the requested mode |
+| 4K60 over HDMI | A suitable active DP→HDMI converter and HDMI display/cable |
+| 4K120 over HDMI | Matching DP 1.4→HDMI 2.1 conversion, cable and sink; upstream reports a Club3D setup at 4K120, not every adapter |
+| HDR/VRR | Check the GPU driver, desktop session, adapter and sink together. A report on another Radeon does not certify BC250. |
 
-- **Cable:** use a **VESA-certified DisplayPort 1.4** cable, **1–2 m**; longer cables cause sync/dropout issues ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)).
-- **Stuck at low resolution** (e.g. 1024×768/1080p, 60 Hz only) usually means the GPU driver isn't loaded — check `glxinfo | grep "OpenGL renderer"`; `llvmpipe` = software rendering, install Mesa 25.1+ and remove `nomodeset` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)). See [06-linux.md](06-linux.md).
-- **HDR (HDR10) & VRR** work but are experimental on Linux — **KDE Plasma 6+** has the best support and generally needs a Wayland session ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). **Distro matters here:** an r/BC250Gaming (Reddit) community report got **HDR + VRR working properly only on CachyOS** (Plasma 6 + Wayland), while on **Bazzite HDR caused graphical glitches and VRR never worked at all**. Their example: *Forza Horizon 6* at **1440p High, HDR + VRR on, 60–80 FPS** through a **UGREEN DP→HDMI 2.1** adapter. If HDR/VRR is a priority, see the CachyOS note in [06-linux.md](06-linux.md).
-  - **If you're on Bazzite KDE and want VRR/FreeSync over HDMI**, there's a community remix that swaps in AMD's HDMI 2.1 / FRL kernel work: **[`dyllan500/bazzite-amd-hdmi-kde`](https://github.com/dyllan500/bazzite-amd-hdmi-kde)** — a Bazzite KDE image rebuilt on a kernel carrying AMD's official HDMI-2.1 VRR patches (from `amd-staging-drm-next`). ⚠ **heavily hedge:** it's a third-party image, the author tested VRR only on a **Radeon 9070 XT** (not the BC-250), and it's meant to become obsolete once the patches land in a stock Bazzite kernel. It is *not* a confirmed BC-250 fix — treat it as an experimental avenue to try, not a guarantee.
+Low resolution plus `llvmpipe` points to software rendering; fix that via [06](06-linux.md) before tuning cable modes. HDR/VRR anecdotes from CachyOS or Bazzite are dated reports, not a universal verdict about either OS. The experimental [dyllan500 image](https://github.com/dyllan500/bazzite-amd-hdmi-kde) was tested on a Radeon 9070 XT, not established as a BC250 remedy.
 
-> **Black screen *after login* (GRUB and the login screen were fine)** is a desktop-session problem, usually **Wayland** — pick "GNOME on Xorg"/"Plasma (X11)" at the login gear, or set `WaylandEnable=false` in `/etc/gdm/custom.conf` ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)). A black screen *before* login is the driver/`nomodeset` issue above, not this.
+## DisplayPort audio — diagnose, update, then choose a workaround
 
----
+Earlier advice blamed board firmware or all active adapters. [Upstream retracted that explanation in #39](https://github.com/elektricM/amd-bc250-docs/issues/39). The affected Linux display path has two clock bugs: the large error gives about **17.7% slow playback or silence**; after only its fix, a smaller error can give about **7 seconds of drift per hour**. Slow browser video with healthy downloads can share that audio-clock cause through PipeWire.
 
-## DisplayPort audio is distorted — the adapter fix
-
-On Linux, audio sent **directly out of DisplayPort** comes out wrong on the BC-250 — described as distorted, *"stretched, like it's slowed to half speed,"* with crackle ([src](https://t.me/c/2424231195/9895)). This is a **Linux/DP-protocol issue, not a board defect** — it has been seen on non-BC-250 hardware too ([src](https://t.me/c/2424231195/15983)).
-
-The blunt, reliable workaround the chat settled on: **run the signal through a DP→HDMI adapter.** Converted to HDMI, the audio artifacts disappear ([src](https://t.me/c/2424231195/17953), [src](https://t.me/c/2424231195/51763)). A user verified it directly: *"I tested audio out through a DisplayPort→HDMI adapter. All fine, no lag"* ([src](https://t.me/c/2424231195/9148)).
-
-**The cleanest path of all is a straight DP→HDMI *cable* — DP plug on one end, HDMI plug on the other, no adapter dongle or box on either end.** Multiple users on the r/linux_gaming community thread independently report this gives the most reliable audio: a plain cable (e.g. an Amazon Basics DP-to-HDMI cable, ~$10) "just works" where dongle-style adapters are hit-or-miss. Occasional brief audio mutes can still happen, but a one-piece cable removes the extra adapter chipset that makes the dongle route a gamble ([r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)). If you're buying anyway, **prefer the cable over a dongle.**
-
-**If you have no adapter handy,** route audio over **Bluetooth** instead — most speakers/headsets support it and it dodges the DP path entirely ([src](https://t.me/c/2424231195/89769)). See [10-wifi-bt.md](10-wifi-bt.md) for the BT dongle.
-
-### Adapter notes (community)
-- **For 4K@60+ you need an *active* adapter/cable** (passive caps ~1440p@60). A working, tested example: **UGREEN DP125 (DP→HDMI 4K cable)** — rated 4K@30 but negotiated 4K@60 on a TV ([src](https://t.me/c/2424231195/52398)). Active vs passive sets the resolution ceiling — it does **not** decide whether audio passes (see below).
-- **Not all adapters carry audio.** One owner's Belsis adapter passed 4K@60 *with* sound, while several pricier Ugreen units showed "HDMI digital audio" in the device list but output no sound — and one shifted voices down an octave ([src](https://t.me/c/2424231195/106617)). If you get video but no audio, the adapter is the variable — try another.
-- **For HDMI *audio*, reach for a *passive* adapter first.** A community pattern on the r/linux_gaming thread: **passive** DP→HDMI adapters tend to pass audio cleanly, while **active** adapters often **drop the audio entirely or pitch-shift it** (voices reported sliding down ~20% / roughly a fifth). The catch: you only *need* an active adapter for real **HDR** (and for 4K@60+), so it's a genuine trade-off — passive for reliable sound, active for HDR. Community-confirmed-working *passive* options: **Silver Monkey**, **BENFEI (ASIN B017Q8ZVWK)**, and the **AmazonBasics DP-to-HDMI _cable_** (the one-piece cable — *not* their dongle-style adapter) ([r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)). ⚠ specific SKUs are community-reported, not lab-verified here — and a passive adapter still caps at ~**1440p@60**.
-- Cheap **4K@60 DP→HDMI** adapters that pass both video and audio do exist and are reported working ([src](https://t.me/c/2424231195/133977)).
-- Some adapters misbehave specifically on **4K monitors** ([src](https://t.me/c/2424231195/1988)).
-- **Audio over a DP→HDMI adapter is inconsistent and depends on the adapter's chipset — not simply on active vs passive.** Video always passes; **audio is the variable.** Our community reports are adapter-by-adapter (UGREEN/Belsis units reported carrying sound, some other units silent), and elektricM's guide reports the *opposite* split (passive carrying audio, some active units silent — e.g. Cable Matters/StarTech) — which is exactly why the active/passive label doesn't predict it ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)). For **reliable** audio, don't bet on an adapter: prefer a **DisplayPort-native display/AV receiver**, or output sound over **USB (a USB DAC/sound device)**. If you do use an adapter, **test audio before you rely on it** — and remember a **passive** adapter caps at ~**1440p@60**.
-
-### The kernel-6.17 fix (DP-direct audio, no adapter)
-
-If you want clean audio **straight over DisplayPort** without an adapter, the cause and fix were tracked down in the chat. Fedora's stock kernel config built `snd-hda-codec-hdmi.ko` + `snd-hdmi-lpe-audio.ko`; **kernel 6.17 changed the HDMI audio path** and broke sound on that default config. The fix is to also build the **ATI HDMI codec** — flip the kernel config from `# CONFIG_SND_HDA_CODEC_HDMI_ATI is not set` to `CONFIG_SND_HDA_CODEC_HDMI_ATI=m`, which packages `snd-hda-codec-atihdmi.ko`; sound then works **without patches** ([src](https://t.me/c/2424231195/68051), [src](https://t.me/c/2424231195/68061)).
-
-```text
-# Fedora kernel config change for DP/HDMI audio on kernel 6.17+
-# from:
-# CONFIG_SND_HDA_CODEC_HDMI_ATI is not set
-# to:
-CONFIG_SND_HDA_CODEC_HDMI_ATI=m
-```
-
-With that third codec (`snd-hda-codec-atihdmi.ko`) present, ALSA exposes the board's audio outputs (e.g. `pcm=3` and `pcm=7` as two HDMI devices) ([src](https://t.me/c/2424231195/68062), [src](https://t.me/c/2424231195/67569)). ⚠ verify — this requires building a custom kernel; treat the DP→HDMI adapter as the no-build path for most users. See [06-linux.md](06-linux.md) for kernel/driver setup.
-
-### Surround sound (5.1) — use a USB sound card, not HDMI
-
-**5.1 surround over HDMI does *not* work on the BC-250.** AMD's HDMI firmware on Linux for this headless/mining die doesn't expose multi-channel LPCM, so the HDMI output falls back to plain stereo no matter what the receiver supports ([r/linux_gaming](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)). For real multi-channel, route audio out a **USB sound card / USB DAC** instead — set it as the default sink in `pavucontrol`, then confirm all six channels with:
+### 1. Check the kernel and sound output
 
 ```bash
-speaker-test -D pipewire -c 6 -t wav
+uname -r
+wpctl status
 ```
 
-The same USB-DAC route is also the reliable fix for stereo audio when adapters misbehave (above).
+Select the intended DP/HDMI sink and distinguish silence from a clock/pitch problem. The [kernel matrix at the pinned revision](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/troubleshooting/audio.md) gives:
 
----
+| Kernel branch | Upstream fixes |
+|---|---|
+| 7.2+, or 7.1.10+ within 7.1 | Both clock fixes |
+| 6.12.78+, 6.18.20+, 6.19.10+ within those branches, and 7.0 | Large error fixed; small drift may remain |
+| Older affected versions | Large error or silence may remain |
 
-## The second output (initially inactive)
+Vendor backports may differ. Update through your OS's normal path, preserve a working deployment/kernel, reboot and check the actual `uname -r`; an image's name is not a kernel version. For Bazzite update/rollback see [06](06-linux.md).
 
-There is a **second video output on the board that is not active out of the box.** The community read is split and worth knowing both halves:
+### 2. If updating is not possible
 
-- It's **electrically present but not populated/soldered**, and *"with hacks you can make a 2nd monitor work"* ([src](https://t.me/c/2424231195/92978)).
-- Others report the chip simply **has no usable second head** — *"the problem is in the chip, the second output physically isn't there"* ([src](https://t.me/c/2424231195/104682)).
+- **USB audio** bypasses the affected DP clock path.
+- A **compatible passive DP++ adapter** uses a different clock path; choose it only if its display-mode limits fit.
+- An **active adapter is not inherently audio-broken**; native DP and active sinks were affected by the old kernel path.
+- [Weijtmans/bc250-tools](https://github.com/Weijtmans/bc250-tools) provides the historical DTO watcher for systems stuck on old kernels. It writes hardware registers and can install a root service: use its status/revert instructions and a known-good rollback, not a copied register write or wildcard. This handbook does not install it for you.
 
-Practically: **assume one DisplayPort output.** A DP **MST splitter for two independent screens has been asked about but not confirmed working** in our chat ([src](https://t.me/c/2424231195/92109)).
+A one-piece DP→HDMI cable can still contain a converter. It is not "chip-free" simply because there is no separate dongle. Old UGREEN/Belsis/Silver Monkey/BENFEI/AmazonBasics reports are individual cable/adapter/kernel combinations, not a universal shopping rule.
 
-**Update from elektricM — MST can drive two screens with the right hub.** elektricM's testing reports up to **2 displays via a DP MST hub** (bandwidth shared, resolution per display limited), with hub-by-hub results ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)):
+### 3. Keep the historical codec-module issue separate
 
-| MST hub | Out | DP ver | Independent displays? | Audio | Notes |
-|---------|-----|--------|-----------------------|-------|-------|
-| StarTech MST14DP122DP | 2× DP | 1.4 | **Yes** | Yes | Worked consistently across monitors/cables |
-| Monoprice 21972 | 2× DP | 1.2 | **Mirror only** | Yes | Could only mirror |
-| ENBUER | 2× DP | 1.2 | **Mirror only** | Yes | Could only mirror |
-| Generic HDMI MST | 2× HDMI | — | **No** | No | No video or audio |
+Some Fedora 6.17 reports involved missing `CONFIG_SND_HDA_CODEC_HDMI_ATI=m` / `snd-hda-codec-atihdmi.ko`. That packaging issue is distinct from the display-clock fixes. Check your current kernel's modules and sound devices before proposing a custom kernel. A DP→HDMI adapter does not universally fix missing drivers.
 
-So native dual-monitor **is** possible via MST with a DP 1.4 hub (StarTech confirmed); cheaper DP 1.2 hubs may only mirror, and HDMI MST hubs failed. ⚠ verify — single confirmed hub model; results vary by hub.
+Historical reports: [68051](https://t.me/c/2424231195/68051), [68061](https://t.me/c/2424231195/68061), [68062](https://t.me/c/2424231195/68062), [67569](https://t.me/c/2424231195/67569).
 
-**Other multi-display route — USB DisplayLink adapter.** Add a USB→HDMI/DP DisplayLink adapter for an extra **desktop** screen (plug in *after* boot for best results). **Not for gaming** — it compresses on the CPU, which is the BC-250's bottleneck, so latency is high; it also doesn't work in Steam Deck **game mode** ([elektricM](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)).
+### Surround sound
 
----
+Do not infer 5.1 support from an HDMI socket. Check the advertised channels and the whole receiver chain. Earlier [community reports](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/) found stereo-only configurations; they do not establish that every future driver/adapter is incapable. A suitable USB multichannel device is an alternative; verify its actual channel mapping before relying on it.
 
-## Second screen over the network (the easy "2nd display")
+## No wake after idle
 
-If you actually want the BC-250 picture on a second device, the proven route isn't a second cable — it's **streaming over LAN.** One user: *"I launched a Steam game on the BC-250 (Fedora) and streamed it over the network to my work laptop, controlled it from the laptop. Everything worked"* ([src](https://t.me/c/2424231195/23660)).
+If the screen and network both disappear after idle, inspect the previous boot rather than assuming a cable failure:
 
-- **Sunshine** (host encoder) works here because it isn't NVIDIA-only — it does the encoding, the client just decodes ([src](https://t.me/c/2424231195/25091)). Over gigabit LAN it's reported near-flawless ([src](https://t.me/c/2424231195/25563)).
-- **Moonlight as the host** does *not* fit — it expects an NVIDIA encoder and stutters/complains about a missing hardware decoder ([src](https://t.me/c/2424231195/25050)). Use Sunshine as host, Moonlight only as the client.
+```bash
+journalctl -b -1 -n 30
+cat /sys/power/mem_sleep
+```
 
-This is also the practical way to get a "dual display" feel without the unpopulated second output above.
+The [pinned report](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/troubleshooting/display.md) describes unreliable `s2idle` resume. A journal ending at `PM: suspend entry (s2idle)` without resume supports that diagnosis. Desktop idle-suspend settings may not cover Steam Game Mode.
 
----
+For a confirmed affected machine, disable automatic suspend in the desktop; a system-wide workaround is below. It disables sleep targets, **not just screen blanking**, so record any existing masks before using it:
 
-## Sources
+```bash
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+# Revert only masks added by this procedure:
+sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
+```
 
-- DP→HDMI adapter passes video+audio, no lag — https://t.me/c/2424231195/9148
-- DP audio distortion is a Linux issue; adapter fixes it — https://t.me/c/2424231195/17953 · https://t.me/c/2424231195/9895 · https://t.me/c/2424231195/51763 · https://t.me/c/2424231195/15983
-- Kernel 6.17 audio fix (`CONFIG_SND_HDA_CODEC_HDMI_ATI=m`) — https://t.me/c/2424231195/68051 · https://t.me/c/2424231195/68061 · https://t.me/c/2424231195/68062 · https://t.me/c/2424231195/67569
-- Working adapters — UGREEN DP125 https://t.me/c/2424231195/52398 · Belsis vs others (audio varies) https://t.me/c/2424231195/106617 · cheap 4K@60 https://t.me/c/2424231195/133977
-- DP is the working output; spend on a good DP→HDMI adapter — https://t.me/c/2424231195/104784
-- First-boot no-image / reseat / reflash — https://t.me/c/2424231195/15697 · https://t.me/c/2424231195/15699 · https://t.me/c/2424231195/15701 · https://t.me/c/2424231195/38184
-- Second output present but not populated / debated — https://t.me/c/2424231195/92978 · https://t.me/c/2424231195/104682 · MST asked https://t.me/c/2424231195/92109
-- Network second screen (Sunshine/Steam over LAN) — https://t.me/c/2424231195/23660 · https://t.me/c/2424231195/25091 · https://t.me/c/2424231195/25050 · https://t.me/c/2424231195/25563
-- Bluetooth audio as alternative — https://t.me/c/2424231195/89769
-- Straight DP→HDMI **cable** (no adapters) is the most reliable audio; 5.1 over HDMI doesn't work (no multi-channel LPCM), use a USB sound card / DAC — r/linux_gaming community thread https://www.reddit.com/r/linux_gaming/comments/1nvsgji/
-- Hardware I/O reference (`1x DisplayPort`) — [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation) · [`hardware.md`](https://github.com/mothenjoyer69/bc250-documentation/blob/main/hardware.md)
-- DP 1.4 / 4K@120 / HDR10, resolution+cable limits, MST hubs (max 2), DisplayLink, Wayland-login black screen — elektricM [`hardware/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/hardware/display.md)
-- HDR + VRR working on CachyOS (Plasma 6 + Wayland) vs broken on Bazzite; Forza Horizon 6 1440p High HDR+VRR over UGREEN DP→HDMI 2.1 — r/BC250Gaming (Reddit) community report (see [06-linux.md](06-linux.md))
-- Passive DP→HDMI carries audio / active drops or pitch-shifts it; passive but needed for HDR; confirmed passives Silver Monkey / BENFEI B017Q8ZVWK / AmazonBasics DP-to-HDMI cable — [r/linux_gaming community thread](https://www.reddit.com/r/linux_gaming/comments/1nvsgji/)
-- Bazzite KDE VRR/FreeSync over HDMI remix (AMD HDMI 2.1 kernel; tested on 9070 XT, not BC-250) — [`dyllan500/bazzite-amd-hdmi-kde`](https://github.com/dyllan500/bazzite-amd-hdmi-kde)
-- Adapter audio is chipset-dependent (elektricM saw passive carry it / some active silent; community saw the reverse — so prefer DP-native or a USB DAC), low-res llvmpipe check — elektricM [`troubleshooting/display.md`](https://github.com/elektricM/amd-bc250-docs/blob/main/docs/troubleshooting/display.md)
+Do not replace Sleep with Shutdown as an unexplained default: that changes user-visible behavior and can lose unsaved work.
 
-> Driver/kernel setup is in [06-linux.md](06-linux.md); audio/output gotchas are also indexed in [troubleshooting.md](troubleshooting.md) and [faq.md](faq.md).
+## HDMI-CEC (optional)
+
+Upstream reports TV control through a UGREEN active adapter with RTD2173. **`/dev/cec0` is not proof that the adapter connects the TV's CEC pin.** With the TV's CEC enabled, the scan must find a device besides this computer:
+
+```bash
+cec-ctl -d /dev/cec0 -S
+```
+
+This sends CEC bus probes; it is not merely a file-presence check. `cec-ctl` comes from `v4l-utils`. If access is denied, check the node/group permissions; on rpm-ostree an NSS-only `video` group needs special handling, not blind repeated `usermod`. See the [pinned CEC section](https://github.com/elektricM/amd-bc250-docs/blob/954b706f0f2a426385229507c1acba00cc812f66/docs/hardware/display.md) and the identity/check helpers in [bc250-tools](https://github.com/Weijtmans/bc250-tools). A name set by hand may be overwritten by `cec-onboot`; the reported helper orders it afterward. CEC does not itself guarantee TV Game Mode/ALLM.
+
+## Second screen and streaming
+
+For local independent displays, start with the reported DP MST hub above and verify the exact mode on both screens. For a remote picture use Steam Remote Play or Sunshine as the **host** and Moonlight as the **client** ([17](17-projects-and-tools.md)). Codec choices, CPU encoding and compute encoding are separate from native VCN support; do not assume an NVIDIA-only host or that every encoding path is impossible.
+
+## Sources and history
+
+Current procedures use the pinned upstream pages linked above. Earlier community observations remain evidence of those setups, not current universal instructions:
+
+- Cable/adapter and sound reports: [9148](https://t.me/c/2424231195/9148), [17953](https://t.me/c/2424231195/17953), [9895](https://t.me/c/2424231195/9895), [51763](https://t.me/c/2424231195/51763), [15983](https://t.me/c/2424231195/15983), [52398](https://t.me/c/2424231195/52398), [106617](https://t.me/c/2424231195/106617), [133977](https://t.me/c/2424231195/133977), [1988](https://t.me/c/2424231195/1988), [89769](https://t.me/c/2424231195/89769).
+- Boot/output reports: [104784](https://t.me/c/2424231195/104784), [15697](https://t.me/c/2424231195/15697), [15699](https://t.me/c/2424231195/15699), [15701](https://t.me/c/2424231195/15701), [38184](https://t.me/c/2424231195/38184), [15705](https://t.me/c/2424231195/15705).
+- Second-output discussion: [92978](https://t.me/c/2424231195/92978), [104682](https://t.me/c/2424231195/104682), [92109](https://t.me/c/2424231195/92109).
+- Network-streaming reports: [23660](https://t.me/c/2424231195/23660), [25091](https://t.me/c/2424231195/25091), [25050](https://t.me/c/2424231195/25050), [25563](https://t.me/c/2424231195/25563).
+
+GPU installation: [06](06-linux.md). Failure diagnosis: [Troubleshooting](troubleshooting.md) and [FAQ](faq.md). No display, CEC or audio measurements were performed on local BC250 hardware for this rewrite.
