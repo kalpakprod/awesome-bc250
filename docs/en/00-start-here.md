@@ -1,141 +1,132 @@
 # Start Here — Zero to Gaming
 
-> **TL;DR** — You bought (or are about to buy) an AMD BC-250. It's a PlayStation 5-derived APU board with 16 GB GDDR6 that makes a cheap Linux gaming/AI box — **if** you solve three things in order: **power**, **cooling**, and **Linux drivers**. This page is the straight line from a board in a box to a game running. Follow the steps; each links to a full chapter.
+> **The goal is a first working game, not a mandatory overclock.** Follow the build, first-boot, installation and verification steps below. BIOS flashing, CPU/CU unlocking and custom voltage curves are separate projects, not prerequisites.
 
-This board is a project, not a plug-and-play PC. Budget a weekend. The two ways people kill a board early are **wrong power wiring** and **running it hot** — so we do those first.
-
----
+[English](00-start-here.md) · [Русский](../ru/00-start-here.md) · [Українська](../uk/00-start-here.md) · [All chapters 00–17](../../README.md#quick-start)
 
 ## Before you start — parts & tools
 
-Have these on hand *before* you begin, so you don't discover each one mid-build:
+Check what came with the board before buying anything else:
 
-- **PSU** with a PCIe 8-pin 12 V output → **[03 — Power Supply](03-power-supply.md)**
-- **120 mm high-static-pressure fan** + printed shroud → **[04 — Cooling](04-cooling.md)** / **[05 — Cases & 3D Printing](05-case.md)**
-- A **printed case or mount** → **[05 — Cases & 3D Printing](05-case.md)**
-- **USB stick ≥ 16 GB** for the Linux installer
-- A **DisplayPort cable** (or DP→HDMI adapter — the board's HDMI often shows nothing, DisplayPort is safest)
-- A **screwdriver**
-- A **multimeter** — to magnet/continuity-test the PSU wiring → **[03 — Power Supply](03-power-supply.md)**
-
----
+- **A suitable 12 V PSU and checked PCIe 8-pin cable.** An EPS/CPU plug is not interchangeable; neither a nominal PSU wattage nor a contact-current calculation certifies the cable. See [03 — Power supply](03-power-supply.md).
+- **Active cooling:** a fan with a suitable mount/shroud to move air through the heatsink and around the back of the board. A 120 mm high-static-pressure fan is a common approach. See [04 — Cooling](04-cooling.md).
+- **An SSD and the matching connection/adapter**, not just an installer USB stick. See [16 — Storage and peripherals](16-usb-peripherals.md).
+- **A monitor and DisplayPort cable**, keyboard and mouse. Check any DP→HDMI adapter separately. See [14 — Display](14-display.md).
+- **A USB installer drive** large enough for the chosen image; 16 GB is a useful starting choice, but check the download size.
+- **A screwdriver and secure non-conductive mounting.** A printed case is optional. See [05 — Cases](05-case.md).
+- **A multimeter** to check continuity with power disconnected and to measure voltage in the correct voltage mode. Do not use continuity mode on powered wiring; a multimeter is not a magnet or a certificate of wire material.
+- **Network access** for downloads and installation: wired Ethernet, or a supported WiFi dongle and its driver. Arrange this before installation if the installer needs a connection. See [10 — Networking](10-wifi-bt.md).
 
 ## The path
 
 ```mermaid
 flowchart TD
-    A["Buy the board"] --> B["Power - PCIe 8-pin 12V"]
-    B --> C["Cool - thin fins plus 120mm fan"]
-    C --> D["Assemble"]
-    D --> E["Install Linux - Bazzite"]
-    E --> F["Apply amdgpu firmware fix"]
-    F --> G["Verify GPU acceleration"]
-    G --> H["Overclock - governor about 2000MHz"]
-    H --> I["Add USB WiFi dongle"]
-    I --> J["Play"]
-    E -.->|"HDMI blank"| K["Use DisplayPort"]
-    K -.-> F
+    A[Check board and parts] --> B[Check power and cooling]
+    B --> C[Assemble with power disconnected]
+    C --> D[First boot to BIOS]
+    D --> E[Install one Linux workflow]
+    E --> F[Verify hardware graphics]
+    F --> G[Launch a game at baseline settings]
+    G -. Optional later .-> H[Tuning and other workloads]
 ```
 
 ### 0. Know what you have
-A BC-250 is a server/mining blade: one APU (Zen 2 CPU + RDNA2-class GPU, "Cyan Skillfish/Oberon"), 16 GB GDDR6, **passive heatsink**, powered by a single **12 V PCIe 8-pin**. No onboard WiFi, no working Windows GPU driver, no hardware video encode. → **[01 — What Is the BC-250](01-what-is-bc250.md)**
 
-### 1. Buy the right thing
-Know what a fair price is, what's in the box (board only? heatsink? PSU?), and which sellers/scams to avoid. → **[02 — Buying Guide](02-buying.md)**
+Identify the board, connector layout, heatsink and any changes made by a previous owner. BC-250 has a Zen 2 CPU, RDNA2-class graphics and a shared 16 GB GDDR6 pool; that is not 16 GB of independent RAM plus another 16 GB of VRAM. Record the BIOS version before changing settings. See [01 — Board overview](01-what-is-bc250.md).
 
-### 2. Sort out power *before first boot*
-The board wants ~235 W (more overclocked) on 12 V through a PCIe 8-pin. Use a real PSU (server Flex / Mean Well brick / ATX), wire the 8-pin correctly with **genuine-copper wire of adequate gauge**, and don't guess the pinout — a mistake here is a dead board. → **[03 — Power Supply](03-power-supply.md)**
+### 1. Buy only what is missing
 
-### 3. Fix the cooling *before you stress it*
-The stock heatsink is built for a rack wind-tunnel and **throttles on a desk**. Thin the fins and bolt a high-static-pressure 120 mm fan through a printed shroud (or go AIO). Target: stays under ~80 °C in Furmark. → **[04 — Cooling](04-cooling.md)**
+Compare the bundle against the checklist above. Check the seller's description, condition and included parts; if the board is already yours, skip buying another board. See [02 — Buying](02-buying.md).
 
-### 4. Put it in a case (optional but nice)
-Print a console-style case that mounts the board, fan, and PSU with real airflow. Catalog of community STLs. → **[05 — Cases & 3D Printing](05-case.md)**
+### 2. Sort out power before first boot
 
-### 5. Assemble it
-Physical order of operations for a minimal build: mount the fan to the printed shroud → clip/screw the shroud over the (thinned) heatsink fins → seat the board in the case/mount → connect the PSU's 8-pin to the board (correct pinout, **[03 — Power Supply](03-power-supply.md)**) → connect a DisplayPort cable to the monitor → power on and confirm it **POSTs** (POST = power-on self-test; it powers up and outputs video — you get a picture / the fan spins). Do any fin-sanding *before* mounting (see **[04 — Cooling](04-cooling.md)**) and keep metal dust off the board.
+Use the checked cable and pinout from [03 — Power supply](03-power-supply.md), not a plug that merely fits. For stock gaming, that chapter gives a 300 W+ 12 V rail starting point; sustained unlocked compute needs a separate power budget. Do not add parallel supplies, homemade splitters or SATA-power adapters as a beginner shortcut. Make all connections with the PSU disconnected.
 
-> A labeled photo/diagram of this assembly is a welcome contribution — the repo doesn't have one yet.
+### 3. Arrange cooling before loading the board
 
-### 6. Install Linux + GPU drivers
-This is the make-or-break step. Easiest for newcomers: a **Bazzite-based image** built for the BC-250 (or **Fedora 43** — elektricM's other "just works" pick; Fedora 42 is EOL). Then apply the **amdgpu firmware fix** (the `navi10_gpu_info.bin` symlink) and kernel params, regenerate initramfs/grub, and verify the GPU is accelerated (`vainfo`, `dmesg`). → **[06 — Linux Drivers & Setup](06-linux.md)**
+The passive rack heatsink needs forced airflow on a desk. Secure the fan, give air a route through the fins and leave the back of the board ventilated. Do not make sanding/cutting the heatsink a compulsory first step: choose a working cooling arrangement from [04 — Cooling](04-cooling.md). If you do modify it, remove it from the board and clean away conductive debris before reassembly.
 
-> **Two settings that cause hours of pain if you skip them** (elektricM): on the modded BIOS set **VRAM = 512 MB dynamic** and **disable IOMMU** (a broken IOMMU causes display failures and crashes), then **clear CMOS** after the flash. Install with the `nomodeset` boot parameter and **remove it once drivers are in**. Mesa **25.1+** is the floor (25.3.x recommended). And **avoid kernel 6.15.0–6.15.6 and 6.17.8–6.17.10** — they break the GPU driver; use a 6.18 LTS / 6.17.11+ / 6.12–6.14 LTS instead. ([elektricM quick-start](https://elektricm.github.io/amd-bc250-docs/getting-started/quick-start/), [quick-reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/))
+### 4. Mount the board
 
-> Thinking Windows? As of early 2026 there is **no working Windows GPU driver** — it's experimental. Use Linux. → **[07 — Windows](07-windows.md)**
+Secure the board and cooler in a case or suitable open mount without shorts, loose metal parts or blocked airflow. Check cable clearance. Printed cases and mounts are in [05 — Cases](05-case.md).
 
-### 7. Verify it works at stock, then overclock
-Once the desktop is accelerated, install a **GPU governor** (cyan-skillfish-smu is the current recommendation; oberon also works) and push clocks (1500 MHz stock is weak; **2000 MHz ≈ +30 % FPS**). Optionally unlock all **40 CUs** and undervolt. Re-test temps under the new clocks. → **[09 — Overclocking & Undervolting](09-overclock-undervolt.md)**
+### 5. Assemble and reach BIOS
+
+With the board powered off and the PSU disconnected:
+
+1. Secure the cooler/fan and board.
+2. Connect the SSD with the appropriate adapter from [16](16-usb-peripherals.md).
+3. Connect the verified power cable from [03](03-power-supply.md).
+4. Connect the monitor over DisplayPort and a keyboard.
+5. Apply power and enter BIOS/Setup; confirm that you get a setup screen and that the installation drive is available.
+
+**A spinning fan alone does not prove POST or working graphics.** No picture or no boot? Stop here and use [Troubleshooting](troubleshooting.md); do not erase the SSD or flash firmware to guess at a fix. See [14](14-display.md) for monitor/adapter diagnosis.
+
+### 6. Install one Linux workflow
+
+Start with [06 — Linux](06-linux.md), choose **one** path and follow it through to its reboot and verification:
+
+- **Bazzite:** install regular Bazzite first. Then choose stock Bazzite with the SMU governor, or the normal stable [62fixolab BC250 image](https://github.com/62fixolab/Latest-Bazzite-AMD-BC-250-Patched-Images) matching your desktop. `-40cu`, testing and unstable images are not the first-build path.
+- **Fedora or CachyOS/Arch:** use the instructions for that distribution, not Bazzite's package/rebase commands.
+
+**Do not apply a firmware symlink, rebuild initramfs or replace the kernel just because an old checklist says so.** Current firmware or a prepared image may already supply the required setup; manual fixes belong to the specific path that still needs them. Likewise, do not flash a modified BIOS or impose one UMA size on every OS as part of this generic route. If your selected path needs BIOS settings, follow [08 — BIOS](08-bios.md) with a record of the original settings.
+
+If you used basic graphics mode / `nomodeset` to reach the installer, follow [06](06-linux.md) to remove it once the graphics setup is ready and reboot. Kernel regressions and driver versions are tracked there rather than frozen in this starting page. Create a normal user account; do not run Steam as root.
+
+### 7. Verify the baseline before tuning
+
+Open a terminal in the installed desktop. These commands only report graphics information:
+
+```bash
+glxinfo -B
+vulkaninfo --summary
+```
+
+- The **OpenGL renderer** should identify the AMD hardware, not `llvmpipe`.
+- Vulkan should expose an **AMD/BC250 hardware device**, typically `AMD Radeon Graphics (RADV GFX1013)`. A software device may also be listed; its presence does not invalidate the AMD device. Select the hardware device for games.
+- A missing command means the diagnostic utility is missing, not that the GPU is broken; see [06](06-linux.md) for the distro workflow. A Mesa version alone does not prove hardware rendering.
+- `vainfo` checks video-codec support, not OpenGL/Vulkan gaming acceleration. Codec failures and compute-based encoding are separate topics; see [17](17-projects-and-tools.md).
+
+Check temperatures with the monitoring configured for your image ([04](04-cooling.md), [06](06-linux.md)). First use the image's documented baseline settings, without your own clock/voltage changes or core/CU unlock. If a governor is already supplied, check its configuration rather than starting a second one. Governor selection, installation and verification belong to [09](09-overclock-undervolt.md); reaching 2000 MHz is not a first-game acceptance criterion.
 
 ### 8. Get online
-No onboard WiFi — add a **known-good USB dongle** (aic8800d80 is the community favorite) and its driver. → **[10 — WiFi & Bluetooth](10-wifi-bt.md)**
 
-### 9. Play
-Set realistic expectations (the Zen 2 CPU is often the limit, not the GPU), turn on FSR, and use community per-game settings. → **[11 — Gaming Results & Settings](11-gaming.md)**
+Try wired networking first if available. For WiFi/Bluetooth use the dongle's actual chipset and the driver for your OS, not just its retail name. Confirm that downloads stay connected. If the installer needed a network, do this before step 6. See [10 — WiFi and Bluetooth](10-wifi-bt.md).
 
-### Bonus — run local LLMs
-16 GB VRAM is a lot for the price. Run llama.cpp on the **Vulkan** backend (ROCm is a dead end on this GPU). → **[12 — AI / LLM](12-ai-llm.md)**
+### 9. Launch a game
 
-### Bonus — emulation
-Switch, PS3, PS4, retro, arcade — what actually runs, and how → **[15 — Emulation](15-emulation.md)**
+Use Steam under your normal account, install a game and start with settings from [11 — Gaming](11-gaming.md). Check that the game uses hardware graphics, temperatures remain controlled, and there are no artifacts or resets. If it fails, diagnose the baseline before adding FSR, custom Mesa, undervolting or unlocked units.
 
-> No picture on first boot? The board outputs over **DisplayPort** (HDMI is often blank) → **[14 — Display & Output](14-display.md)**. Out of USB ports, or adding a drive? → **[16 — USB, Hubs & Storage](16-usb-peripherals.md)**
-
----
+After a successful run, **reboot and try again** so the result is not limited to one temporary session. Only then add optional tools from [17 — Control Center, upscalers and streaming](17-projects-and-tools.md), one change at a time.
 
 ## If something breaks
-Black screen, no acceleration, random resets, dongle drops, a brick after a BIOS flash — see **[Troubleshooting](troubleshooting.md)** and the **[FAQ](faq.md)**.
 
-> Flashing a modded BIOS is **not** a starting step. It can brick the board and needs recovery hardware. Only go there deliberately. → **[08 — BIOS & Brick Recovery](08-bios.md)**
+Use [Troubleshooting](troubleshooting.md) and [FAQ](faq.md) for the failed stage. Record the OS image/deployment, kernel, renderer output and recent changes. On Bazzite, preserve a known-working deployment with `sudo ostree admin pin booted`; if an update/rebase fails, select the preserved deployment or use the rollback procedure in [06](06-linux.md). Do not wipe a drive as a default diagnostic.
 
----
+BIOS flashing and recovery are in [08](08-bios.md), not the first-boot checklist.
 
 ## The 60-second checklist
 
-| Step | Done when |
-|------|-----------|
-| Power | PSU wired to 8-pin, correct pinout, genuine-copper wire, board POSTs |
-| Cooling | Fins thinned + 120 mm fan/shroud; <80 °C in Furmark |
-| OS | Bazzite-bc250 installed, boots to desktop |
-| GPU | `vainfo`/`dmesg` show amdgpu active, not CPU fallback |
-| Overclock | GPU governor running (cyan-skillfish-smu recommended), ~2000 MHz, stable in a real game |
-| Network | USB dongle connects and stays up |
-| Game | Runs at expected FPS for your clocks |
+| Stage | Done when |
+|---|---|
+| Parts | PSU/cable, cooling, SSD, display, input devices and installer are ready |
+| Power and assembly | Pinout checked, board securely mounted, BIOS screen reachable |
+| Cooling | Active airflow works; temperatures do not run away or trigger resets in the game |
+| OS | Selected Linux path completed; desktop boots after a reboot |
+| GPU | OpenGL/Vulkan expose hardware rendering, not only software fallback |
+| Network | Downloads complete without losing the connection |
+| Game | Runs without artifacts/resets at baseline settings, including after a reboot |
+| Recovery | Important data is backed up; working settings/deployment and rollback path recorded |
 
-When every row is checked, you're done. Welcome to the BC-250 club.
+No row requires BIOS flashing, a specific overclock, eight CPU cores or 40 CUs.
 
----
+## After the first game
 
-## Quick reference (cheat-sheet)
+- **Optional tuning:** [09 — Governor, clocks and voltage](09-overclock-undervolt.md).
+- **Local models and compute:** [12 — AI / LLM](12-ai-llm.md).
+- **Emulation:** [15 — Emulation](15-emulation.md).
+- **Alternative OS paths:** [07 — Windows](07-windows.md) · [13 — macOS / MetalCyan](13-macos.md).
+- **Applications:** [17 — Control Center, FSR4, HelixSR and streaming](17-projects-and-tools.md).
+- **Other projects:** [Thematic catalog](../../catalog/en/README.md).
 
-Commands and settings you'll reach for most, condensed from elektricM's [quick-reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/). Full detail lives in **[06 — Linux](06-linux.md)** and **[09 — Overclocking](09-overclock-undervolt.md)**.
-
-**BIOS:** VRAM `512MB` dynamic · IOMMU **Disabled** · UEFI boot · clear CMOS after every USB flash.
-
-**Verify the GPU is accelerated (not llvmpipe/CPU):**
-```bash
-glxinfo | grep "OpenGL version"          # Mesa 25.1+ expected
-vulkaninfo | grep deviceName             # → AMD Radeon Graphics (RADV GFX1013)
-cat /sys/class/drm/card0/device/pp_dpm_sclk   # multiple freqs, current marked *
-```
-
-**Governor** (clocks stick at 1500 MHz without it). Recommended is `cyan-skillfish-governor-smu` (no kernel patch); the original `oberon-governor` also works — see [09](09-overclock-undervolt.md):
-```bash
-sudo dnf copr enable filippor/bazzite
-sudo dnf install cyan-skillfish-governor-smu          # rpm-ostree install … on Bazzite
-sudo systemctl enable --now cyan-skillfish-governor-smu.service
-systemctl status cyan-skillfish-governor-smu          # → active (running)
-```
-> Voltage floor **700 mV** — below it the GPU locks to 1500 MHz. The governor can target the wrong card (card0 vs card1) — verify if scaling doesn't kick in.
-
-**Remove `nomodeset` after drivers are in:**
-```bash
-# GRUB distros: drop "nomodeset" from /etc/default/grub, then
-sudo grub2-mkconfig -o /boot/grub2/grub.cfg && sudo reboot
-# Bazzite / Fedora Atomic:
-rpm-ostree kargs --delete-if-present="nomodeset" && systemctl reboot
-```
-
-**Steam launch option** that fixes graphical glitches in some games: `RADV_DEBUG=nohiz %command%`.
-
-**Crash on RDR2 / Company of Heroes 3?** Switch VRAM from `512MB` dynamic to **10GB/6GB fixed** (ZRAM conflict). ([elektricM quick-reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/))
+The [upstream quick-start](https://elektricm.github.io/amd-bc250-docs/getting-started/quick-start/) and [quick reference](https://elektricm.github.io/amd-bc250-docs/reference/quick-reference/) provide background; the per-OS instructions in chapter 06 determine which steps your installation actually needs. This page describes a workflow, not a claim that we tested your board.

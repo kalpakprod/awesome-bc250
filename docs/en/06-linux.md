@@ -11,7 +11,7 @@
 
 [All Linux image projects](../../catalog/en/README.md#linux) · [Other control panels and toolkits](../../catalog/en/README.md#control).
 
-> **TL;DR** — Most people run the BC-250 on Linux, and it works well *once the GPU is fixed*. Out of the box `amdgpu` doesn't recognize the chip and you get CPU-rendered, single-digit FPS. Two things make it real: a **modern kernel + fresh Mesa (25.1+)**, and the **`amdgpu` fix** — a firmware symlink so the driver can load (`navi10_gpu_info.bin` → `cyan_skillfish_gpu_info.bin`) plus kernel params (`amdgpu.sg_display=0`, `mitigations=off`, and on new kernels `amdgpu.bc250_cc_write_mode=3`). Easiest path for a newcomer: flash **[Bazzite](https://bazzite.gg/)** and rebase to the dedicated **`bazzite-bc250`** image — the fixes are baked in. Want to learn the machine: **Fedora** or **CachyOS/EndeavourOS (Arch)** with a one-time setup script.
+> **TL;DR** — Choose one Linux workflow, complete its setup and verify the actual OpenGL/Vulkan hardware renderer. Current firmware or a prepared image may already provide BC250 support; a firmware symlink and manual initramfs rebuild are not universal steps. For Bazzite use Path A: stock Bazzite with the SMU governor, or a normal stable 62fixolab image. Fedora and CachyOS/Arch have separate paths below. Keep the baseline without CPU/CU unlocking; installing a driver does not require disabling security mitigations or adding unlock parameters.
 
 This is the section that turns "a board in a box" into a working desktop. Do [cooling](04-cooling.md) and [power](03-power-supply.md) first — then this.
 
@@ -26,7 +26,7 @@ This is the section that turns "a board in a box" into a working desktop. Do [co
 
 ## The one thing you must understand
 
-The BC-250's GPU is **Cyan Skillfish / Oberon** (a PlayStation 5-derived RDNA2 part). Mainline `amdgpu` historically had **no firmware blob named for it**, so on a stock install the kernel can't initialize the GPU and the desktop falls back to software (LLVMpipe) rendering — everything is slow and `vulkaninfo` shows no real device. One user spent days on "broken drivers" before realizing his distro had simply booted a kernel that couldn't load the GPU firmware ([src](https://t.me/c/2424231195/98466)).
+The BC-250's GPU is **Cyan Skillfish / Oberon** (a PlayStation 5-derived RDNA2 part). Mainline `amdgpu` historically had **no firmware blob named for it**, so older installations missing that firmware could not initialize the GPU and the desktop falls back to software (LLVMpipe) rendering — everything is slow and `vulkaninfo` shows no real device. One user spent days on "broken drivers" before realizing his distro had simply booted a kernel that couldn't load the GPU firmware ([src](https://t.me/c/2424231195/98466)).
 
 So every working setup does the same three things, in some form:
 
@@ -38,20 +38,16 @@ Everything below is just *how* each distro does those three things.
 
 ```mermaid
 flowchart TD
-    A["Choose distro"] --> B["Bazzite is easiest"]
-    A --> C["Fedora or Arch"]
-    B --> D["Install"]
-    C --> D
-    D --> E["Apply navi10 firmware symlink"]
-    E --> F["Add kernel params"]
-    F --> G["Regenerate initramfs and grub"]
-    G --> H["Reboot"]
-    H --> I["Verify with vainfo and dmesg"]
-    I --> J{"GPU accelerated?"}
-    J -->|Yes| K["Done"]
-    J -->|No| L["Check for a bad kernel"]
-    L --> M["Roll back to LTS kernel"]
-    M --> H
+    A["Choose one distro path"] --> B["Install and follow that path"]
+    B --> C{"Firmware and setup already supplied?"}
+    C -->|Yes| R["Reboot"]
+    C -->|No| F["Apply only that path's missing fixes"]
+    F --> R
+    R --> V["Check OpenGL renderer and Vulkan device"]
+    V --> G{"Hardware graphics available?"}
+    G -->|Yes| D["Baseline ready"]
+    G -->|No| L["Inspect firmware logs, nomodeset and deployment"]
+    L --> B
 ```
 
 ---
@@ -161,8 +157,9 @@ Fedora is the most-documented non-atomic path and stays close to upstream. **On 
 ### B1. Install Fedora
 Download **Fedora 43 Workstation or KDE** ([fedoraproject.org](https://fedoraproject.org/workstation/download)) and install normally — **Fedora 42 is end-of-life**, upgrade to 43. If the installer shows a black screen, pick *Troubleshooting → Install Fedora in basic graphics mode* (this sets `nomodeset`; remove it after drivers are in). Reported-good baseline from the chat: kernel 6.14, GNOME 48, Mesa 25.0.2+ — "flies" ([src](https://t.me/c/2424231195/29150)). Fedora 41 with Cinnamon was called "stable as hell" running Cyberpunk, Witcher 3, etc. ([src](https://t.me/c/2424231195/12756)). On 43 prefer kernel **6.18.18 LTS** or **6.17.11+** and avoid the broken ranges (warning box below).
 
-### B2. The setup script (does the work for you)
-The canonical Fedora setup is automated by `mothenjoyer69/bc250-documentation`'s **`fedora-setup.sh`**. It enables the COPR, installs patched mesa, configures `amdgpu`, builds the governor and fixes the bootloader. The exact steps it runs (cross-checked against the script):
+### B2. Historical setup script — not a universal install checklist
+
+The **`fedora-setup.sh`** below is retained as a source-backed example from `mothenjoyer69/bc250-documentation`. Do not run its full block on an already working modern system: Mesa support is in Fedora's ordinary repositories, and prepared images can supply firmware/setup. In particular, `mitigations=off` reduces security protections and is not required merely to load the graphics driver. Inspect the script and apply only a missing setup step for your installation; the historical commands are reproduced below.
 
 ```bash
 # 1. Patched mesa from COPR
@@ -188,7 +185,7 @@ sudo dnf install mesa-libOpenCL --allowerasing
 ```
 *(Source: `fedora-setup.sh` in [mothenjoyer69/bc250-documentation](https://github.com/mothenjoyer69/bc250-documentation), confirmed verbatim.)*
 
-To just run the script instead of typing the steps, see the **"Simple setup script"** section of that repo's README (it points at [`fedora-setup.sh`](https://raw.githubusercontent.com/mothenjoyer69/bc250-documentation/refs/heads/main/fedora-setup.sh)). ⚠ Read a setup script before piping it to a shell.
+For the original historical walkthrough, see the **"Simple setup script"** section of that repo's README (it points at [`fedora-setup.sh`](https://raw.githubusercontent.com/mothenjoyer69/bc250-documentation/refs/heads/main/fedora-setup.sh)). ⚠ Read a setup script before piping it to a shell.
 
 ### B3. Power governor (cyan-skillfish-governor)
 The board runs a flat 1500 MHz / 1000 mV out of the box; a **governor** scales clocks (idle ↔ ~2000 MHz) and lets you undervolt. The current recommended one is **`cyan-skillfish-governor-smu`**, from the `filippor/bazzite` COPR ([elektricM: Fedora](https://elektricm.github.io/amd-bc250-docs/linux/fedora/), confirmed Mar 2026):
@@ -388,7 +385,7 @@ Cross-checked against the [elektricm BC-250 docs](https://elektricm.github.io/am
 
 ## Verifying GPU acceleration
 
-After the first reboot, confirm the GPU is actually being used (not software rendering).
+After the first reboot, confirm the GPU is actually being used (not software rendering). Run these checks inside the graphical desktop. If the commands are missing, install the diagnostic utilities for your distro: `vulkan-tools` for `vulkaninfo`, and `glx-utils` on Fedora/Bazzite or `mesa-utils` on Arch/Debian for `glxinfo`; use the package workflow for your OS, not another distro's commands.
 
 **1. Is the device visible to Vulkan?** You should see the BC-250 / AMD device, not just LLVMpipe:
 ```bash
@@ -402,7 +399,7 @@ vulkaninfo | grep driverName     # expect: driverName = radv
 ```
 The device name should read **`AMD Radeon Graphics (RADV GFX1013)`**.
 
-> ⚠ **Don't expect `vainfo` to work — hardware video decode/encode is dead on the BC-250.** The VCN block's firmware is **blocked by Sony**, so `vainfo` fails (`vaInitialize failed ... -1`) and there's no GPU H.264/H.265 accel. This is not a bug in your setup — use **software decode** (mpv/VLC fall back automatically) and **x264** for OBS. Unlikely to ever change ([elektricM: RADV](https://elektricm.github.io/amd-bc250-docs/drivers/radv/)).
+> **`vainfo` is a codec check, not a gaming-acceleration test.** Its failure does not mean OpenGL/Vulkan are using the CPU. Historical [RADV codec reports](https://elektricm.github.io/amd-bc250-docs/drivers/radv/) concern the native VCN/VA-API path; community compute-based encoding is a separate mechanism, described in [17 — Streaming and tools](17-projects-and-tools.md). Do not turn an old codec limitation into a prediction that every GPU encoding path is impossible.
 
 **3. OpenGL renderer string** (should name AMD/`gfx1013`, not `llvmpipe`):
 ```bash
