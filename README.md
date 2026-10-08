@@ -6,7 +6,7 @@
 
 > **Everything for BC250 in one place:** buying and assembly, power and cooling, OS choice, applications, upscalers, cases and research. This handbook explains the steps here; primary links credit developers and provide downloads. Community messages are evidence, not a substitute for instructions.
 
-**[New board: start here](docs/en/00-start-here.md)** · **[Choose and install Linux](docs/en/06-linux.md)** · **[Control Center, FSR4, HelixSR and streaming](docs/en/17-projects-and-tools.md)** · **[macOS / MetalCyan](docs/en/13-macos.md)** · **[Cases and printable models](docs/en/05-case.md)**
+**Bought a board? [Follow steps 00–06 below](#quick-start), then connect the network and launch a game.**
 
 <sub>_Catalog expanded **October 2026** · project snapshot **September 2026** · [llms.txt](llms.txt) for AI agents_</sub>
 
@@ -16,12 +16,43 @@
 
 ## Contents
 
-- [Project catalog](#catalog).
-- [Quick start](#quick-start).
+- [Step-by-step guide: 00–17](#quick-start).
+- [Help and choosing the next step](#guide).
+- [Alternative projects and catalog](#catalog).
 - [Board overview](#what-the-board-is).
-- [Full handbook](#guide).
 - [Selected resource entry points](#selected-resource-entry-points).
 - [Research scope and status](#research-scope-and-status).
+
+---
+
+## Quick start
+
+**From a board in a box to a working computer.** For your first build, follow **00–06**, then **10 — networking** and **11 — games**. Numbers match the handbook chapters. Windows, BIOS flashing, overclocking and unlocking are not required steps for the first boot.
+
+| No. | What to do | Instructions |
+|---|---|---|
+| **00** | Start with the overall route and parts checklist: what you have and what is missing. | [Start here](docs/en/00-start-here.md) |
+| **01** | Identify your board, its connectors and limitations. | [What is the BC-250](docs/en/01-what-is-bc250.md) |
+| **02** | Check the bundle before buying; if you already own the board, work out which parts to add. | [Buying and parts](docs/en/02-buying.md) |
+| **03** | Choose the PSU and check the cable and pinout **before applying power**. | [Power supply](docs/en/03-power-supply.md) |
+| **04** | Arrange active heatsink airflow **before loading the board**. | [Cooling](docs/en/04-cooling.md) |
+| **05** | Secure the board and cooler; prepare a case or open mounting arrangement. | [Cases and assembly](docs/en/05-case.md) |
+| **06** | Choose and install Linux; follow the setup for your specific image and verify GPU acceleration. | [Linux installation and drivers](docs/en/06-linux.md) |
+| **07** | **Alternative OS:** check the state of Windows drivers if Linux does not fit. | [Windows](docs/en/07-windows.md) |
+| **08** | **Only when needed:** backup, BIOS settings, flashing and recovery. | [BIOS](docs/en/08-bios.md) |
+| **09** | **After a working first boot:** configure the governor; overclocking and undervolting are separate, board-validated steps. | [Clocks and voltage](docs/en/09-overclock-undervolt.md) |
+| **10** | Connect networking; for WiFi/Bluetooth choose a dongle and install its required driver. | [WiFi and Bluetooth](docs/en/10-wifi-bt.md) |
+| **11** | Launch a game and choose settings for that title. | [Games and settings](docs/en/11-gaming.md) |
+| **12** | **Another workload:** set up local models and compute. | [AI / LLM](docs/en/12-ai-llm.md) |
+| **13** | **Alternative OS:** MetalCyan requirements and installation. | [macOS](docs/en/13-macos.md) |
+| **14** | Connect a DisplayPort monitor; work through adapters, audio and extra screens. | [Display and output](docs/en/14-display.md) |
+| **15** | **Optional:** choose and configure emulators. | [Emulation](docs/en/15-emulation.md) |
+| **16** | Connect storage and USB peripherals; check adapter limitations. | [USB, hubs and storage](docs/en/16-usb-peripherals.md) |
+| **17** | **After basic setup:** install Control Center, upscalers or streaming tools for your task. | [Applications and tools](docs/en/17-projects-and-tools.md) |
+
+**First power-on — between 05 and 06.** With power disconnected, secure the cooler, connect storage following **16**, a checked power cable following **03**, and a monitor following **14**. Then power on and check that the BIOS screen appears; only then install the OS. No picture or no boot? Do not jump to overclocking — open [Troubleshooting](docs/en/troubleshooting.md).
+
+---
 
 <a id="catalog"></a>
 ## Project catalog
@@ -33,15 +64,7 @@
 - **Workloads and peripherals:** [Video codecs, VCN & audio](catalog/en/README.md#video) · [AI, compute & clusters](catalog/en/README.md#ai) · [Games, tests & emulation](catalog/en/README.md#gaming) · [WiFi & Bluetooth](catalog/en/README.md#peripherals).
 - **[Topic bibliography](catalog/en/topics.md)** — 702 distinct external links from the 19 handbook chapters: documentation, models, videos, discussions and message-level references; [community entry points](catalog/en/topics.md#communities) are listed separately.
 - **[Discovery inventory](catalog/discovery.md)** — all 971 repository hits from the dated search, including forks and zero-star projects. Unresolved and unrelated matches remain identifiable rather than being presented as BC-250 recommendations.
-- **Catalog versus handbook.** Listing a project preserves its place in the ecosystem; it does not recommend installation. The handbook below explains procedures, while the catalog also keeps alternative approaches and historical attempts.
-
----
-
-## Quick start
-
-- **New owner.** Follow [docs/en/00-start-here.md](docs/en/00-start-here.md) in order: buy, power, cool, install an operating system, tune, play. The guide index below explains each step.
-- **Gamer.** Start with [Gaming results & settings](docs/en/11-gaming.md) and [Emulation](docs/en/15-emulation.md). Read [Overclocking & undervolting](docs/en/09-overclock-undervolt.md) before you change clocks or voltage.
-- **Researcher.** Start with the [project catalog](catalog/en/README.md) and [topic bibliography](catalog/en/topics.md). [SOURCE_STATUS](SOURCE_STATUS.md) explains the dated source coverage; [BIOS & brick recovery](docs/en/08-bios.md) and [AI / LLM](docs/en/12-ai-llm.md) explain the practical topics.
+- **The second layer, not the start of a build.** The step-by-step route above leads to instructions. Use the catalog to choose alternatives, find projects and explore their history; a listing does not itself recommend installation.
 
 ---
 
@@ -59,14 +82,11 @@
 
 ## Guide
 
-- **[Start here](docs/en/00-start-here.md)** — the full path from a bare board to a running game.
-- **Build basics:** [What is the BC-250](docs/en/01-what-is-bc250.md) · [Buying](docs/en/02-buying.md) · [Power supply](docs/en/03-power-supply.md) · [Cooling](docs/en/04-cooling.md) · [Cases & 3D printing](docs/en/05-case.md).
-- **Applications and installation:** [Control Center, FSR4, HelixSR, frame generation and streaming](docs/en/17-projects-and-tools.md).
-- **Software:** [Linux drivers & setup](docs/en/06-linux.md) · [Windows drivers & setup](docs/en/07-windows.md) · [macOS / Hackintosh](docs/en/13-macos.md).
-- **Tuning & firmware:** [Overclocking & undervolting](docs/en/09-overclock-undervolt.md) · [BIOS & brick recovery](docs/en/08-bios.md).
-- **Peripherals & output:** [WiFi & Bluetooth dongles](docs/en/10-wifi-bt.md) · [Display & output](docs/en/14-display.md) · [USB, hubs & peripherals](docs/en/16-usb-peripherals.md).
-- **Workloads:** [Gaming results & settings](docs/en/11-gaming.md) · [AI / LLM](docs/en/12-ai-llm.md) · [Emulation](docs/en/15-emulation.md).
-- **Help:** [FAQ](docs/en/faq.md) · [Troubleshooting](docs/en/troubleshooting.md).
+All chapters **00–17** are in the [step-by-step route above](#quick-start). You do not need to install everything in the catalog or follow experimental branches to play your first game.
+
+- **Stuck on a step:** [Troubleshooting](docs/en/troubleshooting.md) · [FAQ](docs/en/faq.md).
+- **Looking for an alternative to the main route:** [Project catalog](catalog/en/README.md).
+- **Checking sources or history:** [Topic bibliography](catalog/en/topics.md) · [Source status](SOURCE_STATUS.md).
 
 ---
 
